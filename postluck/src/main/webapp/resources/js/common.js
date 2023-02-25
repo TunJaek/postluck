@@ -7,10 +7,11 @@ document.onkeydown = function(event){
 	if(key == 116 || (event.ctrlKey && key == 82) || (event.altKey && key == 37)){
 		event.preventDefault();
 	}
-};
-*/
+};*/ 
 let jsonString = '';
+
 /**2023/02/25 7:00 fetch test*/
+
 /* HttpRequest를 이용한 서버 요청
 		clientData format : [['name', 'value'], ...]
  */
@@ -58,7 +59,6 @@ function serverCallByXHRAjax(formData, jobCode, methodType, callBackFunc) {
 }
 
 function serverCallByFetchAjax(formData, jobCode, methodType, callBackFunc) {
-
 	fetch(jobCode, {
 		method: methodType,
 		/*
