@@ -8,8 +8,9 @@ document.onkeydown = function(event){
 		event.preventDefault();
 	}
 };*/ 
+
 let jsonString = '';
-//commit test
+
 //commit test 
 /* HttpRequest를 이용한 서버 요청
 		clientData format : [['name', 'value'], ...]
