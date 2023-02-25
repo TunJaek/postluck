@@ -238,10 +238,10 @@
 
 		}
 		function moveKiosk() {
-			serverCallByRequest('/View/MoveKiosk', 'post', 'getJWT()');
+			serverCallByRequest('/View/MoveKiosk', 'post',getJWT());
 		}
 		function MovePos() {
-			serverCallByRequest('/View/MovePos', 'post', 'getJWT()');
+			serverCallByRequest('/View/MovePos', 'post', getJWT());
 		}
 	</script>
 
