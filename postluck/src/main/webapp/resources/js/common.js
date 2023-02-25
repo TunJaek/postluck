@@ -10,7 +10,6 @@ document.onkeydown = function(event){
 };*/ 
 let jsonString = '';
 console.log("hi");
-
 /* HttpRequest를 이용한 서버 요청
 		clientData format : [['name', 'value'], ...]
  */
@@ -58,7 +57,7 @@ function serverCallByXHRAjax(formData, jobCode, methodType, callBackFunc) {
 }
 
 function serverCallByFetchAjax(formData, jobCode, methodType, callBackFunc) {
-
+야야
 	fetch(jobCode, {
 		method: methodType,
 		/*
