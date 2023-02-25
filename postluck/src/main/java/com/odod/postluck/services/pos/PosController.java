@@ -10,9 +10,4 @@ import com.odod.postluck.beans.StoreBean;
 @Controller
 public class PosController {
 
-    @PostMapping("/View/MovePosManage")
-    public String moveKiosk(ModelAndView mav, @ModelAttribute StoreBean store) {
-	mav.addObject("store", store);
-	return "pos-manage";
-    }
 }
