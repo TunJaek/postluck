@@ -9,7 +9,9 @@ document.onkeydown = function(event){
 	}
 };*/ 
 let jsonString = '';
-console.log("hi");
+
+/**2023/02/25 7:00 fetch test*/
+
 /* HttpRequest를 이용한 서버 요청
 		clientData format : [['name', 'value'], ...]
  */
