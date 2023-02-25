@@ -9,5 +9,9 @@ import com.odod.postluck.beans.StoreBean;
 
 @Controller
 public class PosController {
-
+	@PostMapping("/View/MovePosManage")
+	public ModelAndView movePosManage(ModelAndView mav, @ModelAttribute StoreBean store) {
+		mav.setViewName("pos-manage");
+		return mav;
+	}
 }
