@@ -6,10 +6,10 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>MAIN - POS.TLUCK</title>
-<link rel="stylesheet" href="/resources/css/mainBootstrap.css">
-<script src="../resources/js/common.js"></script>
+<link rel="stylesheet" href="../../resources/css/mainBootstrap.css">
+<script src="../../resources/js/common.js"></script>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR&amp;display=swap" rel="stylesheet">
- <link rel="icon" href="/resources/image/fabicon.png">
+ <link rel="icon" href="../../resources/image/fabicon.png">
 <script type="text/javascript" src="https://static.nid.naver.com/js/naverLogin_implicit-1.0.3.js" charset="utf-8"></script>
 </head>
 
@@ -17,7 +17,7 @@
 	<div class="main">
 		<div id="left">
 			<div id="foodTruckNews">
-				푸드트럭 소식 보러가기 <img class="position-absolute start-0 bottom-0" src="/resources/image/arrow.png" style="width: 120%;">
+				푸드트럭 소식 보러가기 <img class="position-absolute start-0 bottom-0" src="../../resources/image/arrow.png" style="width: 120%;">
 			</div>
 		</div>
 

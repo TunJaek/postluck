@@ -9,8 +9,8 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>POS.TLUCK</title>
- <link rel="icon" href="/resources/image/fabicon.png">
-<link rel="stylesheet" href="/resources/css/mainBootstrap.css">
+ <link rel="icon" href="../../resources/image/fabicon.png">
+<link rel="stylesheet" href="../../resources/css/mainBootstrap.css">
 <link
 	href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR&amp;display=swap"
 	rel="stylesheet">
@@ -20,7 +20,7 @@
 <script type="text/javascript"
 	src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
 <script src="https://developers.kakao.com/sdk/js/kakao.min.js"></script>
-<script src="/resources/js/common.js"></script>
+<script src="../../resources/js/common.js"></script>
 </head>
 <body class="vsc-initialized">
 	<div class="main">
@@ -35,7 +35,7 @@
 			style="display: flex; justify-content: center; align-items: center;">
 			<div class="loginArea"
 				style="display: flex; flex-direction: column; width: 60%; display: flex; flex-direction: column; height: 50%;">
-				<img src="/resources/image/indexTextLogo.png"
+				<img src="../../resources/image/indexTextLogo.png"
 					style="margin-bottom: 3%;">
 				<div class="loginLogo" style="width: 100%;">
 					<div class="loginInputArea"
@@ -45,13 +45,13 @@
 						<div class="row"
 							style="background-color: #03C75A; border-radius: 5px; align-items: center; cursor: pointer"
 							id="naverLogin" onclick="naverLogin()">
-							<img class="col-3" src="/resources/image/naverLoginBtn.png">
+							<img class="col-3" src="../../resources/image/naverLoginBtn.png">
 							<div class="col-9" style="color: white">네이버로 로그인하기</div>
 						</div>
 						<div class="row"
 							style="background-color: #F9E000; border-radius: 5px; align-items: center; cursor: pointer"
 							id="kakaoLogin" onclick="kakaoLogin()">
-							<img class="col-3" src="/resources/image/kakaoLoginBtn.png">
+							<img class="col-3" src="../../resources/image/kakaoLoginBtn.png">
 							<div class="col-9">카카오로 로그인하기</div>
 						</div>
 					</div>
