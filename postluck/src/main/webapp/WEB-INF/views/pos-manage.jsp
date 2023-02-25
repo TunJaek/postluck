@@ -4,9 +4,10 @@
     <html lang="ko">
 <head>
     <meta charset="UTF-8">
+    <link rel="icon" href="/resources/image/fabicon.png">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>posAll</title>
+    <title>SETTING - POS.TLUCK</title>
     <link rel="stylesheet" href="/resources/css/mainBootstrap.css">
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR&amp;display=swap" rel="stylesheet">
     <script>

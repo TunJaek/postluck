@@ -48,7 +48,7 @@ public class MainController {
 		return "kiosk-menu";
 	}
 	
-
+	
 	@GetMapping("/index-callBack")
 	public String indexService() {
 		return "index-callBack";

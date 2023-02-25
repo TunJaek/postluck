@@ -54,17 +54,15 @@ public class JwtIntercepter implements HandlerInterceptor {
 		return result;
 	}
 
-	@Override
-	public void postHandle( HttpServletRequest req, HttpServletResponse res,
-			Object handler, ModelAndView mav)throws Exception { // Before View Rendering
-		log.info(">>> postHandle <<< ");
-	}	
-
-	@Override
-	public void afterCompletion(HttpServletRequest req, HttpServletResponse res, 
-			Object handler, Exception ex)throws Exception { // After View Rendering
-		log.info(">>> afterComplection <<<");
-	}
+	/*
+	 * @Override public void postHandle( HttpServletRequest req, HttpServletResponse
+	 * res, Object handler, ModelAndView mav)throws Exception { // Before View
+	 * Rendering log.info(">>> postHandle <<< "); }
+	 * 
+	 * @Override public void afterCompletion(HttpServletRequest req,
+	 * HttpServletResponse res, Object handler, Exception ex)throws Exception { //
+	 * After View Rendering log.info(">>> afterComplection <<<"); }
+	 */
 	
 	/* Spring Framework 6.0 지원 현재 Spring Boot 에서 지원 >> postHandle, afterCompletion 실행 과정 없음
 	public void afterConcurrentHandlingStarted(HttpServletRequest req, HttpServletResponse res, 
