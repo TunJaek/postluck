@@ -57,7 +57,6 @@ function serverCallByXHRAjax(formData, jobCode, methodType, callBackFunc) {
 }
 
 function serverCallByFetchAjax(formData, jobCode, methodType, callBackFunc) {
-야야
 	fetch(jobCode, {
 		method: methodType,
 		/*
