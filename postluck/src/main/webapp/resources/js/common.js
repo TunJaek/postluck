@@ -10,7 +10,7 @@ document.onkeydown = function(event){
 };*/ 
 let jsonString = '';
 console.log("hi");
-//수정내용 일부러 만들기!
+
 /* HttpRequest를 이용한 서버 요청
 		clientData format : [['name', 'value'], ...]
  */
