@@ -5,10 +5,11 @@
 <meta charset="UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Index</title>
+<title>MAIN - POS.TLUCK</title>
 <link rel="stylesheet" href="/resources/css/mainBootstrap.css">
 <script src="../resources/js/common.js"></script>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR&amp;display=swap" rel="stylesheet">
+ <link rel="icon" href="/resources/image/fabicon.png">
 <script type="text/javascript" src="https://static.nid.naver.com/js/naverLogin_implicit-1.0.3.js" charset="utf-8"></script>
 </head>
 
@@ -238,10 +239,10 @@
 
 		}
 		function moveKiosk() {
-			serverCallByRequest('/View/MoveKiosk', 'post', 'getJWT()');
+			serverCallByRequest('/View/MoveKiosk', 'post',getJWT());
 		}
 		function MovePos() {
-			serverCallByRequest('/View/MovePos', 'post', 'getJWT()');
+			serverCallByRequest('/View/MovePos', 'post', getJWT());
 		}
 	</script>
 

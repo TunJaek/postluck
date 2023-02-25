@@ -196,6 +196,7 @@ public class Authentication extends TransactionAssistant {
 	private void regStoreInfo(Model model) {
 		String message = "false";
 		StoreBean store = (StoreBean) model.getAttribute("store");
+		JWTBean jwtBody;
 		try {
 //			StoreBean st = (StoreBean) this.pu.getAttribute("AccessInfo");
 			this.tranManager = this.getTransaction(false);
@@ -203,6 +204,9 @@ public class Authentication extends TransactionAssistant {
 			if (store != null) {
 				if (this.convertToBoolean(this.sqlSession.insert("regStore", store))) {
 					this.tranManager.commit();
+					jwtBody = JWTBean.builder().storeCode(store.getStoreCode()).snsID(store.getSnsID()).build();
+					this.pu.transferJWTByResponse(this.jwt.tokenIssuance(jwtBody, store.getSnsID()));
+					this.pu.setAttribute("AccessInfo", store);
 					message = "true";
 				} else {
 					message = "매장등록을 실패하셨습니다.";

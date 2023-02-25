@@ -6,7 +6,8 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>main</title>
+    <title>HOME - POS.TLUCK</title>
+     <link rel="icon" href="/resources/image/fabicon.png">
     <link rel="stylesheet" href="/resources/css/main.css">
     <link rel="stylesheet" href="/resources/css/mainBootstrap.css">
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR&amp;display=swap" rel="stylesheet">

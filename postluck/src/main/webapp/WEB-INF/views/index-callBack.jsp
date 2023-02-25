@@ -7,6 +7,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>POS.TLUCK</title>
+ <link rel="icon" href="/resources/image/fabicon.png">
 <link rel="stylesheet" href="/resources/css/mainBootstrap.css">
 <script src="resources/js/common.js"></script>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR&amp;display=swap" rel="stylesheet">
