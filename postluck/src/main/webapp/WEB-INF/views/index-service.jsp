@@ -211,7 +211,7 @@
 							if (isChecked) {
 								serverCallByFetch(formData,
 										'/Api/RegStoreInfo', 'post',
-										'modalClose', header);
+										'afterRegsiter', header);
 							} else {
 								alert('사업자 번호 중복체크를 해주세요.');
 							}
@@ -235,11 +235,13 @@
 			}
 		}
 
-		function modalClose(jsonData) {
+		function afterRegsiter(jsonData) {
 			if (jsonData.message == 'true') {
 				regCancel();
 				document.getElementsByClassName('loginText')[0].innerText = jsonData.ceoName
 						+ "사장님 안녕하세요!";
+			}else{
+				alert(jsonData.message);
 			}
 
 		}
