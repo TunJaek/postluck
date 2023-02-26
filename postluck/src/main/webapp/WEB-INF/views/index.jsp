@@ -9,7 +9,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>POS.TLUCK</title>
- <link rel="icon" href="../../resources/image/fabicon.png">
+<link rel="icon" href="../../resources/image/fabicon.png">
 <link rel="stylesheet" href="../../resources/css/mainBootstrap.css">
 <link
 	href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR&amp;display=swap"
@@ -21,8 +21,9 @@
 	src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
 <script src="https://developers.kakao.com/sdk/js/kakao.min.js"></script>
 <script src="../../resources/js/common.js"></script>
+
 </head>
-<body class="vsc-initialized">
+<body class="vsc-initialized" onload="pageInit('', '')">
 	<div class="main">
 		<div id="left">
 			<div id="foodTruckNews">
@@ -42,32 +43,24 @@
 						style="display: flex; flex-direction: column; gap: 5px;">
 						<div class="loginText" style="position: relative;">사업자회원로그인</div>
 						<div id="naver_id_login" style="display: none"></div>
-						<div class="row"
-							style="background-color: #03C75A; border-radius: 5px; align-items: center; cursor: pointer"
+						<div class="row" style="background-color: #03C75A; border-radius: 5px; align-items: center; cursor: pointer"
 							id="naverLogin" onclick="naverLogin()">
 							<img class="col-3" src="../../resources/image/naverLoginBtn.png">
 							<div class="col-9" style="color: white">네이버로 로그인하기</div>
 						</div>
-						<div class="row"
-							style="background-color: #F9E000; border-radius: 5px; align-items: center; cursor: pointer"
+						<div class="row" style="background-color: #F9E000; border-radius: 5px; align-items: center; cursor: pointer"
 							id="kakaoLogin" onclick="kakaoLogin()">
 							<img class="col-3" src="../../resources/image/kakaoLoginBtn.png">
 							<div class="col-9">카카오로 로그인하기</div>
 						</div>
 					</div>
 
-					<!-- 					<div class="row" -->
-					<!-- 						style="background-color: #F9E000; border-radius: 5px; align-items: center; cursor: pointer" -->
-					<!-- 						id="kakaoLogout" onclick="kakaoLogout()"> -->
-					<!-- 						<img class="col-3" src="/resources/image/kakaoLoginBtn.png"> -->
-					<!-- 						<div class="col-9">카카오 로그아웃 하기</div> -->
-					<!-- 					</div> -->
 				</div>
 			</div>
 		</div>
 	</div>
-
-	<script>
+</body>
+<script>
 	window.onpageshow= function(event){
 		if ('${AccessInfo}'!=''){
 			const accessToken=getJWT();
@@ -117,20 +110,7 @@
 				})
 			}
 
-			//카카오로그아웃  
-			function kakaoLogout() {
-				if (Kakao.Auth.getAccessToken()) {
-					Kakao.API.request({
-						url: '/v1/user/unlink',
-						success: function(response) {
-						},
-						fail: function(error) {
-							console.log(error)
-						},
-					})
-					Kakao.Auth.setAccessToken(undefined)
-				}
-			}
+	
 			// 카카오 로그인 콜백 함수
 			function kakaoLoginCallback(response) {
 				// 액세스 토큰을 가져옵니다.
@@ -152,7 +132,7 @@
 			}
 	</script>
 
-	<style>
+<style>
 .main {
 	display: flex;
 	width: 100vw;
@@ -335,9 +315,8 @@ body {
 }
 </style>
 
-	<!-- Code injected by live-server -->
+<!-- Code injected by live-server -->
 
 
-</body>
 
 </html>

@@ -7,6 +7,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>SETTING - POS.TLUCK</title>
+<script src="/resources/js/common.js"></script>
 <link rel="stylesheet" href="/resources/css/mainBootstrap.css">
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR&amp;display=swap" rel="stylesheet">
 <script>
@@ -39,7 +40,7 @@
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
 	<div class="main">
 		<div class="header">
-			<span class="px-3 " style="cursor: pointer"><svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-arrow-left" viewBox="0 0 16 16">
+			<span class="px-3 " style="cursor: pointer" onclick ="movePage('Pos')"><svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-arrow-left" viewBox="0 0 16 16">
                     <path fill-rule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z" />
                 </svg></span> <span><img src="/resources/image/mainLogo-dark.png"></span>
 			<!-- 시간표시 연월일시분초 -->
@@ -86,32 +87,26 @@
 				<div class="inputZone p-5 d-flex gap-3" style="flex-direction: column;">
 					<div class="row" style="align-items: center;">
 						<div class="col-2">매장명</div>
-						<input type="text" class="form-control w-25" placeholder="매장명을 입력해주세요." id="inputDefault">
+						<input type="text" class="form-control w-25" placeholder="매장명을 입력해주세요." value="${AccessInfo.storeName}">
 					</div>
 					<div class="row" style="align-items: center;">
 						<div class="col-2">전화번호</div>
-						<input type="text" class="form-control w-25" placeholder="전화번호를 입력해주세요." id="inputDefault">
+						<input type="text" class="form-control w-25" placeholder="전화번호를 입력해주세요." value="${AccessInfo.storePhone}">
 					</div>
 					<div class="row" style="align-items: center;">
 						<div class="col-2">카테고리</div>
-						<div class="form-group col-2 ps-0">
-							<select class="form-select" id="exampleSelect1">
-								<option>양식</option>
-								<option>한식</option>
-								<option>중식</option>
-								<option>일식</option>
-								<option>디저트</option>
-							</select>
-						</div>
-						<div class="form-group col-2">
-							<select class="form-select" id="exampleSelect1">
-								<option>1</option>
-								<option>2</option>
-								<option>3</option>
-								<option>4</option>
-								<option>5</option>
-							</select>
-						</div>
+						<select class="form-select  w-25" id="category">
+							<option value="">카테고리</option>
+							<option value="SN">분식</option>
+							<option value="SW">샌드위치</option>
+							<option value="DE">디저트</option>
+							<option value="MS">멕시칸</option>
+							<option value="AS">아시안</option>
+							<option value="IT">이탈리안</option>
+							<option value="DR">커피/음료</option>
+							<option value="SE">씨푸드</option>
+							<option value="FA">패스트푸드</option>
+						</select>
 					</div>
 					<div class="row" style="align-items: center;">
 						<div class="col-2">위치</div>
@@ -132,18 +127,15 @@
 
 
 
-					<div class="row" style="align-items: center;">
-						<div class="col-2">매장명</div>
-						<input type="text" class="form-control w-25" placeholder="매장명을 입력해주세요." id="inputDefault">
-					</div>
+
 					<div class="row" style="align-items: center;">
 						<div class="col-2">매장 한 줄소개</div>
-						<input type="text" class="form-control w-25" placeholder="매장명을 입력해주세요." id="inputDefault">
+						<input type="text" class="form-control w-25" placeholder="매장명을 입력해주세요." value="${AccessInfo.storeInfo}">
 					</div>
 					<div class="row" style="align-items: center;">
 						<div class="col-2 mb-3">매장 상세정보</div>
 						<div class="form-group w-50 p-0">
-							<textarea class="form-control" id="exampleTextarea" rows="3"></textarea>
+							<textarea class="form-control" id="exampleTextarea" rows="3" value="${AccessInfo.storeInfoDetail}"></textarea>
 						</div>
 					</div>
 					<div class="row" style="align-items: center;">
@@ -493,7 +485,21 @@
 
 
 
-
+<script>
+	let selectedIdx = 0;
+	function sideMenu(newIdx) {
+		document.getElementById("menu" + selectedIdx).style.display = "none";
+		document.getElementById("menu" + newIdx).style.display = "block";
+		selectedIdx = newIdx;
+	}
+	const category = document.getElementById('category')
+	const categoryOptions = category.options
+	for (let i = 0; i < categoryOptions.length; i++) {
+		if (categoryOptions[i].value == '${AccessInfo.storeCategory}') {
+			categoryOptions[i].selected = "true";
+		}
+	}
+</script>
 
 <style>
 body {

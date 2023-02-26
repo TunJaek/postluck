@@ -7,7 +7,7 @@ document.onkeydown = function(event){
 	if(key == 116 || (event.ctrlKey && key == 82) || (event.altKey && key == 37)){
 		event.preventDefault();
 	}
-};*/ 
+};*/
 
 let jsonString = '';
 
@@ -142,19 +142,20 @@ function serverCallByFetchAjaxUsingUrl(jobCode, methodType, callBackFunc) {
 /* PUBLIC IP 수집 CallBackFunc */
 let publicIp = null;
 function getPublicIp(jsonData) {
+	alert (jsonData.ip);
 	publicIp = jsonData.ip
 }
 let header = new Headers(getJWT());
 /* Page Initialize */
 function pageInit(messageString, accessInfo) {
-	serverCallByFetchAjaxUsingUrl("https://api.ipify.org?format=json", "get", "getPublicIp");
+	serverCallByFetchAjaxUsingUrl("https://api64.ipify.org?format=json", "get", "getPublicIp");
 
 	if (messageString != '') messageController(true, messageString);
 	if (jsonString != '') mgrInit();
 }
 
 function pageInitJson() {
-	serverCallByFetchAjaxUsingUrl("https://api.ipify.org?format=json", "get", "getPublicIp");
+	serverCallByFetchAjaxUsingUrl("https://api64.ipify.org?format=json", "get", "getPublicIp");
 
 	console.log(serverData);
 	const messageString = serverData.message;
@@ -359,9 +360,10 @@ function afterIssuance(jsonData) {
 	console.log(jsonData);
 	const accessToken = getJWT();
 	//[[JWTForPostluck,ehfedrfgaksfdjhgaleiru245235]]
-	if (jsonData!=null) {
+	if (jsonData != null) {
 		if (accessToken) {
 			accessToken.push(['snsID', jsonData.snsID]);
+			accessToken.push(['accessLogList[0].accessPublicIp',publicIp])
 			serverCallByRequest('View/AccessCtl', 'post', accessToken);
 		} else {
 			console.log('accessToken is null')
@@ -371,3 +373,26 @@ function afterIssuance(jsonData) {
 	}
 
 }
+		
+function movePage(targetPage) {
+	serverCallByRequest('/View/Move' + targetPage, 'post', getJWT());
+}
+function logout() {
+	serverCallByRequest('/View/logOut', 'post', getJWT());
+}
+//카카오로그아웃  
+function kakaoLogout() {
+	if (Kakao.Auth.getAccessToken()) {
+		Kakao.API.request({
+			url: '/v1/user/unlink',
+			success: function(response) {
+			},
+			fail: function(error) {
+				console.log(error);
+			},
+		})
+		Kakao.Auth.setAccessToken(undefined);
+	}
+}
+
+
