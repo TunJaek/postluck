@@ -30,14 +30,14 @@
 				<img src="/resources/image/indexTextLogo.png" style="margin-bottom: 3%;">
 				<div class="loginLogo" style="width: 100%;">
 					<div class="loginInputArea" style="display: flex; flex-direction: column; gap: 5px;">
-						<div class="loginText" style="position: relative;">${AccessInfo.ceoName}사장님안녕하세요!</div>
+						<div class="loginText" style="position: relative;">${AccessInfo.ceoName} 사장님 안녕하세요!</div>
 						<div class="loginInput" style="display: flex; flex-direction: column; gap: 5px; width: 100%;">
 							<div class="d-grid gap-2">
-								<button class="btn btn-lg btn-primary" type="button" onclick="MovePos()" id="posService"></button>
+								<button class="btn btn-lg btn-primary" type="button" onclick="movePage('Pos')" id="posService"></button>
 								<!-- <button class="btn btn-lg btn-primary" type="button">Block button</button> -->
 							</div>
 							<div class="d-grid gap-2">
-								<button class="btn btn-lg btn-primary" type="button" id="kioskService" onclick="moveKiosk()"></button>
+								<button class="btn btn-lg btn-primary" type="button" id="kioskService" onclick="movePage('Kiosk')"></button>
 								<!-- <button class="btn btn-lg btn-primary" type="button">Block button</button> -->
 							</div>
 						</div>
@@ -242,12 +242,8 @@
 			}
 
 		}
-		function moveKiosk() {
-			serverCallByRequest('/View/MoveKiosk', 'post', getJWT());
-		}
-		function MovePos() {
-			serverCallByRequest('/View/MovePos', 'post', getJWT());
-		}
+		
+		
 	</script>
 
 </body>

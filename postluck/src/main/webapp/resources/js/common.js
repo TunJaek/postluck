@@ -7,7 +7,7 @@ document.onkeydown = function(event){
 	if(key == 116 || (event.ctrlKey && key == 82) || (event.altKey && key == 37)){
 		event.preventDefault();
 	}
-};*/ 
+};*/
 
 let jsonString = '';
 
@@ -266,6 +266,8 @@ function createDiv(objId, className, funcName, innerText) {
 	if (innerText != '') div.innerText = innerText;
 	return div;
 }
+
+
 /* Input Box 생성*/
 function createInputBox(type, name, value, placeholder) {
 	const input = document.createElement("input");
@@ -359,7 +361,7 @@ function afterIssuance(jsonData) {
 	console.log(jsonData);
 	const accessToken = getJWT();
 	//[[JWTForPostluck,ehfedrfgaksfdjhgaleiru245235]]
-	if (jsonData!=null) {
+	if (jsonData != null) {
 		if (accessToken) {
 			accessToken.push(['snsID', jsonData.snsID]);
 			serverCallByRequest('View/AccessCtl', 'post', accessToken);
@@ -370,4 +372,8 @@ function afterIssuance(jsonData) {
 		console.log(jsonData);
 	}
 
+}
+		
+function movePage(targetPage){
+	serverCallByRequest('/View/Move'+targetPage,'post',getJWT());
 }
