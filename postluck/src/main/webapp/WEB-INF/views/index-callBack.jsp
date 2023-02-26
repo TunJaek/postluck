@@ -19,6 +19,12 @@
 	<div id="naver_id_login" style="display: none"></div>
 </body>
 <script>
+window.onpageshow= function(event){
+	if (sessionStorage.JWT!=null){
+		const accessToken=getJWT();
+		serverCallByRequest('/View/AccessCtl', 'post', accessToken);
+	}
+}
 	var naver_id_login = new naver_id_login("9mtn5PALlynAVoBKSbrl",
 			"http://localhost/index-callBack");
 	naver_id_login.init_naver_id_login();
