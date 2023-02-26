@@ -9,12 +9,16 @@
 <link rel="stylesheet" href="../../resources/css/mainBootstrap.css">
 <script src="../../resources/js/common.js"></script>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR&amp;display=swap" rel="stylesheet">
- <link rel="icon" href="../../resources/image/fabicon.png">
+<link rel="icon" href="../../resources/image/fabicon.png">
+
 <script type="text/javascript" src="https://static.nid.naver.com/js/naverLogin_implicit-1.0.3.js" charset="utf-8"></script>
 </head>
 
 <body class="vsc-initialized">
+
+
 	<div class="main">
+
 		<div id="left">
 			<div id="foodTruckNews">
 				푸드트럭 소식 보러가기 <img class="position-absolute start-0 bottom-0" src="../../resources/image/arrow.png" style="width: 120%;">
@@ -44,6 +48,7 @@
 
 			</div>
 		</div>
+
 		<div class="modal" data-bs-backdrop="static" data-keyboard="false" tabindex="-1" style="display: none; justify-content: center; align-items: center; background-color: rgba(1, 1, 1, 0.3);">
 			<div class="w-50 modal-dialog-centered modal-dialog-scrollable" id="regStoreInfo">
 				<div class="modal-content w-100">
@@ -239,7 +244,7 @@
 
 		}
 		function moveKiosk() {
-			serverCallByRequest('/View/MoveKiosk', 'post',getJWT());
+			serverCallByRequest('/View/MoveKiosk', 'post', getJWT());
 		}
 		function MovePos() {
 			serverCallByRequest('/View/MovePos', 'post', getJWT());
