@@ -139,15 +139,15 @@ public class Authentication extends TransactionAssistant {
 	 * 
 	 */
 	private void accessCtl(ModelAndView mav) {
-		StoreBean store = (StoreBean) mav.getModel().get("store");
+		StoreBean store;
 		// snsId를 가지고있음
 		String jwt = mav.getModel().get("jwt").toString();
 		Map<String, Object> tokenBody;
 		JWTBean tokenInfo;
-		log.info("{}", store);
 		try {
+		  store  = (StoreBean)this.pu.getAttribute("AccessInfo");
 //			System.out.println(this.jwt.getTokenInfo(jwt,store.getSnsID()));
-			if (this.convertToBoolean(this.sqlSession.selectOne("isSnsId", store))) {
+			if (this.convertToBoolean(this.sqlSession.selectOne("isSnsId",store ))) {
 				// 회원정보가 있으면,
 				System.out.println("storeCode is not null");
 				List<StoreBean> stBeanList = this.sqlSession.selectList("selStoreInfo", store);
@@ -157,6 +157,7 @@ public class Authentication extends TransactionAssistant {
 				this.tranManager.tranStart();
 				System.out.println("stBeanList : " + stBeanList);
 				System.out.println("stBeanList의 storeBean: " + stBeanList.get(0));
+				store.setMessage("true");
 				mav.addObject("store", new ObjectMapper().writeValueAsString(store));
 				System.out.println(this.pu.getAttribute("AccessInfo"));
 
