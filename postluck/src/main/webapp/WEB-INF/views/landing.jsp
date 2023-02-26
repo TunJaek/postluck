@@ -4,14 +4,16 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>POS.TLUCK</title>
+<link rel="icon" href="../../resources/image/fabicon.png">
+<script src="resources/js/common.js"></script>
 </head>
 <body onload="landing()">
 
 </body>
 <script>
 function landing(){
-	if (${AccessInfo}){
+	if ('${AccessInfo}'!=''){
 		const accessToken=getJWT();
 		serverCallByRequest('/View/AccessCtl', 'post', accessToken);
 	}else{

@@ -22,7 +22,7 @@
   	<interceptor>
 			<mapping path="/**"/> <!-- 인터셉터 대상에서 제외하고자 하는 JobCode등록 :: <exclude-mapping path="/BeforeAuth/**" /> -->			
 			<exclude-mapping path="/IssuanceJWT"/>
-			<exclude-mapping path="/Index"/>
+			<exclude-mapping path="/Index/**"/>
 			<exclude-mapping path="/index-callBack"/>
 			<exclude-mapping path="/"/>
 			<exclude-mapping path="/resources/**"/>

@@ -198,15 +198,12 @@
 				formData.append('storeCode', storeCode.value);
 				if (storeName != '' && lengthCheck(storeName)) {
 					formData.append('storeName', storeName.value);
-					if (storePhone.value == ''
-							|| (storePhone.value != '' && lengthCheck(storePhone))) {
+					if (storePhone.value == '' || (storePhone.value != '' && lengthCheck(storePhone))) {
 						formData.append('storePhone', storePhone.value);
 						if (storeCategory.value != '') {
-							formData.append('storeCategory',
-									storeCategory.value);
+							formData.append('storeCategory',storeCategory.value);
 							formData.append('storeInfo', storeInfo.value);
-							formData.append('storeInfoDetail',
-									storeInfoDetail.value);
+							formData.append('storeInfoDetail',storeInfoDetail.value);
 							console.log(isChecked)
 							if (isChecked) {
 								serverCallByFetch(formData,
@@ -217,7 +214,7 @@
 							}
 
 						} else {
-							alert("카테고리는 필수 입력사항입니다.")
+							alert("카테고리는 필수 입력사항입니다.");
 						}
 
 					} else {

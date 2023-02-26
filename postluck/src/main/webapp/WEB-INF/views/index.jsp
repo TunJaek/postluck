@@ -68,6 +68,12 @@
 	</div>
 
 	<script>
+	window.onpageshow= function(event){
+		if ('${AccessInfo}'!=''){
+			const accessToken=getJWT();
+			serverCallByRequest('/View/AccessCtl', 'post', accessToken);
+		}
+	}
 		function naverLogin() {
 			let btnNaverLogin = document.getElementById("naver_id_login").firstChild;
 			console.log("click");
