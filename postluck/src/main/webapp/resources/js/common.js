@@ -7,7 +7,7 @@ document.onkeydown = function(event){
 	if(key == 116 || (event.ctrlKey && key == 82) || (event.altKey && key == 37)){
 		event.preventDefault();
 	}
-};*/ 
+};*/
 
 let jsonString = '';
 
@@ -359,7 +359,7 @@ function afterIssuance(jsonData) {
 	console.log(jsonData);
 	const accessToken = getJWT();
 	//[[JWTForPostluck,ehfedrfgaksfdjhgaleiru245235]]
-	if (jsonData!=null) {
+	if (jsonData != null) {
 		if (accessToken) {
 			accessToken.push(['snsID', jsonData.snsID]);
 			serverCallByRequest('View/AccessCtl', 'post', accessToken);
@@ -370,4 +370,8 @@ function afterIssuance(jsonData) {
 		console.log(jsonData);
 	}
 
+}
+		
+function movePage(targetPage){
+	serverCallByRequest('/View/Move'+targetPage,'post',getJWT());
 }

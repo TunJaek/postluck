@@ -100,7 +100,7 @@ body {
 			<div class="header">
 
 				<span class="px-3" style="cursor: pointer"> <!-- onclick="location.href='pos-calendar.html'"-->
-					<svg xmlns="http://www.w3.org/2000/svg" onclick="movePosManage()"
+					<svg xmlns="http://www.w3.org/2000/svg" onclick="movePage('PosManage')"
 						width="30" height="30" fill="currentColor"
 						class="bi bi-gear-wide-connected" viewBox="0 0 16 16">
                         <path
