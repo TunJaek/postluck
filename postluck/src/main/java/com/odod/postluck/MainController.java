@@ -24,10 +24,13 @@ public class MainController {
 	private StoreService storeSevice;
 	@Autowired
 	private Authentication auth;
-	
-	@GetMapping({"/","/postluck"}) //index페이지 이동
-	public String index() {
-		return "index";
+	@GetMapping("/Index")
+	public String index(){
+	    return "index";
+	}
+	@GetMapping("/") //index페이지 이동
+	public String landing() {
+		return "landing";
 	}
 	
 	@GetMapping("/View/MoveHome") //홈페이지 이동
