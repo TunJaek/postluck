@@ -43,6 +43,14 @@ public class MainController {
 		mav.addObject("store", store);
 		return "pos-main";
 	}
+	@PostMapping("/View/logOut")
+	public String logOut(ModelAndView mav, @ModelAttribute StoreBean store, @ModelAttribute("JWTForPostluck") String jwt) {
+		mav.addObject("jwt",jwt);
+		mav.addObject("store",store);
+		this.auth.backController("AU04", mav);
+		
+		return "index";
+	}
 	
 	@PostMapping("/View/MoveKiosk")
 	public String moveKiosk(ModelAndView mav, @ModelAttribute StoreBean store, @ModelAttribute("JWTForPostluck") String jwt) {
