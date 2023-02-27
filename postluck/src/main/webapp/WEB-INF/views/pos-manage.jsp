@@ -81,10 +81,10 @@
 				<div class="menu border p-3" onclick="sideMenu(0)">일정</div>
 				<div class="menu border p-3" onclick="sideMenu(1)">매장관리</div>
 				<div class="menu border p-3" onclick="sideMenu(2)">메뉴관리</div>
-				<div class="menu border p-3" onclick="sideMenu(3)">결제내역</div>
-				<div class="menu border p-3" onclick="sideMenu(4)">매출분석</div>
+				<div class="menu border p-3" onclick="sideMenu(5)">결제내역</div>
+				<div class="menu border p-3" onclick="sideMenu(6)">매출분석</div>
 			</div>
-
+			<!-- sideMenu(3) : 메뉴추가 / sideMenu(4) : 메뉴수정 -->
 			<!-- 0. 일정 -->
 			<div class="mainContent" id="menu0" style="display: block;">
 				<div class="border p-3" style="height: 7%;">
@@ -183,10 +183,9 @@
 						메뉴관리
 						</h2>
 				</div>
-				
+
 				<div class="text-end ">
-					<button class="btn btn-outline-primary m-4" onClick="addMenu()">+
-						메뉴추가</button>
+					<button class="btn btn-outline-primary m-4" onClick="sideMenu(3)">+메뉴추가</button>
 				</div>
 				<div class="menuList">
 					<div class=" m-2">
@@ -241,6 +240,59 @@
 			</div>
 			<!-- 2. 메뉴관리 -->
 
+			<!-- 2-1. 메뉴추가 -->
+			<div class="mainContent" id="addMenuPage" style="display: none;">
+				<div class="border p-3 " style="height: 7%;">
+					<h5>메뉴등록</h5>
+				</div>
+				<div stlye="93%;"></div>
+				<div class="inputZone p-5 d-flex gap-3"
+					style="flex-direction: column;">
+					<div class="row" style="align-items: center;">
+						<div class="col-2">메뉴명</div>
+						<input type="text" class="form-control w-25"
+							placeholder="매장명을 입력해주세요." id="inputDefault">
+					</div>
+					<div class="row" style="align-items: center;">
+						<div class="col-2">가격</div>
+						<input type="text" class="form-control w-25"
+							placeholder="전화번호를 입력해주세요." id="inputDefault">
+					</div>
+
+					<div class="row" style="align-items: center;">
+						<div class="col-2">매장 사진 등록</div>
+						<div class="form-group col-6 p-0">
+							<input class="form-control" type="file" id="formFile">
+						</div>
+					</div>
+					<div class="row" style="align-items: center;">
+						<div class="col-2">품절 여부</div>
+						<div class="form-check form-switch col">
+							<input class="form-check-input" type="checkbox"
+								id="flexSwitchCheckDefault">
+						</div>
+					</div>
+					<div class="row" style="align-items: center;">
+						<div class="col-2">KIOSK 노출 여부</div>
+						<div class="form-check form-switch col">
+							<input class="form-check-input" type="checkbox"
+								id="flexSwitchCheckDefault">
+						</div>
+					</div>
+					<div class="row" style="align-items: center;">
+						<div class="col-2">대표메뉴 여부</div>
+						<div class="form-check form-switch col">
+							<input class="form-check-input" type="checkbox"
+								id="flexSwitchCheckDefault">
+						</div>
+					</div>
+					<div class="d-flex gap-4 mt-5 " style="justify-content: center;">
+						<div class="btn btn-outline-secondary col-1">취소</div>
+						<div class="btn btn-primary col-1" id="addSave"
+							onclick="addSave()">저장</div>
+					</div>
+				</div>
+			</div>
 			<!-- 3. 결제내역 -->
 			<div class="mainContent" id="menu3" style="display: none;">
 				<div class="border p-3 " style="height: 7%;">
@@ -495,68 +547,31 @@
 			</div>
 			<!-- 4. 매출분석 -->
 
-			<!-- 4-1. 메뉴추가/수정 -->
-			<div class="mainContent" id="menu5" style="display: none;">
-				<div class="border p-3 " style="height: 7%;">
-					<h5>
-						메뉴관리
-						</h2>
-				</div>
-				<div class="text-end ">
-					<button class="btn btn-outline-primary m-4">+ 메뉴추가</button>
-				</div>
-				<div class="menuList">
-					<div class=" m-2">
-						<table class="table table-hover text-center">
-							<thead>
-								<tr>
-									<th scope="col">메뉴 이름</th>
-									<th scope="col">가격</th>
-									<th scope="col"></th>
-								</tr>
-							</thead>
-							<tbody>
-								<tr class="align-middle">
-									<td>햄버거</td>
-									<td>80,000원</td>
-									<td>
-										<div class="btn btn-outline-secondary">수정</div>
-									</td>
-								</tr>
-								<tr class="align-middle">
-									<td>햄버거</td>
-									<td>80,000원</td>
-									<td>
-										<div class="btn btn-outline-secondary">수정</div>
-									</td>
-								</tr>
-								<tr class="align-middle">
-									<td>햄버거</td>
-									<td>80,000원</td>
-									<td>
-										<div class="btn btn-outline-secondary">수정</div>
-									</td>
-								</tr>
-								<tr class="align-middle">
-									<td>햄버거</td>
-									<td>80,000원</td>
-									<td>
-										<div class="btn btn-outline-secondary">수정</div>
-									</td>
-								</tr>
-								<tr class="align-middle">
-									<td>햄버거</td>
-									<td>80,000원</td>
-									<td>
-										<div class="btn btn-outline-secondary">수정</div>
-									</td>
-								</tr>
-							</tbody>
-						</table>
+
+			<div class="pageBody"
+				style="width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.3); position: absolute; top: 0%; display: none;">
+				<div class="modal" tabindex="-1" style="display: block;">
+					<div class="modal-dialog modal-dialog-centered">
+						<div class="modal-content">
+							<div class="modal-header">
+								<h5 class="modal-title">Modal title</h5>
+								<button type="button" class="btn-close" data-bs-dismiss="modal"
+									aria-label="Close"></button>
+							</div>
+							<div class="modal-body">
+								<p>Modal body text goes here.</p>
+							</div>
+							<div class="modal-footer">
+								<button type="button" class="btn btn-secondary"
+									data-bs-dismiss="modal">Close</button>
+								<button type="button" class="btn btn-primary">Save
+									changes</button>
+							</div>
+						</div>
 					</div>
 				</div>
 			</div>
-			<!-- 4-1. 메뉴추가/수정 -->
+			<!-- 4-2. 메뉴수정 -->
 
 		</div>
 		<!-- 헤더랑 옆 클릭바 고정을 고정. -->
@@ -573,6 +588,17 @@
 		document.getElementById("menu" + selectedIdx).style.display = "none";
 		document.getElementById("menu" + newIdx).style.display = "block";
 		selectedIdx = newIdx;
+
+		// 모든 sideMenu의 display를 none으로 설정
+		var allMenus = document.getElementById("menu" + selectedIdx);
+		for (var i = 0; i < allMenus.length; i++) {
+			allMenus[i].style.display = "none";
+		}
+
+		// menuNum에 해당하는 sideMenu의 display를 block으로 설정
+		var selectedMenu = document.getElementById("sideMenu" + menuNum);
+		selectedMenu.style.display = "block";
+
 	}
 	const category = document.getElementById('category')
 	const categoryOptions = category.options
@@ -581,8 +607,45 @@
 			categoryOptions[i].selected = "true";
 		}
 	}
-	
-	function addMenu() {
+
+	function addMenu(newIdx) {
+
+		const addMenuPage = document.getElementById("addMenuPage");
+		const menu2 = document.getElementById("menu2");
+		if (addMenuPage.style.display == "none") {
+			addMenuPage.style.display = "block";
+			document.getElementById("menu" + selectedIdx).style.display = "block";
+			selectedIdx = newIdx;
+		} else {
+			/* addMenuPage none else */
+		}
+		if (addMenuPage.style.display == "block") {
+			menu2.style.display = "none";
+			const sideMenuSt = document.getElementById("menu" + newIdx);
+			sideMenuSt.style.display = "none"
+			selectedIdx = newIdx;
+		} else {
+			/* addMenuPage block else */
+		}
+
+	}
+
+	function addSave(newIdx) {
+
+		const addMenuPage = document.getElementById("addMenuPage");
+		const menu2 = document.getElementById("menu2");
+
+		if (addMenuPage.style.display = "block") {
+
+		} else {
+			/* addMenuPage none else */
+		}
+
+	}
+
+	/* document.getElementById("menu" + newIdx).style.display = "block"; */
+
+	/* function addMenu() {
 		// menuList 요소 찾기
 		const menuList = document.getElementsByClassName("menuList")[0];
 
@@ -602,11 +665,7 @@
 
 		// menuList 요소의 자식으로 align-middle div 요소 추가
 		menuList.appendChild(alignMiddleDiv);
-	}
-	/* 	 위 코드를 addMenu 함수가 호출되는 이벤트 핸들러에 추가하면, 
-	 해당 이벤트가 발생했을 때 menuList 클래스를 가진 요소에 align-middle 
-	 클래스를 가진 div 요소와 그 안에 btn btn-outline-secondary 클래스를 
-	 가진 버튼 요소가 추가됩니다. */
+	} */
 </script>
 
 <style>
