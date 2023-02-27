@@ -10,7 +10,14 @@ document.onkeydown = function(event){
 };*/
 
 let jsonString = '';
-
+/* PUBLIC IP 수집 CallBackFunc */
+let publicIp = null;
+function getPublicIp(jsonData) {
+	publicIp = jsonData.ip
+}
+if (getJWT()) {
+	let header = new Headers(getJWT());
+}
 //commit test 
 /* HttpRequest를 이용한 서버 요청
 		clientData format : [['name', 'value'], ...]
@@ -139,13 +146,6 @@ function serverCallByFetchAjaxUsingUrl(jobCode, methodType, callBackFunc) {
 		})
 }
 
-/* PUBLIC IP 수집 CallBackFunc */
-let publicIp = null;
-function getPublicIp(jsonData) {
-	alert (jsonData.ip);
-	publicIp = jsonData.ip
-}
-let header = new Headers(getJWT());
 /* Page Initialize */
 function pageInit(messageString, accessInfo) {
 	serverCallByFetchAjaxUsingUrl("https://api64.ipify.org?format=json", "get", "getPublicIp");
@@ -267,6 +267,8 @@ function createDiv(objId, className, funcName, innerText) {
 	if (innerText != '') div.innerText = innerText;
 	return div;
 }
+
+
 /* Input Box 생성*/
 function createInputBox(type, name, value, placeholder) {
 	const input = document.createElement("input");
@@ -373,7 +375,7 @@ function afterIssuance(jsonData) {
 	}
 
 }
-		
+
 function movePage(targetPage) {
 	serverCallByRequest('/View/Move' + targetPage, 'post', getJWT());
 }
@@ -394,5 +396,6 @@ function kakaoLogout() {
 		Kakao.Auth.setAccessToken(undefined);
 	}
 }
+
 
 

@@ -243,10 +243,11 @@
 			}
 
 		}
+
 		function logout(){
 			serverCallByRequest('/View/logOut', 'post',getJWT());
 		}
-		
+
 	</script>
 
 </body>

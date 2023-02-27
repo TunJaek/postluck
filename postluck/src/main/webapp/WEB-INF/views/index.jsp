@@ -5,6 +5,14 @@
 
 
 <head>
+<script>
+window.onload= function(event){
+	if (getJWT()!=null&&'${AccessInfo}'!=''){
+		const accessToken=getJWT();
+		serverCallByRequest('/View/AccessCtl', 'post', accessToken);
+	}
+}
+</script>
 <meta charset="UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -59,14 +67,11 @@
 			</div>
 		</div>
 	</div>
-</body>
-<script>
-	window.onpageshow= function(event){
-		if ('${AccessInfo}'!=''){
-			const accessToken=getJWT();
-			serverCallByRequest('/View/AccessCtl', 'post', accessToken);
-		}
-	}
+
+
+	<script>
+	
+
 		function naverLogin() {
 			let btnNaverLogin = document.getElementById("naver_id_login").firstChild;
 			console.log("click");
