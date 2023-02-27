@@ -60,6 +60,33 @@ public class Authentication extends TransactionAssistant {
 			break;
 		}
 	}
+	private void logOut(ModelAndView mav) {
+		StoreBean store;
+		// snsId를 가지고있음
+		String jwt = mav.getModel().get("jwt").toString();
+		try {
+			store  = (StoreBean)this.pu.getAttribute("AccessInfo");
+			ArrayList<AccessLogBean> alBeanList = new ArrayList<AccessLogBean>();
+			AccessLogBean alBean = new AccessLogBean();
+			alBean.setAccessType('O');
+			alBeanList.add(alBean);
+			store.setAccessLogList(alBeanList);
+			this.tranManager = this.getTransaction(false);
+			this.tranManager.tranStart();
+			if(this.convertToBoolean(this.sqlSession.insert("logOut",store ))){
+				this.tranManager.commit();
+				this.pu.removeAttribute("AccessInfo");
+				
+				store.setMessage("로그아웃 성공");
+			}else {
+				store.setMessage("로그아웃 실패");
+			}
+		} catch (Exception e) {
+			// TODO: handle exception
+		}finally {
+			this.tranManager.tranEnd();
+		}
+	}
 
 	/**
 	 * @method private void issuanceJWT(Model model)
@@ -83,7 +110,7 @@ public class Authentication extends TransactionAssistant {
 		AccessLogBean alBean = new AccessLogBean();
 		ArrayList<AccessLogBean> alBeanList = new ArrayList<AccessLogBean>();
 		alBean.setAccessType('I');
-		alBean.setAccessIP("192.168.0.84"); // IP 가져와야함
+		alBean.setAccessIP(this.pu.getHeaderInfo(true));
 		alBeanList.add(alBean);
 		store.setAccessLogList(alBeanList);
 		System.out.println(store);
@@ -223,10 +250,7 @@ public class Authentication extends TransactionAssistant {
 
 	}
 
-	private void logOut(ModelAndView mav) {
-		// TODO Auto-generated method stub
 
-	}
 
 	/**
 	 * @author 홍준택

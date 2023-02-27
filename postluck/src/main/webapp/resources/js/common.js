@@ -146,17 +146,16 @@ function serverCallByFetchAjaxUsingUrl(jobCode, methodType, callBackFunc) {
 		})
 }
 
-
 /* Page Initialize */
 function pageInit(messageString, accessInfo) {
-	serverCallByFetchAjaxUsingUrl("https://api.ipify.org?format=json", "get", "getPublicIp");
+	serverCallByFetchAjaxUsingUrl("https://api64.ipify.org?format=json", "get", "getPublicIp");
 
 	if (messageString != '') messageController(true, messageString);
 	if (jsonString != '') mgrInit();
 }
 
 function pageInitJson() {
-	serverCallByFetchAjaxUsingUrl("https://api.ipify.org?format=json", "get", "getPublicIp");
+	serverCallByFetchAjaxUsingUrl("https://api64.ipify.org?format=json", "get", "getPublicIp");
 
 	console.log(serverData);
 	const messageString = serverData.message;
@@ -366,6 +365,7 @@ function afterIssuance(jsonData) {
 	if (jsonData != null) {
 		if (accessToken) {
 			accessToken.push(['snsID', jsonData.snsID]);
+			accessToken.push(['accessLogList[0].accessPublicIp',publicIp])
 			serverCallByRequest('View/AccessCtl', 'post', accessToken);
 		} else {
 			console.log('accessToken is null')
@@ -379,3 +379,23 @@ function afterIssuance(jsonData) {
 function movePage(targetPage) {
 	serverCallByRequest('/View/Move' + targetPage, 'post', getJWT());
 }
+function logout() {
+	serverCallByRequest('/View/logOut', 'post', getJWT());
+}
+//카카오로그아웃  
+function kakaoLogout() {
+	if (Kakao.Auth.getAccessToken()) {
+		Kakao.API.request({
+			url: '/v1/user/unlink',
+			success: function(response) {
+			},
+			fail: function(error) {
+				console.log(error);
+			},
+		})
+		Kakao.Auth.setAccessToken(undefined);
+	}
+}
+
+
+

@@ -47,6 +47,7 @@
 		crossorigin="anonymous"></script>
 	<div class="main">
 		<div class="header">
+
 			<span class="px-3 " style="cursor: pointer" onclick="movePage('Pos')"><svg
 					xmlns="http://www.w3.org/2000/svg" width="30" height="30"
 					fill="currentColor" class="bi bi-arrow-left" viewBox="0 0 16 16">
@@ -54,6 +55,7 @@
 						d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z" />
                 </svg></span> <span><img
 				src="/resources/image/mainLogo-dark.png"></span>
+
 			<!-- 시간표시 연월일시분초 -->
 			<span id="clock" style="position: absolute; right: 5%;"></span><br />
 		</div>
@@ -104,6 +106,7 @@
 					style="flex-direction: column;">
 					<div class="row" style="align-items: center;">
 						<div class="col-2">매장명</div>
+
 						<input type="text" class="form-control w-25"
 							placeholder="매장명을 입력해주세요." value="${AccessInfo.storeName}">
 					</div>
@@ -111,6 +114,7 @@
 						<div class="col-2">전화번호</div>
 						<input type="text" class="form-control w-25"
 							placeholder="전화번호를 입력해주세요." value="${AccessInfo.storePhone}">
+
 					</div>
 					<div class="row" style="align-items: center;">
 						<div class="col-2">카테고리</div>
@@ -152,14 +156,16 @@
 
 					<div class="row" style="align-items: center;">
 						<div class="col-2">매장 한 줄소개</div>
-						<input type="text" class="form-control w-25"
-							placeholder="매장명을 입력해주세요." value="${AccessInfo.storeInfo}">
+
+						<input type="text" class="form-control w-25" placeholder="매장명을 입력해주세요." value="${AccessInfo.storeInfo}">
+
 					</div>
 					<div class="row" style="align-items: center;">
 						<div class="col-2 mb-3">매장 상세정보</div>
 						<div class="form-group w-50 p-0">
-							<textarea class="form-control" id="exampleTextarea" rows="3"
-								value="${AccessInfo.storeInfoDetail}"></textarea>
+
+							<textarea class="form-control" id="exampleTextarea" rows="3" value="${AccessInfo.storeInfoDetail}"></textarea>
+
 						</div>
 					</div>
 					<div class="row" style="align-items: center;">
@@ -581,6 +587,7 @@
 			categoryOptions[i].selected = "true";
 		}
 	}
+
 	
 	function addMenu() {
 		// menuList 요소 찾기
@@ -607,6 +614,7 @@
 	 해당 이벤트가 발생했을 때 menuList 클래스를 가진 요소에 align-middle 
 	 클래스를 가진 div 요소와 그 안에 btn btn-outline-secondary 클래스를 
 	 가진 버튼 요소가 추가됩니다. */
+
 </script>
 
 <style>

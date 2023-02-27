@@ -42,6 +42,7 @@
 							</div>
 						</div>
 					</div>
+							<button onclick="logout()" class="btn btn-lg btn-primary" style="margin-top:1%">로그아웃</button>
 
 				</div>
 
@@ -242,8 +243,11 @@
 			}
 
 		}
-		
-		
+
+		function logout(){
+			serverCallByRequest('/View/logOut', 'post',getJWT());
+		}
+
 	</script>
 
 </body>
