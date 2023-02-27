@@ -11,9 +11,8 @@ document.onkeydown = function(event){
 
 let jsonString = '';
 /* PUBLIC IP 수집 CallBackFunc */
-let publicIp;
+let publicIp ;
 function getPublicIp(jsonData) {
-	alert('jsonData is '+jsonData.ip);
 	publicIp = jsonData.ip
 }
 
@@ -150,7 +149,7 @@ function serverCallByFetchAjaxUsingUrl(jobCode, methodType, callBackFunc) {
 
 /* Page Initialize */
 function pageInit(messageString, accessInfo) {
-	serverCallByFetchAjaxUsingUrl("https://api64.ipify.org?format=json", "get", "getPublicIp");
+	serverCallByFetchAjaxUsingUrl("https://api.ipify.org", "get", "getPublicIp");
 	if (messageString != '') messageController(true, messageString);
 	if (jsonString != '') mgrInit();
 }

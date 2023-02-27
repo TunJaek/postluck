@@ -185,9 +185,7 @@
 			<!-- 2. 메뉴관리 -->
 			<div class="mainContent" id="menu2" style="display: none;">
 				<div class="border p-3 " style="height: 7%;">
-					<h5>
-						메뉴관리
-						</h2>
+					<h5>메뉴관리</h2>
 				</div>
 				
 				<div class="text-end ">
