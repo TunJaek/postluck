@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.odod.postluck.mapper.AuthMapperInter">
+	<select id="isSnsId"
+		parameterType="com.odod.postluck.beans.StoreBean" resultType="int">
+		SELECT COUNT(*) FROM POSDBA.STORE WHERE ST_SNSID= #{snsID} 
+	</select>
+	<select id="isStCode" parameterType="com.odod.postluck.beans.StoreBean" resultType="int">
+	SELECT COUNT(*) FROM POSDBA.STORE WHERE ST_CODE=#{storeCode}</select>
+	
+	<insert id="insAccessLog" parameterType="com.odod.postluck.beans.StoreBean">
+		INSERT INTO POSDBA.ACCESSLOG(AL_SNSID, AL_DATE, AL_TYPE, AL_IP)
+		VALUES(#{snsID}, SYSDATE, #{accessLogList[0].accessType},#{accessLogList[0].accessIP})
+	</insert>
+	<select id="selStoreInfo" parameterType="com.odod.postluck.beans.StoreBean" resultType="com.odod.postluck.beans.StoreBean">
+		SELECT ST_CODE AS storeCode, ST_SNSID as snsID, ST_NAME as ceoName, ST_EMAIL as ceoEmail, ST_JOINDATE ,ST_STNAME as storeName , ST_INFO as storeInfo, ST_INFODETAIL as storeInfoDetail,
+		ST_PHONE as storePhone, ST_SICODE, ST_SNSTYPE as snsType, ST_CATEGORY as storeCategory FROM ST WHERE ST_SNSID =#{snsID}
+	</select>
+	<insert id="regStore" parameterType="com.odod.postluck.beans.StoreBean">
+		INSERT INTO STORE(ST_CODE, ST_SNSID, ST_NAME, ST_EMAIL, ST_JOINDATE,ST_STNAME, ST_INFO, ST_INFODETAIL,ST_PHONE, ST_SICODE, ST_SNSTYPE, ST_CATEGORY)
+		VALUES(#{storeCode},#{snsID},#{ceoName},#{ceoEmail},SYSDATE,#{storeName},#{storeInfo},#{storeInfoDetail},#{storePhone},null,#{snsType},#{storeCategory})
+</insert>
+<insert id="logOut" parameterType="com.odod.postluck.beans.StoreBean">
+INSERT INTO POSDBA.ACCESSLOG(AL_SNSID, AL_DATE, AL_TYPE, AL_IP)
+		VALUES(#{snsID}, SYSDATE, #{accessLogList[0].accessType},#{accessLogList[0].accessIP})
+</insert>
+</mapper>

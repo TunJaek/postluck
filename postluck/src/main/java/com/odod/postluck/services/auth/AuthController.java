@@ -13,10 +13,10 @@ public class AuthController {
 	private Authentication auth;
 	
 	@PostMapping("/View/AccessCtl")
-	public ModelAndView validCheckJWT(ModelAndView mav, @ModelAttribute("JWTForPostluck") String jwt,
-			@ModelAttribute StoreBean store) {
+	public ModelAndView validCheckJWT(ModelAndView mav, @ModelAttribute("JWTForPostluck") String jwt,@ModelAttribute StoreBean store) {
 		mav.addObject("jwt", jwt);
 		mav.addObject("store", store);
+		
 		// 사업자 정보가 있을경우, 없을경우 둘다 snsId와 jwt만을 담고있음
 		this.auth.backController("AU03", mav);
 		return mav;
