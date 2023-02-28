@@ -8,28 +8,25 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>POS.TLUCK</title>
 <link rel="icon" href="/resources/image/fabicon.png">
-<link rel="stylesheet" href="/resources/css/mainBootstrap.css">
 <script src="resources/js/common.js"></script>
-<link
-	href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR&amp;display=swap"
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR&amp;display=swap"
 	rel="stylesheet">
 <script type="text/javascript"
 	src="https://static.nid.naver.com/js/naverLogin_implicit-1.0.3.js"
 	charset="utf-8"></script>
-<script type="text/javascript"
-	src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
-
+	  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css" />
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 </head>
-<body>
+<body class="vsc-initialized" onload="showModal('${param.message}','')">
 	<div id="naver_id_login" style="display: none"></div>
 </body>
 <script>
-	window.onpageshow = function(event) {
-		if (sessionStorage.JWT != null) {
-			const accessToken = getJWT();
-			serverCallByRequest('/View/AccessCtl', 'post', accessToken);
-		}
-	}
+// 	window.onpageshow = function(event) {
+// 		if (sessionStorage.JWT != null) {
+// 			const accessToken = getJWT();
+// 			serverCallByRequest('/View/AccessCtl', 'post', accessToken);
+// 		}
+// 	}
 	var naver_id_login = new naver_id_login("9mtn5PALlynAVoBKSbrl",
 			"http://localhost/index-callBack");
 	naver_id_login.init_naver_id_login();

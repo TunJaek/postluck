@@ -7,6 +7,7 @@
 <head>
     <meta charset="UTF-8">
     <title>HOME - POS.TLUCK</title>
+      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css" />
      <link rel="icon" href="/resources/image/fabicon.png">
     <link rel="stylesheet" href="/resources/css/main.css">
     <link rel="stylesheet" href="/resources/css/mainBootstrap.css">

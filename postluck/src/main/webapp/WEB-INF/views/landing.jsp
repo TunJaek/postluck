@@ -6,6 +6,7 @@
 <title>POS.TLUCK</title>
 <link rel="icon" href="../../resources/image/fabicon.png">
 <script src="resources/js/common.js"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css" />
 </head>
 <body onload="landing()">
 

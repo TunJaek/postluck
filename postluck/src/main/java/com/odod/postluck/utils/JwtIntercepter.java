@@ -40,13 +40,13 @@ public class JwtIntercepter implements HandlerInterceptor {
 						if((result = this.jwtService.tokenExpiredDateCheck(jwtToken, userKey)) == true) {
 							message = null;
 							result = true;
-						} else message = "Token Error: Token has Expired";
-					}else message = "Token Error:Token does Not Exist";
+						} else message = "error:Session 오류:세션이 만료되었습니다.다시 로그인 해주세요.(jwt만료)";
+					}else message = "error:Session 오류:세션이 만료되었습니다.다시 로그인 해주세요.(jwt null)";
 				} else {
 					System.out.println("attribute is"+(StoreBean)this.util.getAttribute("AccessInfo"));
-					message = "Session Error:보안상 다시 로그인을 해주세요.";	
+					message = "error:Session 오류:보안상 다시 로그인을 해주세요.(accessinfo null)";	
 				}
-			}else message = "접근 Error:비정상적인 접근 경로입니다.";
+			}else message = "error:접근 오류:비정상적인 접근 경로입니다.(get으로 접근)";
 		}else result = true;
 		
 		if(!result) res.sendRedirect("/?"+ message);

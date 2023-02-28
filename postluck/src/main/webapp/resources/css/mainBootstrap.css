@@ -6056,6 +6056,7 @@ fieldset:disabled .btn {
     overflow-x: hidden;
     overflow-y: auto;
     outline: 0
+    
 }
 
 .modal-dialog {
@@ -6167,10 +6168,10 @@ fieldset:disabled .btn {
 
 .modal-footer {
     display: flex;
+    justify-content: center;
     flex-shrink: 0;
     flex-wrap: wrap;
     align-items: center;
-    justify-content: flex-end;
     padding: calc(var(--bs-modal-padding) - var(--bs-modal-footer-gap) * .5);
     background-color: var(--bs-modal-footer-bg);
     border-top: var(--bs-modal-footer-border-width) solid var(--bs-modal-footer-border-color);

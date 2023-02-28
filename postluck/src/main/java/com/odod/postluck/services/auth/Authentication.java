@@ -235,9 +235,9 @@ public class Authentication extends TransactionAssistant {
 					jwtBody = JWTBean.builder().storeCode(store.getStoreCode()).snsID(store.getSnsID()).build();
 					this.pu.transferJWTByResponse(this.jwt.tokenIssuance(jwtBody, store.getSnsID()));
 					this.pu.setAttribute("AccessInfo", store);
-					message = "true";
+					message = "plain::매장 등록이 완료되었습니다!:";
 				} else {
-					message = "매장등록을 실패하셨습니다.";
+					message = "error::매장 등록을 실패했습니다.:";
 				}
 			}
 

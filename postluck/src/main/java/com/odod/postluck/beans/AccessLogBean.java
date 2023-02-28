@@ -9,5 +9,4 @@ public class AccessLogBean {
 	private String accessDate; //접속일시
 	private char accessType; //접속타입 (true: 로그인, false: 로그아웃)
 	private String accessIP;
-	private ArrayList<SalesLogBean> salesLogList; //접속일시에 따른 영업기록
 }
