@@ -43,7 +43,7 @@ public class JwtIntercepter implements HandlerInterceptor {
 						} else message = "Token Error: Token has Expired";
 					}else message = "Token Error:Token does Not Exist";
 				} else {
-					System.out.println("attribute is null"+(StoreBean)this.util.getAttribute("AccessInfo"));
+					System.out.println("attribute is"+(StoreBean)this.util.getAttribute("AccessInfo"));
 					message = "Session Error:보안상 다시 로그인을 해주세요.";	
 				}
 			}else message = "접근 Error:비정상적인 접근 경로입니다.";

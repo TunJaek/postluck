@@ -14,10 +14,9 @@
 <script type="text/javascript" src="https://static.nid.naver.com/js/naverLogin_implicit-1.0.3.js" charset="utf-8"></script>
 <script type="text/javascript" src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
 
-
 </head>
-<body>
-	<div id="naver_id_login" style="display: none"></div>
+<body onload="pageInit('','')">
+	<div id="naver_id_login" style="display: none" ></div>
 </body>
 <script>
 window.onpageshow= function(event){
@@ -52,11 +51,12 @@ window.onpageshow= function(event){
 		formData.append('snsID', id);
 		formData.append('ceoName', name);
 		formData.append('snsType', 'NA');
-
+		formData.append('accessLogList[0].accessIP',publicIp);
+		alert(publicIp);
 		serverCallByFetchAjax(formData, 'IssuanceJWT', 'post', 'afterIssuance');
 
 	}
-
+		    
 
 </script>
 
