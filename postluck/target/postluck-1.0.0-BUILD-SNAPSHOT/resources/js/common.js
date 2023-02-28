@@ -11,22 +11,12 @@ document.onkeydown = function(event){
 
 let jsonString = '';
 /* PUBLIC IP 수집 CallBackFunc */
-let publicIp;
-
-function getIp() {
-	fetch("https://api64.ipify.org?format=json", {
-		method: "get",
-		headers: {
-			'Content-Type': 'application/x-www-form-urlencoded'
-		},
-	}).then(response => response.json())
-		.then(jsonData => { publicIp = jsonData.ip; return jsonData.ip })
-		.catch(error => {
-			console.log(error);
-		})
+let publicIp ;
+function getPublicIp(jsonData) {
+	publicIp = jsonData.ip
 }
 
-if (getJWT()) {
+if (getJWT()) {                  
 	let header = new Headers(getJWT());
 }
 //commit test 
@@ -159,7 +149,7 @@ function serverCallByFetchAjaxUsingUrl(jobCode, methodType, callBackFunc) {
 
 /* Page Initialize */
 function pageInit(messageString, accessInfo) {
-	serverCallByFetchAjaxUsingUrl("https://api64.ipify.org?format=json", "get", "getPublicIp");
+	serverCallByFetchAjaxUsingUrl("https://api.ipify.org", "get", "getPublicIp");
 	if (messageString != '') messageController(true, messageString);
 	if (jsonString != '') mgrInit();
 }
@@ -375,7 +365,7 @@ function afterIssuance(jsonData) {
 	if (jsonData != null) {
 		if (accessToken) {
 			accessToken.push(['snsID', jsonData.snsID]);
-
+		
 			serverCallByRequest('View/AccessCtl', 'post', accessToken);
 		} else {
 			console.log('accessToken is null')
