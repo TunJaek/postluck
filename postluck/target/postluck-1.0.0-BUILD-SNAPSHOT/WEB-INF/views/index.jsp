@@ -31,7 +31,7 @@ window.onload= function(event){
 <script src="resources/js/common.js"></script>
 
 </head>
-<body class="vsc-initialized" onload="pageInit('', '')">
+<body class="vsc-initialized" >
 	<div class="main">
 		<div id="left">
 			<div id="foodTruckNews">

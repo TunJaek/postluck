@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.odod.postluck.mapper.PosMapperInter">
+	<insert id="insSalesLog" parameterType="com.odod.postluck.beans.StoreBean">
+		INSERT INTO SALESLOG(SL_STCODE, SL_LOCODE, SL_STATE, SL_DATE)
+		VALUES(#{storeCode}, #{locationList[0].locationCode}, #{salesLogList[0].salesState}, SYSDATE)
+	</insert>
+	<insert id="insMenu" parameterType="com.odod.postluck.beans.StoreBean">
+		INSERT INTO POSDBA.STOREMENU(SM_CODE, SM_NAME, SM_PRICE, SM_SICODE)
+		VALUES('S'||WEBDBA.MENUCODE.NEXTVAL, #{menuList[0].menuName}, #{menuList[0].menuPrice}, #{menuList[0].menuImageCode}, #{menuList[0].menuImageLocation})
+	</insert>
+	
+</mapper>

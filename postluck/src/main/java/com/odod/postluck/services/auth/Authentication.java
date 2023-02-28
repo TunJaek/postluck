@@ -74,7 +74,7 @@ public class Authentication extends TransactionAssistant {
 			store.setAccessLogList(alBeanList);
 			this.tranManager = this.getTransaction(false);
 			this.tranManager.tranStart();
-			if(this.convertToBoolean(this.sqlSession.insert("logOut",store ))){
+			if(this.convertToBoolean(this.sqlSession.insert("insAccessLog",store ))){
 				this.tranManager.commit();
 				this.pu.removeAttribute("AccessInfo");
 				store.setMessage("로그아웃 성공");
@@ -230,7 +230,7 @@ public class Authentication extends TransactionAssistant {
 			this.tranManager = this.getTransaction(false);
 			this.tranManager.tranStart();
 			if (store != null) {
-				if (this.convertToBoolean(this.sqlSession.insert("regStore", store))) {
+				if (this.convertToBoolean(this.sqlSession.insert("insStore", store))) {
 					this.tranManager.commit();
 					jwtBody = JWTBean.builder().storeCode(store.getStoreCode()).snsID(store.getSnsID()).build();
 					this.pu.transferJWTByResponse(this.jwt.tokenIssuance(jwtBody, store.getSnsID()));

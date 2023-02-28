@@ -15,9 +15,9 @@ let publicIp ;
 function getPublicIp(jsonData) {
 	publicIp = jsonData.ip
 }
-
+let header ;
 if (getJWT()) {                  
-	let header = new Headers(getJWT());
+	header= new Headers(getJWT());
 }
 //commit test 
 /* HttpRequest를 이용한 서버 요청
@@ -98,7 +98,6 @@ function serverCallByFetchAjax(formData, jobCode, methodType, callBackFunc) {
 
 /* JWT 사용한 서버 요청 */
 function serverCallByFetch(formData, jobCode, methodType, callBackFunc, header) {
-
 	fetch(jobCode, {
 		method: methodType,
 		headers: header,

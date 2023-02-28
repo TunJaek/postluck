@@ -9,6 +9,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>SETTING - POS.TLUCK</title>
 <script src="/resources/js/common.js"></script>
+
 <link rel="stylesheet" href="/resources/css/mainBootstrap.css">
 <link
 	href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR&amp;display=swap"
@@ -65,10 +66,11 @@
 				<div class="border p-3 d-flex"
 					style="justify-content: space-between; height: 7%; background-color: white;">
 					영업전
+
 					<div class="form-check form-switch">
-						<input class="form-check-input" type="checkbox"
-							id="flexSwitchCheckDefault">
+						<input id="salesToggle" class="form-check-input" type="checkbox" onclick="updSalesLog()" id="flexSwitchCheckDefault">
 					</div>
+
 				</div>
 
 				<div class="dropdown menu">
@@ -157,14 +159,16 @@
 					<div class="row" style="align-items: center;">
 						<div class="col-2">매장 한 줄소개</div>
 
-						<input type="text" class="form-control w-25" placeholder="매장명을 입력해주세요." value="${AccessInfo.storeInfo}">
+						<input type="text" class="form-control w-25"
+							placeholder="매장명을 입력해주세요." value="${AccessInfo.storeInfo}">
 
 					</div>
 					<div class="row" style="align-items: center;">
 						<div class="col-2 mb-3">매장 상세정보</div>
 						<div class="form-group w-50 p-0">
 
-							<textarea class="form-control" id="exampleTextarea" rows="3" value="${AccessInfo.storeInfoDetail}"></textarea>
+							<textarea class="form-control" id="exampleTextarea" rows="3"
+								value="${AccessInfo.storeInfoDetail}"></textarea>
 
 						</div>
 					</div>
@@ -185,7 +189,9 @@
 			<!-- 2. 메뉴관리 -->
 			<div class="mainContent" id="menu2" style="display: none;">
 				<div class="border p-3 " style="height: 7%;">
-					<h5>메뉴관리</h2>
+					<h5>
+						메뉴관리
+						</h2>
 				</div>
 
 				<div class="text-end ">
@@ -587,7 +593,6 @@
 
 
 <script>
-	let selectedIdx = 0;
 	function sideMenu(newIdx) {
 		document.getElementById("menu" + selectedIdx).style.display = "none";
 		document.getElementById("menu" + newIdx).style.display = "block";
@@ -612,7 +617,26 @@
 		}
 	}
 
-<<<<<<< HEAD
+	function updSalesLog() {
+		let formData = new FormData();
+		if (salesToggle.checked== 'true') {
+			//salesToggle.checked = 'false';
+			formData.append('salesLogList[0].salesState', 'O')
+		} else {
+			//salesToggle.checked = 'true';
+			formData.append('salesLogList[0].salesState', 'C');
+		}
+		formData.append('locationList[0].locationCode', 'L01');
+		formData.append('storeCode', '${AccessInfo.storeCode}');
+		serverCallByFetch(formData, '/Api/UpdSalesLog', 'post', 'aaa', header);
+	}
+	function aaa() {
+		alert("ins 성공")
+	}
+	function regCancel() {
+		document.getElementsByClassName("modal")[0].style.display = "none"
+	}
+
 	function addMenu(newIdx) {
 
 		const addMenuPage = document.getElementById("addMenuPage");
@@ -651,10 +675,10 @@
 	/* document.getElementById("menu" + newIdx).style.display = "block"; */
 
 	/* function addMenu() {
-=======
+	=======
 	
 	function addMenu() {
->>>>>>> branch 'main' of https://github.com/dPfal/postluck.git
+	>>>>>>> branch 'main' of https://github.com/dPfal/postluck.git
 		// menuList 요소 찾기
 		const menuList = document.getElementsByClassName("menuList")[0];
 
@@ -674,7 +698,7 @@
 
 		// menuList 요소의 자식으로 align-middle div 요소 추가
 		menuList.appendChild(alignMiddleDiv);
-<<<<<<< HEAD
+	<<<<<<< HEAD
 	} */
 
 	/* 	 위 코드를 addMenu 함수가 호출되는 이벤트 핸들러에 추가하면, 
@@ -682,6 +706,13 @@
 	 클래스를 가진 div 요소와 그 안에 btn btn-outline-secondary 클래스를 
 	 가진 버튼 요소가 추가됩니다. */
 
+	const saleToggle = document.getElementById("salesToggle");
+	if ('${isOpen}' == 'true') {
+		saleToggle.checked=true;
+	} else {
+		saleToggle.checked=false;
+	}
+	let selectedIdx = 0;
 </script>
 
 <style>
