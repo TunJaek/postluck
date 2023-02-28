@@ -69,7 +69,7 @@ public class Authentication extends TransactionAssistant {
 			ArrayList<AccessLogBean> alBeanList = new ArrayList<AccessLogBean>();
 			AccessLogBean alBean = new AccessLogBean();
 			alBean.setAccessType('O');
-			alBean.getAccessIP();
+			alBean.setAccessIP(store.getAccessLogList().get(0).getAccessIP());
 			alBeanList.add(alBean);
 			store.setAccessLogList(alBeanList);
 			this.tranManager = this.getTransaction(false);
