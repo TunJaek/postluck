@@ -6,6 +6,5 @@ import lombok.Data;
 public class SalesBean {
 	private String salesDate;
 	private String paymentType;
-	private int amount;
-	
+	private int amount;	
 }

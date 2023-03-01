@@ -2405,10 +2405,12 @@ progress {
 
 .form-control:hover:not(:disabled):not([readonly])::-webkit-file-upload-button {
     background-color: #e0e4e5
-}
+    }
 
 .form-control:hover:not(:disabled):not([readonly])::file-selector-button {
-    background-color: #e0e4e5
+    background-color: #1ED760;
+    color : rgba(255, 255, 255, 1);
+    
 }
 
 .form-control-plaintext {

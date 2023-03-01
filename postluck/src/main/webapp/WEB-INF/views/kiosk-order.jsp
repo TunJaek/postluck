@@ -10,11 +10,12 @@
      <link rel="icon" href="/resources/image/fabicon.png">
     <link rel="stylesheet" href="/resources/css/mainBootstrap.css">
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR&amp;display=swap" rel="stylesheet">
+      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css" />
     <!-- 시간 -->
 
 </head>
 
-<body onload="showClock()">
+<body class="vsc-initialized" onload="pageInit('${param.message}')">
    
     <div class="header"><span class="px-3"><svg xmlns="http://www.w3.org/2000/svg" width="30" height="30"
                 fill="currentColor" class="bi bi-arrow-left" viewBox="0 0 16 16">

@@ -28,10 +28,10 @@ window.onload= function(event){
 <script type="text/javascript"
 	src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
 <script src="https://developers.kakao.com/sdk/js/kakao.min.js"></script>
-<script src="../../resources/js/common.js"></script>
+<script src="resources/js/common.js"></script>
 
 </head>
-<body class="vsc-initialized" onload="pageInit('', '')">
+<body class="vsc-initialized" >
 	<div class="main">
 		<div id="left">
 			<div id="foodTruckNews">
@@ -70,8 +70,6 @@ window.onload= function(event){
 
 
 	<script>
-	
-
 		function naverLogin() {
 			let btnNaverLogin = document.getElementById("naver_id_login").firstChild;
 			console.log("click");

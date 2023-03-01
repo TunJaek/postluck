@@ -34,10 +34,9 @@ public class AuthRestController {
 	}
 	@PostMapping("/IssuanceJWT")
 	public String issuanceJWT(Model model, @ModelAttribute StoreBean store) {
+		System.out.println("IP: "+store.getAccessLogList().get(0).getAccessIP());
 		model.addAttribute("store", store);
-		System.out.println(store.getAccessLogList().get(0).getAccessIP());
 		auth.backController("AU02", model);
-		
 		return ((StoreBean) model.getAttribute("store")).getMessage();
 	}
 	@PostMapping("/Api/RegStoreInfo")

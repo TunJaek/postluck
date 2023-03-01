@@ -10,15 +10,13 @@
 <script src="../../resources/js/common.js"></script>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR&amp;display=swap" rel="stylesheet">
 <link rel="icon" href="../../resources/image/fabicon.png">
-
+<script src="resources/js/common.js"></script>
 <script type="text/javascript" src="https://static.nid.naver.com/js/naverLogin_implicit-1.0.3.js" charset="utf-8"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css" />
 </head>
 
-<body class="vsc-initialized">
-
-
+<body class="vsc-initialized" onload="pageInit('${param.message}')">
 	<div class="main">
-
 		<div id="left">
 			<div id="foodTruckNews">
 				푸드트럭 소식 보러가기 <img class="position-absolute start-0 bottom-0" src="../../resources/image/arrow.png" style="width: 120%;">
@@ -30,7 +28,7 @@
 				<img src="/resources/image/indexTextLogo.png" style="margin-bottom: 3%;">
 				<div class="loginLogo" style="width: 100%;">
 					<div class="loginInputArea" style="display: flex; flex-direction: column; gap: 5px;">
-						<div class="loginText" style="position: relative;">${AccessInfo.ceoName} 사장님 안녕하세요!</div>
+						<div class="loginText" style="position: relative;">${AccessInfo.ceoName}사장님 안녕하세요!</div>
 						<div class="loginInput" style="display: flex; flex-direction: column; gap: 5px; width: 100%;">
 							<div class="d-grid gap-2">
 								<button class="btn btn-lg btn-primary" type="button" onclick="movePage('Pos')" id="posService"></button>
@@ -42,15 +40,32 @@
 							</div>
 						</div>
 					</div>
-							<button onclick="logout()" class="btn btn-lg btn-primary" style="margin-top:1%">로그아웃</button>
+					<button onclick="logout()" class="btn btn-lg btn-primary" style="margin-top: 1%">로그아웃</button>
 
 				</div>
 
 
 			</div>
 		</div>
-
-		<div class="modal" data-bs-backdrop="static" data-keyboard="false" tabindex="-1" style="display: none; justify-content: center; align-items: center; background-color: rgba(1, 1, 1, 0.3);">
+<div class="modal fade" id="messageModal" style="background-color: rgba(0, 0, 0, 0.2);z-index:1080;">
+			<div class="modal-dialog modal-dialog-centered" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title col-10">메세지 제목이 없습니다.</h5>
+						<button type="button" id="modalClose" class="btn-close col-1" data-bs-dismiss="modal" aria-label="Close"></button>
+					</div>
+					<div class="modal-body text-center">
+						<div class="my-2 mx-5" id="svgZone"></div>
+						<div id="alertContent">메세지 내용이 없습니다.</div>
+					</div>
+					<div class="modal-footer text-center">
+						<button type="button" id="btnCancel" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
+						<button type="button" id="btnOk" class="btn">확인</button>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="modal" id="regStoreInfoModal" data-bs-backdrop="static" data-keyboard="false" tabindex="-1" style="display: none; justify-content: center; align-items: center; background-color: rgba(1, 1, 1, 0.3);">
 			<div class="w-50 modal-dialog-centered modal-dialog-scrollable" id="regStoreInfo">
 				<div class="modal-content w-100">
 					<div class="modal-header">
@@ -137,10 +152,10 @@
 		jsonString = '${store}';
 		let isChecked = false;
 		const jsonData = JSON.parse(jsonString);
-		if ('${AccessInfo.storeCode}') {
-			document.getElementsByClassName("modal")[0].style.display = "none"
+		if ('${AccessInfo.storeCode}'!='') {
+			document.getElementById("regStoreInfoModal").style.display = "none"
 		} else {
-			document.getElementsByClassName("modal")[0].style.display = "flex"
+			document.getElementById("regStoreInfoModal").style.display = "flex"
 		}
 
 		function regCancel() {
@@ -199,12 +214,15 @@
 				formData.append('storeCode', storeCode.value);
 				if (storeName != '' && lengthCheck(storeName)) {
 					formData.append('storeName', storeName.value);
-					if (storePhone.value == '' || (storePhone.value != '' && lengthCheck(storePhone))) {
+					if (storePhone.value == ''
+							|| (storePhone.value != '' && lengthCheck(storePhone))) {
 						formData.append('storePhone', storePhone.value);
 						if (storeCategory.value != '') {
-							formData.append('storeCategory',storeCategory.value);
+							formData.append('storeCategory',
+									storeCategory.value);
 							formData.append('storeInfo', storeInfo.value);
-							formData.append('storeInfoDetail',storeInfoDetail.value);
+							formData.append('storeInfoDetail',
+									storeInfoDetail.value);
 							console.log(isChecked)
 							if (isChecked) {
 								serverCallByFetch(formData,
@@ -234,20 +252,21 @@
 		}
 
 		function afterRegsiter(jsonData) {
-			if (jsonData.message == 'true') {
-				regCancel();
-				document.getElementsByClassName('loginText')[0].innerText = jsonData.ceoName
-						+ "사장님 안녕하세요!";
+			regCancel();
+			console.log(jsonData);
+			showModal(jsonData);
+			if(jsonData.message.split(".")[0]=='plain'){				
+			document.getElementsByClassName('loginText')[0].innerText = jsonData.ceoName
+					+ "사장님 안녕하세요!";
 			}else{
-				alert(jsonData.message);
+				movePage('Pos');
 			}
 
 		}
 
-		function logout(){
-			serverCallByRequest('/View/logOut', 'post',getJWT());
+		function logout() {
+			serverCallByRequest('/View/logOut', 'post', getJWT());
 		}
-
 	</script>
 
 </body>

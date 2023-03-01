@@ -105,6 +105,9 @@ public class ProjectUtils {
 				((ServletRequestAttributes)RequestContextHolder.currentRequestAttributes()).getRequest();
 		return (flag)? req.getRemoteAddr() : req.getHeader("user-agent");
 	}
+
+
+	
 	
     /* Client BrowserInfo */
     public String getBrowserInfo(String header) {

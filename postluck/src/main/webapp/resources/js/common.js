@@ -13,12 +13,12 @@ let jsonString = '';
 /* PUBLIC IP 수집 CallBackFunc */
 let publicIp;
 function getPublicIp(jsonData) {
-	alert('jsonData is '+jsonData.ip);
 	publicIp = jsonData.ip
 }
 
+let header ;
 if (getJWT()) {                  
-	let header = new Headers(getJWT());
+	header= new Headers(getJWT());
 }
 //commit test 
 /* HttpRequest를 이용한 서버 요청
@@ -56,7 +56,7 @@ function serverCallByXHRAjax(formData, jobCode, methodType, callBackFunc) {
 			alert(ajax.responseText);
 			window[callBackFunc](JSON.parse(ajax.responseText));
 		} else {
-			window[callBackFunc]('error');
+			showModal('error:오류:오류가 발생했습니다:');
 		}
 	};
 
@@ -93,13 +93,12 @@ function serverCallByFetchAjax(formData, jobCode, methodType, callBackFunc) {
 		.then(jsonData => window[callBackFunc](jsonData))
 		.catch(error => {
 			console.log(error);
-			window[callBackFunc]('error');
+			window[callBackFunc]('error:오류:오류가 발생했습니다:');
 		})
 }
 
 /* JWT 사용한 서버 요청 */
 function serverCallByFetch(formData, jobCode, methodType, callBackFunc, header) {
-
 	fetch(jobCode, {
 		method: methodType,
 		headers: header,
@@ -114,7 +113,7 @@ function serverCallByFetch(formData, jobCode, methodType, callBackFunc, header) 
 		.then(jsonData => window[callBackFunc](jsonData))
 		.catch(error => {
 			console.log(error);
-			window[callBackFunc]('error');
+			showModal('error:오류:오류가 발생했습니다:');
 		})
 }
 
@@ -130,7 +129,7 @@ function serverCallByFetchAjaxUsingJson(jsonString, jobCode, methodType, callBac
 		.then(jsonData => window[callBackFunc](jsonData))
 		.catch(error => {
 			console.log(error);
-			window[callBackFunc]('error');
+			window[callBackFunc]('error:오류:오류가 발생했습니다:');
 		})
 }
 
@@ -144,15 +143,13 @@ function serverCallByFetchAjaxUsingUrl(jobCode, methodType, callBackFunc) {
 		.then(jsonData => window[callBackFunc](jsonData))
 		.catch(error => {
 			console.log(error);
-			window[callBackFunc]('error');
+			window[callBackFunc]('error:오류:오류가 발생했습니다:');
 		})
 }
 
 /* Page Initialize */
-function pageInit(messageString, accessInfo) {
-	serverCallByFetchAjaxUsingUrl("https://api64.ipify.org?format=json", "get", "getPublicIp");
-	if (messageString != '') messageController(true, messageString);
-	if (jsonString != '') mgrInit();
+function pageInit(messageString) {
+	if (messageString != '') showModal(messageString);
 }
 
 function pageInitJson() {
@@ -366,7 +363,7 @@ function afterIssuance(jsonData) {
 	if (jsonData != null) {
 		if (accessToken) {
 			accessToken.push(['snsID', jsonData.snsID]);
-		
+
 			serverCallByRequest('View/AccessCtl', 'post', accessToken);
 		} else {
 			console.log('accessToken is null')
@@ -397,6 +394,66 @@ function kakaoLogout() {
 		Kakao.Auth.setAccessToken(undefined);
 	}
 }
+function modalClose() {
+	const modal = document.querySelector("#messageModal");
+	modal.setAttribute("class", "modal fade hide");
+	setTimeout(() => { modal.style.display = "none" }, 200);
 
+}
+
+function showModal(messageString) {
+	if (messageString != '') {
+		console.log(messageString);
+		let message = messageString.split(':');
+		console.log(message);
+		const btnOk = document.getElementById("btnOk");
+		const btnCancel = document.getElementById("btnCancel");
+		const btnClose = document.getElementById("modalClose");
+		btnClose.addEventListener("click", modalClose)
+		if (message[0] == 'warn') {
+			document.getElementById("svgZone").innerHTML = '<i class="bi bi-exclamation-circle fs-1" style="color: var(--bs-danger)"></i>';
+			btnOk.setAttribute("class", "btn btn-danger");
+			btnOk.addEventListener("click", modalClose);
+			btnCancel.addEventListener("click", modalClose);
+			btnOk.addEventListener("click", window[message[message.length - 1]]);
+		} else if (message[0] == 'plain') {
+			document.getElementById("svgZone").innerHTML = '<i class="bi bi-check-circle fs-1" style="color: var(--bs-primary)"></i>';
+			btnOk.setAttribute("class", "btn btn-primary");
+			btnOk.addEventListener("click", modalClose);
+			btnOk.addEventListener("click", window[message[message.length - 1]]);
+			btnCancel.setAttribute("class", "btn btn-secondary d-none");
+		} else if (message[0] == 'check') {
+			btnOk.setAttribute("class", "btn btn-primary");
+			btnOk.addEventListener("click", modalClose);
+			btnOk.addEventListener("click", window[message[message.length - 1]]);
+			btnCancel.addEventListener("click", modalClose);
+		} else if (message[0] == 'error') {
+			document.getElementById("svgZone").innerHTML = '<i class="bi bi-x-circle fs-1" style="color: var(--bs-danger)"></i>';
+			btnOk.setAttribute("class", "btn btn-danger");
+			btnOk.addEventListener("click", modalClose);
+			btnOk.addEventListener("click", window[message[message.length - 1]]);
+			btnCancel.setAttribute("class", "btn btn-secondary d-none");
+		}
+		document.getElementsByClassName('modal-title col-10')[0].innerText = message[1];
+		let result = "";
+		if (message[2].includes('.')) {
+			const messages = message[2].split(".");
+			for (let i = 0; i < messages.length; i++) {
+				if (i != 0) {
+					result += ".<br>";
+				}
+				result += messages[i].trim();
+				
+			}
+		}else{
+			result=message[2];
+		}
+
+		document.getElementById('alertContent').innerHTML = result;
+		const modal = document.querySelector('#messageModal');
+		modal.style.display = "block";  // modal 요소를 화면에 표시
+		setTimeout(() => { modal.classList.add("show") }, 10);
+	}
+}
 
 
