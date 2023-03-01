@@ -1,11 +1,18 @@
 package com.odod.postluck.services.pos;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.odod.postluck.beans.MenuBean;
+import com.odod.postluck.utils.SimpleTransactionManager;
+import com.odod.postluck.utils.TransactionAssistant;
+
 @Service
-public class MenuService {
+public class MenuService extends TransactionAssistant {
+	private SimpleTransactionManager tranManager;
+
 	public MenuService() {
 
 	}
@@ -20,7 +27,7 @@ public class MenuService {
 			this.dupCheckMenu(model);
 			break;
 		case "ME03":
-			this.addMenu(model);
+			this.regMenu(model);
 			break;
 		case "ME04":
 			this.getMenuInfo(model);
@@ -40,40 +47,59 @@ public class MenuService {
 			break;
 		}
 	}
-	
-	private void addMenu(Model model) {
-		// TODO Auto-generated method stub
-		
-	}
-	
-	private void getMenuInfo(Model model) {
-		// TODO Auto-generated method stub
-		
-	}
-	
-	private void modifyMenuInfo(Model model) {
-		// TODO Auto-generated method stub
-		
-	}
-	
-	private void dupCheckMenu(Model model) {
-		// TODO Auto-generated method stub
-		
-	}
-	
+
 	private void getAllMenuList(Model model) {
-		// TODO Auto-generated method stub
-		
+	}
+
+	private void dupCheckMenu(Model model) {
+		MenuBean menu = (MenuBean) model.getAttribute("menu");
+		String message = "동일한 메뉴가 존재합니다 .다시 설정해주세요.";
+		this.tranManager = getTransaction(false);
+		try {
+			this.tranManager.tranStart();
+			if(this.convertToBoolean(sqlSession.selectOne("isMenu",menu))) {
+				
+			} else {
+				
+			}
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+				
+	} // 1 
+
+	private void regMenu(Model model) {
+		MenuBean menu = (MenuBean) model.getAttribute("menu");
+		String message = "오류가 발생했습니다 다시 시도해주세요.";
+
+		this.tranManager = getTransaction(false);
+		/* Transaction Start */
+		try {
+			this.tranManager.tranStart();
+
+			if (this.convertToBoolean(this.sqlSession.insert("insMenu", menu))) {
+
+			} else {
+				menu.setMessage(message);
+				/* insMenu else */ }
+		} catch (Exception e) {
+			e.printStackTrace();
+			this.tranManager.rollback();
+		} finally {
+			this.tranManager.tranEnd();
+		}
+	} // 2
+
+	private void getMenuInfo(Model model) {
+
+	}
+
+	private void modifyMenuInfo(Model model) {
+
 	}
 
 	private void deleteMenu(ModelAndView mav) {
-		// TODO Auto-generated method stub
-		
-	}
-	private boolean convertToBoolean(int value) {
-		return value>=1?true:false;
-	}
 
-	
+	}
 
 }

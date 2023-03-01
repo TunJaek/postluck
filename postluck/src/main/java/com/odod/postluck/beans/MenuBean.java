@@ -7,6 +7,7 @@ import lombok.Data;
  * 메뉴 정보를 저장하기 위한  클래스
  */
 public class MenuBean {
+	private String message;
     private String menuCode;        // 메뉴 코드 (M01,M02,M03...)
     private String menuName;        // 메뉴 이름
     private String menuPrice;       // 메뉴 가격

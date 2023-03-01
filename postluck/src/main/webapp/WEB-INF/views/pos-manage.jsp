@@ -596,14 +596,16 @@
 		selectedIdx = newIdx;
 
 		// 모든 sideMenu의 display를 none으로 설정
-		var allMenus = document.getElementById("menu" + selectedIdx);
+		
+		if()
+		/* var allMenus = document.getElementById("menu" + selectedIdx);
 		for (var i = 0; i < allMenus.length; i++) {
 			allMenus[i].style.display = "none";
-		}
+		} */
 
-		// menuNum에 해당하는 sideMenu의 display를 block으로 설정
-		var selectedMenu = document.getElementById("sideMenu" + menuNum);
-		selectedMenu.style.display = "block";
+		// selectIdx에 해당하는 sideMenu의 display를 block으로 설정
+		let selectedMenu = document.getElementById("menu" + selectedIdx);
+		selectedMenu.style.display = "block"; 
 
 	}
 	const category = document.getElementById('category')
@@ -614,8 +616,7 @@
 		}
 	}
 
-<<<<<<< HEAD
-	function addMenu(newIdx) {
+	/* function addMenu(newIdx) {
 
 		const addMenuPage = document.getElementById("addMenuPage");
 		const menu2 = document.getElementById("menu2");
@@ -624,7 +625,7 @@
 			document.getElementById("menu" + selectedIdx).style.display = "block";
 			selectedIdx = newIdx;
 		} else {
-			/* addMenuPage none else */
+			 addMenuPage none else 
 		}
 		if (addMenuPage.style.display == "block") {
 			menu2.style.display = "none";
@@ -632,12 +633,12 @@
 			sideMenuSt.style.display = "none"
 			selectedIdx = newIdx;
 		} else {
-			/* addMenuPage block else */
+			 addMenuPage block else 
 		}
 
 	}
-
-	function addSave(newIdx) {
+ */
+	/* function addSave(newIdx) { 
 
 		const addMenuPage = document.getElementById("addMenuPage");
 		const menu2 = document.getElementById("menu2");
@@ -645,10 +646,10 @@
 		if (addMenuPage.style.display = "block") {
 
 		} else {
-			/* addMenuPage none else */
+			 addMenuPage none else 
 		}
 
-	}
+	} */
 
 	/* document.getElementById("menu" + newIdx).style.display = "block"; */
 
@@ -679,10 +680,6 @@
 <<<<<<< HEAD
 	} */
 
-	/* 	 위 코드를 addMenu 함수가 호출되는 이벤트 핸들러에 추가하면, 
-	 해당 이벤트가 발생했을 때 menuList 클래스를 가진 요소에 align-middle 
-	 클래스를 가진 div 요소와 그 안에 btn btn-outline-secondary 클래스를 
-	 가진 버튼 요소가 추가됩니다. */
 
 </script>
 
