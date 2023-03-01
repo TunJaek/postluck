@@ -19,6 +19,7 @@ window.onload= function(event){
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>POS.TLUCK</title>
 <link rel="icon" href="../../resources/image/fabicon.png">
+  <link rel="stylesheet" href="/resources/css/main.css">
 <link rel="stylesheet" href="../../resources/css/mainBootstrap.css">
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR&amp;display=swap" rel="stylesheet">
 <script type="text/javascript" src="https://static.nid.naver.com/js/naverLogin_implicit-1.0.3.js" charset="utf-8"></script>
@@ -39,7 +40,7 @@ window.onload= function(event){
 		<div id="right" style="display: flex; justify-content: center; align-items: center;">
 			<div class="loginArea" style="display: flex; flex-direction: column; width: 60%; display: flex; flex-direction: column; height: 50%;">
 				<img src="../../resources/image/indexTextLogo.png" style="margin-bottom: 3%;">
-				<div class="loginLogo" style="width: 100%;">
+				<div class="loginLogo" >
 					<div class="loginInputArea" style="display: flex; flex-direction: column; gap: 5px;">
 						<div class="loginText" style="position: relative;">사업자회원로그인</div>
 						<div id="naver_id_login" style="display: none"></div>
@@ -145,18 +146,7 @@ window.onload= function(event){
 	</script>
 
 	<style>
-.main {
-	display: flex;
-	width: 100vw;
-	height: 100vh;
-}
 
-body {
-	width: 100vh;
-	height: 100vh;
-	margin: 0px;
-	margin-bottom: 0px;
-}
 
 .icon {
 	margin: 10px;
@@ -243,15 +233,11 @@ body {
 }
 
 #foodTruckNews {
-	position: absolute;
-	top: 85%;
-	left: 50%;
-	/* background-color: black; */
+	    position: absolute;
+    right: 15%;
+    bottom: 5%;
 	color: white;
-	font-size: large;
-	z-index: 5;
 	font-size: 50px;
-	font-family: 'Noto Sans KR', sans-serif;
 	font-weight: bold;
 	cursor: pointer;
 }
@@ -260,18 +246,6 @@ body {
 	text-decoration: underline
 }
 
-#foodTruckNewsArrow {
-	/* content: ' ───────── \00A7'; */
-	position: absolute;
-	top: 88vh;
-	left: 40vw;
-	/* background-color: black; */
-	color: white;
-	/* font-size: large; */
-	font-size: 50px;
-	font-family: 'Noto Sans KR', sans-serif;
-	font-weight: bold;
-}
 
 #logo {
 	position: relative;
