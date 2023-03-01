@@ -49,6 +49,7 @@ public class AuthRestController {
 	model.addAttribute("store", store);
 	auth.backController("AU03", model);
 	System.out.println((StoreBean) model.getAttribute("store"));
-	return (StoreBean)model.getAttribute("store");
+
+	return (StoreBean) model.getAttribute("store");
     }
 }

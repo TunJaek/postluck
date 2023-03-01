@@ -13,6 +13,7 @@ function isMem(){
 	}else{
 		console.log("false")
 		sessionStorage.clear(); 
+
 	}
 }
 
