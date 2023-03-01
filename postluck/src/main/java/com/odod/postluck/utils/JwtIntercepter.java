@@ -1,12 +1,14 @@
 package com.odod.postluck.utils;
 
+import java.nio.charset.StandardCharsets;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
-import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.util.UriUtils;
 
 import com.odod.postluck.beans.StoreBean;
 
@@ -40,15 +42,15 @@ public class JwtIntercepter implements HandlerInterceptor {
 						if((result = this.jwtService.tokenExpiredDateCheck(jwtToken, userKey)) == true) {
 							message = null;
 							result = true;
-						} else message = "error:Session 오류:세션이 만료되었습니다.다시 로그인 해주세요.(jwt만료)";
-					}else message = "error:Session 오류:세션이 만료되었습니다.다시 로그인 해주세요.(jwt null)";
+						} else message = "error:Session 오류:세션이 만료되었습니다.다시 로그인 해주세요.(jwt만료):";
+					}else message = "error:Session 오류:세션이 만료되었습니다.다시 로그인 해주세요.(jwt null):";
 				} else {
 					System.out.println("attribute is"+(StoreBean)this.util.getAttribute("AccessInfo"));
-					message = "error:Session 오류:보안상 다시 로그인을 해주세요.(accessinfo null)";	
+					message = "error:Session 오류:보안상 다시 로그인을 해주세요.(accessinfo null):";	
 				}
-			}else message = "error:접근 오류:비정상적인 접근 경로입니다.(get으로 접근)";
+			}else message = "error:접근 오류:비정상적인 접근 경로입니다.(get으로 접근):";
 		}else result = true;
-		
+		message = UriUtils.encode(message, StandardCharsets.UTF_8);
 		if(!result) res.sendRedirect("/?"+ message);
 		
 		return result;

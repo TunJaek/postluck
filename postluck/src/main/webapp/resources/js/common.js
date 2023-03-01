@@ -83,20 +83,22 @@ function serverCallByFetchAjax(formData, jobCode, methodType, callBackFunc) {
 			const jwt = res.headers.get("JWTForPostluck");
 			if (jwt != '') sessionStorage.setItem('JWT', jwt);
 		}
-		if (res.headers.get("AccessInfo") != null) {
-			const AccessInfo = res.headers.get("AccessInfo");
-			if (AccessInfo != '') sessionStorage.setItem('AccessInfo', AccessInfo);
-		}
+//		if (res.headers.get("AccessInfo") != null) {
+//			const AccessInfo = res.headers.get("AccessInfo");
+//			if (AccessInfo != '') sessionStorage.setItem('AccessInfo', AccessInfo);
+//		} 
 		console.log(res);
 		return res.json();
 	})
 		.then(jsonData => window[callBackFunc](jsonData))
 		.catch(error => {
 			console.log(error);
-			window[callBackFunc]('error:오류:오류가 발생했습니다:');
+			showModal('error:오류:오류가 발생했습니다:moveIndex');
 		})
 }
-
+function moveIndex (){
+	serverCallByRequest("/Index","get","");
+}
 /* JWT 사용한 서버 요청 */
 function serverCallByFetch(formData, jobCode, methodType, callBackFunc, header) {
 	fetch(jobCode, {
@@ -108,6 +110,7 @@ function serverCallByFetch(formData, jobCode, methodType, callBackFunc, header) 
 			const jwt = res.headers.get("JWTForPostluck");
 			if (jwt != '') sessionStorage.setItem('JWT', jwt);
 		}
+		console.log(res);
 		return res.json();
 	})
 		.then(jsonData => window[callBackFunc](jsonData))
@@ -129,7 +132,7 @@ function serverCallByFetchAjaxUsingJson(jsonString, jobCode, methodType, callBac
 		.then(jsonData => window[callBackFunc](jsonData))
 		.catch(error => {
 			console.log(error);
-			window[callBackFunc]('error:오류:오류가 발생했습니다:');
+			showModal('error:오류:오류가 발생했습니다:');
 		})
 }
 
@@ -143,7 +146,7 @@ function serverCallByFetchAjaxUsingUrl(jobCode, methodType, callBackFunc) {
 		.then(jsonData => window[callBackFunc](jsonData))
 		.catch(error => {
 			console.log(error);
-			window[callBackFunc]('error:오류:오류가 발생했습니다:');
+			showModal('error:오류:오류가 발생했습니다:');
 		})
 }
 
@@ -200,7 +203,6 @@ function isJsonString(str) {
 
 /* 서버로 전송할 데이터 길이의 유효성 판단 */
 function lengthCheck(obj) {
-
 	const dataLength = [["storeCode", 10, 10], ["storeName", 2, 50], ["storePhone", 11, 11], ["ceoName", 2, 20], ["storeInfo", 0, 30], ["storeInfoDetail", 0, 2000]];
 	let result = false;
 
@@ -363,7 +365,6 @@ function afterIssuance(jsonData) {
 	if (jsonData != null) {
 		if (accessToken) {
 			accessToken.push(['snsID', jsonData.snsID]);
-
 			serverCallByRequest('View/AccessCtl', 'post', accessToken);
 		} else {
 			console.log('accessToken is null')
@@ -402,6 +403,13 @@ function modalClose() {
 }
 
 function showModal(messageString) {
+	if(isJsonString(messageString)){
+		console.log("this is JsonString")
+		if(messageString.message!=null){	
+			console.log(messageString.message)		
+		messageString = messageString.message;
+		}
+	}
 	if (messageString != '') {
 		console.log(messageString);
 		let message = messageString.split(':');

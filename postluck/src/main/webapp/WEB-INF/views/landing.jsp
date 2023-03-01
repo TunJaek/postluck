@@ -13,7 +13,7 @@
 </body>
 <script>
 	function landing() {
-		if ('${AccessInfo}' != '') {
+		if (getJWT() != '') {
 			const accessToken = getJWT();
 			if (accessToken) {
 				serverCallByRequest('/View/AccessCtl', 'post', accessToken);

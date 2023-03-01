@@ -72,7 +72,7 @@ public class ProjectUtils {
 	
 	/* Response Header 추가 */
 	public void transferJWTByResponse(String jwt) {
-		System.out.println("sessionStorage에"+jwt+"저장");
+		System.out.println("sessionStorage에 "+jwt+" 저장");
 		((ServletRequestAttributes)RequestContextHolder
 				.getRequestAttributes())
 				.getResponse().setHeader("JWTForPostluck", jwt);

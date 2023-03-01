@@ -25,8 +25,7 @@ public class MainController {
 	@Autowired
 	private Authentication auth;
 	@GetMapping("/Index")
-	public String index(){
-	    
+	public String index() {
 	    return "index";
 	}
 	@GetMapping("/") //index페이지 이동

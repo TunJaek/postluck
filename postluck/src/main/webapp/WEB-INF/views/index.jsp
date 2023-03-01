@@ -5,10 +5,14 @@
 
 <head>
 <script>
-window.onload= function(event){
+function isMem(){
 	if (getJWT()!=null&&'${AccessInfo}'!=''){
+		console.log("true")
 		const accessToken=getJWT();
 		serverCallByRequest('/View/AccessCtl', 'post', accessToken);
+	}else{
+		console.log("false")
+		sessionStorage.clear(); 
 	}
 }
 
@@ -29,7 +33,7 @@ window.onload= function(event){
 <script src="../../resources/js/common.js"></script>
 
 </head>
-<body class="vsc-initialized" onload="pageInit('${param.message}')">
+<body class="vsc-initialized" onload="pageInit('${param.message}');isMem();">
 	<div class="main">
 		<div id="left">
 			<div id="foodTruckNews">
@@ -109,6 +113,7 @@ window.onload= function(event){
 								formData.append('snsType', 'KA');
 								formData.append('ceoEmail', response.kakao_account.email);
 								formData.append('snsID', response.id);
+								formData.append('accessLogList[0].accessIP','106.243.194.229');
 								console.log(formData);
 								serverCallByFetchAjax(formData, 'IssuanceJWT', 'post', 'afterIssuance');
 							},
@@ -288,17 +293,7 @@ window.onload= function(event){
 	font-family: 'Noto Sans KR', sans-serif
 }
 
-#loginButton::before {
-	content: "Login";
-}
 
-#loginButton:hover {
-	background-color: #1ED760;
-}
-
-#loginButton:hover::before {
-	content: "반갑습니다";
-}
 </style>
 
 	<!-- Code injected by live-server -->

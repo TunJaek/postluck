@@ -54,12 +54,12 @@
 				<div class="border-bottom p-3 d-flex h-7" style="justify-content: space-between;">
 					<div id="isOpenText">영업전</div>
 					<div class="form-check form-switch">
-						<input id="salesToggle" class="form-check-input" type="checkbox" onclick="updSalesLog()" id="flexSwitchCheckDefault">
+						<input id="salesToggle" class="form-check-input" type="checkbox" onclick="updSalesLog()" style="cursor:pointer">
 					</div>
 				</div>
 
 				<div class="dropdown menu border-bottom h-7">
-					<button class="btn dropdown-toggle h-100 w-100" type="button" data-bs-toggle="dropdown" aria-expanded="false" style="color: black">${AccessInfo.storeName}</button>
+					<button class="btn dropdown-toggle h-100 w-100" id="storeNameDropDown" type="button" data-bs-toggle="dropdown" aria-expanded="false" style="color: black">${AccessInfo.storeName}</button>
 					<ul class="dropdown-menu">
 						<li><a class="dropdown-item">Main Page</a></li>
 						<li><a class="dropdown-item" href="#">로그아웃</a></li>
@@ -90,18 +90,25 @@
 				</div>
 				<div class="inputZone p-5 d-flex gap-3" style="flex-direction: column;">
 					<div class="row" style="align-items: center;">
-						<div class="col-2">매장명</div>
+						<div class="col-2">사업자 명</div>
+						<input type="text" class="form-control w-25" disabled value="${AccessInfo.ceoName}">
+				
+						<div class="col-2 ms-4">사업자번호</div>
+						<input type="text" id="storeCodeDisabled" class="form-control w-25" disabled>
 
-						<input type="text" class="form-control w-25" placeholder="매장명을 입력해주세요." value="${AccessInfo.storeName}">
+					</div>
+					<div class="row" style="align-items: center;">
+						<div class="col-2">매장명</div>
+						<input type="text" id="storeName" class="form-control w-25" placeholder="매장명을 입력해주세요." maxlength="50" value="${AccessInfo.storeName}">
 					</div>
 					<div class="row" style="align-items: center;">
 						<div class="col-2">전화번호</div>
-						<input type="text" class="form-control w-25" placeholder="전화번호를 입력해주세요." value="${AccessInfo.storePhone}">
+						<input type="text" id="storePhone" class="form-control w-25" placeholder="전화번호를 입력해주세요." value="${AccessInfo.storePhone}" maxlength="11">
 
 					</div>
 					<div class="row" style="align-items: center;">
 						<div class="col-2">카테고리</div>
-						<select class="form-select  w-25" id="category">
+						<select class="form-select  w-25" id="storeCategory">
 							<option value="">카테고리</option>
 							<option value="SN">분식</option>
 							<option value="SW">샌드위치</option>
@@ -118,30 +125,29 @@
 						<div class="col-2">위치</div>
 						<div class="col-5 p-0 ">
 							<div class="d-flex">
-								<input type="text" class="form-control w-100 my-3" placeholder="매장 주소를 입력해주세요." id="inputDefault">
+								<input type="text" class="form-control w-100 my-3" placeholder="매장 주소를 입력해주세요.">
 								<div class="btn btn-primary col-4 m-3">주소 검색</div>
 							</div>
-							<input type="text" class="form-control w-100 " placeholder="상세 주소를 입력해주세요." id="inputDefault">
+							<input type="text" class="form-control w-100 " placeholder="상세 주소를 입력해주세요.">
 						</div>
 
 					</div>
 
 					<div class="row" style="align-items: center;">
 						<div class="col-2">영업시간</div>
-						<input type="text" class="form-control w-25" placeholder="매장명을 입력해주세요." id="inputDefault">
+						<input type="text" class="form-control w-25" placeholder="영업시간을 입력해주세요.">
 					</div>
 
 					<div class="row" style="align-items: center;">
 						<div class="col-2">매장 한 줄소개</div>
 
-						<input type="text" class="form-control w-25" placeholder="매장명을 입력해주세요." value="${AccessInfo.storeInfo}">
+						<input type="text" class="form-control w-25" id="storeInfo" placeholder="매장 한 줄 소개를  입력해주세요." value="${AccessInfo.storeInfo}" maxlength="30">
 
 					</div>
 					<div class="row" style="align-items: center;">
 						<div class="col-2 mb-3">매장 상세정보</div>
 						<div class="form-group w-50 p-0">
-
-							<textarea class="form-control" id="exampleTextarea" rows="3" value="${AccessInfo.storeInfoDetail}"></textarea>
+							<textarea class="form-control" id="storeInfoDetail" rows="3" maxlength="2000">${AccessInfo.storeInfoDetail}</textarea>
 
 						</div>
 					</div>
@@ -152,7 +158,7 @@
 						</div>
 					</div>
 					<div class="d-flex gap-4 mt-5 " style="justify-content: center;">
-						<div class="btn btn-primary col-1">저장</div>
+						<div class="btn btn-primary col-1" onclick="modifyStoreInfo()">저장</div>
 					</div>
 				</div>
 			</div>
@@ -173,8 +179,9 @@
 					<div class="m-2 text-center">
 						<table class="table table-hover text-center ">
 							<thead>
-								<tr><th scope="col"></th>
-								<th scope="col"> 키오스크 </th>
+								<tr>
+									<th scope="col"></th>
+									<th scope="col">키오스크</th>
 									<th scope="col">메뉴 이름</th>
 									<th scope="col">가격</th>
 									<th scope="col"></th>
@@ -182,8 +189,8 @@
 							</thead>
 							<tbody>
 								<tr class="align-middle">
-								<td ><span class="badge bg-success rounded-pill fs-6">대표</span></td>
-								<td>X</td>
+									<td><span class="badge bg-success rounded-pill fs-6">대표</span></td>
+									<td>X</td>
 									<td>햄버거</td>
 									<td>80,000원</td>
 									<td>
@@ -191,8 +198,8 @@
 									</td>
 								</tr>
 								<tr class="align-middle">
-								<td><span class="badge bg-success rounded-pill fs-6">대표</span></td>
-								<td>X</td>
+									<td><span class="badge bg-success rounded-pill fs-6">대표</span></td>
+									<td>X</td>
 									<td>햄버거</td>
 									<td>80,000원</td>
 									<td>
@@ -200,8 +207,8 @@
 									</td>
 								</tr>
 								<tr class="align-middle">
-								<td></td>
-								<td>X</td>
+									<td></td>
+									<td>X</td>
 									<td>햄버거</td>
 									<td>80,000원</td>
 									<td>
@@ -511,9 +518,14 @@
 
 
 <script>
-	if ('${isOpen}' == 'true') {
+	let storeNum = '${AccessInfo.storeCode}';
+	document.getElementById("storeCodeDisabled").value = storeNum.substring(0, 3)+ "-" + storeNum.substring(3, 5) + "-" + storeNum.substring(5, 10);
+	let salesToggle = document.getElementById("salesToggle");
+	if ('${isOpen}' == 'false') {
+		salesToggle.setAttribute("checked", "false");
 		document.getElementById("isOpenText").innerText = "영업중"
 	} else {
+		salesToggle.setAttribute("checked", "true");
 		document.getElementById("isOpenText").innerText = "영업전"
 	}
 
@@ -535,7 +547,7 @@
 		selectedMenu.style.display = "block";
 
 	}
-	const category = document.getElementById('category')
+	const category = document.getElementById('storeCategory')
 	const categoryOptions = category.options
 	for (let i = 0; i < categoryOptions.length; i++) {
 		if (categoryOptions[i].value == '${AccessInfo.storeCategory}') {
@@ -546,26 +558,66 @@
 	function updSalesLog() {
 		let formData = new FormData();
 		console.log(salesToggle.checked)
-		if (salesToggle.checked) {
-			salesToggle.setAttribute("checked", "false");
-			console.log("true")
-			formData.append('salesLogList[0].salesState', 'C');
-		} else {
+		 if (salesToggle.checked){
 			console.log("false")
+			showModal("plain::영업을 시작합니다.:")
 			salesToggle.setAttribute("checked", "true");
 			formData.append('salesLogList[0].salesState', 'O');
+		}
+		else  {
+			console.log("true")
+			showModal("plain::영업을 종료합니다.:")
+			formData.append('salesLogList[0].salesState', 'C');
 		}
 		formData.append('locationList[0].locationCode', 'L01');
 		formData.append('storeCode', '${AccessInfo.storeCode}');
 		serverCallByFetch(formData, '/Api/UpdSalesLog', 'post', 'aaa', header);
 	}
-	function aaa() {
-		alert("ins 성공")
+	function aaa(){
+		
 	}
 	function regCancel() {
 		document.getElementsByClassName("modal")[0].style.display = "none"
 	}
+	function modifyStoreInfo() {
+		formData = new FormData();
+		const storeCode = document.getElementById('storeCode');
+		const storeName = document.getElementById('storeName');
+		const storePhone = document.getElementById('storePhone');
+		const storeInfo = document.getElementById('storeInfo');
+		const storeInfoDetail = document.getElementById('storeInfoDetail');
+		const storeCategory = document.getElementById('storeCategory');
 
+		if (storeName.value != '' && lengthCheck(storeName)) {
+			formData.append('storeName', storeName.value);
+			if (storePhone.value == ''
+					|| (storePhone.value != '' && lengthCheck(storePhone))) {
+				formData.append('storePhone', storePhone.value);
+				if (storeCategory.value != '') {
+					formData.append('storeCategory', storeCategory.value);
+					formData.append('storeInfo', storeInfo.value);
+					formData.append('storeInfoDetail', storeInfoDetail.value);
+					serverCallByFetch(formData, '/Api/ModifyStoreInfo', 'post',
+							'afterModifyStoreInfo', header);
+				} else {
+					showModal('error:카테고리 오류:카테고리는 필수 입력사항입니다.:');
+				}
+
+			} else {
+				storePhone.value = '';
+				showModal('error:전화번호 오류:전화번호는 11글자로 입력하세요.:');
+			}
+
+		} else {
+			storeName.value = '';
+			showModal('error:매장명 오류:매장명은 2글자에서 50글자 이내로 입력하세요.:');
+		}
+	}
+	function afterModifyStoreInfo(jsonData) {
+		showModal(jsonData.message);
+		document.getElementById("storeNameDropDown").innerText = jsonData.storeName;
+
+	}
 	/* function addSave(newIdx) { 
 
 		const addMenuPage = document.getElementById("addMenuPage");
