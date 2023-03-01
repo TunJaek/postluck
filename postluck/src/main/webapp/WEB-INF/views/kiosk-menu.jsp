@@ -9,10 +9,11 @@
     <title>KIOSK - POS.TLUCK</title>
      <link rel="icon" href="/resources/image/fabicon.png">
     <link rel="stylesheet" href="/resources/css/mainBootstrap.css">
+      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css" />
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR&amp;display=swap" rel="stylesheet">
 </head>
 
-<body>
+<body class="vsc-initialized" onload="pageInit('${param.message}')">
     <div class="main">
         <div class="header"><span class="px-3"><svg xmlns="http://www.w3.org/2000/svg" width="30" height="30"
                     fill="currentColor" class="bi bi-arrow-left" viewBox="0 0 16 16">
@@ -219,6 +220,24 @@
                 style="width:12%; float: right; background-color: rgb(30, 215, 96,0.1); ;position: absolute; bottom:0%; right:0%;">
                 주문확인
             </div>
+            <div class="modal fade" id="messageModal" style="background-color: rgba(0, 0, 0, 0.2)">
+			<div class="modal-dialog modal-dialog-centered" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title col-10">메세지 제목이 없습니다.</h5>
+						<button type="button" id="modalClose" class="btn-close col-1" data-bs-dismiss="modal" aria-label="Close"></button>
+					</div>
+					<div class="modal-body text-center">
+						<div class="my-2 mx-5" id="svgZone"></div>
+						<div id="alertContent">메세지 내용이 없습니다.</div>
+					</div>
+					<div class="modal-footer text-center">
+						<button type="button" id="btnCancel" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
+						<button type="button" id="btnOk" class="btn">확인</button>
+					</div>
+				</div>
+			</div>
+		</div>
         </div>
 </body>
 

@@ -31,11 +31,9 @@
 		storePhone, ST_SICODE, ST_SNSTYPE as snsType, ST_CATEGORY as
 		storeCategory FROM ST WHERE ST_SNSID =#{snsID}
 	</select>
-
-	<insert id="regStore"
-		parameterType="com.odod.postluck.beans.StoreBean">
-		INSERT INTO STORE(ST_CODE, ST_SNSID, ST_NAME, ST_EMAIL,
-			ST_JOINDATE,ST_STNAME, ST_INFO, ST_INFODETAIL,ST_PHONE, ST_SICODE,	ST_SNSTYPE, ST_CATEGORY)
+	
+	<insert id="insStore" parameterType="com.odod.postluck.beans.StoreBean">
+		INSERT INTO STORE(ST_CODE, ST_SNSID, ST_NAME, ST_EMAIL, ST_JOINDATE,ST_STNAME, ST_INFO, ST_INFODETAIL,ST_PHONE, ST_SICODE, ST_SNSTYPE, ST_CATEGORY)
 		VALUES(#{storeCode},#{snsID},#{ceoName},#{ceoEmail},SYSDATE,#{storeName},#{storeInfo},#{storeInfoDetail},#{storePhone},null,#{snsType},#{storeCategory})
 	</insert>
 
@@ -46,10 +44,7 @@
 		VALUES(#{snsID}, SYSDATE,
 		#{accessLogList[0].accessType},#{accessLogList[0].accessIP})
 	</insert>
-	<insert id="insMenu" parameterType="com.odod.postluck.beans.StoreBean">
-		INSERT INTO POSDBA.STOREMENU(SM_STCODE, SM_CODE, SM_NAME, SM_PRICE)
-		VALUES(#{storeCode},
-		#{menuList[0].(SELECT'M'||LPAD(NVL(SUBSTR(MAX(SM_CODE),2,2),-1)+1,2,'0') FROM STOREMENU	WHERE SM_STCODE = #{storeCode})},
-		#{menuList[0].menuName},#{menuList[0].menuPrice}) ;
-	</insert>
+	
 </mapper>
+
+	

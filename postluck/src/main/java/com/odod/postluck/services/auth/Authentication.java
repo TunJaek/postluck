@@ -69,15 +69,14 @@ public class Authentication extends TransactionAssistant {
 			ArrayList<AccessLogBean> alBeanList = new ArrayList<AccessLogBean>();
 			AccessLogBean alBean = new AccessLogBean();
 			alBean.setAccessType('O');
-			alBean.getAccessIP();
+			alBean.setAccessIP(store.getAccessLogList().get(0).getAccessIP());
 			alBeanList.add(alBean);
 			store.setAccessLogList(alBeanList);
 			this.tranManager = this.getTransaction(false);
 			this.tranManager.tranStart();
-			if(this.convertToBoolean(this.sqlSession.insert("logOut",store ))){
+			if(this.convertToBoolean(this.sqlSession.insert("insAccessLog",store ))){
 				this.tranManager.commit();
 				this.pu.removeAttribute("AccessInfo");
-				
 				store.setMessage("로그아웃 성공");
 			}else {
 				store.setMessage("로그아웃 실패");
@@ -112,10 +111,9 @@ public class Authentication extends TransactionAssistant {
 		ArrayList<AccessLogBean> alBeanList = new ArrayList<AccessLogBean>();
 		alBean.setAccessType('I');
 		alBean.setAccessIP(store.getAccessLogList().get(0).getAccessIP());
-		System.out.println(alBean.getAccessIP()+"아아아아아잉핑");
+		
 		alBeanList.add(alBean);
 		store.setAccessLogList(alBeanList);
-		System.out.println(store);
 		try {
 			this.tranManager = this.getTransaction(false);
 			this.tranManager.tranStart();
@@ -232,14 +230,14 @@ public class Authentication extends TransactionAssistant {
 			this.tranManager = this.getTransaction(false);
 			this.tranManager.tranStart();
 			if (store != null) {
-				if (this.convertToBoolean(this.sqlSession.insert("regStore", store))) {
+				if (this.convertToBoolean(this.sqlSession.insert("insStore", store))) {
 					this.tranManager.commit();
 					jwtBody = JWTBean.builder().storeCode(store.getStoreCode()).snsID(store.getSnsID()).build();
 					this.pu.transferJWTByResponse(this.jwt.tokenIssuance(jwtBody, store.getSnsID()));
 					this.pu.setAttribute("AccessInfo", store);
-					message = "true";
+					message = "plain::매장 등록이 완료되었습니다!:";
 				} else {
-					message = "매장등록을 실패하셨습니다.";
+					message = "error::매장 등록을 실패했습니다.:";
 				}
 			}
 

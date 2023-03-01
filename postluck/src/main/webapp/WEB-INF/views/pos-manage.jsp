@@ -1,5 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -9,22 +8,22 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>SETTING - POS.TLUCK</title>
 <script src="/resources/js/common.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css" />
+
 <link rel="stylesheet" href="/resources/css/mainBootstrap.css">
-<link
-	href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR&amp;display=swap"
-	rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR&amp;display=swap" rel="stylesheet">
 <script>
 	document.addEventListener('DOMContentLoaded', function() {
-		var calendarEl = document.getElementById('calendar');
-		var calendar = new FullCalendar.Calendar(calendarEl, {
+		let calendarEl = document.getElementById('calendar');
+		let calendar = new FullCalendar.Calendar(calendarEl, {
 			initialView : 'dayGridMonth'
 		});
 		calendar.render();
 	});
 	function printTime() {
-		var clock = document.getElementById("clock"); // 출력할 장소 선택
-		var now = new Date(); // 현재시간
-		var nowTime = now.getFullYear() + "년 " + (now.getMonth() + 1) + "월 "
+		let clock = document.getElementById("clock"); // 출력할 장소 선택
+		let now = new Date(); // 현재시간
+		let nowTime = now.getFullYear() + "년 " + (now.getMonth() + 1) + "월 "
 				+ now.getDate() + "일 " + "- " + now.getHours() + "시 "
 				+ now.getMinutes() + "분 " + now.getSeconds() + "초";
 		clock.innerHTML = nowTime; // 현재시간을 출력
@@ -34,66 +33,51 @@
 		printTime();
 	}
 </script>
-<script
-	src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.1/index.global.min.js'></script>
+<script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.1/index.global.min.js'></script>
 
 </head>
 <!-- 헤더랑 옆 클릭바 고정을 고정. -->
 
-<body>
-	<script
-		src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
-		integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
-		crossorigin="anonymous"></script>
+<body class="vsc-initialized" onload="pageInit('${param.message}')">
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
 	<div class="main">
 		<div class="header">
-
-			<span class="px-3 " style="cursor: pointer" onclick="movePage('Pos')"><svg
-					xmlns="http://www.w3.org/2000/svg" width="30" height="30"
-					fill="currentColor" class="bi bi-arrow-left" viewBox="0 0 16 16">
-                    <path fill-rule="evenodd"
-						d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z" />
-                </svg></span> <span><img
-				src="/resources/image/mainLogo-dark.png"></span>
+			<span class="px-3 " style="cursor: pointer" onclick="movePage('Pos')"><svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-arrow-left" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z" />
+                </svg></span> <span><img src="/resources/image/mainLogo-dark.png"></span>
 
 			<!-- 시간표시 연월일시분초 -->
 			<span id="clock" style="position: absolute; right: 5%;"></span><br />
 		</div>
 		<div class="content">
-			<div class="sidebar border d-flex border">
-
-				<div class="border p-3 d-flex"
-					style="justify-content: space-between; height: 7%; background-color: white;">
-					영업전
+			<div class="sidebar border-end d-flex ">
+				<div class="border-bottom p-3 d-flex h-7" style="justify-content: space-between;">
+					<div id="isOpenText">영업전</div>
 					<div class="form-check form-switch">
-						<input class="form-check-input" type="checkbox"
-							id="flexSwitchCheckDefault">
+						<input id="salesToggle" class="form-check-input" type="checkbox" onclick="updSalesLog()" id="flexSwitchCheckDefault">
 					</div>
 				</div>
 
-				<div class="dropdown menu">
-					<button class="btn dropdown-toggle  w-100" type="button"
-						data-bs-toggle="dropdown" aria-expanded="false"
-						style="color: black">핫도그라운드</button>
+				<div class="dropdown menu border-bottom h-7">
+					<button class="btn dropdown-toggle h-100 w-100" type="button" data-bs-toggle="dropdown" aria-expanded="false" style="color: black">${AccessInfo.storeName}</button>
 					<ul class="dropdown-menu">
 						<li><a class="dropdown-item" href="#">Homepage</a></li>
 						<li><a class="dropdown-item" href="#">로그아웃</a></li>
 					</ul>
 				</div>
-				<div class="menu border p-3" onclick="sideMenu(0)">일정</div>
-				<div class="menu border p-3" onclick="sideMenu(1)">매장관리</div>
-				<div class="menu border p-3" onclick="sideMenu(2)">메뉴관리</div>
-				<div class="menu border p-3" onclick="sideMenu(5)">결제내역</div>
-				<div class="menu border p-3" onclick="sideMenu(6)">매출분석</div>
+				<div class="menu  p-3" onclick="sideMenu(0)">일정</div>
+				<div class="menu  p-3" onclick="sideMenu(1)">매장관리</div>
+				<div class="menu  p-3" onclick="sideMenu(2)">메뉴관리</div>
+				<div class="menu  p-3" onclick="sideMenu(5)">결제내역</div>
+				<div class="menu  p-3" onclick="sideMenu(6)">매출분석</div>
 			</div>
 			<!-- sideMenu(3) : 메뉴추가 / sideMenu(4) : 메뉴수정 -->
 			<!-- 0. 일정 -->
 			<div class="mainContent" id="menu0" style="display: block;">
-				<div class="border p-3" style="height: 7%;">
+				<div class="border-bottom p-3 h-7">
 					<h5>일정</h5>
 				</div>
-				<div class="mt-5 d-flex" id='calendar-container'
-					style="width: 100%; justify-content: center;">
+				<div class="mt-5 d-flex" id='calendar-container' style="justify-content: center;">
 					<div id='calendar' style="width: 50%;"></div>
 				</div>
 			</div>
@@ -102,18 +86,15 @@
 			<!-- 1. 매장관리 -->
 			<div class="mainContent" id="menu1" style="display: none;">
 
-				<div class="inputZone p-5 d-flex gap-3"
-					style="flex-direction: column;">
+				<div class="inputZone p-5 d-flex gap-3" style="flex-direction: column;">
 					<div class="row" style="align-items: center;">
 						<div class="col-2">매장명</div>
 
-						<input type="text" class="form-control w-25"
-							placeholder="매장명을 입력해주세요." value="${AccessInfo.storeName}">
+						<input type="text" class="form-control w-25" placeholder="매장명을 입력해주세요." value="${AccessInfo.storeName}">
 					</div>
 					<div class="row" style="align-items: center;">
 						<div class="col-2">전화번호</div>
-						<input type="text" class="form-control w-25"
-							placeholder="전화번호를 입력해주세요." value="${AccessInfo.storePhone}">
+						<input type="text" class="form-control w-25" placeholder="전화번호를 입력해주세요." value="${AccessInfo.storePhone}">
 
 					</div>
 					<div class="row" style="align-items: center;">
@@ -135,24 +116,18 @@
 						<div class="col-2">위치</div>
 						<div class="col-5 p-0 ">
 							<div class="d-flex">
-								<input type="text" class="form-control w-100 my-3"
-									placeholder="매장 주소를 입력해주세요." id="inputDefault">
+								<input type="text" class="form-control w-100 my-3" placeholder="매장 주소를 입력해주세요." id="inputDefault">
 								<div class="btn btn-primary col-4 m-3">주소 검색</div>
 							</div>
-							<input type="text" class="form-control w-100 "
-								placeholder="상세 주소를 입력해주세요." id="inputDefault">
+							<input type="text" class="form-control w-100 " placeholder="상세 주소를 입력해주세요." id="inputDefault">
 						</div>
 
 					</div>
 
 					<div class="row" style="align-items: center;">
 						<div class="col-2">영업시간</div>
-						<input type="text" class="form-control w-25"
-							placeholder="매장명을 입력해주세요." id="inputDefault">
+						<input type="text" class="form-control w-25" placeholder="매장명을 입력해주세요." id="inputDefault">
 					</div>
-
-
-
 
 					<div class="row" style="align-items: center;">
 						<div class="col-2">매장 한 줄소개</div>
@@ -175,7 +150,6 @@
 						</div>
 					</div>
 					<div class="d-flex gap-4 mt-5 " style="justify-content: center;">
-						<div class="btn btn-outline-secondary col-1">취소</div>
 						<div class="btn btn-primary col-1">저장</div>
 					</div>
 				</div>
@@ -247,22 +221,18 @@
 			<!-- 2. 메뉴관리 -->
 
 			<!-- 2-1. 메뉴추가 -->
-			<div class="mainContent" id="addMenuPage" style="display: none;">
+			<div class="mainContent" id="menu3" style="display: none;">
 				<div class="border p-3 " style="height: 7%;">
 					<h5>메뉴등록</h5>
 				</div>
-				<div stlye="93%;"></div>
-				<div class="inputZone p-5 d-flex gap-3"
-					style="flex-direction: column;">
+				<div class="inputZone p-5 d-flex gap-3" style="flex-direction: column;">
 					<div class="row" style="align-items: center;">
 						<div class="col-2">메뉴명</div>
-						<input type="text" class="form-control w-25"
-							placeholder="매장명을 입력해주세요." id="inputDefault">
+						<input type="text" class="form-control w-25" placeholder="매장명을 입력해주세요." id="inputDefault">
 					</div>
 					<div class="row" style="align-items: center;">
 						<div class="col-2">가격</div>
-						<input type="text" class="form-control w-25"
-							placeholder="전화번호를 입력해주세요." id="inputDefault">
+						<input type="text" class="form-control w-25" placeholder="전화번호를 입력해주세요." id="inputDefault">
 					</div>
 
 					<div class="row" style="align-items: center;">
@@ -274,33 +244,29 @@
 					<div class="row" style="align-items: center;">
 						<div class="col-2">품절 여부</div>
 						<div class="form-check form-switch col">
-							<input class="form-check-input" type="checkbox"
-								id="flexSwitchCheckDefault">
+							<input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault">
 						</div>
 					</div>
 					<div class="row" style="align-items: center;">
 						<div class="col-2">KIOSK 노출 여부</div>
 						<div class="form-check form-switch col">
-							<input class="form-check-input" type="checkbox"
-								id="flexSwitchCheckDefault">
+							<input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault">
 						</div>
 					</div>
 					<div class="row" style="align-items: center;">
 						<div class="col-2">대표메뉴 여부</div>
 						<div class="form-check form-switch col">
-							<input class="form-check-input" type="checkbox"
-								id="flexSwitchCheckDefault">
+							<input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault">
 						</div>
 					</div>
 					<div class="d-flex gap-4 mt-5 " style="justify-content: center;">
 						<div class="btn btn-outline-secondary col-1">취소</div>
-						<div class="btn btn-primary col-1" id="addSave"
-							onclick="addSave()">저장</div>
+						<div class="btn btn-primary col-1" id="addSave" onclick="addSave()">저장</div>
 					</div>
 				</div>
 			</div>
 			<!-- 3. 결제내역 -->
-			<div class="mainContent" id="menu3" style="display: none;">
+			<div class="mainContent" id="menu5" style="display: none;">
 				<div class="border p-3 " style="height: 7%;">
 					<h5>
 						결제내역
@@ -308,8 +274,7 @@
 				</div>
 				<div class="d-flex w-100 " style="height: 93%;">
 					<div class="paymentList border-end position-relative">
-						<div class="border row position-relative m-0 gap-4 "
-							style="align-items: center;">
+						<div class="border row position-relative m-0 gap-4 " style="align-items: center;">
 							<div class="form-group col-5 p-3">
 								<input type="date">
 							</div>
@@ -385,25 +350,19 @@
 			<!-- 3. 결제내역 -->
 
 			<!-- 4. 매출분석 -->
-			<div class="mainContent" id="menu4" style="display: none;">
+			<div class="mainContent" id="menu6" style="display: none;">
 				<div class="border p-3 " style="height: 7%;">
 					<h5>
 						매출분석
 						</h2>
 				</div>
-				<div class="inputZone p-5 d-flex gap-3"
-					style="flex-direction: column;">
-					<div class="salesPeriodButtonZone" style="margin-left: 5%;">
-						<button type="button" class="btn btn-outline-primary"
-							style="font-weight: bold;">&nbsp 영업중 &nbsp</button>
-						<button type="button" class="btn btn-outline-primary"
-							style="font-weight: bold;">&nbsp &nbsp 1주 &nbsp &nbsp</button>
-						<button type="button" class="btn btn-outline-primary"
-							style="font-weight: bold;">&nbsp 1개월 &nbsp</button>
-						<button type="button" class="btn btn-outline-primary"
-							style="font-weight: bold;">&nbsp 3개월 &nbsp</button>
-						<button type="button" class="btn btn-outline-primary"
-							style="font-weight: bold;">기간선택</button>
+				<div class="inputZone p-5 d-flex gap-3" style="flex-direction: column;">
+					<div class="salesPeriodButtonZone">
+						<button type="button" class="btn btn-outline-primary" style="font-weight: bold;">&nbsp 영업중 &nbsp</button>
+						<button type="button" class="btn btn-outline-primary" style="font-weight: bold;">&nbsp &nbsp 1주 &nbsp &nbsp</button>
+						<button type="button" class="btn btn-outline-primary" style="font-weight: bold;">&nbsp 1개월 &nbsp</button>
+						<button type="button" class="btn btn-outline-primary" style="font-weight: bold;">&nbsp 3개월 &nbsp</button>
+						<button type="button" class="btn btn-outline-primary" style="font-weight: bold;">기간선택</button>
 					</div>
 				</div>
 				<div class="mainContentMidlle" style="max-width: 100%; height: 20%;">
@@ -434,26 +393,16 @@
 				</div>
 
 				<div class="mainContentFooter">
-					<div class="footerChoiceTab"
-						style="margin: 2%; position: relative; left: 6%;">
-						<ul class="nav nav-tabs" role="tablist"
-							style="margin-bottom: 1.5%;">
-							<li class="nav-item" role="presentation"><a class="nav-link"
-								data-bs-toggle="tab" href="#home" aria-selected="false"
-								role="tab" tabindex="-1">결제수단별</a></li>
-							<li class="nav-item" role="presentation"><a
-								class="nav-link active" data-bs-toggle="tab" href="#profile"
-								aria-selected="true" role="tab">메뉴별</a></li>
-							<li class="nav-item" role="presentation"><a class="nav-link"
-								data-bs-toggle="tab" href="#locate" aria-selected="false"
-								role="tab" tabindex="-1">지역별</a></li>
+					<div class="footerChoiceTab" style="position: relative;">
+						<ul class="nav nav-tabs" role="tablist">
+							<li class="nav-item" role="presentation"><a class="nav-link" data-bs-toggle="tab" href="#home" aria-selected="false" role="tab" tabindex="-1">결제수단별</a></li>
+							<li class="nav-item" role="presentation"><a class="nav-link active" data-bs-toggle="tab" href="#profile" aria-selected="true" role="tab">메뉴별</a></li>
+							<li class="nav-item" role="presentation"><a class="nav-link" data-bs-toggle="tab" href="#locate" aria-selected="false" role="tab" tabindex="-1">지역별</a></li>
 
 						</ul>
-						<div id="myTabContent" class="tab-content"
-							style="width: 100%; text-align: center;">
+						<div id="myTabContent" class="tab-content" style="width: 100%; text-align: center;">
 							<div class="tab-pane fade" id="home" role="tabpanel">
-								<div class="paymentTab"
-									style="width: 80%; display: flex; flex-direction: row; font-size: 20px;">
+								<div class="paymentTab" style="width: 80%; display: flex; flex-direction: row; font-size: 20px;">
 									<br> <br>
 									<div class="textBox1">
 										<h4>결제수단</h4>
@@ -474,75 +423,60 @@
 										<hr style="border: 1px color= silver; width: 100%;">
 									</div>
 								</div>
-								<div class="actualSales"
-									style="display: flex; position: relative; left: 51.3%;">
+								<div class="actualSales" style="display: flex; position: relative; left: 51.3%;">
 									<h4 style="">실매출 &nbsp&nbsp&nbsp</h4>
 									<span style="font-size: 20px;">415,000원</span>
 								</div>
 								<!-- <p> 결제수단별 </p> -->
 
 							</div>
-							<div class="tab-pane fade active show" id="profile"
-								role="tabpanel">
-								<div class="menuTab"
-									style="width: 80%; display: flex; flex-direction: row; font-size: 20px;">
+							<div class="tab-pane fade active show" id="profile" role="tabpanel">
+								<div class="menuTab" style="width: 80%; display: flex; flex-direction: row; font-size: 20px;">
 									<div class="textBox1">
 										<h4>순위</h4>
 										<hr style="border: 1px color= silver;">
-										1<br> <br> 2<br> <br> 3<br> <br>
-										4<br> <br> 5
+										1<br> <br> 2<br> <br> 3<br> <br> 4<br> <br> 5
 									</div>
 									<div class="textBox1">
 										<h4>메뉴명</h4>
 										<hr style="border: 1px color= silver;">
-										1<br> <br> 2<br> <br> 3<br> <br>
-										4<br> <br> 5
+										1<br> <br> 2<br> <br> 3<br> <br> 4<br> <br> 5
 
 									</div>
 									<div class="textBox1">
 										<h4>건수</h4>
 										<hr style="border: 1px color= silver;">
-										1<br> <br> 2<br> <br> 3<br> <br>
-										4<br> <br> 5
+										1<br> <br> 2<br> <br> 3<br> <br> 4<br> <br> 5
 									</div>
-									<div class="textBox1"
-										style="text-align: right; position: relative; left: -10%;">
+									<div class="textBox1" style="text-align: right; position: relative; left: -10%;">
 										<h4>결제금액</h4>
 										<hr style="border: 1px color= silver; width: 135%;">
-										1,197,000원<br> <br> 197,000원<br> <br>
-										197,000원<br> <br> 97,000원<br> <br> 7,000원
+										1,197,000원<br> <br> 197,000원<br> <br> 197,000원<br> <br> 97,000원<br> <br> 7,000원
 									</div>
 								</div>
 							</div>
-							<div class="tab-pane fade active show" id="locate"
-								role="tabpanel">
-								<div class="menuTab"
-									style="width: 80%; display: flex; flex-direction: row; font-size: 20px;">
+							<div class="tab-pane fade active show" id="locate" role="tabpanel">
+								<div class="menuTab" style="width: 80%; display: flex; flex-direction: row; font-size: 20px;">
 									<div class="textBox1">
 										<h4>지역</h4>
 										<hr style="border: 1px color= silver;">
-										서울<br> <br> 경기<br> <br> 인천<br> <br>
-										강릉<br> <br> 5
+										서울<br> <br> 경기<br> <br> 인천<br> <br> 강릉<br> <br> 5
 									</div>
 									<div class="textBox1">
 										<h4>메뉴명</h4>
 										<hr style="border: 1px color= silver;">
-										1<br> <br> 2<br> <br> 3<br> <br>
-										4<br> <br> 5
+										1<br> <br> 2<br> <br> 3<br> <br> 4<br> <br> 5
 
 									</div>
 									<div class="textBox1">
 										<h4>건수</h4>
 										<hr style="border: 1px color= silver;">
-										1<br> <br> 2<br> <br> 3<br> <br>
-										4<br> <br> 5
+										1<br> <br> 2<br> <br> 3<br> <br> 4<br> <br> 5
 									</div>
-									<div class="textBox1"
-										style="text-align: right; position: relative; left: -10%;">
+									<div class="textBox1" style="text-align: right; position: relative; left: -10%;">
 										<h4>결제금액</h4>
 										<hr style="border: 1px color= silver; width: 135%;">
-										1,197,000원<br> <br> 197,000원<br> <br>
-										197,000원<br> <br> 97,000원<br> <br> 7,000원
+										1,197,000원<br> <br> 197,000원<br> <br> 197,000원<br> <br> 97,000원<br> <br> 7,000원
 									</div>
 								</div>
 							</div>
@@ -554,34 +488,27 @@
 			<!-- 4. 매출분석 -->
 
 
-			<div class="pageBody"
-				style="width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.3); position: absolute; top: 0%; display: none;">
-				<div class="modal" tabindex="-1" style="display: block;">
-					<div class="modal-dialog modal-dialog-centered">
-						<div class="modal-content">
-							<div class="modal-header">
-								<h5 class="modal-title">Modal title</h5>
-								<button type="button" class="btn-close" data-bs-dismiss="modal"
-									aria-label="Close"></button>
-							</div>
-							<div class="modal-body">
-								<p>Modal body text goes here.</p>
-							</div>
-							<div class="modal-footer">
-								<button type="button" class="btn btn-secondary"
-									data-bs-dismiss="modal">Close</button>
-								<button type="button" class="btn btn-primary">Save
-									changes</button>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-			<!-- 4-2. 메뉴수정 -->
 
 		</div>
 		<!-- 헤더랑 옆 클릭바 고정을 고정. -->
-
+		<div class="modal fade" id="messageModal" style="background-color: rgba(0, 0, 0, 0.2)">
+			<div class="modal-dialog modal-dialog-centered" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title col-10">메세지 제목이 없습니다.</h5>
+						<button type="button" id="modalClose" class="btn-close col-1" data-bs-dismiss="modal" aria-label="Close"></button>
+					</div>
+					<div class="modal-body text-center">
+						<div class="my-2 mx-5" id="svgZone"></div>
+						<div id="alertContent">메세지 내용이 없습니다.</div>
+					</div>
+					<div class="modal-footer text-center">
+						<button type="button" id="btnCancel" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
+						<button type="button" id="btnOk" class="btn">확인</button>
+					</div>
+				</div>
+			</div>
+		</div>
 	</div>
 
 </body>
@@ -589,6 +516,12 @@
 
 
 <script>
+	if ('${isOpen}' == 'true') {
+		document.getElementById("isOpenText").innerText = "영업중"
+	} else {
+		document.getElementById("isOpenText").innerText = "영업전"
+	}
+
 	let selectedIdx = 0;
 	function sideMenu(newIdx) {
 		document.getElementById("menu" + selectedIdx).style.display = "none";
@@ -596,8 +529,7 @@
 		selectedIdx = newIdx;
 
 		// 모든 sideMenu의 display를 none으로 설정
-		
-		if()
+
 		/* var allMenus = document.getElementById("menu" + selectedIdx);
 		for (var i = 0; i < allMenus.length; i++) {
 			allMenus[i].style.display = "none";
@@ -605,7 +537,7 @@
 
 		// selectIdx에 해당하는 sideMenu의 display를 block으로 설정
 		let selectedMenu = document.getElementById("menu" + selectedIdx);
-		selectedMenu.style.display = "block"; 
+		selectedMenu.style.display = "block";
 
 	}
 	const category = document.getElementById('category')
@@ -616,28 +548,50 @@
 		}
 	}
 
-	/* function addMenu(newIdx) {
-
-		const addMenuPage = document.getElementById("addMenuPage");
-		const menu2 = document.getElementById("menu2");
-		if (addMenuPage.style.display == "none") {
-			addMenuPage.style.display = "block";
-			document.getElementById("menu" + selectedIdx).style.display = "block";
-			selectedIdx = newIdx;
+	function updSalesLog() {
+		let formData = new FormData();
+		console.log(salesToggle.checked)
+		if (salesToggle.checked) {
+			salesToggle.setAttribute("checked","false");
+			console.log("true")
+			formData.append('salesLogList[0].salesState', 'C');
 		} else {
-			 addMenuPage none else 
+			console.log("false")
+			salesToggle.setAttribute("checked","true");
+			formData.append('salesLogList[0].salesState', 'O');
 		}
-		if (addMenuPage.style.display == "block") {
-			menu2.style.display = "none";
-			const sideMenuSt = document.getElementById("menu" + newIdx);
-			sideMenuSt.style.display = "none"
-			selectedIdx = newIdx;
-		} else {
-			 addMenuPage block else 
-		}
-
+		formData.append('locationList[0].locationCode', 'L01');
+		formData.append('storeCode', '${AccessInfo.storeCode}');
+		serverCallByFetch(formData, '/Api/UpdSalesLog', 'post', 'aaa', header);
 	}
- */
+	function aaa() {
+		alert("ins 성공")
+	}
+	function regCancel() {
+		document.getElementsByClassName("modal")[0].style.display = "none"
+	}
+
+	// 	function addMenu(newIdx) {
+	// 		const addMenuPage = document.getElementById("addMenuPage");
+	// 		const menu2 = document.getElementById("menu2");
+	// 		if (addMenuPage.style.display == "none") {
+	// 			addMenuPage.style.display = "block";
+	// 			document.getElementById("menu" + selectedIdx).style.display = "block";
+	// 			selectedIdx = newIdx;
+	// 		} else {
+	// 			 addMenuPage none else 
+	// 		}
+	// 		if (addMenuPage.style.display == "block") {
+	// 			menu2.style.display = "none";
+	// 			const sideMenuSt = document.getElementById("menu" + newIdx);
+	// 			sideMenuSt.style.display = "none"
+	// 			selectedIdx = newIdx;
+	// 		} else {
+	// 			 addMenuPage block else 
+	// 		}
+
+	// 	}
+
 	/* function addSave(newIdx) { 
 
 		const addMenuPage = document.getElementById("addMenuPage");
@@ -651,36 +605,28 @@
 
 	} */
 
-	/* document.getElementById("menu" + newIdx).style.display = "block"; */
-
-	/* function addMenu() {
-=======
-	
-	function addMenu() {
->>>>>>> branch 'main' of https://github.com/dPfal/postluck.git
-		// menuList 요소 찾기
-		const menuList = document.getElementsByClassName("menuList")[0];
-
-		// align-middle 클래스를 가진 div 요소 생성
-		const alignMiddleDiv = document.createElement("div");
-		alignMiddleDiv.classList.add("align-middle");
-
-		// btn btn-outline-secondary 클래스를 가진 버튼 요소 생성
-		const button = document.createElement("button");
-		button.classList.add("btn", "btn-outline-secondary");
-
-		// 버튼 요소에 텍스트 추가
-		button.textContent = "수정";
-
-		// align-middle div 요소의 자식으로 버튼 요소 추가
-		alignMiddleDiv.appendChild(button);
-
-		// menuList 요소의 자식으로 align-middle div 요소 추가
-		menuList.appendChild(alignMiddleDiv);
-<<<<<<< HEAD
-	} */
-
-
+	// 	function addMenu() {
+	// 		// menuList 요소 찾기
+	// 		const menuList = document.getElementsByClassName("menuList")[0];
+	// 		// align-middle 클래스를 가진 div 요소 생성
+	// 		const alignMiddleDiv = document.createElement("div");
+	// 		alignMiddleDiv.classList.add("align-middle");
+	// 		// btn btn-outline-secondary 클래스를 가진 버튼 요소 생성
+	// 		const button = document.createElement("button");
+	// 		button.classList.add("btn", "btn-outline-secondary");
+	// 		// 버튼 요소에 텍스트 추가
+	// 		button.textContent = "수정";
+	// 		// align-middle div 요소의 자식으로 버튼 요소 추가
+	// 		alignMiddleDiv.appendChild(button);
+	// 		// menuList 요소의 자식으로 align-middle div 요소 추가
+	// 		menuList.appendChild(alignMiddleDiv);
+	// 	}
+	const saleToggle = document.getElementById("salesToggle");
+	if ('${isOpen}' == 'true') {
+		saleToggle.checked = true;
+	} else {
+		saleToggle.checked = false;
+	}
 </script>
 
 <style>
@@ -708,8 +654,8 @@ body {
 .content {
 	position: relative;
 	display: flex;
-	width: 100vw;
-	height: 95vh;
+	width: 100%;
+	height: 95%;
 }
 
 .sidebar {
@@ -721,13 +667,11 @@ body {
 
 .mainContent {
 	width: 80%;
-	height: 95vh;
 	position: relative;
 	background-color: white;
 }
 
 .salesPeriodButtonZone {
-	margin-left: 5%;
 	width: 40%;
 	display: flex;
 	flex-direction: row;
@@ -739,7 +683,6 @@ body {
 	height: 50%;
 	/* background-color: aqua; */
 	position: relative;
-	left: 2.5%;
 	display: flex;
 	flex-direction: row;
 	justify-content: space-evenly;
@@ -750,15 +693,23 @@ body {
 .textBox1 {
 	width: 30%;
 	position: relative;
-	left: 2%;
 }
 
 .paymentList {
 	width: 40%;
 }
 
+.h-7 {
+	height: 7%;
+}
+
 .menu {
 	cursor: pointer;
+}
+
+.menu:hover {
+	background-color: #ECFBF2;
+	transition: background-color 0.3s ease;
 }
 </style>
 
