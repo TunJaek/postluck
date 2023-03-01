@@ -3,8 +3,8 @@
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.odod.postluck.mapper.PosMapperInter">
 	<insert id="insSalesLog" parameterType="com.odod.postluck.beans.StoreBean">
-		INSERT INTO STORE(SL_STCODE, SL_LOCODE, SL_STATE, SL_DATE, SL_ALDATE)
-		VALUES(#{storeCode}, #{locationList[0].locationCode}, #{accessLogList[0].salesLogList[0].salesState}, SYSDATE, #{accessLogList[0].accessDate})
+		INSERT INTO SALESLOG(SL_STCODE, SL_LOCODE, SL_STATE, SL_DATE)
+		VALUES(#{storeCode}, #{locationList[0].locationCode}, #{salesLogList[0].salesState}, SYSDATE)
 	</insert>
 	<insert id="insMenu" parameterType="com.odod.postluck.beans.StoreBean">
 		INSERT INTO POSDBA.STOREMENU(SM_CODE, SM_NAME, SM_PRICE, SM_SICODE)

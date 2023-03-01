@@ -1,7 +1,5 @@
 package com.odod.postluck.beans;
 
-import java.util.ArrayList;
-
 import lombok.Data;
 
 @Data
