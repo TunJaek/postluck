@@ -143,6 +143,7 @@ public class Authentication extends TransactionAssistant {
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
+			this.tranManager.rollback();
 			store.setMessage("error");
 		} finally {
 			this.tranManager.tranEnd();
@@ -199,7 +200,7 @@ public class Authentication extends TransactionAssistant {
 				mav.addObject("store", new ObjectMapper().writeValueAsString(store)); /* storeBean -> json */
 
 			}
-			this.pu.setAttribute("AccessInfo", store);
+			this.pu.setAttribute("AccesInfo", store);
 			mav.setViewName("index-service");
 		} catch (Exception e) {
 			e.printStackTrace();

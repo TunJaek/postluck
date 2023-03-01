@@ -9,6 +9,8 @@ window.onload= function(event){
 	if (getJWT()!=null&&'${AccessInfo}'!=''){
 		const accessToken=getJWT();
 		serverCallByRequest('/View/AccessCtl', 'post', accessToken);
+	}else{
+		sessionStorage.removeItem('JWT');
 	}
 }
 
@@ -288,17 +290,7 @@ window.onload= function(event){
 	font-family: 'Noto Sans KR', sans-serif
 }
 
-#loginButton::before {
-	content: "Login";
-}
 
-#loginButton:hover {
-	background-color: #1ED760;
-}
-
-#loginButton:hover::before {
-	content: "반갑습니다";
-}
 </style>
 
 	<!-- Code injected by live-server -->

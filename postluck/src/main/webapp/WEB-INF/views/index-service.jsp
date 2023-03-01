@@ -10,7 +10,6 @@
 <script src="../../resources/js/common.js"></script>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR&amp;display=swap" rel="stylesheet">
 <link rel="icon" href="../../resources/image/fabicon.png">
-<script src="resources/js/common.js"></script>
 <script type="text/javascript" src="https://static.nid.naver.com/js/naverLogin_implicit-1.0.3.js" charset="utf-8"></script>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css" />
 </head>
@@ -71,7 +70,7 @@
 			<div class="w-50 modal-dialog-centered modal-dialog-scrollable" id="regStoreInfo">
 				<div class="modal-content w-100">
 					<div class="modal-header">
-						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" onclick="regCancel()"></button>
+						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" onclick="showModal('error::매장 등록 후에 서비스 이용가능 합니다. 취소 시 메인 페이지로 돌아갑니다.매장 등록을 취소하시겠습니까?:moveIndex')"></button>
 					</div>
 					<div style="text-align: center;">
 						<div class="mt-4">
@@ -143,7 +142,7 @@
 						</div>
 					</div>
 					<div class="modal-footer justify-content-center">
-						<button type="button" class="btn btn-secondary" onclick="regCancel()">취소</button>
+						<button type="button" class="btn btn-secondary" onclick="showModal('error::매장 등록 후에 서비스 이용가능 합니다. 취소 시 메인 페이지로 돌아갑니다.매장 등록을 취소하시겠습니까?:moveIndex')">취소</button>
 						<button type="button" class="btn btn-primary" onclick="regStInfo()">등록</button>
 					</div>
 				</div>
@@ -160,9 +159,6 @@
 			document.getElementById("regStoreInfoModal").style.display = "flex"
 		}
 
-		function regCancel() {
-			document.getElementsByClassName("modal")[0].style.display = "none"
-		}
 		function checkSt() {
 			isChecked = true;
 			let storeCode = document.getElementById('storeCode');
