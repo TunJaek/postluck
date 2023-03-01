@@ -125,10 +125,15 @@
 						<div class="col-2">위치</div>
 						<div class="col-5 p-0 ">
 							<div class="d-flex">
-								<input type="text" class="form-control w-100 my-3" placeholder="매장 주소를 입력해주세요.">
-								<div class="btn btn-primary col-4 m-3">주소 검색</div>
+							<select class="form-select  w-25" id="storeLocation">
+							<option value="">위치</option>
+							<option value="L01"></option>
+							<option value="L02"></option>
+							<option value="L03"></option>
+						</select>
+								<div class="btn btn-primary col-4 m-3">편집</div>
 							</div>
-							<input type="text" class="form-control w-100 " placeholder="상세 주소를 입력해주세요.">
+							<input type="text" class="form-control w-100 " disabled>
 						</div>
 
 					</div>

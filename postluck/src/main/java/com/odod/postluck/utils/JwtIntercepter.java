@@ -1,5 +1,6 @@
 package com.odod.postluck.utils;
 
+import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 
 import javax.servlet.http.HttpServletRequest;
@@ -8,7 +9,6 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
-import org.springframework.web.util.UriUtils;
 
 import com.odod.postluck.beans.StoreBean;
 
@@ -50,7 +50,7 @@ public class JwtIntercepter implements HandlerInterceptor {
 				}
 			}else message = "error:접근 오류:비정상적인 접근 경로입니다.(get으로 접근):";
 		}else result = true;
-		message = UriUtils.encode(message, StandardCharsets.UTF_8);
+		message = URLEncoder.encode(message, StandardCharsets.UTF_8);
 		if(!result) res.sendRedirect("/?"+ message);
 		
 		return result;

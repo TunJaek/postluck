@@ -64,7 +64,7 @@ public class StoreService extends TransactionAssistant {
 		st = (StoreBean)this.sqlSession.selectList("selStoreInfo",store).get(0);
 		st.setMessage("plain::매장 정보 수정이 완료되었습니다!:");
 		model.addAttribute("store",st);
-		this.pu.setAttribute("store", st);
+		this.pu.setAttribute("AccessInfo", st);
 		System.out.println(st);
 		System.out.println(store);
 	    } else {
