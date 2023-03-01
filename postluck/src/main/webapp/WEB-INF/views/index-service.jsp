@@ -39,8 +39,10 @@
 								<!-- <button class="btn btn-lg btn-primary" type="button">Block button</button> -->
 							</div>
 						</div>
+						<div class="text-end"><button onclick="logout()" class="btn btn-sm btn-outline-dark mt-3 rounded-pill">로그아웃</button></div>
 					</div>
-					<button onclick="logout()" class="btn btn-lg btn-primary" style="margin-top: 1%">로그아웃</button>
+					
+					
 
 				</div>
 
@@ -375,15 +377,11 @@ body {
 }
 
 #foodTruckNews {
-	position: absolute;
-	top: 85%;
-	left: 50%;
-	/* background-color: black; */
+	    position: absolute;
+    right: 15%;
+    bottom: 5%;
 	color: white;
-	font-size: large;
-	z-index: 5;
 	font-size: 50px;
-	font-family: 'Noto Sans KR', sans-serif;
 	font-weight: bold;
 	cursor: pointer;
 }

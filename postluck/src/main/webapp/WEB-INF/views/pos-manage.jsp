@@ -9,7 +9,7 @@
 <title>SETTING - POS.TLUCK</title>
 <script src="/resources/js/common.js"></script>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css" />
-
+<link rel="stylesheet" href="/resources/css/main.css">
 <link rel="stylesheet" href="/resources/css/mainBootstrap.css">
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR&amp;display=swap" rel="stylesheet">
 <script>
@@ -61,7 +61,7 @@
 				<div class="dropdown menu border-bottom h-7">
 					<button class="btn dropdown-toggle h-100 w-100" type="button" data-bs-toggle="dropdown" aria-expanded="false" style="color: black">${AccessInfo.storeName}</button>
 					<ul class="dropdown-menu">
-						<li><a class="dropdown-item" href="#">Homepage</a></li>
+						<li><a class="dropdown-item">Main Page</a></li>
 						<li><a class="dropdown-item" href="#">로그아웃</a></li>
 					</ul>
 				</div>
@@ -85,7 +85,9 @@
 
 			<!-- 1. 매장관리 -->
 			<div class="mainContent" id="menu1" style="display: none;">
-
+				<div class="border-bottom p-3 h-7">
+					<h5>매장 관리</h5>
+				</div>
 				<div class="inputZone p-5 d-flex gap-3" style="flex-direction: column;">
 					<div class="row" style="align-items: center;">
 						<div class="col-2">매장명</div>
@@ -167,11 +169,12 @@
 				<div class="text-end ">
 					<button class="btn btn-outline-primary m-4" onClick="sideMenu(3)">+메뉴추가</button>
 				</div>
-				<div class="menuList">
-					<div class=" m-2">
-						<table class="table table-hover text-center">
+				<div class="menuList text-center">
+					<div class="m-2 text-center">
+						<table class="table table-hover text-center ">
 							<thead>
-								<tr>
+								<tr><th scope="col"></th>
+								<th scope="col"> 키오스크 </th>
 									<th scope="col">메뉴 이름</th>
 									<th scope="col">가격</th>
 									<th scope="col"></th>
@@ -179,6 +182,8 @@
 							</thead>
 							<tbody>
 								<tr class="align-middle">
+								<td ><span class="badge bg-success rounded-pill fs-6">대표</span></td>
+								<td>X</td>
 									<td>햄버거</td>
 									<td>80,000원</td>
 									<td>
@@ -186,6 +191,8 @@
 									</td>
 								</tr>
 								<tr class="align-middle">
+								<td><span class="badge bg-success rounded-pill fs-6">대표</span></td>
+								<td>X</td>
 									<td>햄버거</td>
 									<td>80,000원</td>
 									<td>
@@ -193,24 +200,12 @@
 									</td>
 								</tr>
 								<tr class="align-middle">
+								<td></td>
+								<td>X</td>
 									<td>햄버거</td>
 									<td>80,000원</td>
 									<td>
 										<div class="btn btn-outline-secondary">수정</div>
-									</td>
-								</tr>
-								<tr class="align-middle">
-									<td>햄버거</td>
-									<td>80,000원</td>
-									<td>
-										<div class="btn btn-outline-secondary">수정</div>
-									</td>
-								</tr>
-								<tr class="align-middle">
-									<td>햄버거</td>
-									<td>80,000원</td>
-									<td>
-										<div class="btn btn-outline-secondary" onclick="sideMenu(5)">수정</div>
 									</td>
 								</tr>
 							</tbody>
@@ -228,7 +223,7 @@
 				<div class="inputZone p-5 d-flex gap-3" style="flex-direction: column;">
 					<div class="row" style="align-items: center;">
 						<div class="col-2">메뉴명</div>
-						<input type="text" class="form-control w-25" placeholder="매장명을 입력해주세요." id="inputDefault">
+						<input type="text" class="form-control w-25" placeholder="메뉴명을 입력해주세요." id="inputDefault">
 					</div>
 					<div class="row" style="align-items: center;">
 						<div class="col-2">가격</div>
@@ -392,7 +387,7 @@
 					</div>
 				</div>
 
-				<div class="mainContentFooter">
+				<div class="mainContentFooter m-3">
 					<div class="footerChoiceTab" style="position: relative;">
 						<ul class="nav nav-tabs" role="tablist">
 							<li class="nav-item" role="presentation"><a class="nav-link" data-bs-toggle="tab" href="#home" aria-selected="false" role="tab" tabindex="-1">결제수단별</a></li>
@@ -552,12 +547,12 @@
 		let formData = new FormData();
 		console.log(salesToggle.checked)
 		if (salesToggle.checked) {
-			salesToggle.setAttribute("checked","false");
+			salesToggle.setAttribute("checked", "false");
 			console.log("true")
 			formData.append('salesLogList[0].salesState', 'C');
 		} else {
 			console.log("false")
-			salesToggle.setAttribute("checked","true");
+			salesToggle.setAttribute("checked", "true");
 			formData.append('salesLogList[0].salesState', 'O');
 		}
 		formData.append('locationList[0].locationCode', 'L01');
@@ -570,27 +565,6 @@
 	function regCancel() {
 		document.getElementsByClassName("modal")[0].style.display = "none"
 	}
-
-	// 	function addMenu(newIdx) {
-	// 		const addMenuPage = document.getElementById("addMenuPage");
-	// 		const menu2 = document.getElementById("menu2");
-	// 		if (addMenuPage.style.display == "none") {
-	// 			addMenuPage.style.display = "block";
-	// 			document.getElementById("menu" + selectedIdx).style.display = "block";
-	// 			selectedIdx = newIdx;
-	// 		} else {
-	// 			 addMenuPage none else 
-	// 		}
-	// 		if (addMenuPage.style.display == "block") {
-	// 			menu2.style.display = "none";
-	// 			const sideMenuSt = document.getElementById("menu" + newIdx);
-	// 			sideMenuSt.style.display = "none"
-	// 			selectedIdx = newIdx;
-	// 		} else {
-	// 			 addMenuPage block else 
-	// 		}
-
-	// 	}
 
 	/* function addSave(newIdx) { 
 
@@ -621,12 +595,6 @@
 	// 		// menuList 요소의 자식으로 align-middle div 요소 추가
 	// 		menuList.appendChild(alignMiddleDiv);
 	// 	}
-	const saleToggle = document.getElementById("salesToggle");
-	if ('${isOpen}' == 'true') {
-		saleToggle.checked = true;
-	} else {
-		saleToggle.checked = false;
-	}
 </script>
 
 <style>
@@ -634,11 +602,6 @@ body {
 	margin: 0px;
 	margin-bottom: 0px;
 	font-family: 'Noto Sans KR', sans-serif;
-}
-
-.main {
-	width: 100vw;
-	height: 100vh;
 }
 
 .header {
@@ -652,6 +615,7 @@ body {
 }
 
 .content {
+	background-color: white;
 	position: relative;
 	display: flex;
 	width: 100%;

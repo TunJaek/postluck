@@ -4,6 +4,8 @@
 <html lang="ko">
 
 <head>
+<meta http-equiv="page-enter" content="blendTrans(duration=0.3)">
+<meta http-equiv="page-exit" content="blendTrans(duration=0.3)">
 <meta charset="UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -11,6 +13,7 @@
 <link rel="icon" href="/resources/image/fabicon.png">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css" />
 <link rel="stylesheet" href="/resources/css/mainBootstrap.css">
+<link rel="stylesheet" href="/resources/css/main.css">
 <script src="/resources/js/common.js"></script>
 <style>
 .posMenu {
@@ -32,14 +35,7 @@
 	height: 30%;
 }
 
-.main {
-	width: 100vw;
-	height: 100vh
-}
 
-body {
-	margin: 0px;
-}
 
 .header {
 	position: relative;
@@ -95,7 +91,7 @@ body {
 </head>
 
 <body class="vsc-initialized" onload="pageInit('${param.message}');showClock()">
-	<div>
+	
 		<div class="main">
 			<div class="header">
 
@@ -179,22 +175,11 @@ body {
 			</div>
 		</div>
 
-	</div>
-
-
-
-
-
-
-	<!-- Code injected by live-server -->
-
-
-	<!-- Code injected by live-server -->
 
 	<script>
-	if('${AccessInfo.menuList}' == ''){
-		showModal('error::등록된 메뉴가 없습니다. 메뉴 등록 페이지로 이동합니다.:movePosManage');
-	}
+// 	if('${AccessInfo.menuList}' == ''){
+// 		showModal('error::등록된 메뉴가 없습니다. 메뉴 등록 페이지로 이동합니다.:movePosManage');
+// 	}
         var Target = document.getElementById("clock");
         var Target_apm = document.getElementById("apm");
         function clock() {
