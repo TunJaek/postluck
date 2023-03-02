@@ -67,12 +67,7 @@ public class Authentication extends TransactionAssistant {
 	String jwt = mav.getModel().get("jwt").toString();
 	try {
 	    store = (StoreBean) this.pu.getAttribute("AccessInfo");
-	    ArrayList<AccessLogBean> alBeanList = new ArrayList<AccessLogBean>();
-	    AccessLogBean alBean = new AccessLogBean();
-	    alBean.setAccessType('O');
-	    alBean.setAccessIP(store.getAccessLogList().get(0).getAccessIP());
-	    alBeanList.add(alBean);
-	    store.setAccessLogList(alBeanList);
+	    store.getAccessLogList().get(0).setAccessType('O');
 	    this.tranManager = this.getTransaction(false);
 	    this.tranManager.tranStart();
 	    if (this.convertToBoolean(this.sqlSession.insert("insAccessLog", store))) {
@@ -121,7 +116,7 @@ public class Authentication extends TransactionAssistant {
 		    store = null;
 		    // 사업자코드가 존재할 때 토큰 발행
 		    jwtBody = JWTBean.builder().storeCode(st.getStoreCode()).snsID(st.getSnsID()).build();
-		    this.pu.transferJWTByResponse(this.jwt.tokenIssuance(jwtBody, st.getSnsID()));
+		    this.pu.transferJWTByResponse(this.jwt.tokenIssuance(jwtBody, "JWTForPostluckFromODOD"));
 		    st.setMessage("true"); // 사업자 정보가 있음.
 		    model.addAttribute("store", st);
 
@@ -130,7 +125,7 @@ public class Authentication extends TransactionAssistant {
 		    // 사업자코드가 존재하지 않을 때 토큰 발행
 		    jwtBody = JWTBean.builder().snsID(store.getSnsID()).ceoEmail(store.getCeoEmail())
 			    .ceoName(store.getCeoName()).snsType(store.getSnsType()).build();
-		    this.pu.transferJWTByResponse(this.jwt.tokenIssuance(jwtBody, store.getSnsID()));
+		    this.pu.transferJWTByResponse(this.jwt.tokenIssuance(jwtBody,"JWTForPostluckFromODOD"));
 		    store.setMessage("false");
 		    this.pu.setAttribute("AccessInfo", store);
 		}
@@ -191,7 +186,7 @@ public class Authentication extends TransactionAssistant {
 		/* 회원정보가 없을 때, 회원 정보 등록을 위한 store bean 정보 set */
 		log.info("storeCode is null");
 		System.out.println((StoreBean) this.pu.getAttribute("AccessInfo"));
-		tokenBody = this.jwt.getTokenInfo(jwt, ((StoreBean) this.pu.getAttribute("AccessInfo")).getSnsID());
+		tokenBody = this.jwt.getTokenInfo(jwt, "JWTForPostluckFromODOD");
 		tokenInfo = new ObjectMapper().convertValue(tokenBody.get("TokenBody"), JWTBean.class);
 		store = (StoreBean) this.pu.getAttribute("AccessInfo");
 		store.setMessage("false");
@@ -233,7 +228,7 @@ public class Authentication extends TransactionAssistant {
 	    if (store != null) {
 		if (this.convertToBoolean(this.sqlSession.insert("insStore", store))) {
 		    jwtBody = JWTBean.builder().storeCode(store.getStoreCode()).snsID(store.getSnsID()).build();
-		    this.pu.transferJWTByResponse(this.jwt.tokenIssuance(jwtBody, store.getSnsID()));
+		    this.pu.transferJWTByResponse(this.jwt.tokenIssuance(jwtBody, "JWTForPostluckFromODOD"));
 		    stBeanList = this.sqlSession.selectList("selStoreInfo", store);
 		    st = stBeanList.get(0);
 		    st.setMessage("plain::매장 등록이 완료되었습니다!:");

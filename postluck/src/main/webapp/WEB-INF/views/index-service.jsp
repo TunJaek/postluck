@@ -261,8 +261,12 @@
 			}
 		}
 
-		function logout() {
+		function logoutCheck() {
 			serverCallByRequest('/View/logOut', 'post', getJWT());
+			sessionStorage.removeItem("JWT");
+		}
+		function logout(){
+			
 		}
 	</script>
 

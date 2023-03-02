@@ -6,7 +6,7 @@
 <head>
 <script>
 function isMem(){
-	if (getJWT()!=null&&'${AccessInfo}'!=''){
+	if (getJWT()!=null){
 		console.log("true")
 		const accessToken=getJWT();
 		serverCallByRequest('/View/AccessCtl', 'post', accessToken);

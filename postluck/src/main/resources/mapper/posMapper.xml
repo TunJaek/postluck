@@ -6,12 +6,11 @@
 		INSERT INTO SALESLOG(SL_STCODE, SL_LOCODE, SL_STATE, SL_DATE)
 		VALUES(#{storeCode}, #{locationList[0].locationCode}, #{salesLogList[0].salesState}, SYSDATE)
 	</insert>
-	<!-- <insert id="insMenu" parameterType="com.odod.postluck.beans.StoreBean"> -->
-	<!-- INSERT INTO POSDBA.STOREMENU(SM_STCODE, SM_CODE, SM_NAME, SM_PRICE) -->
-	<!-- VALUES(#{storeCode}, -->
-	<!-- #{menuList[0].(SELECT'M'||LPAD(NVL(SUBSTR(MAX(SM_CODE),2,2),-1)+1,2,'0') FROM STOREMENU WHERE SM_STCODE = #{storeCode})}, -->
-	<!-- #{menuList[0].menuName},#{menuList[0].menuPrice}) ; -->
-	<!-- </insert> -->
+	<insert id="insMenu" parameterType="com.odod.postluck.beans.StoreBean">
+		INSERT INTO POSDBA.STOREMENU(SM_STCODE, SM_CODE, SM_NAME, SM_PRICE)
+		VALUES(#{storeCode},(SELECT'M'||LPAD(NVL(SUBSTR(MAX(SM_CODE),2,2),-1)+1,2,'0') FROM STOREMENU WHERE SM_STCODE = #{storeCode}),
+		#{menuList[0].menuName},#{menuList[0].menuPrice}) WHERE SM_STCODE =#{storeCode} 
+	</insert>
 	<update id="updStoreInfo" parameterType="com.odod.postluck.beans.StoreBean">
 		UPDATE STORE SET ST_STNAME =#{storeName},
 		<if test="storeInfo != null">ST_INFO=#{storeInfo}</if>
@@ -19,7 +18,9 @@
 		<if test="storeInfoDetail != null">
 			ST_INFODETAIL = #{storeInfoDetail}
 		</if>
-		,<if test="storePhone!= null">ST_PHONE=#{storePhone}</if>,ST_CATEGORY=#{storeCategory}
+		,
+		<if test="storePhone!= null">ST_PHONE=#{storePhone}</if>
+		,ST_CATEGORY=#{storeCategory}
 		WHERE ST_CODE = #{storeCode}
 	</update>
 </mapper>
