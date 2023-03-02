@@ -5,10 +5,15 @@
 
 <head>
 <script>
-window.onload= function(event){
+function isMem(){
 	if (getJWT()!=null&&'${AccessInfo}'!=''){
+		console.log("true")
 		const accessToken=getJWT();
 		serverCallByRequest('/View/AccessCtl', 'post', accessToken);
+	}else{
+		console.log("false")
+		sessionStorage.clear(); 
+
 	}
 }
 
@@ -19,16 +24,17 @@ window.onload= function(event){
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>POS.TLUCK</title>
 <link rel="icon" href="../../resources/image/fabicon.png">
+<link rel="stylesheet" href="../../resources/css/main.css">
 <link rel="stylesheet" href="../../resources/css/mainBootstrap.css">
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR&amp;display=swap" rel="stylesheet">
 <script type="text/javascript" src="https://static.nid.naver.com/js/naverLogin_implicit-1.0.3.js" charset="utf-8"></script>
 <script type="text/javascript" src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css" />
 <script src="https://developers.kakao.com/sdk/js/kakao.min.js"></script>
-<script src="resources/js/common.js"></script>
+<script src="../../resources/js/common.js"></script>
 
 </head>
-<body class="vsc-initialized" onload="pageInit('${param.message}')">
+<body class="vsc-initialized" onload="pageInit('${param.message}');isMem();">
 	<div class="main">
 		<div id="left">
 			<div id="foodTruckNews">
@@ -39,7 +45,7 @@ window.onload= function(event){
 		<div id="right" style="display: flex; justify-content: center; align-items: center;">
 			<div class="loginArea" style="display: flex; flex-direction: column; width: 60%; display: flex; flex-direction: column; height: 50%;">
 				<img src="../../resources/image/indexTextLogo.png" style="margin-bottom: 3%;">
-				<div class="loginLogo" style="width: 100%;">
+				<div class="loginLogo" >
 					<div class="loginInputArea" style="display: flex; flex-direction: column; gap: 5px;">
 						<div class="loginText" style="position: relative;">사업자회원로그인</div>
 						<div id="naver_id_login" style="display: none"></div>
@@ -108,6 +114,7 @@ window.onload= function(event){
 								formData.append('snsType', 'KA');
 								formData.append('ceoEmail', response.kakao_account.email);
 								formData.append('snsID', response.id);
+								formData.append('accessLogList[0].accessIP','106.243.194.229');
 								console.log(formData);
 								serverCallByFetchAjax(formData, 'IssuanceJWT', 'post', 'afterIssuance');
 							},
@@ -145,18 +152,7 @@ window.onload= function(event){
 	</script>
 
 	<style>
-.main {
-	display: flex;
-	width: 100vw;
-	height: 100vh;
-}
 
-body {
-	width: 100vh;
-	height: 100vh;
-	margin: 0px;
-	margin-bottom: 0px;
-}
 
 .icon {
 	margin: 10px;
@@ -243,15 +239,11 @@ body {
 }
 
 #foodTruckNews {
-	position: absolute;
-	top: 85%;
-	left: 50%;
-	/* background-color: black; */
+	    position: absolute;
+    right: 15%;
+    bottom: 5%;
 	color: white;
-	font-size: large;
-	z-index: 5;
 	font-size: 50px;
-	font-family: 'Noto Sans KR', sans-serif;
 	font-weight: bold;
 	cursor: pointer;
 }
@@ -260,18 +252,6 @@ body {
 	text-decoration: underline
 }
 
-#foodTruckNewsArrow {
-	/* content: ' ───────── \00A7'; */
-	position: absolute;
-	top: 88vh;
-	left: 40vw;
-	/* background-color: black; */
-	color: white;
-	/* font-size: large; */
-	font-size: 50px;
-	font-family: 'Noto Sans KR', sans-serif;
-	font-weight: bold;
-}
 
 #logo {
 	position: relative;
@@ -314,17 +294,7 @@ body {
 	font-family: 'Noto Sans KR', sans-serif
 }
 
-#loginButton::before {
-	content: "Login";
-}
 
-#loginButton:hover {
-	background-color: #1ED760;
-}
-
-#loginButton:hover::before {
-	content: "반갑습니다";
-}
 </style>
 
 	<!-- Code injected by live-server -->

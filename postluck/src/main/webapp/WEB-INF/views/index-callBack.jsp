@@ -11,6 +11,7 @@
 <script src="resources/js/common.js"></script>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR&amp;display=swap"
 	rel="stylesheet">
+<link rel="stylesheet" href="../../resources/css/mainBootstrap.css">
 <script type="text/javascript"
 	src="https://static.nid.naver.com/js/naverLogin_implicit-1.0.3.js"
 	charset="utf-8"></script>
@@ -19,6 +20,24 @@
 </head>
 <body class="vsc-initialized" onload="showModal('${param.message}','')">
 	<div id="naver_id_login" style="display: none"></div>
+	<div class="modal fade" id="messageModal" style="background-color: rgba(0, 0, 0, 0.2)">
+			<div class="modal-dialog modal-dialog-centered" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title col-10">메세지 제목이 없습니다.</h5>
+						<button type="button" id="modalClose" class="btn-close col-1" data-bs-dismiss="modal" aria-label="Close"></button>
+					</div>
+					<div class="modal-body text-center">
+						<div class="my-2 mx-5" id="svgZone"></div>
+						<div id="alertContent">메세지 내용이 없습니다.</div>
+					</div>
+					<div class="modal-footer text-center">
+						<button type="button" id="btnCancel" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
+						<button type="button" id="btnOk" class="btn">확인</button>
+					</div>
+				</div>
+			</div>
+		</div>
 </body>
 <script>
 // 	window.onpageshow = function(event) {
