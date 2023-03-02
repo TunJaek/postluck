@@ -6,11 +6,7 @@
 		INSERT INTO SALESLOG(SL_STCODE, SL_LOCODE, SL_STATE, SL_DATE)
 		VALUES(#{storeCode}, #{locationList[0].locationCode}, #{salesLogList[0].salesState}, SYSDATE)
 	</insert>
-	<insert id="insMenu" parameterType="com.odod.postluck.beans.StoreBean">
-		INSERT INTO POSDBA.STOREMENU(SM_STCODE, SM_CODE, SM_NAME, SM_PRICE)
-		VALUES(#{storeCode},(SELECT'M'||LPAD(NVL(SUBSTR(MAX(SM_CODE),2,2),-1)+1,2,'0') FROM STOREMENU WHERE SM_STCODE = #{storeCode}),
-		#{menuList[0].menuName},#{menuList[0].menuPrice}) WHERE SM_STCODE =#{storeCode} 
-	</insert>
+
 	<update id="updStoreInfo" parameterType="com.odod.postluck.beans.StoreBean">
 		UPDATE STORE SET ST_STNAME =#{storeName},
 		<if test="storeInfo != null">ST_INFO=#{storeInfo}</if>
@@ -23,4 +19,23 @@
 		,ST_CATEGORY=#{storeCategory}
 		WHERE ST_CODE = #{storeCode}
 	</update>
+	<insert id="insLocation" parameterType="com.odod.postluck.beans.StoreBean">
+		INSERT INTO POSDBA.LOCATION (LO_STCODE,LO_CODE,LO_NAME,LO_LATITUDE,LO_LONGITUDE,LO_DETAIL)
+		VALUES(#{storeCode},(SELECT'L'||LPAD(NVL(SUBSTR(MAX(LO_CODE),2,2),-1)+1,2,'0') FROM LOCATION WHERE LO_STCODE = #{storeCode}),#{locationList[0].locationName}
+		,#{locationList[0].latitude},#{locationList[0].longitude},#{locationList[0].locationDetail})
+	</insert>
+	<select id="selMenuList" parameterType="com.odod.postluck.beans.StoreBean" resultType="com.odod.postluck.beans.MenuBean">
+	select SM_CODE as menuCode, SM_NAME as menuName, SM_PRICE as menuPrice, SM_SICODE as menuImageCode , SM_ISMAIN as isMain, SM_ISKIOSK as isKiosk, SM_ISSOLD as isSoldOut, 
+	SM_ISDELETE isDelete from STOREMENU WHERE SM_STCODE=#{storeCode}
+	</select>
+	<select id="selLocationList" parameterType="com.odod.postluck.beans.StoreBean" resultType="com.odod.postluck.beans.LocationBean">
+	select LO_CODE as locationCode, LO_NAME as locationName, LO_LATITUDE as latitude, LO_LONGITUDE as longitude, LO_DETAIL as locationDetail from location WHERE LO_STCODE=#{storeCode}
+	</select>
+	<select id="isOpen" parameterType="com.odod.postluck.beans.StoreBean" resultType="String">
+	select sl_state as salsesState from saleslog where sl_date=(select max(sl_date) from saleslog where sl_stcode= #{storeCode} GROUP BY sl_stcode);
+	</select>
+	<select id="selSchedule" parameterType="com.odod.postluck.beans.StoreBean" resultType="com.odod.postluck.beans.ScheduleBean">
+	select SC_STARTDATE as startDate, SC_ENDDATE as endDate, SC_STARTTIME as startTime, SC_ENDTIME as endTime, SC_LOCODE as location.locationCode, LO_NAME as location.locationName, 
+	LO_LATITUDE as location.latitude, LO_LONGITUDE as location.longitude, LO_DETAIL as location.locationDetail from schedule INNER JOIN LOCATION ON SC_LOCODE = LO_CODE where sc_stcode =#{storeCode}
+	</select>
 </mapper>

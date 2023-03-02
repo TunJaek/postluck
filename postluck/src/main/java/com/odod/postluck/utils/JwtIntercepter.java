@@ -28,7 +28,6 @@ public class JwtIntercepter implements HandlerInterceptor {
 	String userKey = null, message = null;
 	boolean result = false;
 	if (!req.getMethod().equals("OPTIONS")) {// API Request(preFlight -> response -> Flight)인 경우 preFlight인 경우 제외
-
 	    if (!req.getMethod().equals("GET")) {
 		userKey = "JWTForPostluckFromODOD";
 		/* 통신방식에 따라 JWT 접근방식 달리하기 */

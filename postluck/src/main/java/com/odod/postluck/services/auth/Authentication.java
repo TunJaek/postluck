@@ -2,16 +2,17 @@ package com.odod.postluck.services.auth;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.odod.postluck.beans.AccessLogBean;
 import com.odod.postluck.beans.JWTBean;
+import com.odod.postluck.beans.LocationBean;
+import com.odod.postluck.beans.MenuBean;
 import com.odod.postluck.beans.StoreBean;
 import com.odod.postluck.utils.JsonWebTokenService;
 import com.odod.postluck.utils.ProjectUtils;
@@ -51,7 +52,6 @@ public class Authentication extends TransactionAssistant {
     /* View 방식의 요청 컨트롤러 */
     public void backController(String serviceCode, ModelAndView mav) {
 	switch (serviceCode) {
-
 	case "AU03":
 	    this.accessCtl(mav);
 	    break;
@@ -60,6 +60,7 @@ public class Authentication extends TransactionAssistant {
 	    break;
 	}
     }
+ 
 
     private void logOut(ModelAndView mav) {
 	StoreBean store;
@@ -110,6 +111,7 @@ public class Authentication extends TransactionAssistant {
 	    this.tranManager.tranStart();
 	    if (this.convertToBoolean(this.sqlSession.insert("insAccessLog", store))) {
 		if (this.convertToBoolean(this.sqlSession.selectOne("isSnsId", store))) {// 만약 store정보가 등록되어있다면
+
 		    st = (StoreBean) this.sqlSession.selectList("selStoreInfo", store).get(0);
 		    System.out.println("snsId로 select해온 storeBean : " + store);
 		    System.out.println(store.getStoreCode());
@@ -121,15 +123,15 @@ public class Authentication extends TransactionAssistant {
 		    model.addAttribute("store", st);
 
 		    this.pu.setAttribute("AccessInfo", model.getAttribute("store"));
+		    this.tranManager.commit();
 		} else {
 		    // 사업자코드가 존재하지 않을 때 토큰 발행
 		    jwtBody = JWTBean.builder().snsID(store.getSnsID()).ceoEmail(store.getCeoEmail())
 			    .ceoName(store.getCeoName()).snsType(store.getSnsType()).build();
-		    this.pu.transferJWTByResponse(this.jwt.tokenIssuance(jwtBody,"JWTForPostluckFromODOD"));
+		    this.pu.transferJWTByResponse(this.jwt.tokenIssuance(jwtBody, "JWTForPostluckFromODOD"));
 		    store.setMessage("false");
 		    this.pu.setAttribute("AccessInfo", store);
 		}
-		this.tranManager.commit();
 	    } else {
 		store.setMessage("ins를 실패했습니다.");
 		System.out.println("ins 실패");
@@ -157,43 +159,37 @@ public class Authentication extends TransactionAssistant {
      * @return void
      * 
      * @param storeBean(사용자의 SNSID)을 담은 model 객체
+     * @return
      * 
      */
+
     private void accessCtl(ModelAndView mav) {
 	StoreBean store;
-	// snsId를 가지고있음
+	List<MenuBean> menuList;
+	List<LocationBean> locationList;
+//	// snsId를 가지고있음
 	String jwt = mav.getModel().get("jwt").toString();
-	Map<String, Object> tokenBody;
-	JWTBean tokenInfo;
+//	Map<String, Object> tokenBody;
+	store = (StoreBean) mav.getModel().get("store");
+	store.setSnsID(this.jwt.getTokenInfoFromJWT(jwt).getSnsID());
+	this.tranManager.tranStart();
 	try {
-	    store = (StoreBean) this.pu.getAttribute("AccessInfo");
-//			System.out.println(this.jwt.getTokenInfo(jwt,store.getSnsID()));
 	    if (this.convertToBoolean(this.sqlSession.selectOne("isSnsId", store))) {
 		// 회원정보가 있으면,
 		System.out.println("storeCode is not null");
-		List<StoreBean> stBeanList = this.sqlSession.selectList("selStoreInfo", store);
-		store = stBeanList.get(0);
+		store = (StoreBean) this.sqlSession.selectList("selStoreInfo", store).get(0);
+		menuList = this.sqlSession.selectList("selMenuList", store);
+		locationList = this.sqlSession.selectList("selLocationList", store);
+		store.setLocationList((ArrayList<LocationBean>) locationList);
+		store.setMenuList((ArrayList<MenuBean>) menuList);
 		System.out.println("store Info is " + store);
-		this.tranManager = this.getTransaction(false);
-		this.tranManager.tranStart();
-		System.out.println("stBeanList : " + stBeanList);
-		System.out.println("stBeanList의 storeBean: " + stBeanList.get(0));
 		store.setMessage("true");
 		mav.addObject("store", new ObjectMapper().writeValueAsString(store));
-		System.out.println(this.pu.getAttribute("AccessInfo"));
-
 	    } else {
-		/* 회원정보가 없을 때, 회원 정보 등록을 위한 store bean 정보 set */
-		log.info("storeCode is null");
-		System.out.println((StoreBean) this.pu.getAttribute("AccessInfo"));
-		tokenBody = this.jwt.getTokenInfo(jwt, "JWTForPostluckFromODOD");
-		tokenInfo = new ObjectMapper().convertValue(tokenBody.get("TokenBody"), JWTBean.class);
-		store = (StoreBean) this.pu.getAttribute("AccessInfo");
 		store.setMessage("false");
 		mav.addObject("store", new ObjectMapper().writeValueAsString(store)); /* storeBean -> json */
-
 	    }
-	    this.pu.setAttribute("AccesInfo", store);
+	    this.pu.setAttribute("AccessInfo", store);
 	    mav.setViewName("index-service");
 	} catch (Exception e) {
 	    e.printStackTrace();
@@ -229,10 +225,9 @@ public class Authentication extends TransactionAssistant {
 		if (this.convertToBoolean(this.sqlSession.insert("insStore", store))) {
 		    jwtBody = JWTBean.builder().storeCode(store.getStoreCode()).snsID(store.getSnsID()).build();
 		    this.pu.transferJWTByResponse(this.jwt.tokenIssuance(jwtBody, "JWTForPostluckFromODOD"));
-		    stBeanList = this.sqlSession.selectList("selStoreInfo", store);
-		    st = stBeanList.get(0);
+		    st = this.getUserInfo(model);
 		    st.setMessage("plain::매장 등록이 완료되었습니다!:");
-		    model.addAttribute("store",st);
+		    model.addAttribute("store", st);
 		    this.pu.setAttribute("AccessInfo", st);
 		} else {
 		    message = "error::매장 등록을 실패했습니다.메인페이지로 이동합니다.:moveIndex";

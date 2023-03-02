@@ -12,6 +12,8 @@
 <link rel="stylesheet" href="/resources/css/main.css">
 <link rel="stylesheet" href="/resources/css/mainBootstrap.css">
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR&amp;display=swap" rel="stylesheet">
+<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=0203ee3bafbf6d3fe50695090bc89516&libraries=services""></script>
 <script>
 	document.addEventListener('DOMContentLoaded', function() {
 		let calendarEl = document.getElementById('calendar');
@@ -32,13 +34,16 @@
 	window.onload = function() { // 페이지가 로딩되면 실행
 		printTime();
 	}
+	if('${store}'!=''){
+		jsonString = '${store}'
+	}
 </script>
 <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.1/index.global.min.js'></script>
 
 </head>
 <!-- 헤더랑 옆 클릭바 고정을 고정. -->
 
-<body class="vsc-initialized" onload="pageInit('${param.message}')">
+<body class="vsc-initialized" onload="pageInit('${param.message}');">
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
 	<div class="main">
 		<div class="header">
@@ -54,7 +59,7 @@
 				<div class="border-bottom p-3 d-flex h-7" style="justify-content: space-between;">
 					<div id="isOpenText">영업전</div>
 					<div class="form-check form-switch">
-						<input id="salesToggle" class="form-check-input" type="checkbox" onclick="updSalesLog()" style="cursor:pointer">
+						<input id="salesToggle" class="form-check-input" type="checkbox" onclick="updSalesLog()" style="cursor: pointer">
 					</div>
 				</div>
 
@@ -92,7 +97,7 @@
 					<div class="row" style="align-items: center;">
 						<div class="col-2">사업자 명</div>
 						<input type="text" class="form-control w-25" disabled value="${AccessInfo.ceoName}">
-				
+
 						<div class="col-2 ms-4">사업자번호</div>
 						<input type="text" id="storeCodeDisabled" class="form-control w-25" disabled>
 
@@ -122,18 +127,15 @@
 						</select>
 					</div>
 					<div class="row" style="align-items: center;">
-						<div class="col-2">위치</div>
+						<div class="col-2">영업위치</div>
 						<div class="col-5 p-0 ">
-							<div class="d-flex">
-							<select class="form-select  w-25" id="storeLocation">
-							<option value="">위치</option>
-							<option value="L01"></option>
-							<option value="L02"></option>
-							<option value="L03"></option>
-						</select>
-								<div class="btn btn-primary col-4 m-3">편집</div>
+							<div class="row ms-0">
+								<select class="form-select col w-25" id="storeLocation">
+								</select>
+								<div class="btn btn-primary col-4 m-3" data-bs-toggle="modal" data-bs-target="#regLocationModal">편집</div>
 							</div>
 							<input type="text" class="form-control w-100 " disabled>
+							<div class="mt-3" id="map" style="height: 40vh;"></div>
 						</div>
 
 					</div>
@@ -498,7 +500,7 @@
 
 		</div>
 		<!-- 헤더랑 옆 클릭바 고정을 고정. -->
-		<div class="modal fade" id="messageModal" style="background-color: rgba(0, 0, 0, 0.2)">
+		<div class="modal fade" id="messageModal" style="background-color: rgba(0, 0, 0, 0.2); z-index: 1080">
 			<div class="modal-dialog modal-dialog-centered" role="document">
 				<div class="modal-content">
 					<div class="modal-header">
@@ -516,6 +518,45 @@
 				</div>
 			</div>
 		</div>
+		<!-- Modal -->
+		<div class="modal fade show" id="regLocationModal"  data-bs-keyboard="false" tabindex="-1" aria-modal="true" role="dialog" style="display: none; - -bs-modal-width: 50%;">
+			<div class="modal-dialog modal-dialog-centered " style="max-width: 50%;">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title">위치 등록</h5>
+						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+					</div>
+					<div class="modal-body; px-5 my-4">
+						<div class="row p-2">
+							<div class="col-3 text-center">위치명</div>
+							<div class="col-9">
+								<input type="text" class="form-control" id="locationAlias" placeholder="위치명을 입력해주세요.">
+							</div>
+						</div>
+						<div class="row p-2">
+							<div class="col-3 text-center">주소</div>
+							<div class="col-7">
+								<input type="text" class="form-control " id="sample5_address" placeholder="주소">
+							</div>
+							<div class="col-2">
+								<input type="button" class="btn btn-primary" onclick="sample5_execDaumPostcode()" value="주소 검색">
+								<br>
+							</div>
+						</div>
+						<div class="row p-2">
+							<div class="col-3"></div>
+							<div class="col-9">
+								<input type="text" class="form-control" id="locationDetail" placeholder="상세주소를 입력해주세요." maxlength="200">
+								<div id="map1" style="height: 30vh; margin-top: 10px; display: none"></div>
+							</div>
+						</div>
+					</div>
+					<div class="modal-footer justify-content-center">
+						<button type="button" class="btn btn-primary" onclick="regLocation()">등록</button>
+					</div>
+				</div>
+			</div>
+		</div>
 	</div>
 
 </body>
@@ -523,8 +564,20 @@
 
 
 <script>
-	let storeNum = '${AccessInfo.storeCode}';
-	document.getElementById("storeCodeDisabled").value = storeNum.substring(0, 3)+ "-" + storeNum.substring(3, 5) + "-" + storeNum.substring(5, 10);
+const menuList = '${AccessInfo.menuList}';
+console.log(menuList)
+if('${AccessInfo.menuList}'!=null){
+// 	<option value="">위치</option>
+// 	<option value="L01"></option>
+// 	<option value="L02"></option>
+// 	<option value="L03"></option>
+// 	<select class="form-select col w-25" id="storeLocation">
+// 	</select>
+}
+	const storeNum = '${AccessInfo.storeCode}';
+	document.getElementById("storeCodeDisabled").value = storeNum.substring(0,
+			3)
+			+ "-" + storeNum.substring(3, 5) + "-" + storeNum.substring(5, 10);
 	let salesToggle = document.getElementById("salesToggle");
 	if ('${isOpen}' == 'false') {
 		salesToggle.setAttribute("checked", "false");
@@ -542,14 +595,54 @@
 
 		// 모든 sideMenu의 display를 none으로 설정
 
-		/* var allMenus = document.getElementById("menu" + selectedIdx);
-		for (var i = 0; i < allMenus.length; i++) {
+		/* let allMenus = document.getElementById("menu" + selectedIdx);
+		for (let i = 0; i < allMenus.length; i++) {
 			allMenus[i].style.display = "none";
 		} */
 
 		// selectIdx에 해당하는 sideMenu의 display를 block으로 설정
 		let selectedMenu = document.getElementById("menu" + selectedIdx);
 		selectedMenu.style.display = "block";
+		if (newIdx == 1) {
+			let container = document.getElementById('map'); //지도를 담을 영역의 DOM 레퍼런스
+			let options = { //지도를 생성할 때 필요한 기본 옵션
+				center : new kakao.maps.LatLng(33.450701, 126.570667), //지도의 중심좌표.
+				level : 3
+			//지도의 레벨(확대, 축소 정도)
+			};
+
+			let map = new kakao.maps.Map(container, options); //지도 생성 및 객체 리턴
+			map.relayout();
+			let geocoder = new kakao.maps.services.Geocoder();
+			// 주소로 좌표를 검색합니다
+			geocoder
+					.addressSearch(
+							'제주특별자치도 제주시 첨단로 242',
+							function(result, status) {
+								// 정상적으로 검색이 완료됐으면 
+								if (status === kakao.maps.services.Status.OK) {
+
+									let coords = new kakao.maps.LatLng(
+											result[0].y, result[0].x);
+
+									// 결과값으로 받은 위치를 마커로 표시합니다
+									let marker = new kakao.maps.Marker({
+										map : map,
+										position : coords
+									});
+
+									// 인포윈도우로 장소에 대한 설명을 표시합니다
+									let infowindow = new kakao.maps.InfoWindow(
+											{
+												content : '<div style="width:150px;text-align:center;padding:6px 0;">우리회사</div>'
+											});
+									infowindow.open(map, marker);
+
+									// 지도의 중심을 결과값으로 받은 위치로 이동시킵니다
+									map.setCenter(coords);
+								}
+							});
+		}
 
 	}
 	const category = document.getElementById('storeCategory')
@@ -563,23 +656,19 @@
 	function updSalesLog() {
 		let formData = new FormData();
 		console.log(salesToggle.checked)
-		 if (salesToggle.checked){
+		if (salesToggle.checked) {
 			console.log("false")
 			showModal("plain::영업을 시작합니다.:")
 			salesToggle.setAttribute("checked", "true");
 			formData.append('salesLogList[0].salesState', 'O');
-		}
-		else  {
+		} else {
 			console.log("true")
 			showModal("plain::영업을 종료합니다.:")
 			formData.append('salesLogList[0].salesState', 'C');
 		}
 		formData.append('locationList[0].locationCode', 'L01');
 		formData.append('storeCode', '${AccessInfo.storeCode}');
-		serverCallByFetch(formData, '/Api/UpdSalesLog', 'post', 'aaa', header);
-	}
-	function aaa(){
-		
+		serverCallByFetch(formData, '/Api/UpdSalesLog', 'post', '', header);
 	}
 	function regCancel() {
 		document.getElementsByClassName("modal")[0].style.display = "none"
@@ -622,6 +711,92 @@
 		showModal(jsonData.message);
 		document.getElementById("storeNameDropDown").innerText = jsonData.storeName;
 
+	}
+	function sample5_execDaumPostcode() {
+		let mapContainer = document.getElementById('map1'), // 지도를 표시할 div
+		mapOption = {
+			center : new daum.maps.LatLng(37.537187, 127.005476), // 지도의 중심좌표
+			level : 5
+		// 지도의 확대 레벨
+		};
+		//지도를 미리 생성
+		let map = new daum.maps.Map(mapContainer, mapOption);
+		//주소-좌표 변환 객체를 생성
+		let geocoder = new daum.maps.services.Geocoder();
+		//마커를 미리 생성
+		let marker = new daum.maps.Marker({
+			position : new daum.maps.LatLng(37.537187, 127.005476),
+			map : map
+		});
+		new daum.Postcode({
+			oncomplete : function(data) {
+				let addr = data.address; // 최종 주소 변수
+				// 주소 정보를 해당 필드에 넣는다.
+				document.getElementById("sample5_address").value = addr;
+				// 주소로 상세 정보를 검색
+				geocoder.addressSearch(data.address, function(results, status) {
+					// 정상적으로 검색이 완료됐으면
+					if (status === daum.maps.services.Status.OK) {
+						let result = results[0]; //첫번째 결과의 값을 활용
+						// 해당 주소에 대한 좌표를 받아서
+						let coords = new daum.maps.LatLng(result.y, result.x);
+						// 지도를 보여준다.
+						mapContainer.style.display = "block";
+						map.relayout();
+						// 지도 중심을 변경한다.
+						map.setCenter(coords);
+						// 마커를 결과값으로 받은 위치로 옮긴다.
+						marker.setPosition(coords)
+						map.relayout();
+					}
+				});
+			}
+		}).open();
+
+	}
+	function regLocation() {
+		locationName = document.getElementById("sample5_address").value;
+		locationAlias = document.getElementById("locationAlias").value;
+		locationDetail = document.getElementById("locationDetail").value;
+		if (locationName != '') {
+			if (locationAlias != '') {
+				var geocoder = new kakao.maps.services.Geocoder();
+				// 주소로 좌표를 검색합니다
+				geocoder.addressSearch(locationName,
+						function(result, status) {
+							// 정상적으로 검색이 완료됐으면 
+							if (status === kakao.maps.services.Status.OK) {
+								var coords = new kakao.maps.LatLng(result[0].y,
+										result[0].x);
+								formData = new FormData;
+								formData.append("storeCode", storeNum);
+								formData.append("locationList[0].locationDetail",
+										locationDetail);
+								formData.append("locationList[0].latitude",
+										result[0].x);
+								formData.append("locationList[0].longitude",
+										result[0].y);
+								formData.append("locationList[0].locationName",
+										locationAlias);
+								serverCallByFetch(formData, "/Api/RegLocation",
+										"post", "afterRegLocation", header);
+							}
+						});
+			} else {
+				showModal('error::위치명을 입력해주세요.:');
+			}
+		} else {
+			showModal('error::주소를 입력해주세요.:');
+		}
+	}
+	function afterRegLocation(jsonData){
+		showModal(jsonData);
+		document.getElementById("sample5_address").value ='';
+		document.getElementById("locationAlias").value='';
+		document.getElementById("locationDetail").value='';
+		document.getElementById("regLocationModal").setAttribute("class","modal fade");
+		document.getElementById("regLocationModal").style.display ="none";
+		document.getElementsByClassName("modal-backdrop fade show")[0].setAttribute("class","modal-backdrop fade hide");
 	}
 	/* function addSave(newIdx) { 
 

@@ -16,9 +16,9 @@ function getPublicIp(jsonData) {
 	publicIp = jsonData.ip
 }
 
-let header ;
-if (getJWT()) {                  
-	header= new Headers(getJWT());
+let header;
+if (getJWT()) {
+	header = new Headers(getJWT());
 }
 //commit test 
 /* HttpRequest를 이용한 서버 요청
@@ -83,10 +83,10 @@ function serverCallByFetchAjax(formData, jobCode, methodType, callBackFunc) {
 			const jwt = res.headers.get("JWTForPostluck");
 			if (jwt != '') sessionStorage.setItem('JWT', jwt);
 		}
-//		if (res.headers.get("AccessInfo") != null) {
-//			const AccessInfo = res.headers.get("AccessInfo");
-//			if (AccessInfo != '') sessionStorage.setItem('AccessInfo', AccessInfo);
-//		} 
+		//		if (res.headers.get("AccessInfo") != null) {
+		//			const AccessInfo = res.headers.get("AccessInfo");
+		//			if (AccessInfo != '') sessionStorage.setItem('AccessInfo', AccessInfo);
+		//		} 
 		console.log(res);
 		return res.json();
 	})
@@ -96,8 +96,8 @@ function serverCallByFetchAjax(formData, jobCode, methodType, callBackFunc) {
 			showModal('error:오류:오류가 발생했습니다:moveIndex');
 		})
 }
-function moveIndex (){
-	serverCallByRequest("/Index","get","");
+function moveIndex() {
+	serverCallByRequest("/Index", "get", "");
 }
 /* JWT 사용한 서버 요청 */
 function serverCallByFetch(formData, jobCode, methodType, callBackFunc, header) {
@@ -192,13 +192,12 @@ function messageController(turn, messageString) {
 
 /* 문자열이 JSON 데이터 타입인지 여부 */
 function isJsonString(str) {
-	let result;
 	try {
-		result = (typeof JSON.parse(str) === 'object');
+		JSON.parse(str);
 	} catch (e) {
-		result = false;
+		return false;
 	}
-	return result;
+	return true;
 }
 
 /* 서버로 전송할 데이터 길이의 유효성 판단 */
@@ -403,12 +402,13 @@ function modalClose() {
 }
 
 function showModal(messageString) {
-	if(isJsonString(messageString)){
-		console.log("this is JsonString")
-		if(messageString.message!=null){	
-			console.log(messageString.message)		
-		messageString = messageString.message;
+	if (typeof messageString === 'object') {
+		if (messageString.message != null) {
+			console.log(messageString.message)
+			messageString = messageString.message;
 		}
+	} else {
+		console.log("this is not JsonString");
 	}
 	if (messageString != '') {
 		console.log(messageString);
@@ -451,10 +451,10 @@ function showModal(messageString) {
 					result += ".<br>";
 				}
 				result += messages[i].trim();
-				
+
 			}
-		}else{
-			result=message[2];
+		} else {
+			result = message[2];
 		}
 
 		document.getElementById('alertContent').innerHTML = result;

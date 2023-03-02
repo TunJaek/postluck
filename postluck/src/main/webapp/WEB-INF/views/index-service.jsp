@@ -153,7 +153,7 @@
 		jsonString = '${store}';
 		let isChecked = false;
 		const jsonData = JSON.parse(jsonString);
-		if ('${AccessInfo.storeCode}'!='') {
+		if (jsonData.storeCode!='') {
 			document.getElementById("regStoreInfoModal").style.display = "none"
 		} else {
 			document.getElementById("regStoreInfoModal").style.display = "flex"

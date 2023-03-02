@@ -79,8 +79,8 @@ public class MenuService extends TransactionAssistant {
 
 			if (this.convertToBoolean(this.sqlSession.insert("insMenu", menu))) {
 
-			} else {
-				menu.setMessage(message);
+//			} else {
+//				menu.setMessage(message);
 				/* insMenu else */ }
 		} catch (Exception e) {
 			e.printStackTrace();
