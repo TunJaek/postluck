@@ -125,7 +125,7 @@ function serverCallByFetchAjaxUsingJson(jsonString, jobCode, methodType, callBac
 	fetch(jobCode, {
 		method: methodType,
 		headers: {
-			'Content-Type': 'application/json'
+			'Content-Type': 'application/json;charset=UTF-8'
 		},
 		body: jsonString
 	}).then(response => response.json())
@@ -394,51 +394,72 @@ function kakaoLogout() {
 		Kakao.Auth.setAccessToken(undefined);
 	}
 }
-function modalClose() {
-	const modal = document.querySelector("#messageModal");
-	modal.setAttribute("class", "modal fade hide");
-	setTimeout(() => { modal.style.display = "none" }, 200);
 
-}
 
 function showModal(messageString) {
+	const messageModalString = `
+  <div class="modal fade" id="messageModal" style="background-color: rgba(0, 0, 0, 0.2); z-index: 1080">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title col-10">메세지 제목이 없습니다.</h5>
+          <button type="button" id="modalClose" class="btn-close col-1" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body text-center">
+          <div class="my-2 mx-5" id="svgZone"></div>
+          <div id="alertContent">메세지 내용이 없습니다.</div>
+        </div>
+        <div class="modal-footer text-center">
+          <button type="button" id="btnCancel" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
+          <button type="button" id="btnOk" class="btn">확인</button>
+        </div>
+      </div>
+    </div>
+  </div>
+`;
+	document.body.innerHTML += messageModalString;
 	if (typeof messageString === 'object') {
-		if (messageString.message != null) {
-			console.log(messageString.message)
-			messageString = messageString.message;
+		try {
+			if (messageString.message != null) {
+				console.log(messageString.message)
+				messageString = messageString.message;
+			}
+		} catch (e) {
+
 		}
+
 	} else {
 		console.log("this is not JsonString");
 	}
-	if (messageString != '') {
+	const messageModal = new bootstrap.Modal(document.querySelector('#messageModal'));
+	if (messageString != null) {
 		console.log(messageString);
 		let message = messageString.split(':');
 		console.log(message);
 		const btnOk = document.getElementById("btnOk");
 		const btnCancel = document.getElementById("btnCancel");
-		const btnClose = document.getElementById("modalClose");
-		btnClose.addEventListener("click", modalClose)
+		messageModal.show();
 		if (message[0] == 'warn') {
 			document.getElementById("svgZone").innerHTML = '<i class="bi bi-exclamation-circle fs-1" style="color: var(--bs-danger)"></i>';
 			btnOk.setAttribute("class", "btn btn-danger");
-			btnOk.addEventListener("click", modalClose);
-			btnCancel.addEventListener("click", modalClose);
+			btnOk.addEventListener("click", messageModal.hide());
+			btnCancel.addEventListener("click", messageModal.hide());
 			btnOk.addEventListener("click", window[message[message.length - 1]]);
 		} else if (message[0] == 'plain') {
 			document.getElementById("svgZone").innerHTML = '<i class="bi bi-check-circle fs-1" style="color: var(--bs-primary)"></i>';
 			btnOk.setAttribute("class", "btn btn-primary");
-			btnOk.addEventListener("click", modalClose);
+			btnOk.addEventListener("click", messageModal.hide());
 			btnOk.addEventListener("click", window[message[message.length - 1]]);
 			btnCancel.setAttribute("class", "btn btn-secondary d-none");
 		} else if (message[0] == 'check') {
 			btnOk.setAttribute("class", "btn btn-primary");
-			btnOk.addEventListener("click", modalClose);
+			btnOk.addEventListener("click", messageModal.hide());
 			btnOk.addEventListener("click", window[message[message.length - 1]]);
-			btnCancel.addEventListener("click", modalClose);
+			btnCancel.addEventListener("click", messageModal.hide());
 		} else if (message[0] == 'error') {
 			document.getElementById("svgZone").innerHTML = '<i class="bi bi-x-circle fs-1" style="color: var(--bs-danger)"></i>';
 			btnOk.setAttribute("class", "btn btn-danger");
-			btnOk.addEventListener("click", modalClose);
+			btnOk.addEventListener("click", messageModal.hide());
 			btnOk.addEventListener("click", window[message[message.length - 1]]);
 			btnCancel.setAttribute("class", "btn btn-secondary d-none");
 		}
@@ -458,10 +479,16 @@ function showModal(messageString) {
 		}
 
 		document.getElementById('alertContent').innerHTML = result;
-		const modal = document.querySelector('#messageModal');
-		modal.style.display = "block";  // modal 요소를 화면에 표시
-		setTimeout(() => { modal.classList.add("show") }, 10);
+
+
 	}
+}
+
+function modalClose() {
+	const messageModal = new bootstrap.Modal(document.querySelector('#messageModal'));
+	messageModal.addEventListener('shown.bs.modal', function() {
+		messageModal.hide();
+	});
 }
 
 

@@ -15,35 +15,23 @@
 <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=0203ee3bafbf6d3fe50695090bc89516&libraries=services""></script>
 <script>
-	document.addEventListener('DOMContentLoaded', function() {
-		let calendarEl = document.getElementById('calendar');
-		let calendar = new FullCalendar.Calendar(calendarEl, {
-			initialView : 'dayGridMonth'
-		});
-		calendar.render();
+if('${store}'!=''){
+	jsonString = '${store}'
+}
+document.addEventListener('DOMContentLoaded', function() {
+	let calendarEl = document.getElementById('calendar');
+	let calendar = new FullCalendar.Calendar(calendarEl, {
+		initialView : 'dayGridMonth'
 	});
-	function printTime() {
-		let clock = document.getElementById("clock"); // 출력할 장소 선택
-		let now = new Date(); // 현재시간
-		let nowTime = now.getFullYear() + "년 " + (now.getMonth() + 1) + "월 "
-				+ now.getDate() + "일 " + "- " + now.getHours() + "시 "
-				+ now.getMinutes() + "분 " + now.getSeconds() + "초";
-		clock.innerHTML = nowTime; // 현재시간을 출력
-		setTimeout("printTime()", 1000); // setTimeout(“실행할함수”,시간) 시간은1초의 경우 1000
-	}
-	window.onload = function() { // 페이지가 로딩되면 실행
-		printTime();
-	}
-	if('${store}'!=''){
-		jsonString = '${store}'
-	}
+	calendar.render();
+});
 </script>
 <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.1/index.global.min.js'></script>
 
 </head>
 <!-- 헤더랑 옆 클릭바 고정을 고정. -->
 
-<body class="vsc-initialized" onload="pageInit('${param.message}');">
+<body class="vsc-initialized">
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
 	<div class="main">
 		<div class="header">
@@ -64,7 +52,7 @@
 				</div>
 
 				<div class="dropdown menu border-bottom h-7">
-					<button class="btn dropdown-toggle h-100 w-100" id="storeNameDropDown" type="button" data-bs-toggle="dropdown" aria-expanded="false" style="color: black">${AccessInfo.storeName}</button>
+					<button class="btn dropdown-toggle h-100 w-100" id="storeNameDropDown" type="button" data-bs-toggle="dropdown" aria-expanded="false" style="color: black">${storeName}</button>
 					<ul class="dropdown-menu">
 						<li><a class="dropdown-item">Main Page</a></li>
 						<li><a class="dropdown-item" href="#">로그아웃</a></li>
@@ -96,7 +84,7 @@
 				<div class="inputZone p-5 d-flex gap-3" style="flex-direction: column;">
 					<div class="row" style="align-items: center;">
 						<div class="col-2">사업자 명</div>
-						<input type="text" class="form-control w-25" disabled value="${AccessInfo.ceoName}">
+						<input type="text" class="form-control w-25" disabled id="ceoName">
 
 						<div class="col-2 ms-4">사업자번호</div>
 						<input type="text" id="storeCodeDisabled" class="form-control w-25" disabled>
@@ -104,11 +92,11 @@
 					</div>
 					<div class="row" style="align-items: center;">
 						<div class="col-2">매장명</div>
-						<input type="text" id="storeName" class="form-control w-25" placeholder="매장명을 입력해주세요." maxlength="50" value="${AccessInfo.storeName}">
+						<input type="text" id="storeName" class="form-control w-25" placeholder="매장명을 입력해주세요." maxlength="50">
 					</div>
 					<div class="row" style="align-items: center;">
 						<div class="col-2">전화번호</div>
-						<input type="text" id="storePhone" class="form-control w-25" placeholder="전화번호를 입력해주세요." value="${AccessInfo.storePhone}" maxlength="11">
+						<input type="text" id="storePhone" class="form-control w-25" placeholder="전화번호를 입력해주세요." maxlength="11">
 
 					</div>
 					<div class="row" style="align-items: center;">
@@ -130,12 +118,12 @@
 						<div class="col-2">영업위치</div>
 						<div class="col-5 p-0 ">
 							<div class="row ms-0">
-								<select class="form-select col w-25" id="storeLocation">
+								<select class="form-select col w-25" id="storeLocation" onchange="showLocationName()">
 								</select>
-								<div class="btn btn-primary col-4 m-3" data-bs-toggle="modal" data-bs-target="#regLocationModal">편집</div>
+								<div class="btn btn-primary col-4 m-3" data-bs-toggle="modal" data-bs-target="#locationListModal" onclick="showLocationList()">편집</div>
 							</div>
-							<input type="text" class="form-control w-100 " disabled>
-							<div class="mt-3" id="map" style="height: 40vh;"></div>
+							<input type="text" class="form-control w-100 " id="locationName" disabled>
+							<div class="mt-3" id="map" style="height: 40vh; display:none"></div>
 						</div>
 
 					</div>
@@ -148,13 +136,13 @@
 					<div class="row" style="align-items: center;">
 						<div class="col-2">매장 한 줄소개</div>
 
-						<input type="text" class="form-control w-25" id="storeInfo" placeholder="매장 한 줄 소개를  입력해주세요." value="${AccessInfo.storeInfo}" maxlength="30">
+						<input type="text" class="form-control w-25" id="storeInfo" placeholder="매장 한 줄 소개를  입력해주세요." maxlength="30">
 
 					</div>
 					<div class="row" style="align-items: center;">
 						<div class="col-2 mb-3">매장 상세정보</div>
 						<div class="form-group w-50 p-0">
-							<textarea class="form-control" id="storeInfoDetail" rows="3" maxlength="2000">${AccessInfo.storeInfoDetail}</textarea>
+							<textarea class="form-control" id="storeInfoDetail" rows="3" maxlength="2000"></textarea>
 
 						</div>
 					</div>
@@ -176,7 +164,7 @@
 				<div class="border p-3 " style="height: 7%;">
 					<h5>
 						메뉴관리
-						</h2>
+						</h5>
 				</div>
 
 				<div class="text-end ">
@@ -184,45 +172,8 @@
 				</div>
 				<div class="menuList text-center">
 					<div class="m-2 text-center">
-						<table class="table table-hover text-center ">
-							<thead>
-								<tr>
-									<th scope="col"></th>
-									<th scope="col">키오스크</th>
-									<th scope="col">메뉴 이름</th>
-									<th scope="col">가격</th>
-									<th scope="col"></th>
-								</tr>
-							</thead>
-							<tbody>
-								<tr class="align-middle">
-									<td><span class="badge bg-success rounded-pill fs-6">대표</span></td>
-									<td>X</td>
-									<td>햄버거</td>
-									<td>80,000원</td>
-									<td>
-										<div class="btn btn-outline-secondary">수정</div>
-									</td>
-								</tr>
-								<tr class="align-middle">
-									<td><span class="badge bg-success rounded-pill fs-6">대표</span></td>
-									<td>X</td>
-									<td>햄버거</td>
-									<td>80,000원</td>
-									<td>
-										<div class="btn btn-outline-secondary">수정</div>
-									</td>
-								</tr>
-								<tr class="align-middle">
-									<td></td>
-									<td>X</td>
-									<td>햄버거</td>
-									<td>80,000원</td>
-									<td>
-										<div class="btn btn-outline-secondary">수정</div>
-									</td>
-								</tr>
-							</tbody>
+						<table class="table table-hover text-center " id="menuList">
+							
 						</table>
 					</div>
 				</div>
@@ -317,16 +268,12 @@
 					</div>
 					<div class="paymentDetail" style="width: 60%">
 						<div class="w-100 p-4">
-
 							<h5 class="fw-bold">결제 상세</h5>
 							<hr>
 							<div>
 								<div>2023.02.02.10:17</div>
 								<div>인천광역시 미추홀구 학익동</div>
 							</div>
-
-
-
 						</div>
 						<div>
 							<div class="p-4 d-flex flex-column gap-3">
@@ -338,7 +285,6 @@
 								<div>감자햄버거 40,000원 x 3</div>
 								<div>감자햄버거 40,000원 x 4</div>
 								<div>감자햄버거 40,000원 x 1</div>
-
 								<hr>
 								<div class="align-items-end mt-3">
 									<div>
@@ -495,48 +441,30 @@
 				</div>
 			</div>
 			<!-- 4. 매출분석 -->
-
-
-
 		</div>
 		<!-- 헤더랑 옆 클릭바 고정을 고정. -->
-		<div class="modal fade" id="messageModal" style="background-color: rgba(0, 0, 0, 0.2); z-index: 1080">
-			<div class="modal-dialog modal-dialog-centered" role="document">
-				<div class="modal-content">
-					<div class="modal-header">
-						<h5 class="modal-title col-10">메세지 제목이 없습니다.</h5>
-						<button type="button" id="modalClose" class="btn-close col-1" data-bs-dismiss="modal" aria-label="Close"></button>
-					</div>
-					<div class="modal-body text-center">
-						<div class="my-2 mx-5" id="svgZone"></div>
-						<div id="alertContent">메세지 내용이 없습니다.</div>
-					</div>
-					<div class="modal-footer text-center">
-						<button type="button" id="btnCancel" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
-						<button type="button" id="btnOk" class="btn">확인</button>
-					</div>
-				</div>
-			</div>
-		</div>
-		<!-- Modal -->
-		<div class="modal fade show" id="regLocationModal"  data-bs-keyboard="false" tabindex="-1" aria-modal="true" role="dialog" style="display: none; - -bs-modal-width: 50%;">
+		<!--  메세지 모달 -->
+		
+
+		<!-- 위치 등록 Modal -->
+		<div class="modal fade show" id="regLocationModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-modal="true" role="dialog" style="display: none; - -bs-modal-width: 50%; z-index: 1070">
 			<div class="modal-dialog modal-dialog-centered " style="max-width: 50%;">
 				<div class="modal-content">
 					<div class="modal-header">
-						<h5 class="modal-title">위치 등록</h5>
-						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+						<h5 class="modal-title" id="regModalTitle"></h5>
+						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="regCancel"></button>
 					</div>
 					<div class="modal-body; px-5 my-4">
 						<div class="row p-2">
 							<div class="col-3 text-center">위치명</div>
 							<div class="col-9">
-								<input type="text" class="form-control" id="locationAlias" placeholder="위치명을 입력해주세요.">
+								<input type="text" class="form-control" id="reglocationName">
 							</div>
 						</div>
 						<div class="row p-2">
 							<div class="col-3 text-center">주소</div>
 							<div class="col-7">
-								<input type="text" class="form-control " id="sample5_address" placeholder="주소">
+								<input type="text" class="form-control " id="locationAddr" placeholder="주소">
 							</div>
 							<div class="col-2">
 								<input type="button" class="btn btn-primary" onclick="sample5_execDaumPostcode()" value="주소 검색">
@@ -552,8 +480,20 @@
 						</div>
 					</div>
 					<div class="modal-footer justify-content-center">
-						<button type="button" class="btn btn-primary" onclick="regLocation()">등록</button>
+						<button type="button" class="btn btn-primary" id="locationServerCall"></button>
 					</div>
+				</div>
+			</div>
+		</div>
+		<!-- 위치 리스트 Modal -->
+		<div class="modal fade show" id="locationListModal" tabindex="-1" style="display: none; z-index: 1060;">
+			<div class="modal-dialog modal-dialog-centered" style="max-width: 40%;">
+				<div class="modal-content ">
+					<div class="modal-header">
+						<h5 class="modal-title" id="modifyModalTitle">위치 편집</h5>
+						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+					</div>
+					<div class="modal-body" style="max-height: 60vh; overflow-y: auto" id="locations"></div>
 				</div>
 			</div>
 		</div>
@@ -564,17 +504,15 @@
 
 
 <script>
-const menuList = '${AccessInfo.menuList}';
-console.log(menuList)
-if('${AccessInfo.menuList}'!=null){
-// 	<option value="">위치</option>
-// 	<option value="L01"></option>
-// 	<option value="L02"></option>
-// 	<option value="L03"></option>
-// 	<select class="form-select col w-25" id="storeLocation">
-// 	</select>
-}
-	const storeNum = '${AccessInfo.storeCode}';
+	if (${store} != '') {
+		jsonString = '${store}';
+	}
+	if (jsonString != '') {
+		document.getElementById("storeNameDropDown").innerText = JSON
+				.parse(jsonString).storeName;
+	}
+	let jsonData ;
+	const storeNum = JSON.parse(jsonString).storeCode;
 	document.getElementById("storeCodeDisabled").value = storeNum.substring(0,
 			3)
 			+ "-" + storeNum.substring(3, 5) + "-" + storeNum.substring(5, 10);
@@ -588,7 +526,16 @@ if('${AccessInfo.menuList}'!=null){
 	}
 
 	let selectedIdx = 0;
+	
+	const regLocationModal = new bootstrap.Modal(document.getElementById('regLocationModal'))
+	function setStoreInfo(JsonData){
+		jsonData = JsonData;
+	}
 	function sideMenu(newIdx) {
+		 let jsonData = JSON.parse(jsonString);
+		 const formData = new FormData;
+		 formData.append("storeCode",storeNum);
+		 serverCallByFetch(formData, '/Api/GetStoreInfo', 'post','setStoreInfo', header);
 		document.getElementById("menu" + selectedIdx).style.display = "none";
 		document.getElementById("menu" + newIdx).style.display = "block";
 		selectedIdx = newIdx;
@@ -603,10 +550,43 @@ if('${AccessInfo.menuList}'!=null){
 		// selectIdx에 해당하는 sideMenu의 display를 block으로 설정
 		let selectedMenu = document.getElementById("menu" + selectedIdx);
 		selectedMenu.style.display = "block";
+
 		if (newIdx == 1) {
-			let container = document.getElementById('map'); //지도를 담을 영역의 DOM 레퍼런스
+			jsonData = JSON.parse(jsonString);
+			document.getElementById("ceoName").value = jsonData.ceoName;
+			document.getElementById("storeName").value = jsonData.storeName;
+			document.getElementById("storePhone").value = jsonData.storePhone;
+			document.getElementById("storeInfo").value = jsonData.storeInfo;
+			document.getElementById("storeCategory").value = jsonData.storeCategory;
+			
+			let locationList = jsonData.locationList;
+			if(locationList.length>0){
+			document.getElementById("map").style.display ="block";
+	
+			const storeLocation = document.getElementById("storeLocation");
+			const optionEmpty = document.createElement("option");
+			let container = document.getElementById('map');
+			const selectTag = document.getElementById("storeLocation");
+			const location = locationList[0]; //바꿔야함!!!!!!!!!!!!!!!!!!
+			const locationName = location.locationName;
+			let locationDetail =location.locationDetail;
+			optionEmpty.innerText = "위치";
+			storeLocation.appendChild(optionEmpty);
+			while (storeLocation.firstChild) {
+				storeLocation.removeChild(storeLocation.firstChild);
+			}
+			for (let i = 0; i < jsonData.locationList.length; i++) {
+				const option = document.createElement("option");
+				option.setAttribute("value",
+						jsonData.locationList[i].locationCode);
+				option.setAttribute("idx", i);
+				option.innerText = jsonData.locationList[i].locationName;
+				storeLocation.appendChild(option);
+			}
+			//지도를 담을 영역의 DOM 레퍼런스
 			let options = { //지도를 생성할 때 필요한 기본 옵션
-				center : new kakao.maps.LatLng(33.450701, 126.570667), //지도의 중심좌표.
+				center : new kakao.maps.LatLng(location.latitude,
+						location.longitude), //지도의 중심좌표.
 				level : 3
 			//지도의 레벨(확대, 축소 정도)
 			};
@@ -617,31 +597,88 @@ if('${AccessInfo.menuList}'!=null){
 			// 주소로 좌표를 검색합니다
 			geocoder
 					.addressSearch(
-							'제주특별자치도 제주시 첨단로 242',
+							location.locationAddr,
 							function(result, status) {
 								// 정상적으로 검색이 완료됐으면 
 								if (status === kakao.maps.services.Status.OK) {
-
-									let coords = new kakao.maps.LatLng(
-											result[0].y, result[0].x);
-
+									let coords = new kakao.maps.LatLng(result[0].y,
+											result[0].x);
 									// 결과값으로 받은 위치를 마커로 표시합니다
 									let marker = new kakao.maps.Marker({
 										map : map,
 										position : coords
 									});
-
 									// 인포윈도우로 장소에 대한 설명을 표시합니다
 									let infowindow = new kakao.maps.InfoWindow(
 											{
-												content : '<div style="width:150px;text-align:center;padding:6px 0;">우리회사</div>'
+												content : '<div style="width:150px;text-align:center;padding:6px 0;">'
+														+ locationName + '</div>'
 											});
 									infowindow.open(map, marker);
-
 									// 지도의 중심을 결과값으로 받은 위치로 이동시킵니다
 									map.setCenter(coords);
 								}
 							});
+			showLocationName()
+			}
+		}else if(newIdx ==2){
+			console.log("newIdx == 2")
+			
+			const menuList = jsonData.menuList;
+			const menuListDiv = document.getElementById("menuList");
+			const tbody = document.createElement("tbody");
+
+			menuList.forEach(item => {
+			  const tr = document.createElement("tr");
+			  tr.className = "align-middle";
+
+			  const td1 = document.createElement("td");
+			  if(item.isMain=='Y'){
+				  const badge = document.createElement("span");
+				  badge.className = "badge bg-success rounded-pill fs-6";
+				  badge.textContent ='대표';
+				  td1.appendChild(badge);
+			  }
+			  tr.appendChild(td1);
+
+			  const td2 = document.createElement("td");
+			  if(item.isKiosk=='Y'){
+				  td2.textContent ='O';
+			  }else{
+				  td2.textContent='X';
+			  }
+			  tr.appendChild(td2);
+
+			  const td3 = document.createElement("td");
+			  td3.textContent = item.menuName;
+			  tr.appendChild(td3);
+
+			  const td4 = document.createElement("td");
+			  td4.textContent = item.menuPrice;
+			  tr.appendChild(td4);
+
+			  const td5 = document.createElement("td");
+			  const btn = document.createElement("div");
+			  btn.className = "btn btn-outline-secondary";
+			  btn.textContent = "수정";
+			  td5.appendChild(btn);
+			  tr.appendChild(td5);
+
+			  tbody.appendChild(tr);
+			 
+			});
+			menuListDiv.innerHTML = "";
+			menuListDiv.innerHTML+=`<thead>
+
+				   <tr>
+				      <th scope="col"></th>
+				      <th scope="col">키오스크</th>
+				      <th scope="col">메뉴 이름</th>
+				      <th scope="col">가격</th>
+				      <th scope="col"></th>
+				   </tr>
+				</thead>`;
+			menuListDiv.appendChild(tbody);
 		}
 
 	}
@@ -651,6 +688,55 @@ if('${AccessInfo.menuList}'!=null){
 		if (categoryOptions[i].value == '${AccessInfo.storeCategory}') {
 			categoryOptions[i].selected = "true";
 		}
+	}
+	function showLocationName() {
+		let jsonData = JSON.parse(jsonString);
+		let locationList = jsonData.locationList;
+		let container = document.getElementById('map');
+		const selectTag = document.getElementById("storeLocation");
+		const location = locationList[selectTag.selectedIndex];
+		const locationName = location.locationName;
+		let locationDetail =location.locationDetail;
+		if(location.locationDetail == null){
+			locationDetail ='';
+		}
+		document.getElementById("locationName").value = location.locationAddr+" " + locationDetail;
+		//지도를 담을 영역의 DOM 레퍼런스
+		let options = { //지도를 생성할 때 필요한 기본 옵션
+			center : new kakao.maps.LatLng(location.latitude,
+					location.longitude), //지도의 중심좌표.
+			level : 3
+		//지도의 레벨(확대, 축소 정도)
+		};
+
+		let map = new kakao.maps.Map(container, options); //지도 생성 및 객체 리턴
+		map.relayout();
+		let geocoder = new kakao.maps.services.Geocoder();
+		// 주소로 좌표를 검색합니다
+		geocoder
+				.addressSearch(
+						location.locationAddr,
+						function(result, status) {
+							// 정상적으로 검색이 완료됐으면 
+							if (status === kakao.maps.services.Status.OK) {
+								let coords = new kakao.maps.LatLng(result[0].y,
+										result[0].x);
+								// 결과값으로 받은 위치를 마커로 표시합니다
+								let marker = new kakao.maps.Marker({
+									map : map,
+									position : coords
+								});
+								// 인포윈도우로 장소에 대한 설명을 표시합니다
+								let infowindow = new kakao.maps.InfoWindow(
+										{
+											content : '<div style="width:150px;text-align:center;padding:6px 0;">'
+													+ locationName + '</div>'
+										});
+								infowindow.open(map, marker);
+								// 지도의 중심을 결과값으로 받은 위치로 이동시킵니다
+								map.setCenter(coords);
+							}
+						});
 	}
 
 	function updSalesLog() {
@@ -667,7 +753,7 @@ if('${AccessInfo.menuList}'!=null){
 			formData.append('salesLogList[0].salesState', 'C');
 		}
 		formData.append('locationList[0].locationCode', 'L01');
-		formData.append('storeCode', '${AccessInfo.storeCode}');
+		formData.append('storeCode', storeNum);
 		serverCallByFetch(formData, '/Api/UpdSalesLog', 'post', '', header);
 	}
 	function regCancel() {
@@ -675,7 +761,6 @@ if('${AccessInfo.menuList}'!=null){
 	}
 	function modifyStoreInfo() {
 		formData = new FormData();
-		const storeCode = document.getElementById('storeCode');
 		const storeName = document.getElementById('storeName');
 		const storePhone = document.getElementById('storePhone');
 		const storeInfo = document.getElementById('storeInfo');
@@ -691,6 +776,7 @@ if('${AccessInfo.menuList}'!=null){
 					formData.append('storeCategory', storeCategory.value);
 					formData.append('storeInfo', storeInfo.value);
 					formData.append('storeInfoDetail', storeInfoDetail.value);
+					formData.append('storeCode', storeNum);
 					serverCallByFetch(formData, '/Api/ModifyStoreInfo', 'post',
 							'afterModifyStoreInfo', header);
 				} else {
@@ -710,12 +796,11 @@ if('${AccessInfo.menuList}'!=null){
 	function afterModifyStoreInfo(jsonData) {
 		showModal(jsonData.message);
 		document.getElementById("storeNameDropDown").innerText = jsonData.storeName;
-
 	}
 	function sample5_execDaumPostcode() {
 		let mapContainer = document.getElementById('map1'), // 지도를 표시할 div
 		mapOption = {
-			center : new daum.maps.LatLng(37.537187, 127.005476), // 지도의 중심좌표
+			center : new daum.maps.LatLng(37.537187, 126.599243), // 지도의 중심좌표
 			level : 5
 		// 지도의 확대 레벨
 		};
@@ -725,14 +810,14 @@ if('${AccessInfo.menuList}'!=null){
 		let geocoder = new daum.maps.services.Geocoder();
 		//마커를 미리 생성
 		let marker = new daum.maps.Marker({
-			position : new daum.maps.LatLng(37.537187, 127.005476),
+			position : new daum.maps.LatLng(37.537187, 126.599243),
 			map : map
 		});
 		new daum.Postcode({
 			oncomplete : function(data) {
 				let addr = data.address; // 최종 주소 변수
 				// 주소 정보를 해당 필드에 넣는다.
-				document.getElementById("sample5_address").value = addr;
+				document.getElementById("locationAddr").value = addr;
 				// 주소로 상세 정보를 검색
 				geocoder.addressSearch(data.address, function(results, status) {
 					// 정상적으로 검색이 완료됐으면
@@ -754,15 +839,17 @@ if('${AccessInfo.menuList}'!=null){
 		}).open();
 
 	}
-	function regLocation() {
-		locationName = document.getElementById("sample5_address").value;
-		locationAlias = document.getElementById("locationAlias").value;
-		locationDetail = document.getElementById("locationDetail").value;
-		if (locationName != '') {
-			if (locationAlias != '') {
+	
+	function regLocation(locationCode) {
+		console.log("regLocation")
+		const locationAddr = document.getElementById("locationAddr").value;
+		const locationName = document.getElementById("reglocationName").value;
+		const locationDetail = document.getElementById("locationDetail").value;
+		if (locationAddr != '') {
+			if (locationName != '') {
 				var geocoder = new kakao.maps.services.Geocoder();
 				// 주소로 좌표를 검색합니다
-				geocoder.addressSearch(locationName,
+				geocoder.addressSearch(locationAddr,
 						function(result, status) {
 							// 정상적으로 검색이 완료됐으면 
 							if (status === kakao.maps.services.Status.OK) {
@@ -770,16 +857,25 @@ if('${AccessInfo.menuList}'!=null){
 										result[0].x);
 								formData = new FormData;
 								formData.append("storeCode", storeNum);
-								formData.append("locationList[0].locationDetail",
+								formData.append(
+										"locationList[0].locationDetail",
 										locationDetail);
 								formData.append("locationList[0].latitude",
 										result[0].x);
 								formData.append("locationList[0].longitude",
 										result[0].y);
 								formData.append("locationList[0].locationName",
-										locationAlias);
-								serverCallByFetch(formData, "/Api/RegLocation",
-										"post", "afterRegLocation", header);
+										locationName);
+								formData.append("locationList[0].locationAddr",
+										locationAddr);
+								if(document.getElementById("regModalTitle").innerText == '위치 수정'){
+									formData.append("locationList[0].locationCode",locationCode)
+									serverCallByFetch(formData, "/Api/ModifyLocation","post", "afterRegLocation", header);
+								}
+								else{
+									serverCallByFetch(formData, "/Api/RegLocation","post", "afterRegLocation", header);
+								}
+										
 							}
 						});
 			} else {
@@ -789,14 +885,66 @@ if('${AccessInfo.menuList}'!=null){
 			showModal('error::주소를 입력해주세요.:');
 		}
 	}
-	function afterRegLocation(jsonData){
-		showModal(jsonData);
-		document.getElementById("sample5_address").value ='';
-		document.getElementById("locationAlias").value='';
-		document.getElementById("locationDetail").value='';
-		document.getElementById("regLocationModal").setAttribute("class","modal fade");
-		document.getElementById("regLocationModal").style.display ="none";
-		document.getElementsByClassName("modal-backdrop fade show")[0].setAttribute("class","modal-backdrop fade hide");
+	function afterRegLocation(jsonData) {
+		regLocationModal.hide()
+		document.getElementById("locationAddr").value = '';
+		document.getElementById("locationName").value = '';
+		document.getElementById("locationDetail").value = '';
+		showModal(jsonData.message+"reload");
+	}
+	function showLocationList() {
+		  const locations = document.getElementById("locations");
+		  let jsonData = JSON.parse(jsonString);
+		  const locationList = jsonData.locationList;
+		  let locationItem = '<div class="row p-5; text-end mb-4 me-3"><div class="col-12"><button type="button" class="btn btn-primary"  onclick="regLocationModalShow();">+등록</button></div></div>';
+		  for (let i = 0; i < locationList.length; i++) {
+		    if (locationList[i].locationDetail == null) {
+		      locationList[i].locationDetail = '';
+		    }
+		    locationItem += '<div class="row border-bottom m-3" id="locationItem' + i + '"><div class="col-1"><i class="bi bi-geo-alt"></i></div><div class="col-7 fs-5">' + locationList[i].locationName + '</div><div class="col text-end"><button type="button" class="btn btn-outline-primary m-2" data-bs-toggle="modal" data-bs-target="#regLocationModal" onclick="modifyLocationModalShow(' + i + ')">수정</button><button type="button" class="btn btn-outline-danger" onclick="deleteIdx ='+ i +";showModal('warn:위치 삭제:위치가 삭제됩니다. 삭제하시겠습니까?:deleteLocation')\">삭제</button></div><div class=\"row\"><div class=\"col-1\"></div><div class=\"col\">"+ locationList[i].locationAddr + locationList[i].locationDetail + '</div></div></div>';
+		  }
+		  locations.innerHTML = locationItem;
+		}
+
+	function regLocationModalShow(){
+		regLocationModal.show();
+		document.getElementById("locationServerCall").innerText ="등록";
+		document.getElementById("regModalTitle").innerText = '위치 등록';
+		document.getElementById("locationServerCall").setAttribute("onclick","regLocation('')");
+		document.getElementById("locationAddr").value=  '';
+		document.getElementById("reglocationName").value =  '';
+		document.getElementById("locationDetail").value =  '';
+	}
+	function modifyLocationModalShow(index){
+		regLocationModal.show();
+		let jsonData = JSON.parse(jsonString);
+		const location=jsonData.locationList[index];
+		document.getElementById("locationServerCall").innerText ="저장";
+		document.getElementById("regModalTitle").innerText = '위치 수정';
+		document.getElementById("locationServerCall").setAttribute("onclick","regLocation('"+location.locationCode+"')");
+		document.getElementById("locationAddr").value= location.locationAddr;
+		document.getElementById("reglocationName").value =  location.locationName;
+		document.getElementById("locationDetail").value = location.locationDetail;
+	}
+	let deleteIdx;
+	function deleteLocation(){
+		let jsonData = JSON.parse(jsonString);
+		const location=jsonData.locationList[deleteIdx];
+		formData = new FormData;
+		formData.append("storeCode", storeNum);
+		formData.append("locationList[0].locationCode",location.locationCode)
+		serverCallByFetch(formData, "/Api/DeleteLocation","post", "afterDelLocation", header);
+	}
+	const locationListModal = new bootstrap.Modal(document.getElementById('locationListModal'))
+	
+	function afterDelLocation(jsonData) {
+		deleteIdx ='';
+		const messageModal = new bootstrap.Modal(document.getElementById("messageModal"));
+		showModal(jsonData.message+"reload")	
+	}
+	function reload(){
+		movePage('PosManage');
+		sideMenu('1');
 	}
 	/* function addSave(newIdx) { 
 

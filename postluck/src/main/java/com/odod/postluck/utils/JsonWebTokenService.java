@@ -74,7 +74,8 @@ public class JsonWebTokenService {
 	    Claims claims = Jwts.parser().setSigningKey(userKey.getBytes()).parseClaimsJws(userToken).getBody();
 	    result = !claims.getExpiration().before(new Date());
 	} catch (ExpiredJwtException e) {
-	    throw new Exception("Token does not contain Expiration date");
+	    System.out.println("토큰이 만료되었습니다.");
+//	    throw new Exception("Token does not contain Expiration date");
 	}
 
 	return result;

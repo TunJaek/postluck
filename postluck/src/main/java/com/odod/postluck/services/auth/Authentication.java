@@ -8,12 +8,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.odod.postluck.beans.JWTBean;
 import com.odod.postluck.beans.LocationBean;
 import com.odod.postluck.beans.MenuBean;
 import com.odod.postluck.beans.StoreBean;
+import com.odod.postluck.services.pos.MainService;
 import com.odod.postluck.utils.JsonWebTokenService;
 import com.odod.postluck.utils.ProjectUtils;
 import com.odod.postluck.utils.SimpleTransactionManager;
@@ -30,6 +30,9 @@ public class Authentication extends TransactionAssistant {
     private ProjectUtils pu;
     @Autowired
     private SimpleTransactionManager tranManager;
+    @Autowired
+    private MainService main;
+   
 
     public Authentication() {
     }
@@ -111,7 +114,7 @@ public class Authentication extends TransactionAssistant {
 	    this.tranManager.tranStart();
 	    if (this.convertToBoolean(this.sqlSession.insert("insAccessLog", store))) {
 		if (this.convertToBoolean(this.sqlSession.selectOne("isSnsId", store))) {// 만약 store정보가 등록되어있다면
-
+		    store.setStoreCode(this.sqlSession.selectOne("selStoreCode", store));
 		    st = (StoreBean) this.sqlSession.selectList("selStoreInfo", store).get(0);
 		    System.out.println("snsId로 select해온 storeBean : " + store);
 		    System.out.println(store.getStoreCode());
@@ -176,6 +179,7 @@ public class Authentication extends TransactionAssistant {
 	try {
 	    if (this.convertToBoolean(this.sqlSession.selectOne("isSnsId", store))) {
 		// 회원정보가 있으면,
+		store.setStoreCode(this.jwt.getTokenInfoFromJWT(jwt).getStoreCode());
 		System.out.println("storeCode is not null");
 		store = (StoreBean) this.sqlSession.selectList("selStoreInfo", store).get(0);
 		menuList = this.sqlSession.selectList("selMenuList", store);
@@ -214,9 +218,7 @@ public class Authentication extends TransactionAssistant {
     private void regStoreInfo(Model model) {
 	String message = "error::매장 등록을 실패했습니다.:";
 	StoreBean store = (StoreBean) model.getAttribute("store");
-	StoreBean st;
 	JWTBean jwtBody;
-	List<StoreBean> stBeanList;
 	try {
 //			StoreBean st = (StoreBean) this.pu.getAttribute("AccessInfo");
 	    this.tranManager = this.getTransaction(false);
@@ -225,10 +227,9 @@ public class Authentication extends TransactionAssistant {
 		if (this.convertToBoolean(this.sqlSession.insert("insStore", store))) {
 		    jwtBody = JWTBean.builder().storeCode(store.getStoreCode()).snsID(store.getSnsID()).build();
 		    this.pu.transferJWTByResponse(this.jwt.tokenIssuance(jwtBody, "JWTForPostluckFromODOD"));
-		    st = this.getUserInfo(model);
-		    st.setMessage("plain::매장 등록이 완료되었습니다!:");
-		    model.addAttribute("store", st);
-		    this.pu.setAttribute("AccessInfo", st);
+		    store.setMessage("plain::매장 등록이 완료되었습니다!:");
+		    model.addAttribute("store",  main.getStoreInfoAsStoreBean(model));
+		    this.pu.setAttribute("AccessInfo", store);
 		} else {
 		    message = "error::매장 등록을 실패했습니다.메인페이지로 이동합니다.:moveIndex";
 		}
