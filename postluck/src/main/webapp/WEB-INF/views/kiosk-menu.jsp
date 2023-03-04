@@ -11,9 +11,12 @@
     <link rel="stylesheet" href="/resources/css/mainBootstrap.css">
       <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css" />
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR&amp;display=swap" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+   
 </head>
 
 <body class="vsc-initialized" onload="pageInit('${param.message}')">
+
     <div class="main">
         <div class="header"><span class="px-3"><svg xmlns="http://www.w3.org/2000/svg" width="30" height="30"
                     fill="currentColor" class="bi bi-arrow-left" viewBox="0 0 16 16">
@@ -216,7 +219,7 @@
                 style="width:8%;  background-color:  rgb(220, 226, 222, 1);position: absolute; bottom:0%; right: 12%;">
                 주문취소
             </div>
-            <div class="orderButton1"
+            <div class="orderButton1" onclick="connect()"
                 style="width:12%; float: right; background-color: rgb(30, 215, 96,0.1); ;position: absolute; bottom:0%; right:0%;">
                 주문확인
             </div>
@@ -240,6 +243,31 @@
 		</div>
         </div>
 </body>
+<script>
+function connect(){
+var sock = new WebSocket("ws://localhost:9999/my-webSocket");
+sock.onopen = function() {
+    console.log('open');
+    sock.send('test');
+};
+
+sock.onmessage = function(e) {
+    console.log('message', e.data);
+    sock.close([code], [reason]);
+};
+
+sock.onclose = function(event) {
+	  if (event.wasClean) {
+	    console.log('웹 소켓이 정상적으로 닫혔습니다.');
+	  } else {
+	    console.error('웹 소켓이 예기치 않게 닫혔습니다. 이유: ' + event.reason + ', 코드: ' + event.code);
+	  }
+	};
+sock.onerror = function(error) {
+	  alert([error]);
+	};
+}
+</script>
 
 <style>
     body {

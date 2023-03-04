@@ -34,14 +34,14 @@
 								<!-- <button class="btn btn-lg btn-primary" type="button">Block button</button> -->
 							</div>
 							<div class="d-grid gap-2">
-								<button class="btn btn-lg btn-primary" type="button" id="kioskService" onclick="movePage('Kiosk')"></button>
+								<button class="btn btn-lg btn-primary" type="button" id="kioskService" onclick="movePage('Kiosk')"> </button>
 								<!-- <button class="btn btn-lg btn-primary" type="button">Block button</button> -->
 							</div>
 						</div>
 						<div class="text-end"><button onclick="logout()" class="btn btn-sm btn-outline-dark mt-3 rounded-pill">로그아웃</button></div>
 					</div>
 					
-					
+					<!--  "movePage('Kiosk')"-->
 
 				</div>
 
@@ -268,6 +268,10 @@
 		function logout(){
 			
 		}
+		function moveKiosk(){
+			serverCallByRequest('/View/MoveKiosk', 'get', '');
+		}
+			
 	</script>
 
 </body>

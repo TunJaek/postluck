@@ -12,7 +12,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR&amp;display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css" />
     <!-- 시간 -->
-
+<script src="../../resources/js/socket.js"></script>
 </head>
 
 <body class="vsc-initialized" onload="pageInit('${param.message}')">
