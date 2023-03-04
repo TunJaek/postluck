@@ -15,5 +15,4 @@ public class MenuBean {
     private char isMain;         // 대표 메뉴 여부 (true: 대표 메뉴, false: 그 외)
     private char isKiosk;        // 키오스크 메뉴 여부 (true: 키오스크 화면 표시, false: 키오스크 화면 표시하지않음)
     private char isSoldOut;      // 품절 여부 (true: 품절, false: 재고 있음)
-    private char isDelete;       // 삭제 여부 (true: 삭제됨, false: 삭제되지 않음)
 }

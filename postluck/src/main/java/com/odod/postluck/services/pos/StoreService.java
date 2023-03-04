@@ -63,10 +63,10 @@ public class StoreService extends TransactionAssistant {
 		this.tranManager.commit();
 		store.setMessage("plain::매장 정보 수정이 완료되었습니다!:");
 		
-		model.addAttribute("store", new ObjectMapper().writeValueAsString(this.main.getStoreInfoAsStoreBean(model)));
+		model.addAttribute("store",this.main.getStoreInfoAsStoreBean(model));
 		System.out.println(store);
 	    } else {
-		store.setMessage("error:오류:매장 정보 수정중 오류가 발생했습니다.:");
+		store.setMessage("error:오류:매장 정보 수정중 오류가 발생했습니다.::");
 	    }
 	} catch (Exception e) {
 	    this.tranManager.rollback();

@@ -80,7 +80,7 @@ public class LocationService extends TransactionAssistant {
 		try {
 			if (this.convertToBoolean(this.sqlSession.delete("delLocation", store))) {
 				this.tranManager.commit();
-				store.setMessage("plain::삭제가 완료되었습니다!:");
+				store.setMessage("plain::삭제가 완료되었습니다!::");
 				model.addAttribute("store", this.main.getStoreInfoAsStoreBean(model));
 			}
 		} catch (Exception e) {
