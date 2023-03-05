@@ -1,10 +1,15 @@
 package com.odod.postluck.services.pos;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.nio.file.Files;
 import java.util.ArrayList;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
+import org.springframework.web.method.support.ModelAndViewContainer;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.odod.postluck.beans.MenuBean;
@@ -26,9 +31,9 @@ public class MenuService extends TransactionAssistant {
 		case "ME01":
 			this.getAllMenuList(model);
 			break;
-		case "ME02":
-			this.dupCheckMenu(model);
-			break;
+//		case "ME02":
+//			this.dupCheckMenu(model);
+//			break;
 		case "ME03":
 			this.regMenu(model);
 			break;
@@ -59,9 +64,8 @@ public class MenuService extends TransactionAssistant {
 		 * storeCode확인. 매장에 있는 메뉴 불러오기 selectMenu(where SM_STCODE=?)
 		 */
 		StoreBean storeMenu = (StoreBean) model.getAttribute("store");
-
-		this.tranManager = getTransaction(false);
 		try {
+			this.tranManager = getTransaction(false);
 			this.tranManager.tranStart();
 			// storeCode가 존재한다면 oracle count값 = 1
 			if (this.convertToBoolean(this.sqlSession.selectOne("isStCode", storeMenu))) {
@@ -72,49 +76,30 @@ public class MenuService extends TransactionAssistant {
 			}
 		} catch (Exception e) {
 		} finally {
+
 			this.tranManager.tranEnd();
 		}
 	}
 
-	private void dupCheckMenu(Model model) {
-		// 메뉴코드는 자동생성 메뉴이름을 입력했을 때 중복검사.
-		StoreBean storeMenu = (StoreBean) model.getAttribute("store");
-		String message = "메뉴코드 또는 메뉴이름이 중복된 메뉴가있습니다. 다시 설정해주세요.";
+	private void regMenu(Model model, boolean... isDup) {
+		StoreBean store = (StoreBean) model.getAttribute("store");
 
-		this.tranManager = getTransaction(false);
+		String message = null;
 		/* Transaction Start */
 		try {
-			this.tranManager.tranStart();
-			// 메뉴를 조회했을때 추가할려는 메뉴의 동일한 메뉴코드나 메뉴이름이 존재한다면?
-			if (!this.convertToBoolean(this.sqlSession.selectOne("isMenuName", storeMenu))) {
-			} else {
-				storeMenu.getMenuList().get(0).setMenuName(null);
-				storeMenu.setMessage(message);
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-			this.tranManager.rollback();
-		} finally {
-
-			this.tranManager.tranEnd();
-		}
-
-	}
-
-	private void regMenu(Model model) {
-		StoreBean storeMenu = (StoreBean) model.getAttribute("store");
-		String message = "메뉴를 추가하는 과정에서 오류가 발생했습니다 다시 시도해주세요.";
-
-		this.tranManager = getTransaction(false);
-		/* Transaction Start */
-		try {
+			this.tranManager = getTransaction(false);
 			this.tranManager.tranStart();
 
-			if (this.convertToBoolean(this.sqlSession.insert("insMenu", storeMenu))) {
-				this.tranManager.commit();
-				storeMenu.setMessage("메뉴가 등록되었습니다. 많이 파세요~");
+			if (this.convertToBoolean(this.sqlSession.insert("insMenu", store))) {
+				// 추가
+				if (this.convertToBoolean(this.sqlSession.selectOne("isMenuName", store))) {
+					store.setMessage("메뉴추가가 완료되었습니다.");
+					this.tranManager.commit();
+				} else {
+					store.setMessage("중복된 메뉴입니다 다시 설정해주세요");
+				}
 			} else {
-				storeMenu.setMessage(message);
+				store.setMessage("메뉴 추가작업 도중 오류가 발생하였습니다. 다시 시도해주세요.");
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -123,6 +108,36 @@ public class MenuService extends TransactionAssistant {
 			this.tranManager.tranEnd();
 		}
 	}
+
+//	private void dupCheckMenu(Model model) {
+//		// 메뉴코드는 자동생성 메뉴이름을 입력했을 때 중복검사.
+//		StoreBean store = (StoreBean) model.getAttribute("store");
+//
+//		String message = null;
+//
+//		// Transaction Start
+//		try {
+//			this.tranManager = getTransaction(false);
+//			this.tranManager.tranStart();
+//			if (this.convertToBoolean(this.sqlSession.insert("insMenuTemp", store))) {
+//				// 추가할 메뉴의 정보를 입력하고 동일한 메뉴가 있는지 조회.
+//				if (this.convertToBoolean(this.sqlSession.selectOne("isMenuName", store))) {
+//					message = "중복된 메뉴가 있습니다. 다시 설정해주세요.";
+//					store.getMenuList().get(0).setMenuName(null);
+//					// 동일한 메뉴이름이 있으면 메뉴이름은 초기화.
+//				} else {
+//					message = "정상처리되었습니다.";
+//				}
+//			}
+//
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//			this.tranManager.rollback();
+//		} finally {
+//			this.regMenu(model, true);
+//			this.tranManager.tranEnd();
+//		}
+//	}
 
 	private void getMenuInfo(Model model) {
 		/*
@@ -145,26 +160,33 @@ public class MenuService extends TransactionAssistant {
 	}
 
 	private void modifyMenuInfo(Model model) {
-		StoreBean storeMenu = (StoreBean) model.getAttribute("store");
-		String message = "메뉴를 수정하는 과정에서 오류가 발생했습니다 다시 시도해주세요.";
-
-		this.tranManager = getTransaction(false);
+		StoreBean store = (StoreBean) model.getAttribute("store");
+		String message = null;
+		ArrayList<MenuBean> menuList = null;
+		MenuBean menu = null;
 		/* Transaction Start */
 		try {
+			this.tranManager = getTransaction(false);
 			this.tranManager.tranStart();
 
-			if (storeMenu.getMenuList().get(0).getMenuCode() != "") {
-				this.sqlSession.update("updMenu", storeMenu);
-
-				this.tranManager.commit();
+			if (store.getMenuList().get(0).getMenuName() != "") {
+				if (!this.convertToBoolean(this.sqlSession.selectOne("isMenuName", store))) {
+					menuList = new ArrayList<MenuBean>();
+					menu = new MenuBean();
+					menuList.add(menu);
+					store.setMenuList(menuList);
+					store.setMessage("메뉴수정을 완료했습니다.");
+					this.tranManager.commit();
+				} else {
+					message = "중복된 메뉴 이름입니다. 다시 설정해주세요";
+				}
 			} else {
-				storeMenu.setMessage(message);
-				/* insMenu else */ }
+				message = "수정하려는 메뉴의 정보를 불러오지 못했습니다. 다시 시도해주세요.";
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 			this.tranManager.rollback();
 		} finally {
-			storeMenu.setMessage("메뉴정보가 성공적으로 수정되었습니다.");
 			this.tranManager.tranEnd();
 		}
 	}
@@ -173,9 +195,8 @@ public class MenuService extends TransactionAssistant {
 		StoreBean storeMenu = (StoreBean) model.getAttribute("store");
 		String message = "메뉴를 삭제하는 과정에서 오류가 발생했습니다 다시 시도해주세요.";
 
-		this.tranManager = getTransaction(false);
-
 		try {
+			this.tranManager = getTransaction(false);
 			this.tranManager.tranStart();
 			// 선택한 메뉴코드의 값이 비어있지않다면
 			if (storeMenu.getMenuList().get(0).getMenuCode() != "") {
@@ -199,8 +220,86 @@ public class MenuService extends TransactionAssistant {
 		}
 
 	}
+
+	public void imageUploader(Model model) {
+		StoreBean store = (StoreBean) model.getAttribute("store");
+
+		// String imagePath = menu.getMenuImageCode();
+		// 가져올 이미지 경로 : MenuImageLocation
+		// ex) D:\Project\PosTLUCK\resources\image
+		String imagePath = store.getMenuList().get(0).getMenuImageLocation();
+		// 생성할 폴더 이름 : 사업자번호(1998033001)
+		String folderName = store.getStoreCode();
+		// 폴더경로 프로젝트폴더 resources > image폴더 안에 사업자번호(1998033001)로 생성.
+		String folderPath = "D:\\Project\\PosTLUCK\\resources\\image" + folderName;
+		// 생성할 파일 이름 : 폴더이름(1998033001) + 메뉴코드(M00) + ".jpg"
+		String newFileName = null;
+		// 파일 객체 생성
+		File file = new File(imagePath);
+
+		try {
+			// folderPath(resources\\image\\~)사업자번호로 만든 폴더가 존재하지 않으면 폴더 생성
+			if (!new File(folderPath).exists()) {
+				boolean createFolder = new File(folderPath).mkdir();
+				if (!createFolder) {
+					System.out.println("폴더 생성 실패");
+					return;
+				}
+			} else {
+				// 파일의 MIME 타입을 확인.
+				String mimeType = Files.probeContentType(file.toPath());
+				if (mimeType == null || !mimeType.startsWith("image/")) {
+					// mimeType이 없거나 image.png/jpg 등을 구별하는 'image/' 문구가없으면 이미지파일이 아님.
+					System.out.println("올바른 이미지 파일이 아닙니다.");
+					return;
+				} else {
+					// mimeType이 판별되면 파일복사 작업 시작.
+					
+					// 새로 생성할 파일의 이름 : 사업자번호 + 메뉴코드 +. + mimeType
+					// 1998033001M00.jpg
+					newFileName = folderName + store.getMenuList().get(0).getMenuCode() + "." + mimeType;
+
+					FileInputStream inputStream = new FileInputStream(file);
+					// 새로 만들 파일의 이름 : 폴더이름(1998033001) + file의 값(SM_CODE)
+					File newFile = new File(newFileName);
+					newFile.createNewFile();
+					java.nio.file.Files.copy(inputStream, newFile.toPath(),
+							java.nio.file.StandardCopyOption.REPLACE_EXISTING);
+					inputStream.close();
+				}
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+}
+
+//		try {
+//			if (!new File(folderPath).exists()) {
+//				// 사업자번호로 만든 폴더가 존재하지 않으면 폴더 생성
+//				boolean createFolder = new File(folderPath).mkdir();
+//
+//				if (!createFolder) {
+//					System.out.println("폴더 생성 실패");
+//
+//					return;
+//				}
+//			} else {
+//				// 사업자 번호로된 폴더가 있을시 파일복사작업.
+//				FileInputStream inputStream = new FileInputStream(file);
+//				// 새로 만들 파일의 이름 : 폴더이름(1998033001) + file의 값(SM_CODE)
+//				File newFile = new File(newFileName);
+//				newFile.createNewFile();
+//				java.nio.file.Files.copy(inputStream, newFile.toPath(),
+//						java.nio.file.StandardCopyOption.REPLACE_EXISTING);
+//
+//			}
+//		} catch (Exception e) {
+//
+//			e.printStackTrace();
+//			// TODO: handle exception
+//		}
+
 //	private void deleteMenu(ModelAndView mav) {
 //
 //	}
-
-}

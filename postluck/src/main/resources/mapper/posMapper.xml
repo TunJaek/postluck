@@ -2,24 +2,96 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.odod.postluck.mapper.PosMapperInter">
-	<insert id="insSalesLog" parameterType="com.odod.postluck.beans.StoreBean">
-		INSERT INTO SALESLOG(SL_STCODE, SL_LOCODE, SL_STATE, SL_DATE)
-		VALUES(#{storeCode}, #{locationList[0].locationCode}, #{salesLogList[0].salesState}, SYSDATE)
-	</insert>
-	<!-- <insert id="insMenu" parameterType="com.odod.postluck.beans.StoreBean"> -->
-	<!-- INSERT INTO POSDBA.STOREMENU(SM_STCODE, SM_CODE, SM_NAME, SM_PRICE) -->
-	<!-- VALUES(#{storeCode}, -->
-	<!-- #{menuList[0].(SELECT'M'||LPAD(NVL(SUBSTR(MAX(SM_CODE),2,2),-1)+1,2,'0') FROM STOREMENU WHERE SM_STCODE = #{storeCode})}, -->
-	<!-- #{menuList[0].menuName},#{menuList[0].menuPrice}) ; -->
-	<!-- </insert> -->
-	<update id="updStoreInfo" parameterType="com.odod.postluck.beans.StoreBean">
+
+	<update id="updStoreInfo"
+		parameterType="com.odod.postluck.beans.StoreBean">
 		UPDATE STORE SET ST_STNAME =#{storeName},
 		<if test="storeInfo != null">ST_INFO=#{storeInfo}</if>
 		,
 		<if test="storeInfoDetail != null">
 			ST_INFODETAIL = #{storeInfoDetail}
 		</if>
-		,<if test="storePhone!= null">ST_PHONE=#{storePhone}</if>,ST_CATEGORY=#{storeCategory}
+		,
+		<if test="storePhone!= null">ST_PHONE=#{storePhone}</if>
+		,ST_CATEGORY=#{storeCategory}
 		WHERE ST_CODE = #{storeCode}
 	</update>
+
+	<insert id="insSalesLog"
+		parameterType="com.odod.postluck.beans.StoreBean">
+		INSERT INTO SALESLOG(SL_STCODE, SL_LOCODE, SL_STATE,
+		SL_DATE)
+		VALUES(#{storeCode}, #{locationList[0].locationCode},
+		#{salesLogList[0].salesState}, SYSDATE)
+	</insert>
+	<!-- <insert id="insMenu" parameterType="com.odod.postluck.beans.StoreBean"> -->
+	<!-- INSERT INTO POSDBA.STOREMENU(SM_STCODE, SM_CODE, SM_NAME, SM_PRICE) -->
+	<!-- VALUES(#{storeCode}, -->
+	<!-- #{menuList[0].(SELECT'M'||LPAD(NVL(SUBSTR(MAX(SM_CODE),2,2),-1)+1,2,'0') 
+		FROM STOREMENU WHERE SM_STCODE = #{storeCode})}, -->
+	<!-- #{menuList[0].menuName},#{menuList[0].menuPrice}) ; -->
+	<!-- </insert> -->
+	<select id="selMenuList"
+		parameterType="com.odod.postluck.beans.StoreBean">
+		SELECT
+		SM_ISMAIN AS MAIN,
+		SM_ISKIOSK AS KIOSK,
+		SM_NAME AS MENUNAME,
+		SM_PRICE AS MENUPRICE
+		FROM POSDBA.STOREMENU
+		WHERE SM_STCODE =
+		#{storeCode};
+		<!-- 메뉴관리 들어갔을때 나오는 메뉴정보 -->
+	</select>
+
+	<select id="selMenuInfo"
+		parameterType="com.odod.postluck.beans.StoreBean">
+		SELECT
+		SM_NAME AS MENUNAME,
+		SM_PRICE AS MENUPRICE,
+		SM_SICODE AS
+		MENUIMAGE,
+		SM_ISMAIN AS MAIN,
+		SM_ISSOLD AS SOLD,
+		SM_ISKIOSK
+		AS KIOSK
+		FROM
+		POSDBA.STOREMENU
+		WHERE SM_STCODE = #{storeCode};
+		<!-- 메뉴 수정 버튼클릭시 출력되는 정보 -->
+	</select>
+
+	<update id="updMenu"
+		parameterType="com.odod.postluck.beans.StoreBean">
+		UPDATE STOREMENU
+
+		SET
+		SM_NAME = #{menuList[0].menuName},
+		SM_PRICE = #{menuList[0].menuPrice},
+		SM_SICODE =
+		#{menuList[0].menuImageCode},
+		SM_ISMAIN =
+		#{menuList[0].isMain},SM_ISKIOSK = #{menuList[0].isKiosk},
+		SM_ISSOLD =
+		#{menuList[0].isSold}
+
+		WHERE SM_STCODE = #{storeCode} AND SM_CODE =
+		#{menuList[0].menuCode};
+	</update>
+	<select id="isMenuName"
+		parameterType="com.odod.postluck.beans.StoreBean">
+		SELECT COUNT(*)
+		FROM POSDBA.STOREMENU
+		WHERE SM_NAME =
+		#{menuList[0].menuName}
+	</select>
+
+	<delete id="delMenu"
+		parameterType="com.odod.postluck.beans.StoreBean">
+		DELETE FROM STOREMENU WHERE
+		SM_STCODE = #{storeCode} AND
+		SM_NAME = #{menuList[0].menuName}
+	</delete>
+
+
 </mapper>

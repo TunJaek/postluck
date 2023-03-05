@@ -39,7 +39,7 @@
         </div>
         <!-- 주문번호 -->
         <!-- 주문내역 -->
-        <div class="orderZone" style="overflow-y: auto; width: 100%; height: 95%">
+        <div class="orderZone" >
             <div class="menu border p-2" style="font-family: 'Noto Sans KR', sans-serif;">
                 <span style="margin-left: 5%;">치킨햄버거</span> <span style="color: green; margin-left: 20%;">x2</span>
                 <span style="margin-left: 25%;">20,000원</span>
@@ -147,8 +147,7 @@
             </div>
 
         </div>
-        <div class="orderZoneFooter"
-            style="width: 20%; position: fixed; bottom: 0%; left: 0%; background-color: #ffffff; ">
+        <div class="orderZoneFooter">
             <div class="menu border p-2"
                 style="font-family: 'Noto Sans KR', sans-serif; font-weight: bold; font-size: 20px; ">
                 <span style="margin-left: 5%;">총 4건</span> <span
