@@ -139,7 +139,7 @@ public class MainService extends TransactionAssistant {
 				} else if (store.getSalesLogList().get(0).getSalesState() == 'C') {
 					this.pu.setAttribute("isOpen", "false");
 				} else {
-					store.setMessage("error:서버 오류:통신이 불안정합니다. 잠시후 다시 시도해주세요.:");
+					store.setMessage("error:서버 오류:통신이 불안정합니다. 잠시후 다시 시도해주세요.::");
 					// warn::삭제시 복구가 불가능합니다. 삭제하시겠습니까?: <, 버튼이 두개
 					// error:에러(JWT가 없습니다<< 버튼이 하나
 					//
