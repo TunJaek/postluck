@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.odod.postluck.beans.StoreBean;
 import com.odod.postluck.utils.JsonWebTokenService;
 import com.odod.postluck.utils.ProjectUtils;
@@ -18,6 +19,8 @@ public class StoreService extends TransactionAssistant {
     private ProjectUtils pu;
     @Autowired
     private SimpleTransactionManager tranManager;
+    @Autowired
+	private MainService main;
 
     public StoreService() {
     }
@@ -54,21 +57,16 @@ public class StoreService extends TransactionAssistant {
 
     private void updStoreInfo(Model model) {
 	StoreBean store = (StoreBean) model.getAttribute("store");
-	StoreBean st;
 	this.tranManager.tranStart();
 	try {
-	    store.setStoreCode(((StoreBean) this.pu.getAttribute("AccessInfo")).getStoreCode());
-	    store.setSnsID(((StoreBean) this.pu.getAttribute("AccessInfo")).getSnsID());
 	    if (this.convertToBoolean(this.sqlSession.update("updStoreInfo", store))) {
 		this.tranManager.commit();
-		st = (StoreBean)this.sqlSession.selectList("selStoreInfo",store).get(0);
-		st.setMessage("plain::매장 정보 수정이 완료되었습니다!:");
-		model.addAttribute("store",st);
-		this.pu.setAttribute("store", st);
-		System.out.println(st);
+		store.setMessage("plain::매장 정보 수정이 완료되었습니다!:");
+		
+		model.addAttribute("store",this.main.getStoreInfoAsStoreBean(model));
 		System.out.println(store);
 	    } else {
-		store.setMessage("error:오류:매장 정보 수정중 오류가 발생했습니다.:");
+		store.setMessage("error:오류:매장 정보 수정중 오류가 발생했습니다.::");
 	    }
 	} catch (Exception e) {
 	    this.tranManager.rollback();

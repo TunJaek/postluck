@@ -16,9 +16,9 @@ function getPublicIp(jsonData) {
 	publicIp = jsonData.ip
 }
 
-let header ;
-if (getJWT()) {                  
-	header= new Headers(getJWT());
+let header;
+if (getJWT()) {
+	header = new Headers(getJWT());
 }
 //commit test 
 /* HttpRequest를 이용한 서버 요청
@@ -83,21 +83,21 @@ function serverCallByFetchAjax(formData, jobCode, methodType, callBackFunc) {
 			const jwt = res.headers.get("JWTForPostluck");
 			if (jwt != '') sessionStorage.setItem('JWT', jwt);
 		}
-//		if (res.headers.get("AccessInfo") != null) {
-//			const AccessInfo = res.headers.get("AccessInfo");
-//			if (AccessInfo != '') sessionStorage.setItem('AccessInfo', AccessInfo);
-//		} 
+		//		if (res.headers.get("AccessInfo") != null) {
+		//			const AccessInfo = res.headers.get("AccessInfo");
+		//			if (AccessInfo != '') sessionStorage.setItem('AccessInfo', AccessInfo);
+		//		} 
 		console.log(res);
 		return res.json();
 	})
 		.then(jsonData => window[callBackFunc](jsonData))
 		.catch(error => {
 			console.log(error);
-			showModal('error:오류:오류가 발생했습니다:moveIndex');
+			showModal('error:오류:오류가 발생했습니다:moveIndex:');
 		})
 }
-function moveIndex (){
-	serverCallByRequest("/Index","get","");
+function moveIndex() {
+	serverCallByRequest("/Index", "get", "");
 }
 /* JWT 사용한 서버 요청 */
 function serverCallByFetch(formData, jobCode, methodType, callBackFunc, header) {
@@ -116,7 +116,7 @@ function serverCallByFetch(formData, jobCode, methodType, callBackFunc, header) 
 		.then(jsonData => window[callBackFunc](jsonData))
 		.catch(error => {
 			console.log(error);
-			showModal('error:오류:오류가 발생했습니다:');
+			showModal('error:오류:오류가 발생했습니다::');
 		})
 }
 
@@ -125,14 +125,14 @@ function serverCallByFetchAjaxUsingJson(jsonString, jobCode, methodType, callBac
 	fetch(jobCode, {
 		method: methodType,
 		headers: {
-			'Content-Type': 'application/json'
+			'Content-Type': 'application/json;charset=UTF-8'
 		},
 		body: jsonString
 	}).then(response => response.json())
 		.then(jsonData => window[callBackFunc](jsonData))
 		.catch(error => {
 			console.log(error);
-			showModal('error:오류:오류가 발생했습니다:');
+			showModal('error:오류:오류가 발생했습니다::');
 		})
 }
 
@@ -146,7 +146,7 @@ function serverCallByFetchAjaxUsingUrl(jobCode, methodType, callBackFunc) {
 		.then(jsonData => window[callBackFunc](jsonData))
 		.catch(error => {
 			console.log(error);
-			showModal('error:오류:오류가 발생했습니다:');
+			showModal('error:오류:오류가 발생했습니다::');
 		})
 }
 
@@ -166,39 +166,16 @@ function pageInitJson() {
 	if (accessInfo != '') document.getElementById("accessInfo").innerText = "로그아웃(Access Time : " + accessInfo.substr(11) + ")";
 	pageAuthorization();
 }
-/* 메세지박스 제어 */
-function messageController(turn, messageString) {
-	let message;
 
-	const background = document.getElementById("background");
-	const title = document.getElementById("messageTitle");
-	const content = document.getElementById("messageContent");
-
-	if (turn) {
-		message = messageString.split(":");
-		title.innerText = message[0];
-		content.innerText = message[1];
-		background.style.display = "block";
-	} else {
-		title.innerText = "";
-		content.innerText = "";
-		background.style.display = "none";
-		if (messageString != '') {
-			message = messageString.split(":");
-			window[message[0]](message[1], message[2], message[3]);
-		}
-	}
-}
 
 /* 문자열이 JSON 데이터 타입인지 여부 */
 function isJsonString(str) {
-	let result;
 	try {
-		result = (typeof JSON.parse(str) === 'object');
+		JSON.parse(str);
 	} catch (e) {
-		result = false;
+		return false;
 	}
-	return result;
+	return true;
 }
 
 /* 서버로 전송할 데이터 길이의 유효성 판단 */
@@ -395,51 +372,70 @@ function kakaoLogout() {
 		Kakao.Auth.setAccessToken(undefined);
 	}
 }
-function modalClose() {
-	const modal = document.querySelector("#messageModal");
-	modal.setAttribute("class", "modal fade hide");
-	setTimeout(() => { modal.style.display = "none" }, 200);
 
-}
 
 function showModal(messageString) {
-	if(isJsonString(messageString)){
-		console.log("this is JsonString")
-		if(messageString.message!=null){	
-			console.log(messageString.message)		
-		messageString = messageString.message;
+	const messageModalString = `
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title col-10">메세지 제목이 없습니다.</h5>
+          <button type="button" id="modalClose" class="btn-close col-1" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body text-center">
+          <div class="my-2 mx-5" id="svgZone"></div>
+          <div id="alertContent">메세지 내용이 없습니다.</div>
+        </div>
+        <div class="modal-footer text-center">
+          <button type="button" id="btnCancel" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
+          <button type="button" id="btnOk" class="btn">확인</button>
+        </div>
+      </div>
+    </div>
+`;
+ 
+	document.getElementById("messageModal").innerHTML = messageModalString;
+	if (typeof messageString === 'object') {
+		try {
+			if (messageString.message != null) {
+				console.log(messageString.message)
+				messageString = messageString.message;
+			}
+		} catch (e) {
+
 		}
+
+	} else {
+		console.log("this is not JsonString");
 	}
-	if (messageString != '') {
+	const messageModal = new bootstrap.Modal(document.querySelector('#messageModal'));
+	if (messageString != null) {
 		console.log(messageString);
 		let message = messageString.split(':');
 		console.log(message);
 		const btnOk = document.getElementById("btnOk");
 		const btnCancel = document.getElementById("btnCancel");
-		const btnClose = document.getElementById("modalClose");
-		btnClose.addEventListener("click", modalClose)
+		messageModal.show();
+		btnOk.addEventListener("click", function() {
+			messageModal.hide();
+			if (message[message.length - 2] != '') {
+				window[message[message.length - 2]](message[message.length - 1]);
+			}
+		});
 		if (message[0] == 'warn') {
 			document.getElementById("svgZone").innerHTML = '<i class="bi bi-exclamation-circle fs-1" style="color: var(--bs-danger)"></i>';
 			btnOk.setAttribute("class", "btn btn-danger");
-			btnOk.addEventListener("click", modalClose);
-			btnCancel.addEventListener("click", modalClose);
-			btnOk.addEventListener("click", window[message[message.length - 1]]);
+			btnCancel.addEventListener("click", messageModal.hide);
 		} else if (message[0] == 'plain') {
 			document.getElementById("svgZone").innerHTML = '<i class="bi bi-check-circle fs-1" style="color: var(--bs-primary)"></i>';
 			btnOk.setAttribute("class", "btn btn-primary");
-			btnOk.addEventListener("click", modalClose);
-			btnOk.addEventListener("click", window[message[message.length - 1]]);
 			btnCancel.setAttribute("class", "btn btn-secondary d-none");
 		} else if (message[0] == 'check') {
 			btnOk.setAttribute("class", "btn btn-primary");
-			btnOk.addEventListener("click", modalClose);
-			btnOk.addEventListener("click", window[message[message.length - 1]]);
-			btnCancel.addEventListener("click", modalClose);
+			btnCancel.addEventListener("click", messageModal.hide);
 		} else if (message[0] == 'error') {
 			document.getElementById("svgZone").innerHTML = '<i class="bi bi-x-circle fs-1" style="color: var(--bs-danger)"></i>';
 			btnOk.setAttribute("class", "btn btn-danger");
-			btnOk.addEventListener("click", modalClose);
-			btnOk.addEventListener("click", window[message[message.length - 1]]);
 			btnCancel.setAttribute("class", "btn btn-secondary d-none");
 		}
 		document.getElementsByClassName('modal-title col-10')[0].innerText = message[1];
@@ -451,17 +447,20 @@ function showModal(messageString) {
 					result += ".<br>";
 				}
 				result += messages[i].trim();
-				
 			}
-		}else{
-			result=message[2];
+		} else {
+			result = message[2];
 		}
 
 		document.getElementById('alertContent').innerHTML = result;
-		const modal = document.querySelector('#messageModal');
-		modal.style.display = "block";  // modal 요소를 화면에 표시
-		setTimeout(() => { modal.classList.add("show") }, 10);
 	}
+}
+
+function modalClose() {
+	const messageModal = new bootstrap.Modal(document.querySelector('#messageModal'));
+	messageModal.addEventListener('shown.bs.modal', function() {
+		messageModal.hide();
+	});
 }
 
 

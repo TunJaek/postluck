@@ -14,6 +14,16 @@
 <link
 	href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR&amp;display=swap"
 	rel="stylesheet">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KIOSK - POS.TLUCK</title>
+     <link rel="icon" href="/resources/image/fabicon.png">
+    <link rel="stylesheet" href="/resources/css/mainBootstrap.css">
+      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR&amp;display=swap" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+   
 </head>
 
 <body class="vsc-initialized" onload="pageInit('${param.message}')">
@@ -23,6 +33,10 @@
 				<span class="px-3"><svg xmlns="http://www.w3.org/2000/svg"
 						width="30" height="30" fill="currentColor"
 						class="bi bi-arrow-left" viewBox="0 0 16 16">
+
+    <div class="main">
+        <div class="header"><span class="px-3"><svg xmlns="http://www.w3.org/2000/svg" width="30" height="30"
+                    fill="currentColor" class="bi bi-arrow-left" viewBox="0 0 16 16">
                     <path fill-rule="evenodd"
 							d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z" />
                 </svg></span> <span><img
@@ -227,7 +241,25 @@
 							<!-- 주문지우는 X 버튼 -->
 						</div>
 
+                </div>
 
+            </div>
+            <!-- 주문확인구역 -->
+
+            <div class="orderButton"
+                style="width:8%;  background-color:  rgb(220, 226, 222, 1);position: absolute; bottom:0%; right: 12%;">
+                주문취소
+            </div>
+            <div class="orderButton1" onclick="connect()"
+                style="width:12%; float: right; background-color: rgb(30, 215, 96,0.1); ;position: absolute; bottom:0%; right:0%;">
+                주문확인
+            </div>
+            <div class="modal fade" id="messageModal" style="background-color: rgba(0, 0, 0, 0.2)">
+			<div class="modal-dialog modal-dialog-centered" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title col-10">메세지 제목이 없습니다.</h5>
+						<button type="button" id="modalClose" class="btn-close col-1" data-bs-dismiss="modal" aria-label="Close"></button>
 					</div>
 
 				</div>
@@ -526,6 +558,31 @@
 
 
 </body>
+<script>
+function connect(){
+var sock = new WebSocket("ws://localhost:9999/my-webSocket");
+sock.onopen = function() {
+    console.log('open');
+    sock.send('test');
+};
+
+sock.onmessage = function(e) {
+    console.log('message', e.data);
+    sock.close([code], [reason]);
+};
+
+sock.onclose = function(event) {
+	  if (event.wasClean) {
+	    console.log('웹 소켓이 정상적으로 닫혔습니다.');
+	  } else {
+	    console.error('웹 소켓이 예기치 않게 닫혔습니다. 이유: ' + event.reason + ', 코드: ' + event.code);
+	  }
+	};
+sock.onerror = function(error) {
+	  alert([error]);
+	};
+}
+</script>
 
 <style>
 body {

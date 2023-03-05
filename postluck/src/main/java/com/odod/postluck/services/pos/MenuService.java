@@ -19,7 +19,10 @@ import com.odod.postluck.utils.TransactionAssistant;
 
 @Service
 public class MenuService extends TransactionAssistant {
+	@Autowired
 	private SimpleTransactionManager tranManager;
+	@Autowired
+	private MainService main;
 
 	public MenuService() {
 
@@ -31,15 +34,19 @@ public class MenuService extends TransactionAssistant {
 		case "ME01":
 			this.getAllMenuList(model);
 			break;
+//		case "ME01":
+////			this.getAllMenuList(model);
+////			break;
+//>>>>>>> branch 'main' of https://github.com/dPfal/postluck.git
 //		case "ME02":
 //			this.dupCheckMenu(model);
 //			break;
 		case "ME03":
 			this.regMenu(model);
 			break;
-		case "ME04":
-			this.getMenuInfo(model);
-			break;
+//		case "ME04":
+//			this.getMenuInfo(model);
+//			break;
 		case "ME05":
 			this.modifyMenuInfo(model);
 			break;
@@ -80,6 +87,27 @@ public class MenuService extends TransactionAssistant {
 			this.tranManager.tranEnd();
 		}
 	}
+//	private void getAllMenuList(Model model) {
+//		/*
+//		 * storeCode확인. 매장에 있는 메뉴 불러오기 selectMenu(where SM_STCODE=?)
+//		 */
+//		StoreBean storeMenu = (StoreBean) model.getAttribute("store");
+//		try {
+//			this.tranManager = getTransaction(false);
+//			this.tranManager.tranStart();
+//			// storeCode가 존재한다면 oracle count값 = 1
+//			if (this.convertToBoolean(this.sqlSession.selectOne("isStCode", storeMenu))) {
+//				storeMenu.setMenuList(this.sqlSession.selectOne("selMenuList", storeMenu));
+//			} else {
+//				// storeCode가 존재하지 않는다면 oracle count값 = 0
+//				storeMenu.setMessage("사업자번호가 조회되지않았습니다.");
+//			}
+//		} catch (Exception e) {
+//		} finally {
+//
+//			this.tranManager.tranEnd();
+//		}
+//	}
 
 	private void regMenu(Model model, boolean... isDup) {
 		StoreBean store = (StoreBean) model.getAttribute("store");
@@ -159,6 +187,56 @@ public class MenuService extends TransactionAssistant {
 		}
 	}
 
+//	private void dupCheckMenu(Model model) {
+//		// 메뉴코드는 자동생성 메뉴이름을 입력했을 때 중복검사.
+//		StoreBean store = (StoreBean) model.getAttribute("store");
+//
+//		String message = null;
+//
+//		// Transaction Start
+//		try {
+//			this.tranManager = getTransaction(false);
+//			this.tranManager.tranStart();
+//			if (this.convertToBoolean(this.sqlSession.insert("insMenuTemp", store))) {
+//				// 추가할 메뉴의 정보를 입력하고 동일한 메뉴가 있는지 조회.
+//				if (this.convertToBoolean(this.sqlSession.selectOne("isMenuName", store))) {
+//					message = "중복된 메뉴가 있습니다. 다시 설정해주세요.";
+//					store.getMenuList().get(0).setMenuName(null);
+//					// 동일한 메뉴이름이 있으면 메뉴이름은 초기화.
+//				} else {
+//					message = "정상처리되었습니다.";
+//				}
+//			}
+//
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//			this.tranManager.rollback();
+//		} finally {
+//			this.regMenu(model, true);
+//			this.tranManager.tranEnd();
+//		}
+//	}
+
+//	private void getMenuInfo(Model model) {
+//		/*
+//		 * 메뉴리스트에서 해당 메뉴를 클릭시 해당 메뉴에대한 정보가 나옴.
+//		 */
+//		StoreBean storeMenu = (StoreBean) model.getAttribute("store");
+//		String message = "메뉴를 불러오는 과정에서 오류가 발생했습니다 다시 시도해주세요.";
+//
+//		this.tranManager = getTransaction(false);
+//
+//		try {
+//			this.tranManager.tranStart();
+//			// 선택한 메뉴의 메뉴코드가 존재한다면
+//			if (storeMenu.getMenuList().get(0).getMenuCode() != "") {
+//				storeMenu.setMenuList(this.sqlSession.selectOne("selMenuInfo", storeMenu));
+//			}
+//		} catch (Exception e) {
+//			storeMenu.setMessage(message);
+//		}
+//	}
+
 	private void modifyMenuInfo(Model model) {
 		StoreBean store = (StoreBean) model.getAttribute("store");
 		String message = null;
@@ -193,21 +271,36 @@ public class MenuService extends TransactionAssistant {
 
 	private void deleteMenu(Model model) {
 		StoreBean storeMenu = (StoreBean) model.getAttribute("store");
-		String message = "메뉴를 삭제하는 과정에서 오류가 발생했습니다 다시 시도해주세요.";
+
+//		try {
+//			this.tranManager = getTransaction(false);
+//			this.tranManager.tranStart();
+//			// 선택한 메뉴코드의 값이 비어있지않다면
+//			if (storeMenu.getMenuList().get(0).getMenuCode() != "") {
+//				this.convertToBoolean(this.sqlSession.delete("delMenu", storeMenu));
+//
+//				storeMenu.getMenuList().get(0).setMenuCode(null);
+//				storeMenu.getMenuList().get(0).setMenuName(null);
+//				storeMenu.getMenuList().get(0).setMenuPrice(null);
+//				storeMenu.getMenuList().get(0).setMenuImageCode(null);
+//				storeMenu.setMessage("성공적으로 메뉴를 삭제하였습니다.");
+//				this.tranManager.commit();}
+		String message = "warn:오류:오류가 발생했습니다. 잠시후 다시 시도해주세요.:sideMenu:2";
 
 		try {
 			this.tranManager = getTransaction(false);
 			this.tranManager.tranStart();
 			// 선택한 메뉴코드의 값이 비어있지않다면
-			if (storeMenu.getMenuList().get(0).getMenuCode() != "") {
-				this.convertToBoolean(this.sqlSession.delete("delMenu", storeMenu));
-
-				storeMenu.getMenuList().get(0).setMenuCode(null);
-				storeMenu.getMenuList().get(0).setMenuName(null);
-				storeMenu.getMenuList().get(0).setMenuPrice(null);
-				storeMenu.getMenuList().get(0).setMenuImageCode(null);
-				storeMenu.setMessage("성공적으로 메뉴를 삭제하였습니다.");
-				this.tranManager.commit();
+			if (storeMenu.getMenuList().get(0).getMenuCode() != null) {
+				System.out.println("menuCode is not null");
+				if (this.convertToBoolean(this.sqlSession.delete("delMenu", storeMenu))) {
+					storeMenu.setMessage("plain::메뉴를 삭제했습니다.:");
+					storeMenu = this.main.getStoreInfoAsStoreBean(model);
+					System.out.println("delete성공");
+					this.tranManager.commit();
+				} else {
+					storeMenu.setMessage(message);
+				}
 			} else {
 				storeMenu.setMessage(message);
 			}
@@ -218,7 +311,6 @@ public class MenuService extends TransactionAssistant {
 		} finally {
 			this.tranManager.tranEnd();
 		}
-
 	}
 
 	public void imageUploader(Model model) {
@@ -254,7 +346,7 @@ public class MenuService extends TransactionAssistant {
 					return;
 				} else {
 					// mimeType이 판별되면 파일복사 작업 시작.
-					
+
 					// 새로 생성할 파일의 이름 : 사업자번호 + 메뉴코드 +. + mimeType
 					// 1998033001M00.jpg
 					newFileName = folderName + store.getMenuList().get(0).getMenuCode() + "." + mimeType;
@@ -303,3 +395,5 @@ public class MenuService extends TransactionAssistant {
 //	private void deleteMenu(ModelAndView mav) {
 //
 //	}
+
+// github.com/dPfal/postluck.git

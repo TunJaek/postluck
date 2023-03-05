@@ -5,8 +5,11 @@
 
 <head>
 <script>
+if('${param.message}'!=''){
+	showModal(${param.message});
+}
 function isMem(){
-	if (getJWT()!=null&&'${AccessInfo}'!=''){
+	if (getJWT()!=null){
 		console.log("true")
 		const accessToken=getJWT();
 		serverCallByRequest('/View/AccessCtl', 'post', accessToken);
@@ -34,7 +37,7 @@ function isMem(){
 <script src="../../resources/js/common.js"></script>
 
 </head>
-<body class="vsc-initialized" onload="pageInit('${param.message}');isMem();">
+<body class="vsc-initialized" onload="isMem()">
 	<div class="main">
 		<div id="left">
 			<div id="foodTruckNews">
