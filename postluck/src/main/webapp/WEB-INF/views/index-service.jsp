@@ -48,24 +48,8 @@
 
 			</div>
 		</div>
-<div class="modal fade" id="messageModal" style="background-color: rgba(0, 0, 0, 0.2);z-index:1080;">
-			<div class="modal-dialog modal-dialog-centered" role="document">
-				<div class="modal-content">
-					<div class="modal-header">
-						<h5 class="modal-title col-10">메세지 제목이 없습니다.</h5>
-						<button type="button" id="modalClose" class="btn-close col-1" data-bs-dismiss="modal" aria-label="Close"></button>
-					</div>
-					<div class="modal-body text-center">
-						<div class="my-2 mx-5" id="svgZone"></div>
-						<div id="alertContent">메세지 내용이 없습니다.</div>
-					</div>
-					<div class="modal-footer text-center">
-						<button type="button" id="btnCancel" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
-						<button type="button" id="btnOk" class="btn">확인</button>
-					</div>
-				</div>
-			</div>
-		</div>
+		<div class="modal fade" id="messageModal"
+			style="background-color: rgba(0, 0, 0, 0.2); z-index: 1080"></div>
 		<div class="modal" id="regStoreInfoModal" data-bs-backdrop="static" data-keyboard="false" tabindex="-1" style="display: none; justify-content: center; align-items: center; background-color: rgba(1, 1, 1, 0.3);">
 			<div class="w-50 modal-dialog-centered modal-dialog-scrollable" id="regStoreInfo">
 				<div class="modal-content w-100">
