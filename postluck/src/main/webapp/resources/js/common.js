@@ -93,7 +93,7 @@ function serverCallByFetchAjax(formData, jobCode, methodType, callBackFunc) {
 		.then(jsonData => window[callBackFunc](jsonData))
 		.catch(error => {
 			console.log(error);
-			showModal('error:오류:오류가 발생했습니다:moveIndex');
+			showModal('error:오류:오류가 발생했습니다:moveIndex:');
 		})
 }
 function moveIndex() {
@@ -116,7 +116,7 @@ function serverCallByFetch(formData, jobCode, methodType, callBackFunc, header) 
 		.then(jsonData => window[callBackFunc](jsonData))
 		.catch(error => {
 			console.log(error);
-			showModal('error:오류:오류가 발생했습니다:');
+			showModal('error:오류:오류가 발생했습니다::');
 		})
 }
 
@@ -132,7 +132,7 @@ function serverCallByFetchAjaxUsingJson(jsonString, jobCode, methodType, callBac
 		.then(jsonData => window[callBackFunc](jsonData))
 		.catch(error => {
 			console.log(error);
-			showModal('error:오류:오류가 발생했습니다:');
+			showModal('error:오류:오류가 발생했습니다::');
 		})
 }
 
@@ -146,7 +146,7 @@ function serverCallByFetchAjaxUsingUrl(jobCode, methodType, callBackFunc) {
 		.then(jsonData => window[callBackFunc](jsonData))
 		.catch(error => {
 			console.log(error);
-			showModal('error:오류:오류가 발생했습니다:');
+			showModal('error:오류:오류가 발생했습니다::');
 		})
 }
 
@@ -166,29 +166,7 @@ function pageInitJson() {
 	if (accessInfo != '') document.getElementById("accessInfo").innerText = "로그아웃(Access Time : " + accessInfo.substr(11) + ")";
 	pageAuthorization();
 }
-/* 메세지박스 제어 */
-function messageController(turn, messageString) {
-	let message;
 
-	const background = document.getElementById("background");
-	const title = document.getElementById("messageTitle");
-	const content = document.getElementById("messageContent");
-
-	if (turn) {
-		message = messageString.split(":");
-		title.innerText = message[0];
-		content.innerText = message[1];
-		background.style.display = "block";
-	} else {
-		title.innerText = "";
-		content.innerText = "";
-		background.style.display = "none";
-		if (messageString != '') {
-			message = messageString.split(":");
-			window[message[0]](message[1], message[2], message[3]);
-		}
-	}
-}
 
 /* 문자열이 JSON 데이터 타입인지 여부 */
 function isJsonString(str) {
@@ -398,7 +376,6 @@ function kakaoLogout() {
 
 function showModal(messageString) {
 	const messageModalString = `
-  <div class="modal fade" id="messageModal" style="background-color: rgba(0, 0, 0, 0.2); z-index: 1080">
     <div class="modal-dialog modal-dialog-centered" role="document">
       <div class="modal-content">
         <div class="modal-header">
@@ -415,9 +392,9 @@ function showModal(messageString) {
         </div>
       </div>
     </div>
-  </div>
 `;
-	document.body.innerHTML += messageModalString;
+ 
+	document.getElementById("messageModal").innerHTML = messageModalString;
 	if (typeof messageString === 'object') {
 		try {
 			if (messageString.message != null) {
@@ -439,28 +416,26 @@ function showModal(messageString) {
 		const btnOk = document.getElementById("btnOk");
 		const btnCancel = document.getElementById("btnCancel");
 		messageModal.show();
+		btnOk.addEventListener("click", function() {
+			messageModal.hide();
+			if (message[message.length - 2] != '') {
+				window[message[message.length - 2]](message[message.length - 1]);
+			}
+		});
 		if (message[0] == 'warn') {
 			document.getElementById("svgZone").innerHTML = '<i class="bi bi-exclamation-circle fs-1" style="color: var(--bs-danger)"></i>';
 			btnOk.setAttribute("class", "btn btn-danger");
-			btnOk.addEventListener("click", messageModal.hide());
-			btnCancel.addEventListener("click", messageModal.hide());
-			btnOk.addEventListener("click", window[message[message.length - 1]]);
+			btnCancel.addEventListener("click", messageModal.hide);
 		} else if (message[0] == 'plain') {
 			document.getElementById("svgZone").innerHTML = '<i class="bi bi-check-circle fs-1" style="color: var(--bs-primary)"></i>';
 			btnOk.setAttribute("class", "btn btn-primary");
-			btnOk.addEventListener("click", messageModal.hide());
-			btnOk.addEventListener("click", window[message[message.length - 1]]);
 			btnCancel.setAttribute("class", "btn btn-secondary d-none");
 		} else if (message[0] == 'check') {
 			btnOk.setAttribute("class", "btn btn-primary");
-			btnOk.addEventListener("click", messageModal.hide());
-			btnOk.addEventListener("click", window[message[message.length - 1]]);
-			btnCancel.addEventListener("click", messageModal.hide());
+			btnCancel.addEventListener("click", messageModal.hide);
 		} else if (message[0] == 'error') {
 			document.getElementById("svgZone").innerHTML = '<i class="bi bi-x-circle fs-1" style="color: var(--bs-danger)"></i>';
 			btnOk.setAttribute("class", "btn btn-danger");
-			btnOk.addEventListener("click", messageModal.hide());
-			btnOk.addEventListener("click", window[message[message.length - 1]]);
 			btnCancel.setAttribute("class", "btn btn-secondary d-none");
 		}
 		document.getElementsByClassName('modal-title col-10')[0].innerText = message[1];
@@ -472,15 +447,12 @@ function showModal(messageString) {
 					result += ".<br>";
 				}
 				result += messages[i].trim();
-
 			}
 		} else {
 			result = message[2];
 		}
 
 		document.getElementById('alertContent').innerHTML = result;
-
-
 	}
 }
 

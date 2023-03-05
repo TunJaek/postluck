@@ -81,7 +81,7 @@ document.addEventListener('DOMContentLoaded', function() {
 				<div class="border-bottom p-3 h-7">
 					<h5>매장 관리</h5>
 				</div>
-				<div class="inputZone p-5 d-flex gap-3" style="flex-direction: column;">
+				<div class="inputZone p-5 d-flex gap-3 " style="flex-direction: column;overflow-y:auto;height: 88%;"">
 					<div class="row" style="align-items: center;">
 						<div class="col-2">사업자 명</div>
 						<input type="text" class="form-control w-25" disabled id="ceoName">
@@ -123,7 +123,7 @@ document.addEventListener('DOMContentLoaded', function() {
 								<div class="btn btn-primary col-4 m-3" data-bs-toggle="modal" data-bs-target="#locationListModal" onclick="showLocationList()">편집</div>
 							</div>
 							<input type="text" class="form-control w-100 " id="locationName" disabled>
-							<div class="mt-3" id="map" style="height: 40vh; display:none"></div>
+							<div class="mt-3" id="map" style="height: 40vh; display: none"></div>
 						</div>
 
 					</div>
@@ -162,18 +162,16 @@ document.addEventListener('DOMContentLoaded', function() {
 			<!-- 2. 메뉴관리 -->
 			<div class="mainContent" id="menu2" style="display: none;">
 				<div class="border p-3 " style="height: 7%;">
-					<h5>
-						메뉴관리
-						</h5>
+					<h5>메뉴관리</h5>
 				</div>
 
 				<div class="text-end ">
 					<button class="btn btn-outline-primary m-4" onClick="sideMenu(3)">+메뉴추가</button>
 				</div>
-				<div class="menuList text-center">
-					<div class="m-2 text-center">
+				<div class="menuList text-center" style="overflow-y:auto;overflow-y:auto;height:80%">
+					<div class="m-2 text-center" >
 						<table class="table table-hover text-center " id="menuList">
-							
+
 						</table>
 					</div>
 				</div>
@@ -185,45 +183,7 @@ document.addEventListener('DOMContentLoaded', function() {
 				<div class="border p-3 " style="height: 7%;">
 					<h5>메뉴등록</h5>
 				</div>
-				<div class="inputZone p-5 d-flex gap-3" style="flex-direction: column;">
-					<div class="row" style="align-items: center;">
-						<div class="col-2">메뉴명</div>
-						<input type="text" class="form-control w-25" placeholder="메뉴명을 입력해주세요." id="inputDefault">
-					</div>
-					<div class="row" style="align-items: center;">
-						<div class="col-2">가격</div>
-						<input type="text" class="form-control w-25" placeholder="전화번호를 입력해주세요." id="inputDefault">
-					</div>
-
-					<div class="row" style="align-items: center;">
-						<div class="col-2">매장 사진 등록</div>
-						<div class="form-group col-6 p-0">
-							<input class="form-control" type="file" id="formFile">
-						</div>
-					</div>
-					<div class="row" style="align-items: center;">
-						<div class="col-2">품절 여부</div>
-						<div class="form-check form-switch col">
-							<input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault">
-						</div>
-					</div>
-					<div class="row" style="align-items: center;">
-						<div class="col-2">KIOSK 노출 여부</div>
-						<div class="form-check form-switch col">
-							<input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault">
-						</div>
-					</div>
-					<div class="row" style="align-items: center;">
-						<div class="col-2">대표메뉴 여부</div>
-						<div class="form-check form-switch col">
-							<input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault">
-						</div>
-					</div>
-					<div class="d-flex gap-4 mt-5 " style="justify-content: center;">
-						<div class="btn btn-outline-secondary col-1">취소</div>
-						<div class="btn btn-primary col-1" id="addSave" onclick="addSave()">저장</div>
-					</div>
-				</div>
+				<div class="inputZone p-5 d-flex gap-3" style="flex-direction: column;" id="menuInputZone"></div>
 			</div>
 			<!-- 3. 결제내역 -->
 			<div class="mainContent" id="menu5" style="display: none;">
@@ -444,15 +404,28 @@ document.addEventListener('DOMContentLoaded', function() {
 		</div>
 		<!-- 헤더랑 옆 클릭바 고정을 고정. -->
 		<!--  메세지 모달 -->
-		
 
+
+		
+		<!-- 위치 리스트 Modal -->
+		<div class="modal fade show" id="locationListModal" tabindex="-1" style="display: none; z-index: 1060;">
+			<div class="modal-dialog modal-dialog-centered" style="max-width: 40%;">
+				<div class="modal-content ">
+					<div class="modal-header">
+						<h5 class="modal-title" id="modifyModalTitle">위치 편집</h5>
+						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+					</div>
+					<div class="modal-body" style="max-height: 60vh; overflow-y: auto" id="locations"></div>
+				</div>
+			</div>
+		</div>
 		<!-- 위치 등록 Modal -->
 		<div class="modal fade show" id="regLocationModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-modal="true" role="dialog" style="display: none; - -bs-modal-width: 50%; z-index: 1070">
 			<div class="modal-dialog modal-dialog-centered " style="max-width: 50%;">
 				<div class="modal-content">
 					<div class="modal-header">
 						<h5 class="modal-title" id="regModalTitle"></h5>
-						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="regCancel"></button>
+						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="regCancel" onclick ="regLocationModal.hide()"></button>
 					</div>
 					<div class="modal-body; px-5 my-4">
 						<div class="row p-2">
@@ -485,17 +458,7 @@ document.addEventListener('DOMContentLoaded', function() {
 				</div>
 			</div>
 		</div>
-		<!-- 위치 리스트 Modal -->
-		<div class="modal fade show" id="locationListModal" tabindex="-1" style="display: none; z-index: 1060;">
-			<div class="modal-dialog modal-dialog-centered" style="max-width: 40%;">
-				<div class="modal-content ">
-					<div class="modal-header">
-						<h5 class="modal-title" id="modifyModalTitle">위치 편집</h5>
-						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-					</div>
-					<div class="modal-body" style="max-height: 60vh; overflow-y: auto" id="locations"></div>
-				</div>
-			</div>
+		<div class="modal fade" id="messageModal" style="background-color: rgba(0, 0, 0, 0.2); z-index: 1080">
 		</div>
 	</div>
 
@@ -513,9 +476,7 @@ document.addEventListener('DOMContentLoaded', function() {
 	}
 	let jsonData ;
 	const storeNum = JSON.parse(jsonString).storeCode;
-	document.getElementById("storeCodeDisabled").value = storeNum.substring(0,
-			3)
-			+ "-" + storeNum.substring(3, 5) + "-" + storeNum.substring(5, 10);
+	
 	let salesToggle = document.getElementById("salesToggle");
 	if ('${isOpen}' == 'false') {
 		salesToggle.setAttribute("checked", "false");
@@ -527,38 +488,33 @@ document.addEventListener('DOMContentLoaded', function() {
 
 	let selectedIdx = 0;
 	
-	const regLocationModal = new bootstrap.Modal(document.getElementById('regLocationModal'))
+	
 	function setStoreInfo(JsonData){
 		jsonData = JsonData;
 	}
+	
+	//메뉴 탭을 누를때 
 	function sideMenu(newIdx) {
-		 let jsonData = JSON.parse(jsonString);
 		 const formData = new FormData;
 		 formData.append("storeCode",storeNum);
 		 serverCallByFetch(formData, '/Api/GetStoreInfo', 'post','setStoreInfo', header);
 		document.getElementById("menu" + selectedIdx).style.display = "none";
 		document.getElementById("menu" + newIdx).style.display = "block";
 		selectedIdx = newIdx;
-
-		// 모든 sideMenu의 display를 none으로 설정
-
-		/* let allMenus = document.getElementById("menu" + selectedIdx);
-		for (let i = 0; i < allMenus.length; i++) {
-			allMenus[i].style.display = "none";
-		} */
-
-		// selectIdx에 해당하는 sideMenu의 display를 block으로 설정
 		let selectedMenu = document.getElementById("menu" + selectedIdx);
 		selectedMenu.style.display = "block";
 
-		if (newIdx == 1) {
+		if (newIdx == 1) { //매장관리 선택시
 			jsonData = JSON.parse(jsonString);
+			document.getElementById("storeCodeDisabled").value = storeNum.substring(0,
+				3)
+				+ "-" + storeNum.substring(3, 5) + "-" + storeNum.substring(5, 10);
 			document.getElementById("ceoName").value = jsonData.ceoName;
 			document.getElementById("storeName").value = jsonData.storeName;
 			document.getElementById("storePhone").value = jsonData.storePhone;
 			document.getElementById("storeInfo").value = jsonData.storeInfo;
 			document.getElementById("storeCategory").value = jsonData.storeCategory;
-			
+			document.getElementById("storeInfoDetail").value = jsonData.storeInfoDetail;
 			let locationList = jsonData.locationList;
 			if(locationList.length>0){
 			document.getElementById("map").style.display ="block";
@@ -595,14 +551,11 @@ document.addEventListener('DOMContentLoaded', function() {
 			map.relayout();
 			let geocoder = new kakao.maps.services.Geocoder();
 			// 주소로 좌표를 검색합니다
-			geocoder
-					.addressSearch(
-							location.locationAddr,
+			geocoder.addressSearch( location.locationAddr,
 							function(result, status) {
 								// 정상적으로 검색이 완료됐으면 
 								if (status === kakao.maps.services.Status.OK) {
-									let coords = new kakao.maps.LatLng(result[0].y,
-											result[0].x);
+									let coords = new kakao.maps.LatLng(result[0].y, result[0].x);
 									// 결과값으로 받은 위치를 마커로 표시합니다
 									let marker = new kakao.maps.Marker({
 										map : map,
@@ -621,17 +574,18 @@ document.addEventListener('DOMContentLoaded', function() {
 							});
 			showLocationName()
 			}
-		}else if(newIdx ==2){
+		}else if(newIdx ==2){ //메뉴관리 선택시
 			console.log("newIdx == 2")
 			
 			const menuList = jsonData.menuList;
+			if(menuList!=null&&menuList.length>0){
 			const menuListDiv = document.getElementById("menuList");
 			const tbody = document.createElement("tbody");
-
 			menuList.forEach(item => {
 			  const tr = document.createElement("tr");
 			  tr.className = "align-middle";
-
+			  tr.value = item.menuCode;
+			  
 			  const td1 = document.createElement("td");
 			  if(item.isMain=='Y'){
 				  const badge = document.createElement("span");
@@ -660,6 +614,7 @@ document.addEventListener('DOMContentLoaded', function() {
 			  const td5 = document.createElement("td");
 			  const btn = document.createElement("div");
 			  btn.className = "btn btn-outline-secondary";
+			  btn.setAttribute("onclick", "modifyMenuPage('" + item.menuCode + "')");
 			  btn.textContent = "수정";
 			  td5.appendChild(btn);
 			  tr.appendChild(td5);
@@ -669,7 +624,6 @@ document.addEventListener('DOMContentLoaded', function() {
 			});
 			menuListDiv.innerHTML = "";
 			menuListDiv.innerHTML+=`<thead>
-
 				   <tr>
 				      <th scope="col"></th>
 				      <th scope="col">키오스크</th>
@@ -679,16 +633,22 @@ document.addEventListener('DOMContentLoaded', function() {
 				   </tr>
 				</thead>`;
 			menuListDiv.appendChild(tbody);
+			}
+		}else if(newIdx == 3){
+		    showMenuInput('');
 		}
 
 	}
+	
+	//매장 분류 
 	const category = document.getElementById('storeCategory')
 	const categoryOptions = category.options
 	for (let i = 0; i < categoryOptions.length; i++) {
-		if (categoryOptions[i].value == '${AccessInfo.storeCategory}') {
+		if (categoryOptions[i].value == '${storeCategory}') {
 			categoryOptions[i].selected = "true";
 		}
 	}
+	//onchange로 지역 선택할때마다 지도 보여주는 func
 	function showLocationName() {
 		let jsonData = JSON.parse(jsonString);
 		let locationList = jsonData.locationList;
@@ -738,7 +698,7 @@ document.addEventListener('DOMContentLoaded', function() {
 							}
 						});
 	}
-
+	//영업기록 남기는 func 
 	function updSalesLog() {
 		let formData = new FormData();
 		console.log(salesToggle.checked)
@@ -756,10 +716,13 @@ document.addEventListener('DOMContentLoaded', function() {
 		formData.append('storeCode', storeNum);
 		serverCallByFetch(formData, '/Api/UpdSalesLog', 'post', '', header);
 	}
+	//모달창 숨기는 func
 	function regCancel() {
 		document.getElementsByClassName("modal")[0].style.display = "none"
 	}
+	//매장 정보 수정 func
 	function modifyStoreInfo() {
+		console.log("modifyStoreInfo")
 		formData = new FormData();
 		const storeName = document.getElementById('storeName');
 		const storePhone = document.getElementById('storePhone');
@@ -793,10 +756,13 @@ document.addEventListener('DOMContentLoaded', function() {
 			showModal('error:매장명 오류:매장명은 2글자에서 50글자 이내로 입력하세요.:');
 		}
 	}
+	//매장 정보 수정 callback
 	function afterModifyStoreInfo(jsonData) {
-		showModal(jsonData.message);
+		console.log("afterModifyStoreInfo")
+		showModal(jsonData.message+"sideMenu:1");
 		document.getElementById("storeNameDropDown").innerText = jsonData.storeName;
 	}
+	//지도 보여주는 func
 	function sample5_execDaumPostcode() {
 		let mapContainer = document.getElementById('map1'), // 지도를 표시할 div
 		mapOption = {
@@ -839,7 +805,7 @@ document.addEventListener('DOMContentLoaded', function() {
 		}).open();
 
 	}
-	
+	//위치 등록 func(serverCall)
 	function regLocation(locationCode) {
 		console.log("regLocation")
 		const locationAddr = document.getElementById("locationAddr").value;
@@ -885,13 +851,17 @@ document.addEventListener('DOMContentLoaded', function() {
 			showModal('error::주소를 입력해주세요.:');
 		}
 	}
+	const regLocationModal = new bootstrap.Modal(document.getElementById('regLocationModal'))
+	//위치 등록 후 callback func
 	function afterRegLocation(jsonData) {
 		regLocationModal.hide()
+		document.getElementById("regLocationModal").display ="none"
 		document.getElementById("locationAddr").value = '';
 		document.getElementById("locationName").value = '';
 		document.getElementById("locationDetail").value = '';
-		showModal(jsonData.message+"reload");
+		showModal(jsonData.message+"reload:1");
 	}
+	//위치 리스트 모달 보여주기 
 	function showLocationList() {
 		  const locations = document.getElementById("locations");
 		  let jsonData = JSON.parse(jsonString);
@@ -901,11 +871,11 @@ document.addEventListener('DOMContentLoaded', function() {
 		    if (locationList[i].locationDetail == null) {
 		      locationList[i].locationDetail = '';
 		    }
-		    locationItem += '<div class="row border-bottom m-3" id="locationItem' + i + '"><div class="col-1"><i class="bi bi-geo-alt"></i></div><div class="col-7 fs-5">' + locationList[i].locationName + '</div><div class="col text-end"><button type="button" class="btn btn-outline-primary m-2" data-bs-toggle="modal" data-bs-target="#regLocationModal" onclick="modifyLocationModalShow(' + i + ')">수정</button><button type="button" class="btn btn-outline-danger" onclick="deleteIdx ='+ i +";showModal('warn:위치 삭제:위치가 삭제됩니다. 삭제하시겠습니까?:deleteLocation')\">삭제</button></div><div class=\"row\"><div class=\"col-1\"></div><div class=\"col\">"+ locationList[i].locationAddr + locationList[i].locationDetail + '</div></div></div>';
+		    locationItem += '<div class="row border-bottom m-3" id="locationItem' + i + '"><div class="col-1"><i class="bi bi-geo-alt"></i></div><div class="col-7 fs-5">' + locationList[i].locationName + '</div><div class="col text-end"><button type="button" class="btn btn-outline-primary m-2" data-bs-toggle="modal" data-bs-target="#regLocationModal" onclick="modifyLocationModalShow(' + i + ')">수정</button><button type="button" class="btn btn-outline-danger" onclick="deleteIdx ='+ i +";showModal('warn:위치 삭제:위치가 삭제됩니다. 삭제하시겠습니까?:deleteLocation:')\">삭제</button></div><div class=\"row\"><div class=\"col-1\"></div><div class=\"col\">"+ locationList[i].locationAddr + locationList[i].locationDetail + '</div></div></div>';
 		  }
 		  locations.innerHTML = locationItem;
 		}
-
+	//위치 등록 modal 보여주기
 	function regLocationModalShow(){
 		regLocationModal.show();
 		document.getElementById("locationServerCall").innerText ="등록";
@@ -915,6 +885,8 @@ document.addEventListener('DOMContentLoaded', function() {
 		document.getElementById("reglocationName").value =  '';
 		document.getElementById("locationDetail").value =  '';
 	}
+	
+	//위치 수정 modal 보여주기
 	function modifyLocationModalShow(index){
 		regLocationModal.show();
 		let jsonData = JSON.parse(jsonString);
@@ -927,6 +899,7 @@ document.addEventListener('DOMContentLoaded', function() {
 		document.getElementById("locationDetail").value = location.locationDetail;
 	}
 	let deleteIdx;
+	//지역 삭제
 	function deleteLocation(){
 		let jsonData = JSON.parse(jsonString);
 		const location=jsonData.locationList[deleteIdx];
@@ -935,46 +908,146 @@ document.addEventListener('DOMContentLoaded', function() {
 		formData.append("locationList[0].locationCode",location.locationCode)
 		serverCallByFetch(formData, "/Api/DeleteLocation","post", "afterDelLocation", header);
 	}
-	const locationListModal = new bootstrap.Modal(document.getElementById('locationListModal'))
 	
+	//지역 리스트 모달(부트스트랩 객체)
+	const locationListModal = new bootstrap.Modal(document.getElementById('locationListModal'))
+	//지역 삭제 callback
 	function afterDelLocation(jsonData) {
 		deleteIdx ='';
-		const messageModal = new bootstrap.Modal(document.getElementById("messageModal"));
-		showModal(jsonData.message+"reload")	
+		locationListModal.hide()
+		showModal(jsonData.message+"sideMenu:1")	
 	}
-	function reload(){
+	//페이지 reload
+	function reload(Idx){
 		movePage('PosManage');
-		sideMenu('1');
+		sideMenu(Idx);
 	}
-	/* function addSave(newIdx) { 
+	
+	//메뉴 입력 Zone 생성 
+	function showMenuInput(menuCode){
+	    const menuInputZone = document.getElementById("menuInputZone");
+		menuInputZone.innerHTML ='';
+	    // 메뉴명 입력란
+	    const menuNameRow = document.createElement("div");
+	    menuNameRow.classList.add("row");
+	    menuNameRow.style.alignItems = "center";
+	    menuNameRow.innerHTML = `
+	    	<div class="col-2">메뉴명</div>
+	    	<input type="text" class="form-control w-25" placeholder="메뉴명을 입력해주세요." id="menuName">
+	    `;
+	    menuInputZone.appendChild(menuNameRow);
 
-		const addMenuPage = document.getElementById("addMenuPage");
-		const menu2 = document.getElementById("menu2");
+	    // 가격 입력란
+	    const menuPriceRow = document.createElement("div");
+	    menuPriceRow.classList.add("row");
+	    menuPriceRow.style.alignItems = "center";
+	    menuPriceRow.innerHTML = `
+	    	<div class="col-2">가격</div>
+	    	<input type="text" class="form-control w-25" placeholder="가격을 입력해주세요." id="menuPrice">
+	    `;
+	    menuInputZone.appendChild(menuPriceRow);
 
-		if (addMenuPage.style.display = "block") {
+	    // 매장 사진 등록
+	    const menuImageRow = document.createElement("div");
+	    menuImageRow.classList.add("row");
+	    menuImageRow.style.alignItems = "center";
+	    menuImageRow.innerHTML = `
+	    	<div class="col-2">매장 사진 등록</div>
+	    	<div class="form-group col-6 p-0">
+	    		<input class="form-control" type="file" id="menuImage">
+	    	</div>
+	    `;
+	    menuInputZone.appendChild(menuImageRow);
 
-		} else {
-			 addMenuPage none else 
-		}
+	    // 대표메뉴 여부
+	    const isMainRow = document.createElement("div");
+	    isMainRow.classList.add("row");
+	    isMainRow.style.alignItems = "center";
+	    isMainRow.innerHTML = `
+	    	<div class="col-2">대표메뉴 여부</div>
+	    	<div class="form-check form-switch col">
+	    		<input class="form-check-input" type="checkbox" id="isMain">
+	    	</div>
+	    `;
+	    menuInputZone.appendChild(isMainRow);
 
-	} */
+	    // KIOSK 노출 여부
+	    const isKioskRow = document.createElement("div");
+	    isKioskRow.classList.add("row");
+	    isKioskRow.style.alignItems = "center";
+	    isKioskRow.innerHTML = `
+	    	<div class="col-2">KIOSK 노출 여부</div>
+	    	<div class="form-check form-switch col">
+	    		<input class="form-check-input" type="checkbox" id="isKiosk">
+	    	</div>
+	    `;
+	    menuInputZone.appendChild(isKioskRow);
 
-	// 	function addMenu() {
-	// 		// menuList 요소 찾기
-	// 		const menuList = document.getElementsByClassName("menuList")[0];
-	// 		// align-middle 클래스를 가진 div 요소 생성
-	// 		const alignMiddleDiv = document.createElement("div");
-	// 		alignMiddleDiv.classList.add("align-middle");
-	// 		// btn btn-outline-secondary 클래스를 가진 버튼 요소 생성
-	// 		const button = document.createElement("button");
-	// 		button.classList.add("btn", "btn-outline-secondary");
-	// 		// 버튼 요소에 텍스트 추가
-	// 		button.textContent = "수정";
-	// 		// align-middle div 요소의 자식으로 버튼 요소 추가
-	// 		alignMiddleDiv.appendChild(button);
-	// 		// menuList 요소의 자식으로 align-middle div 요소 추가
-	// 		menuList.appendChild(alignMiddleDiv);
-	// 	}
+	    // 품절 여부
+	    const isSoldOutRow = document.createElement("div");
+	    isSoldOutRow.classList.add("row");
+	    isSoldOutRow.style.alignItems = "center";
+	    isSoldOutRow.innerHTML = `
+	    	<div class="col-2">품절 여부</div>
+	    	<div class="form-check form-switch col">
+	    		<input class="form-check-input" type="checkbox" id="isSoldOut">
+	    	</div>
+	    `;
+	    menuInputZone.appendChild(isSoldOutRow);
+
+	    // 저장 및 취소 버튼, 메뉴 수정/등록 분기
+	    const buttonRow = document.createElement("div");
+	    buttonRow.classList.add("d-flex", "gap-4", "mt-5");
+	    buttonRow.style.justifyContent = "center";
+	    if(menuCode!=''){
+		  buttonRow.innerHTML = '<div class="btn btn-outline-danger col-1" onclick="deleteMenu(\'' + menuCode + '\')">삭제</div>' +
+	    '<div class="btn btn-primary col-1" onclick="modifyMenu(\'' + menuCode + '\')">저장</div>';
+	    }else{
+		 buttonRow.innerHTML = '<div class="btn btn-primary col-1" onclick="regMenu()">등록</div>';
+	    }
+	  
+	    menuInputZone.appendChild(buttonRow);
+	}
+	
+	//메뉴 수정 버튼 클릭시 나타나는 페이지
+	function modifyMenuPage(menuCode){
+		sideMenu(3); //메뉴관리 content header 띄우기
+		showMenuInput(menuCode); // 해당 메뉴의 정보 value set
+		jsonData = JSON.parse(jsonString);
+		const menuList = jsonData.menuList;
+		const menuItem = menuList.filter(item => item.menuCode === menuCode)[0];
+		const menuName = document.getElementById("menuName");
+		const menuPrice = document.getElementById("menuPrice");
+		const isSoldOut =
+		    document.getElementById("isSoldOut");
+		const isKiosk =
+		    document.getElementById("isKiosk");
+		const isMain =
+		    document.getElementById("isMain");
+		
+		menuName.value=menuItem.menuName;
+		menuPrice.value = menuItem.menuPrice;
+		if(menuItem.isSoldOut =='Y') isSoldOut.checked = true;
+		if(menuItem.isKiosk =='Y') isKiosk.checked = true;
+		if(menuItem.isMain =='Y') isMain.checked = true;
+	}
+	
+	function deleteMenu(menuCode){
+	    formData = new FormData();
+	    formData.append("storeCode",storeNum);
+	    formData.append("menuList[0].menuCode",menuCode);
+	    serverCallByFetch(formData,"/Api/DeleteMenu","post","afterDeleteMenu",header);
+	}
+	function modifyMenu(menuCode){
+	    formData = new FormData();
+	    formData.append("storeCode",storeNum);
+	    formData.append("menuList[0].menuCode",menuCode);
+	    serverCallByFetch(formData,"/Api/ModifyMenu","post","afterDeleteMenu",header);
+	}
+	
+	function afterDeleteMenu(jsonData){
+	    showModal(jsonData.message+"reload:2");
+	}
 </script>
 
 <style>

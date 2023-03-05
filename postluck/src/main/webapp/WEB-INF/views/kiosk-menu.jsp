@@ -245,28 +245,32 @@
 </body>
 <script>
 function connect(){
-var sock = new WebSocket("ws://localhost:9999/my-webSocket");
-sock.onopen = function() {
-    console.log('open');
-    sock.send('test');
-};
+let sock = new WebSocket("ws://localhost:80/my-websocket");
+
+sock.onopen = function(event) {
+	alert(event.code);
+	console.log('open');
+	sock.send('test');
 
 sock.onmessage = function(e) {
-    console.log('message', e.data);
-    sock.close([code], [reason]);
+	alert(e.code);
+	console.log('message', e.data);
 };
 
+};
 sock.onclose = function(event) {
-	  if (event.wasClean) {
-	    console.log('웹 소켓이 정상적으로 닫혔습니다.');
-	  } else {
-	    console.error('웹 소켓이 예기치 않게 닫혔습니다. 이유: ' + event.reason + ', 코드: ' + event.code);
-	  }
-	};
+	alert(event.code);
+	if (event.wasClean) {
+		console.log('웹 소켓이 정상적으로 닫혔습니다.');
+	} else {
+		console.error('웹 소켓이 예기치 않게 닫혔습니다. 이유: ' + event.reason + ', 코드: '
+				+ event.code);
+	}
+};
 sock.onerror = function(error) {
-	  alert([error]);
-	};
-}
+	alert([ error ]);
+};
+};
 </script>
 
 <style>
