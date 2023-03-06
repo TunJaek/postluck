@@ -19,7 +19,7 @@ public class MyWebSocketHandler implements WebSocketHandler {
 	public void afterConnectionEstablished(WebSocketSession session) throws Exception {
 	    // 세션의 유효 시간 설정
 	    System.out.println("afterConnectionEstablished");
-	    session.getAttributes().put(SESSION_EXPIRATION_TIME_KEY, System.currentTimeMillis() + (30 * 60 * 1000)); // 30분
+	    session.getAttributes().put(SESSION_EXPIRATION_TIME_KEY, System.currentTimeMillis() + (12 *60 * 60 * 1000)); // 30분
 	    session.sendMessage(new TextMessage("서버와 연결되었습니다."));
 	    String storeCode = extractStoreCodeFromUri(session.getUri());
 	    sessionIdToStoreCodeMap.put(session, storeCode);
