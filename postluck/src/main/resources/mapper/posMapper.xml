@@ -29,19 +29,6 @@
 		FROM STOREMENU WHERE SM_STCODE = #{storeCode})}, -->
 	<!-- #{menuList[0].menuName},#{menuList[0].menuPrice}) ; -->
 	<!-- </insert> -->
-	<select id="selMenuList"
-		parameterType="com.odod.postluck.beans.StoreBean">
-		SELECT
-		SM_ISMAIN AS MAIN,
-		SM_ISKIOSK AS KIOSK,
-		SM_NAME AS MENUNAME,
-		SM_PRICE AS MENUPRICE
-		FROM POSDBA.STOREMENU
-		WHERE SM_STCODE =
-		#{storeCode}
-		<!-- 메뉴관리 들어갔을때 나오는 메뉴정보 -->
-	</select>
-
 	
 
 	<update id="updMenu"
