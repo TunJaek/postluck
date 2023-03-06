@@ -244,15 +244,15 @@
         </div>
 </body>
 <script>
-let jsonString = '${store}';
-jsonData = JSON.parse(jsonString);
-function connect(){
-let sock = new WebSocket("ws://localhost:80/"+jsonData.storeCode);
 
+let sock;
+if (sock != ''){
+sock = new WebSocket("ws://localhost:80/my-websocket");
+}
 sock.onopen = function(event) {
 	alert(event.code);
 	console.log('open');
-	sock.send('test');
+	sock.send(sock);
 
 sock.onmessage = function(e) {
 	alert(e.code);
@@ -261,7 +261,6 @@ sock.onmessage = function(e) {
 
 };
 sock.onclose = function(event) {
-	alert(event.code);
 	if (event.wasClean) {
 		console.log('웹 소켓이 정상적으로 닫혔습니다.');
 	} else {
@@ -272,7 +271,7 @@ sock.onclose = function(event) {
 sock.onerror = function(error) {
 	alert([ error ]);
 };
-};
+
 </script>
 
 <style>

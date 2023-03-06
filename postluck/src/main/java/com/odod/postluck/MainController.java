@@ -44,12 +44,12 @@ public class MainController {
 		return "pos-main";
 	}
 	@PostMapping("/View/logOut")
-	public ModelAndView logOut(ModelAndView mav, @ModelAttribute StoreBean store, @ModelAttribute("JWTForPostluck") String jwt) {
+	public String logOut(ModelAndView mav, @ModelAttribute StoreBean store, @ModelAttribute("JWTForPostluck") String jwt) {
 		mav.addObject("jwt",jwt);
 		mav.addObject("store",store);
 		this.auth.backController("AU04", mav);
 		
-		return mav;
+		return "index";
 	}
 	
 	@PostMapping("/View/MoveKiosk")
@@ -65,12 +65,12 @@ public class MainController {
 		return "index-callBack";
 	}
 	
-    @GetMapping("/my-websocket")
+    @GetMapping("/chat")
     public String chatGET(){
 
         log.info("@ChatController, chat GET()");
         
-        return "pos-main";
+        return "pos-menu";
     }
 
 }
