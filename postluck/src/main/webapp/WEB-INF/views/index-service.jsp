@@ -7,14 +7,15 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>MAIN - POS.TLUCK</title>
 <link rel="stylesheet" href="../../resources/css/mainBootstrap.css">
-<script src="../../resources/js/common.js"></script>
+<script src="/resources/js/common.js"></script>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR&amp;display=swap" rel="stylesheet">
 <link rel="icon" href="../../resources/image/fabicon.png">
 <script type="text/javascript" src="https://static.nid.naver.com/js/naverLogin_implicit-1.0.3.js" charset="utf-8"></script>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css" />
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
 </head>
 
-<body class="vsc-initialized" onload="pageInit('${param.message}')">
+<body class="vsc-initialized" >
 	<div class="main">
 		<div id="left">
 			<div id="foodTruckNews">
@@ -34,14 +35,14 @@
 								<!-- <button class="btn btn-lg btn-primary" type="button">Block button</button> -->
 							</div>
 							<div class="d-grid gap-2">
-								<button class="btn btn-lg btn-primary" type="button" id="kioskService" onclick="movePage('Kiosk')"></button>
+								<button class="btn btn-lg btn-primary" type="button" id="kioskService" onclick="movePage('Kiosk')"> </button>
 								<!-- <button class="btn btn-lg btn-primary" type="button">Block button</button> -->
 							</div>
 						</div>
 						<div class="text-end"><button onclick="logout()" class="btn btn-sm btn-outline-dark mt-3 rounded-pill">로그아웃</button></div>
 					</div>
 					
-					
+					<!--  "movePage('Kiosk')"-->
 
 				</div>
 
@@ -54,7 +55,7 @@
 			<div class="w-50 modal-dialog-centered modal-dialog-scrollable" id="regStoreInfo">
 				<div class="modal-content w-100">
 					<div class="modal-header">
-						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" onclick="showModal('error::매장 등록 후에 서비스 이용가능 합니다. 취소 시 메인 페이지로 돌아갑니다.매장 등록을 취소하시겠습니까?:moveIndex')"></button>
+						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" onclick="showModal('error::매장 등록 후에 서비스 이용가능 합니다. 취소 시 로그아웃됩니다. 매장 등록을 취소하시겠습니까?:moveIndex:')"></button>
 					</div>
 					<div style="text-align: center;">
 						<div class="mt-4">
@@ -126,18 +127,20 @@
 						</div>
 					</div>
 					<div class="modal-footer justify-content-center">
-						<button type="button" class="btn btn-secondary" onclick="showModal('error::매장 등록 후에 서비스 이용가능 합니다. 취소 시 메인 페이지로 돌아갑니다.매장 등록을 취소하시겠습니까?:moveIndex')">취소</button>
+						<button type="button" class="btn btn-secondary" onclick="showModal('error::매장 등록 후에 서비스 이용가능 합니다. 취소 시 로그아웃됩니다.매장 등록을 취소하시겠습니까?:moveIndex:')">취소</button>
 						<button type="button" class="btn btn-primary" onclick="regStInfo()">등록</button>
 					</div>
 				</div>
 			</div>
+		</div>
+		<div class="modal fade" id="messageModal" style="background-color: rgba(0, 0, 0, 0.2); z-index: 1080">
 		</div>
 	</div>
 	<script type="text/javascript">
 		jsonString = '${store}';
 		let isChecked = false;
 		const jsonData = JSON.parse(jsonString);
-		if (jsonData.storeCode!='') {
+		if (jsonData.storeCode!=null) {
 			document.getElementById("regStoreInfoModal").style.display = "none"
 		} else {
 			document.getElementById("regStoreInfoModal").style.display = "flex"
@@ -241,7 +244,7 @@
 			document.getElementsByClassName('loginText')[0].innerText = jsonData.ceoName
 					+ "사장님 안녕하세요!";
 			}else{
-				showModal("error:오류:오류가 발생했습니다.메인페이지로 이동합니다.:moveIndex");
+				showModal("error:오류:오류가 발생했습니다.메인페이지로 이동합니다.:moveIndex:");
 			}
 		}
 
@@ -252,6 +255,10 @@
 		function logout(){
 			
 		}
+		function moveKiosk(){
+			serverCallByRequest('/View/MoveKiosk', 'get', '');
+		}
+			
 	</script>
 
 </body>

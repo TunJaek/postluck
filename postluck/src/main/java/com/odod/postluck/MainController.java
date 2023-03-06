@@ -3,10 +3,10 @@ package com.odod.postluck;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.odod.postluck.beans.StoreBean;
@@ -15,7 +15,7 @@ import com.odod.postluck.services.pos.StoreService;
 
 import lombok.extern.slf4j.Slf4j;
 
-
+@CrossOrigin(origins="*", allowedHeaders = "*")
 @Controller
 @Slf4j
 public class MainController {
@@ -64,13 +64,9 @@ public class MainController {
 	public String indexService() {
 		return "index-callBack";
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
+	@GetMapping("/my-webSocket")
+	public String moveKIosk() {
+		return "kiosk-order";
+	}
+
 }

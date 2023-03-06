@@ -46,8 +46,8 @@
 // 			serverCallByRequest('/View/AccessCtl', 'post', accessToken);
 // 		}
 // 	}
-	var naver_id_login = new naver_id_login("9mtn5PALlynAVoBKSbrl",
-			"http://localhost/index-callBack");
+// 		var naver_id_login = new naver_id_login("Y_j7t1EE1fX_0Xi6Qr5y", "http://192.168.0.5/index-callBack");
+		var naver_id_login = new naver_id_login("9mtn5PALlynAVoBKSbrl", "http://localhost/index-callBack");
 	naver_id_login.init_naver_id_login();
 	naver_id_login.get_naver_userprofile("getStoreInfo()");
 	
@@ -56,18 +56,6 @@
 		const email = naver_id_login.getProfileData('email');
 		const id = naver_id_login.getProfileData('id');
 		const name = naver_id_login.getProfileData('name');
-		// 		naver_id_login.getUniqState(function(status) {
-		// 			console.log(status)
-		// 			if (status) {
-		// 				console.log("status");
-		/* console.log(naverLogin.user); */
-
-		// 		let userData = [];
-		// 		userData.push(['ceoEmail',email]);
-		// 		userData.push(['snsID',id]);
-		// 		userData.push(['ceoName',name]);
-		// 		userData.push(['snsType','NA']);
-		// 		console.log(userData);
 		formData = new FormData();
 		formData.append('ceoEmail', email);
 		formData.append('snsID', id);

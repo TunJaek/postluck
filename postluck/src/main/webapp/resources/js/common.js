@@ -97,6 +97,7 @@ function serverCallByFetchAjax(formData, jobCode, methodType, callBackFunc) {
 		})
 }
 function moveIndex() {
+	sessionStorage.clear();
 	serverCallByRequest("/Index", "get", "");
 }
 /* JWT 사용한 서버 요청 */
