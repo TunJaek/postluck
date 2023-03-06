@@ -1,3 +1,5 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -16,7 +18,7 @@
 <link rel="stylesheet" href="..\..\resources\css\kiosk.css">
 </head>
 <body>
-	<div class="main" style="overflow:hidden;">
+	<div class="main" style="overflow: hidden;">
 		<div class="header">
 			<span class="px-3"><svg xmlns="http://www.w3.org/2000/svg"
 					width="30" height="30" fill="currentColor" class="bi bi-arrow-left"
@@ -26,7 +28,7 @@
             </svg></span> <span><img src="/resources/image/mainLogo-dark.png"></span>
 		</div>
 		<!-- 주문내역확인 -->
-		<div class="orderContents orderPage" style="display:none;">
+		<div class="orderContents orderPage" style="display: none;">
 			<div class="orderZoneHeader">
 				<div class="menu border p-2">
 					<span class="orderNumber"> # 12 </span> <span
@@ -38,15 +40,14 @@
 					</span>
 				</div>
 			</div>
-			<div class="orderZone">
+			<div class="orderZoneContents">
 				<div class="menu border p-2">
 					<span class="menuName">치킨햄버거</span> <span class="menuCount">x2</span>
 					<span class="menuPrice">20,000원</span>
 				</div>
 
-
 			</div>
-			<div class="orderZoneFooter" >
+			<div class="orderZoneFooter">
 				<div class="menu border p-2">
 					<span class="allCount">총 4건</span> <span class="allPrice">80,000원</span>
 				</div>
@@ -55,8 +56,8 @@
 		<!-- 주문내역확인 -->
 
 		<!-- 결제방식 결정 -->
-		<div class="payMentContens orderPage" style="display:none;">
-			<div class="menu border p-3 payment" >
+		<div class="payMentContens orderPage" style="display: none;">
+			<div class="menu border p-3 payment">
 				<span class="paymentText" style="">결제금액</span> <span
 					class="paymentPrice" style="">80,000</span> <span
 					class="paymentText">원</span><br> <span
@@ -122,8 +123,5 @@
     </script> -->
 </body>
 <style>
-
-
-
 </style>
 </html>

@@ -1,4 +1,5 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -8,12 +9,17 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>SETTING - POS.TLUCK</title>
 <script src="/resources/js/common.js"></script>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css" />
+<link rel="stylesheet"
+	href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css" />
 <link rel="stylesheet" href="/resources/css/main.css">
 <link rel="stylesheet" href="/resources/css/mainBootstrap.css">
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR&amp;display=swap" rel="stylesheet">
-<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
-<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=0203ee3bafbf6d3fe50695090bc89516&libraries=services""></script>
+<link
+	href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR&amp;display=swap"
+	rel="stylesheet">
+<script
+	src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+<script type="text/javascript"
+	src="//dapi.kakao.com/v2/maps/sdk.js?appkey=0203ee3bafbf6d3fe50695090bc89516&libraries=services""></script>
 <script>
 if('${store}'!=''){
 	jsonString = '${store}'
@@ -26,43 +32,55 @@ document.addEventListener('DOMContentLoaded', function() {
 	calendar.render();
 });
 </script>
-<script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.1/index.global.min.js'></script>
+<script
+	src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.1/index.global.min.js'></script>
 
 </head>
 <!-- 헤더랑 옆 클릭바 고정을 고정. -->
 
 <body class="vsc-initialized">
-	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+	<script
+		src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+		integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+		crossorigin="anonymous"></script>
 	<div class="main">
 		<div class="header">
-			<span class="px-3 " style="cursor: pointer" onclick="movePage('Pos')"><svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-arrow-left" viewBox="0 0 16 16">
-                    <path fill-rule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z" />
-                </svg></span> <span><img src="/resources/image/mainLogo-dark.png"></span>
+			<span class="px-3 " style="cursor: pointer" onclick="movePage('Pos')"><svg
+					xmlns="http://www.w3.org/2000/svg" width="30" height="30"
+					fill="currentColor" class="bi bi-arrow-left" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd"
+						d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z" />
+                </svg></span> <span><img
+				src="/resources/image/mainLogo-dark.png"></span>
 
 			<!-- 시간표시 연월일시분초 -->
 			<span id="clock" style="position: absolute; right: 5%;"></span><br />
 		</div>
 		<div class="content">
 			<div class="sidebar border-end d-flex ">
-				<div class="border-bottom p-3 d-flex h-7" style="justify-content: space-between;">
+				<div class="border-bottom p-3 d-flex h-7"
+					style="justify-content: space-between;">
 					<div id="isOpenText">영업전</div>
 					<div class="form-check form-switch">
-						<input id="salesToggle" class="form-check-input" type="checkbox" onclick="updSalesLog()" style="cursor: pointer">
+						<input id="salesToggle" class="form-check-input" type="checkbox"
+							onclick="updSalesLog()" style="cursor: pointer">
 					</div>
 				</div>
 
 				<div class="dropdown menu border-bottom h-7">
-					<button class="btn dropdown-toggle h-100 w-100" id="storeNameDropDown" type="button" data-bs-toggle="dropdown" aria-expanded="false" style="color: black">${storeName}</button>
+					<button class="btn dropdown-toggle h-100 w-100"
+						id="storeNameDropDown" type="button" data-bs-toggle="dropdown"
+						aria-expanded="false" style="color: black">${storeName}</button>
 					<ul class="dropdown-menu">
 						<li><a class="dropdown-item">Main Page</a></li>
 						<li><a class="dropdown-item" href="#">로그아웃</a></li>
 					</ul>
 				</div>
-				<div class="menu  p-3" onclick="sideMenu(0)">일정</div>
-				<div class="menu  p-3" onclick="sideMenu(1)">매장관리</div>
-				<div class="menu  p-3" onclick="sideMenu(2)">메뉴관리</div>
-				<div class="menu  p-3" onclick="sideMenu(5)">결제내역</div>
-				<div class="menu  p-3" onclick="sideMenu(6)">매출분석</div>
+				<div class="menu  p-3 sideMenu" onclick="sideMenu(0)">일정</div>
+				<div class="menu  p-3 sideMenu" onclick="sideMenu(1)">매장관리</div>
+				<div class="menu  p-3 sideMenu" onclick="sideMenu(2)">메뉴관리</div>
+				<div class="menu  p-3 sideMenu" onclick="sideMenu(5)">결제내역</div>
+				<div class="menu  p-3 sideMenu" onclick="sideMenu(6)">매출분석</div>
 			</div>
 			<!-- sideMenu(3) : 메뉴추가 / sideMenu(4) : 메뉴수정 -->
 			<!-- 0. 일정 -->
@@ -70,7 +88,8 @@ document.addEventListener('DOMContentLoaded', function() {
 				<div class="border-bottom p-3 h-7">
 					<h5>일정</h5>
 				</div>
-				<div class="mt-5 d-flex" id='calendar-container' style="justify-content: center;">
+				<div class="mt-5 d-flex" id='calendar-container'
+					style="justify-content: center;">
 					<div id='calendar' style="width: 50%;"></div>
 				</div>
 			</div>
@@ -81,22 +100,26 @@ document.addEventListener('DOMContentLoaded', function() {
 				<div class="border-bottom p-3 h-7">
 					<h5>매장 관리</h5>
 				</div>
-				<div class="inputZone p-5 d-flex gap-3 " style="flex-direction: column;overflow-y:auto;height: 88%;"">
+				<div class="inputZone p-5 d-flex gap-3 "
+					style="flex-direction: column; overflow-y: auto; height: 88%;"">
 					<div class="row" style="align-items: center;">
 						<div class="col-2">사업자 명</div>
 						<input type="text" class="form-control w-25" disabled id="ceoName">
 
 						<div class="col-2 ms-4">사업자번호</div>
-						<input type="text" id="storeCodeDisabled" class="form-control w-25" disabled>
+						<input type="text" id="storeCodeDisabled"
+							class="form-control w-25" disabled>
 
 					</div>
 					<div class="row" style="align-items: center;">
 						<div class="col-2">매장명</div>
-						<input type="text" id="storeName" class="form-control w-25" placeholder="매장명을 입력해주세요." maxlength="50">
+						<input type="text" id="storeName" class="form-control w-25"
+							placeholder="매장명을 입력해주세요." maxlength="50">
 					</div>
 					<div class="row" style="align-items: center;">
 						<div class="col-2">전화번호</div>
-						<input type="text" id="storePhone" class="form-control w-25" placeholder="전화번호를 입력해주세요." maxlength="11">
+						<input type="text" id="storePhone" class="form-control w-25"
+							placeholder="전화번호를 입력해주세요." maxlength="11">
 
 					</div>
 					<div class="row" style="align-items: center;">
@@ -118,11 +141,15 @@ document.addEventListener('DOMContentLoaded', function() {
 						<div class="col-2">영업위치</div>
 						<div class="col-5 p-0 ">
 							<div class="row ms-0">
-								<select class="form-select col w-25" id="storeLocation" onchange="showLocationName()">
+								<select class="form-select col w-25" id="storeLocation"
+									onchange="showLocationName()">
 								</select>
-								<div class="btn btn-primary col-4 m-3" data-bs-toggle="modal" data-bs-target="#locationListModal" onclick="showLocationList()">편집</div>
+								<div class="btn btn-primary col-4 m-3" data-bs-toggle="modal"
+									data-bs-target="#locationListModal"
+									onclick="showLocationList()">편집</div>
 							</div>
-							<input type="text" class="form-control w-100 " id="locationName" disabled>
+							<input type="text" class="form-control w-100 " id="locationName"
+								disabled>
 							<div class="mt-3" id="map" style="height: 40vh; display: none"></div>
 						</div>
 
@@ -130,19 +157,22 @@ document.addEventListener('DOMContentLoaded', function() {
 
 					<div class="row" style="align-items: center;">
 						<div class="col-2">영업시간</div>
-						<input type="text" class="form-control w-25" placeholder="영업시간을 입력해주세요.">
+						<input type="text" class="form-control w-25"
+							placeholder="영업시간을 입력해주세요.">
 					</div>
 
 					<div class="row" style="align-items: center;">
 						<div class="col-2">매장 한 줄소개</div>
 
-						<input type="text" class="form-control w-25" id="storeInfo" placeholder="매장 한 줄 소개를  입력해주세요." maxlength="30">
+						<input type="text" class="form-control w-25" id="storeInfo"
+							placeholder="매장 한 줄 소개를  입력해주세요." maxlength="30">
 
 					</div>
 					<div class="row" style="align-items: center;">
 						<div class="col-2 mb-3">매장 상세정보</div>
 						<div class="form-group w-50 p-0">
-							<textarea class="form-control" id="storeInfoDetail" rows="3" maxlength="2000"></textarea>
+							<textarea class="form-control" id="storeInfoDetail" rows="3"
+								maxlength="2000"></textarea>
 
 						</div>
 					</div>
@@ -166,10 +196,11 @@ document.addEventListener('DOMContentLoaded', function() {
 				</div>
 
 				<div class="text-end ">
-					<button class="btn btn-outline-primary m-4" onClick="sideMenu(3)">+메뉴추가</button>
+					<button class="btn btn-outline-primary m-4 " onClick="sideMenu(3)">+메뉴추가</button>
 				</div>
-				<div class="menuList text-center" style="overflow-y:auto;overflow-y:auto;height:80%">
-					<div class="m-2 text-center" >
+				<div class="menuList text-center"
+					style="overflow-y: auto; overflow-y: auto; height: 80%">
+					<div class="m-2 text-center">
 						<table class="table table-hover text-center " id="menuList">
 
 						</table>
@@ -183,7 +214,8 @@ document.addEventListener('DOMContentLoaded', function() {
 				<div class="border p-3 " style="height: 7%;">
 					<h5>메뉴등록</h5>
 				</div>
-				<div class="inputZone p-5 d-flex gap-3" style="flex-direction: column;" id="menuInputZone"></div>
+				<div class="inputZone p-5 d-flex gap-3"
+					style="flex-direction: column;" id="menuInputZone"></div>
 			</div>
 			<!-- 3. 결제내역 -->
 			<div class="mainContent" id="menu5" style="display: none;">
@@ -194,7 +226,8 @@ document.addEventListener('DOMContentLoaded', function() {
 				</div>
 				<div class="d-flex w-100 " style="height: 93%;">
 					<div class="paymentList border-end position-relative">
-						<div class="border row position-relative m-0 gap-4 " style="align-items: center;">
+						<div class="border row position-relative m-0 gap-4 "
+							style="align-items: center;">
 							<div class="form-group col-5 p-3">
 								<input type="date">
 							</div>
@@ -271,13 +304,19 @@ document.addEventListener('DOMContentLoaded', function() {
 						매출분석
 						</h2>
 				</div>
-				<div class="inputZone p-5 d-flex gap-3" style="flex-direction: column;">
+				<div class="inputZone p-5 d-flex gap-3"
+					style="flex-direction: column;">
 					<div class="salesPeriodButtonZone">
-						<button type="button" class="btn btn-outline-primary" style="font-weight: bold;">&nbsp 영업중 &nbsp</button>
-						<button type="button" class="btn btn-outline-primary" style="font-weight: bold;">&nbsp &nbsp 1주 &nbsp &nbsp</button>
-						<button type="button" class="btn btn-outline-primary" style="font-weight: bold;">&nbsp 1개월 &nbsp</button>
-						<button type="button" class="btn btn-outline-primary" style="font-weight: bold;">&nbsp 3개월 &nbsp</button>
-						<button type="button" class="btn btn-outline-primary" style="font-weight: bold;">기간선택</button>
+						<button type="button" class="btn btn-outline-primary"
+							style="font-weight: bold;">&nbsp 영업중 &nbsp</button>
+						<button type="button" class="btn btn-outline-primary"
+							style="font-weight: bold;">&nbsp &nbsp 1주 &nbsp &nbsp</button>
+						<button type="button" class="btn btn-outline-primary"
+							style="font-weight: bold;">&nbsp 1개월 &nbsp</button>
+						<button type="button" class="btn btn-outline-primary"
+							style="font-weight: bold;">&nbsp 3개월 &nbsp</button>
+						<button type="button" class="btn btn-outline-primary"
+							style="font-weight: bold;">기간선택</button>
 					</div>
 				</div>
 				<div class="mainContentMidlle" style="max-width: 100%; height: 20%;">
@@ -310,14 +349,22 @@ document.addEventListener('DOMContentLoaded', function() {
 				<div class="mainContentFooter m-3">
 					<div class="footerChoiceTab" style="position: relative;">
 						<ul class="nav nav-tabs" role="tablist">
-							<li class="nav-item" role="presentation"><a class="nav-link" data-bs-toggle="tab" href="#home" aria-selected="false" role="tab" tabindex="-1">결제수단별</a></li>
-							<li class="nav-item" role="presentation"><a class="nav-link active" data-bs-toggle="tab" href="#profile" aria-selected="true" role="tab">메뉴별</a></li>
-							<li class="nav-item" role="presentation"><a class="nav-link" data-bs-toggle="tab" href="#locate" aria-selected="false" role="tab" tabindex="-1">지역별</a></li>
+							<li class="nav-item" role="presentation"><a class="nav-link"
+								data-bs-toggle="tab" href="#home" aria-selected="false"
+								role="tab" tabindex="-1">결제수단별</a></li>
+							<li class="nav-item" role="presentation"><a
+								class="nav-link active" data-bs-toggle="tab" href="#profile"
+								aria-selected="true" role="tab">메뉴별</a></li>
+							<li class="nav-item" role="presentation"><a class="nav-link"
+								data-bs-toggle="tab" href="#locate" aria-selected="false"
+								role="tab" tabindex="-1">지역별</a></li>
 
 						</ul>
-						<div id="myTabContent" class="tab-content" style="width: 100%; text-align: center;">
+						<div id="myTabContent" class="tab-content"
+							style="width: 100%; text-align: center;">
 							<div class="tab-pane fade" id="home" role="tabpanel">
-								<div class="paymentTab" style="width: 80%; display: flex; flex-direction: row; font-size: 20px;">
+								<div class="paymentTab"
+									style="width: 80%; display: flex; flex-direction: row; font-size: 20px;">
 									<br> <br>
 									<div class="textBox1">
 										<h4>결제수단</h4>
@@ -338,60 +385,75 @@ document.addEventListener('DOMContentLoaded', function() {
 										<hr style="border: 1px color= silver; width: 100%;">
 									</div>
 								</div>
-								<div class="actualSales" style="display: flex; position: relative; left: 51.3%;">
+								<div class="actualSales"
+									style="display: flex; position: relative; left: 51.3%;">
 									<h4 style="">실매출 &nbsp&nbsp&nbsp</h4>
 									<span style="font-size: 20px;">415,000원</span>
 								</div>
 								<!-- <p> 결제수단별 </p> -->
 
 							</div>
-							<div class="tab-pane fade active show" id="profile" role="tabpanel">
-								<div class="menuTab" style="width: 80%; display: flex; flex-direction: row; font-size: 20px;">
+							<div class="tab-pane fade active show" id="profile"
+								role="tabpanel">
+								<div class="menuTab"
+									style="width: 80%; display: flex; flex-direction: row; font-size: 20px;">
 									<div class="textBox1">
 										<h4>순위</h4>
 										<hr style="border: 1px color= silver;">
-										1<br> <br> 2<br> <br> 3<br> <br> 4<br> <br> 5
+										1<br> <br> 2<br> <br> 3<br> <br>
+										4<br> <br> 5
 									</div>
 									<div class="textBox1">
 										<h4>메뉴명</h4>
 										<hr style="border: 1px color= silver;">
-										1<br> <br> 2<br> <br> 3<br> <br> 4<br> <br> 5
+										1<br> <br> 2<br> <br> 3<br> <br>
+										4<br> <br> 5
 
 									</div>
 									<div class="textBox1">
 										<h4>건수</h4>
 										<hr style="border: 1px color= silver;">
-										1<br> <br> 2<br> <br> 3<br> <br> 4<br> <br> 5
+										1<br> <br> 2<br> <br> 3<br> <br>
+										4<br> <br> 5
 									</div>
-									<div class="textBox1" style="text-align: right; position: relative; left: -10%;">
+									<div class="textBox1"
+										style="text-align: right; position: relative; left: -10%;">
 										<h4>결제금액</h4>
 										<hr style="border: 1px color= silver; width: 135%;">
-										1,197,000원<br> <br> 197,000원<br> <br> 197,000원<br> <br> 97,000원<br> <br> 7,000원
+										1,197,000원<br> <br> 197,000원<br> <br>
+										197,000원<br> <br> 97,000원<br> <br> 7,000원
 									</div>
 								</div>
 							</div>
-							<div class="tab-pane fade active show" id="locate" role="tabpanel">
-								<div class="menuTab" style="width: 80%; display: flex; flex-direction: row; font-size: 20px;">
+							<div class="tab-pane fade active show" id="locate"
+								role="tabpanel">
+								<div class="menuTab"
+									style="width: 80%; display: flex; flex-direction: row; font-size: 20px;">
 									<div class="textBox1">
 										<h4>지역</h4>
 										<hr style="border: 1px color= silver;">
-										서울<br> <br> 경기<br> <br> 인천<br> <br> 강릉<br> <br> 5
+										서울<br> <br> 경기<br> <br> 인천<br> <br>
+										강릉<br> <br> 5
 									</div>
 									<div class="textBox1">
 										<h4>메뉴명</h4>
 										<hr style="border: 1px color= silver;">
-										1<br> <br> 2<br> <br> 3<br> <br> 4<br> <br> 5
+										1<br> <br> 2<br> <br> 3<br> <br>
+										4<br> <br> 5
 
 									</div>
 									<div class="textBox1">
 										<h4>건수</h4>
 										<hr style="border: 1px color= silver;">
-										1<br> <br> 2<br> <br> 3<br> <br> 4<br> <br> 5
+										1<br> <br> 2<br> <br> 3<br> <br>
+										4<br> <br> 5
 									</div>
-									<div class="textBox1" style="text-align: right; position: relative; left: -10%;">
+									<div class="textBox1"
+										style="text-align: right; position: relative; left: -10%;">
 										<h4>결제금액</h4>
 										<hr style="border: 1px color= silver; width: 135%;">
-										1,197,000원<br> <br> 197,000원<br> <br> 197,000원<br> <br> 97,000원<br> <br> 7,000원
+										1,197,000원<br> <br> 197,000원<br> <br>
+										197,000원<br> <br> 97,000원<br> <br> 7,000원
 									</div>
 								</div>
 							</div>
@@ -406,26 +468,36 @@ document.addEventListener('DOMContentLoaded', function() {
 		<!--  메세지 모달 -->
 
 
-		
+
 		<!-- 위치 리스트 Modal -->
-		<div class="modal fade show" id="locationListModal" tabindex="-1" style="display: none; z-index: 1060;">
-			<div class="modal-dialog modal-dialog-centered" style="max-width: 40%;">
+		<div class="modal fade show" id="locationListModal" tabindex="-1"
+			style="display: none; z-index: 1060;">
+			<div class="modal-dialog modal-dialog-centered"
+				style="max-width: 40%;">
 				<div class="modal-content ">
 					<div class="modal-header">
 						<h5 class="modal-title" id="modifyModalTitle">위치 편집</h5>
-						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+						<button type="button" class="btn-close" data-bs-dismiss="modal"
+							aria-label="Close"></button>
 					</div>
-					<div class="modal-body" style="max-height: 60vh; overflow-y: auto" id="locations"></div>
+					<div class="modal-body" style="max-height: 60vh; overflow-y: auto"
+						id="locations"></div>
 				</div>
 			</div>
 		</div>
 		<!-- 위치 등록 Modal -->
-		<div class="modal fade show" id="regLocationModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-modal="true" role="dialog" style="display: none; - -bs-modal-width: 50%; z-index: 1070">
-			<div class="modal-dialog modal-dialog-centered " style="max-width: 50%;">
+		<div class="modal fade show" id="regLocationModal"
+			data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+			aria-modal="true" role="dialog"
+			style="display: none; - -bs-modal-width: 50%; z-index: 1070">
+			<div class="modal-dialog modal-dialog-centered "
+				style="max-width: 50%;">
 				<div class="modal-content">
 					<div class="modal-header">
 						<h5 class="modal-title" id="regModalTitle"></h5>
-						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="regCancel" onclick ="regLocationModal.hide()"></button>
+						<button type="button" class="btn-close" data-bs-dismiss="modal"
+							aria-label="Close" id="regCancel"
+							onclick="regLocationModal.hide()"></button>
 					</div>
 					<div class="modal-body; px-5 my-4">
 						<div class="row p-2">
@@ -437,29 +509,33 @@ document.addEventListener('DOMContentLoaded', function() {
 						<div class="row p-2">
 							<div class="col-3 text-center">주소</div>
 							<div class="col-7">
-								<input type="text" class="form-control " id="locationAddr" placeholder="주소">
+								<input type="text" class="form-control " id="locationAddr"
+									placeholder="주소">
 							</div>
 							<div class="col-2">
-								<input type="button" class="btn btn-primary" onclick="sample5_execDaumPostcode()" value="주소 검색">
-								<br>
+								<input type="button" class="btn btn-primary"
+									onclick="sample5_execDaumPostcode()" value="주소 검색"> <br>
 							</div>
 						</div>
 						<div class="row p-2">
 							<div class="col-3"></div>
 							<div class="col-9">
-								<input type="text" class="form-control" id="locationDetail" placeholder="상세주소를 입력해주세요." maxlength="200">
-								<div id="map1" style="height: 30vh; margin-top: 10px; display: none"></div>
+								<input type="text" class="form-control" id="locationDetail"
+									placeholder="상세주소를 입력해주세요." maxlength="200">
+								<div id="map1"
+									style="height: 30vh; margin-top: 10px; display: none"></div>
 							</div>
 						</div>
 					</div>
 					<div class="modal-footer justify-content-center">
-						<button type="button" class="btn btn-primary" id="locationServerCall"></button>
+						<button type="button" class="btn btn-primary"
+							id="locationServerCall"></button>
 					</div>
 				</div>
 			</div>
 		</div>
-		<div class="modal fade" id="messageModal" style="background-color: rgba(0, 0, 0, 0.2); z-index: 1080">
-		</div>
+		<div class="modal fade" id="messageModal"
+			style="background-color: rgba(0, 0, 0, 0.2); z-index: 1080"></div>
 	</div>
 
 </body>
@@ -574,7 +650,8 @@ document.addEventListener('DOMContentLoaded', function() {
 							});
 			showLocationName()
 			}
-		}else if(newIdx ==2){ //메뉴관리 선택시
+		}else if(newIdx == 2){ //메뉴관리 선택시
+			jsonData = JSON.parse(jsonString);
 			console.log("newIdx == 2")
 			
 			const menuList = jsonData.menuList;
@@ -623,7 +700,8 @@ document.addEventListener('DOMContentLoaded', function() {
 			 
 			});
 			menuListDiv.innerHTML = "";
-			menuListDiv.innerHTML+=`<thead>
+			menuListDiv.innerHTML+=
+				`<thead>
 				   <tr>
 				      <th scope="col"></th>
 				      <th scope="col">키오스크</th>
@@ -1009,6 +1087,32 @@ document.addEventListener('DOMContentLoaded', function() {
 	    menuInputZone.appendChild(buttonRow);
 	}
 	
+	function regMenu() {
+		  // 입력값들을 추가
+		 // const menuCode = document.getElementById("menuCode").value;
+		  const menuName = document.getElementById("menuName").value;
+		  const menuPrice = document.getElementById("menuPrice").value;
+		  const menuImage = document.getElementById("menuImage").value;
+		  let isSoldOut = document.getElementById("isSoldOut").value;
+		  let isMain = document.getElementById("isMain");
+		  let isKiosk = document.getElementById("isKisok");
+		  
+		  
+		  const formData = new FormData();
+		  //formData.append("menuList[0].menuCode", menuCode);
+		  formData.append("menuList[0].menuName", menuName);
+		  formData.append("menuList[0].menuPrice", menuPrice);
+		  formData.append("menuList[0].menuImageCode", menuImage);
+		  if(isKiosk.value == "on") {
+			  isKiosk.checked = true;
+			  formData.append("menuList[0].isKiosk", isKiosk);}
+		  if(isMain == "on") {
+			  isMain.checked = true;
+			  formData.append("menuList[0].isMain", isMain);
+		  }
+		  
+		  serverCallByFetch(formData,"/Api/RegMenu","post","afterDeleteMenu",header);
+	}
 	//메뉴 수정 버튼 클릭시 나타나는 페이지
 	function modifyMenuPage(menuCode){
 		sideMenu(3); //메뉴관리 content header 띄우기
@@ -1045,9 +1149,9 @@ document.addEventListener('DOMContentLoaded', function() {
 	    serverCallByFetch(formData,"/Api/ModifyMenu","post","afterDeleteMenu",header);
 	}
 	
-	function afterDeleteMenu(jsonData){
+	 function afterDeleteMenu(jsonData){
 	    showModal(jsonData.message+"reload:2");
-	}
+	} 
 </script>
 
 <style>
