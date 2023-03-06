@@ -1,3 +1,4 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -6,14 +7,12 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>KIOSK - POS.TLUCK</title>
 <link rel="icon" href="/resources/image/fabicon.png">
-<link rel="stylesheet"
-	href="C:\Users\user\git\postluck\postluck\src\main\webapp\resources\css\mainBootstrap.css">
+<link rel="stylesheet" href="/resources/css/mainBootstrap.css">
 <link rel="stylesheet"
 	href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css" />
-<link
-	href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR&amp;display=swap"
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR&amp;display=swap"
 	rel="stylesheet">
-	<link rel="stylesheet" href="../../resources/css/kiosk.css">
+<link rel="stylesheet" href="/resources/css/kiosk.css">
 </head>
 <body>
 	<div class="main">
@@ -33,7 +32,7 @@
 				<div class="menuCard">
 					<div class="card">
 						<img
-							src="C:\Users\user\git\postluck\postluck\src\main\webapp\resources\image\hotdog2.jpg"
+							src="/resources/image/hotdog2.jpg"
 							class="card-img-top cardTop" alt="...">
 						<div class="card-body">
 							<h4 class="card-title">핫도그</h4>
@@ -98,37 +97,36 @@
 	</div>
 </body>
 <script>
-function connect(){
-let sock = new WebSocket("ws://localhost:80/my-websocket");
+	function connect() {
+		let sock = new WebSocket("ws://localhost:80/my-websocket");
 
-sock.onopen = function(event) {
-	alert(event.code);
-	console.log('open');
-	sock.send('test');
+		sock.onopen = function(event) {
+			alert(event.code);
+			console.log('open');
+			sock.send('test');
 
-sock.onmessage = function(e) {
-	alert(e.code);
-	console.log('message', e.data);
-};
+			sock.onmessage = function(e) {
+				alert(e.code);
+				console.log('message', e.data);
+			};
 
-};
-sock.onclose = function(event) {
-	alert(event.code);
-	if (event.wasClean) {
-		console.log('웹 소켓이 정상적으로 닫혔습니다.');
-	} else {
-		console.error('웹 소켓이 예기치 않게 닫혔습니다. 이유: ' + event.reason + ', 코드: '
-				+ event.code);
-	}
-};
-sock.onerror = function(error) {
-	alert([ error ]);
-};
-};
+		};
+		sock.onclose = function(event) {
+			alert(event.code);
+			if (event.wasClean) {
+				console.log('웹 소켓이 정상적으로 닫혔습니다.');
+			} else {
+				console.error('웹 소켓이 예기치 않게 닫혔습니다. 이유: ' + event.reason
+						+ ', 코드: ' + event.code);
+			}
+		};
+		sock.onerror = function(error) {
+			alert([ error ]);
+		};
+	};
 </script>
 
 
 <style>
-
 </style>
 </html>
