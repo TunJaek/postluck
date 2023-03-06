@@ -9,14 +9,20 @@
 <title>KIOSK - POS.TLUCK</title>
 <link rel="icon" href="/resources/image/fabicon.png">
 <link rel="stylesheet" href="../../resources/css/mainBootstrap.css">
+<link rel="icon" href="../../resources/image/fabicon.png">
+<script src="../../resources/js/common.js"></script>
 <link rel="stylesheet"
 	href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css" />
 <link
 	href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR&amp;display=swap"
 	rel="stylesheet">
 <link rel="stylesheet" href="../../resources/css/kiosk.css">
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
 </head>
-<body>
+
+<body class="vsc-initialized" onload="pageInit('${param.message}')">
+
 	<div class="main">
 		<div id="menuPage" style="disply: block;">
 			<div class="menuHeader">
@@ -363,6 +369,7 @@
 				</div>
 			</div>
 		</div>
+
 	</div>
 	<script>
         var Target = document.getElementById("clock");
@@ -405,8 +412,44 @@
 	
 	
 	}
+	let storeCode ='${store.storeCode}';
+	let sock;
+	if (getJWT()[0][1] && getJWT()[0][1].length >= 5) {
+		sock = new WebSocket("ws://192.168.0.5:80/my-websocket?"
+				+ "storeCode="+'${store.storeCode}');
+		// WebSocket 처리 코드
+	} else {
+		console.log("Invalid JWT: " + jwt);
+	}
+
+	sock.onopen = function(event) {
+		alert(event.code);
+		console.log('open');
+
+		sock.send('${store.storeCode}');
+	};
+	sock.onmessage = function(e) {
+		if (e.data.split(':')[0] == '주문') {
+			alert("주문이 들어왔습니다! " + e.data.split(':')[1])
+		} else {
+			console.log(e.data);
+		}
+	};
+	sock.onclose = function(event) {
+		alert(event.code);
+		if (event.wasClean) {
+			console.log('웹 소켓이 정상적으로 닫혔습니다.');
+		} else {
+			console.error('웹 소켓이 예기치 않게 닫혔습니다. 이유: ' + event.reason + ', 코드: '
+					+ event.code);
+		}
+	};
+	function order() {
+		sock.send("주문: 햄버거 1개");
+	}
+	sock.onerror = function(error) {
+		alert([ error ]);
+	};
 </script>
 
-<style>
-</style>
 </html>

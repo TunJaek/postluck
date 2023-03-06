@@ -46,7 +46,6 @@ body {
 .menuList {
 	width: 100%;
 	position: relative;
-	top: 10%;
 	display: grid;
 	justify-content: center;
 	grid-template-columns: 25% 25% 25%;

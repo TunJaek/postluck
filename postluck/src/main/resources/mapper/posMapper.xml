@@ -53,6 +53,15 @@
 		WHERE SM_STCODE = #{storeCode};
 		<!-- 메뉴 수정 버튼클릭시 출력되는 정보 -->
 	</select>
+	
+	<!-- <insert id="insMenu" parameterType="com.odod.postluck.beans.StoreBean"> -->
+	<!-- INSERT INTO POSDBA.STOREMENU(SM_STCODE, SM_CODE, SM_NAME, SM_PRICE) -->
+	<!-- VALUES(#{storeCode}, -->
+	<!-- #{menuList[0].(SELECT'M'||LPAD(NVL(SUBSTR(MAX(SM_CODE),2,2),-1)+1,2,'0') 
+		FROM STOREMENU WHERE SM_STCODE = #{storeCode})}, -->
+	<!-- #{menuList[0].menuName},#{menuList[0].menuPrice}) ; -->
+	<!-- </insert> -->
+	
 
 	<update id="updMenu"
 		parameterType="com.odod.postluck.beans.StoreBean">
@@ -69,7 +78,7 @@
 		#{menuList[0].isSold}
 
 		WHERE SM_STCODE = #{storeCode} AND SM_CODE =
-		#{menuList[0].menuCode};
+		#{menuList[0].menuCode}
 	</update>
 	<select id="isMenuName"
 		parameterType="com.odod.postluck.beans.StoreBean">

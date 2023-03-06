@@ -52,21 +52,19 @@ public class MainController {
 		return "index";
 	}
 	
-	@PostMapping("/View/MoveKiosk")
-	public String moveKiosk(ModelAndView mav, @ModelAttribute StoreBean store, @ModelAttribute("JWTForPostluck") String jwt) {
-		mav.addObject("jwt", jwt);
-		mav.addObject("store", store);
-		return "kiosk-menu";
-	}
 	
 	
 	@GetMapping("/index-callBack")
 	public String indexService() {
 		return "index-callBack";
 	}
-	@GetMapping("/my-webSocket")
-	public String moveKIosk() {
-		return "kiosk-order";
-	}
+	
+    @GetMapping("/chat")
+    public String chatGET(){
+
+        log.info("@ChatController, chat GET()");
+        
+        return "pos-menu";
+    }
 
 }
