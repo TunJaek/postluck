@@ -1,3 +1,4 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -7,13 +8,13 @@
 <title>KIOSK - POS.TLUCK</title>
 <link rel="icon" href="/resources/image/fabicon.png">
 <link rel="stylesheet"
-	href="C:\Users\user\git\postluck\postluck\src\main\webapp\resources\css\mainBootstrap.css">
+	href="/resources/css/mainBootstrap.css">
 <link rel="stylesheet"
 	href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css" />
 <link
 	href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR&amp;display=swap"
 	rel="stylesheet">
-<link rel="stylesheet" href="..\..\resources\css\kiosk.css">
+<link rel="stylesheet" href="/resources/css/kiosk.css">
 </head>
 <body>
 	<div class="main" style="overflow:hidden;">
@@ -26,7 +27,7 @@
             </svg></span> <span><img src="/resources/image/mainLogo-dark.png"></span>
 		</div>
 		<!-- 주문내역확인 -->
-		<div class="orderContents orderPage" style="display:none;">
+		<div class="orderContents">
 			<div class="orderZoneHeader">
 				<div class="menu border p-2">
 					<span class="orderNumber"> # 12 </span> <span
@@ -46,7 +47,7 @@
 
 
 			</div>
-			<div class="orderZoneFooter" >
+			<div class="orderZoneFooter">
 				<div class="menu border p-2">
 					<span class="allCount">총 4건</span> <span class="allPrice">80,000원</span>
 				</div>
@@ -55,7 +56,7 @@
 		<!-- 주문내역확인 -->
 
 		<!-- 결제방식 결정 -->
-		<div class="payMentContens orderPage" style="display:none;">
+		<div class="payMentContens">
 			<div class="menu border p-3 payment" >
 				<span class="paymentText" style="">결제금액</span> <span
 					class="paymentPrice" style="">80,000</span> <span
@@ -97,7 +98,7 @@
 		</div>
 		<!-- 결제방식 결정 -->
 	</div>
-	<!-- <script>
+	- <script>
         var Target = document.getElementById("clock");
         var Target_apm = document.getElementById("apm");
         function clock() {
@@ -119,7 +120,7 @@
         }
         clock();
         setInterval(clock, 1000); // 1초마다 실행
-    </script> -->
+    </script> 
 </body>
 <style>
 

@@ -110,7 +110,7 @@
 					<!-- 							<p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p> --> <!-- 							<a href="#" class="btn btn-primary">Go somewhere</a> --> <!-- 						</div> --> <!-- 					</div> --> <!-- 					<div class="toast" role="alert" aria-live="assertive" aria-atomic="true" style="display: block; position: absolute; left: 70%; top: 3%; z-index: 1;"> --> <!-- 						<div class="toast-header"> --> <!-- 							<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-gear-wide-connected" viewBox="0 0 16 16"> --> <!--                                 <path --> <!-- 									d="M7.068.727c.243-.97 1.62-.97 1.864 0l.071.286a.96.96 0 0 0 1.622.434l.205-.211c.695-.719 1.888-.03 1.613.931l-.08.284a.96.96 0 0 0 1.187 1.187l.283-.081c.96-.275 1.65.918.931 1.613l-.211.205a.96.96 0 0 0 .434 1.622l.286.071c.97.243.97 1.62 0 1.864l-.286.071a.96.96 0 0 0-.434 1.622l.211.205c.719.695.03 1.888-.931 1.613l-.284-.08a.96.96 0 0 0-1.187 1.187l.081.283c.275.96-.918 1.65-1.613.931l-.205-.211a.96.96 0 0 0-1.622.434l-.071.286c-.243.97-1.62.97-1.864 0l-.071-.286a.96.96 0 0 0-1.622-.434l-.205.211c-.695.719-1.888.03-1.613-.931l.08-.284a.96.96 0 0 0-1.186-1.187l-.284.081c-.96.275-1.65-.918-.931-1.613l.211-.205a.96.96 0 0 0-.434-1.622l-.286-.071c-.97-.243-.97-1.62 0-1.864l.286-.071a.96.96 0 0 0 .434-1.622l-.211-.205c-.719-.695-.03-1.888.931-1.613l.284.08a.96.96 0 0 0 1.187-1.186l-.081-.284c-.275-.96.918-1.65 1.613-.931l.205.211a.96.96 0 0 0 1.622-.434l.071-.286zM12.973 8.5H8.25l-2.834 3.779A4.998 4.998 0 0 0 12.973 8.5zm0-1a4.998 4.998 0 0 0-7.557-3.779l2.834 3.78h4.723zM5.048 3.967c-.03.021-.058.043-.087.065l.087-.065zm-.431.355A4.984 4.984 0 0 0 3.002 8c0 1.455.622 2.765 1.615 3.678L7.375 8 4.617 4.322zm.344 7.646.087.065-.087-.065z" -->
 					<!-- 								/> --> <!--                             </svg> --> <!-- 							<strong class="me-auto">&nbsp POS<span style="color: #1ED760;">.</span>T<span style="color: #1ED760;">LUCK</span></strong> <small class="text-muted">5분전</small> --> <!-- 							<button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button> --> <!-- 						</div> --> <!-- 						<div class="toast-body">새로운 주문이 들어왔습니다.</div> --> <!-- 					</div> --> <!-- 					<div class="card" style="width: 18rem; position: absolute; top: 20%; left: 50%; z-index: 1;"> --> <!-- 						<img src="..." class="card-img-top" alt="..."> --> <!-- 						<div class="card-body"> --> <!-- 							<span style="position: absolute; top: 0.5%; left: 70%;"> --> <!-- 								<div style="text-align: center;"> --> <!-- 									<span id="apm" style="color: gray; font-size: 15px;">ampm</span> <span id="clock" style="color: gray; font-size: 15px;">clock</span> --> <!-- 								</div> --> <!-- 							</span> --> <!-- 							<h5 class="card-title" style="">#주문번호</h5> -->
 					<!-- 							<p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p> --> <!-- 							<a href="#" class="btn btn-primary">Go somewhere</a> --> <!-- 						</div> --> <!-- 					</div> -->
-
+					<input type="text" id="msg" class="form-control" aria-label="Recipient's username" readOnly >
 
 
 				</span> <span class="subContent border position-relative">
@@ -180,6 +180,70 @@
 // 	if('${AccessInfo.menuList}' == ''){
 // 		showModal('error::등록된 메뉴가 없습니다. 메뉴 등록 페이지로 이동합니다.:movePosManage');
 // 	}
+    		let sock = new WebSocket("ws://localhost:80/my-websocket");
+
+    		  sock.onmessage = onMessage;
+              sock.onopen = onOpen;
+              sock.onclose = onClose;
+
+              function send(){
+
+                  let msg = document.getElementById("msg");
+
+                  console.log(username + ":" + msg.value);
+                  sock.send(username + ":" + msg.value);
+                  msg.value = '';
+              }
+              
+              //채팅창에서 나갔을 때
+              function onClose(evt) {
+                  var str = username + ": 님이 방을 나가셨습니다.";
+                  sock.send(str);
+              }
+              
+              //채팅창에 들어왔을 때
+              function onOpen(evt) {
+                  var str = username + ": 님이 입장하셨습니다.";
+                 sock.send(str);
+              }
+
+              function onMessage(msg) {
+                  var data = msg.data;
+                  var sessionId = null;
+                  //데이터를 보낸 사람
+                  var message = null;
+                  var arr = data.split(":");
+
+                  for(var i=0; i<arr.length; i++){
+                      console.log('arr[' + i + ']: ' + arr[i]);
+                  }
+
+                  var cur_session = username;
+
+                  //현재 세션에 로그인 한 사람
+                  console.log("cur_session : " + cur_session);
+                  sessionId = arr[0];
+                  message = arr[1];
+
+                  console.log("sessionID : " + sessionId);
+                  console.log("cur_session : " + cur_session);
+
+                  //로그인 한 클라이언트와 타 클라이언트를 분류하기 위함
+                  if(sessionId == cur_session){
+                      var str = "<div class='col-6'>";
+                      str += "<div class='alert alert-secondary'>";
+                      str += "<b>" + sessionId + " : " + message + "</b>";
+                      str += "</div></div>";
+                      $("#msgArea").append(str);
+                  }
+                  else{
+                      var str = "<div class='col-6'>";
+                      str += "<div class='alert alert-warning'>";
+                      str += "<b>" + sessionId + " : " + message + "</b>";
+                      str += "</div></div>";
+                      $("#msgArea").append(str);
+                  }
+              }
         var Target = document.getElementById("clock");
         var Target_apm = document.getElementById("apm");
         function clock() {
@@ -207,6 +271,7 @@
         function movePosManage() {
 			serverCallByRequest('/View/MovePosManage', 'post',getJWT());
 		}
+
     </script>
 
 

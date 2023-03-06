@@ -64,9 +64,13 @@ public class MainController {
 	public String indexService() {
 		return "index-callBack";
 	}
-	@GetMapping("/my-webSocket")
-	public String moveKIosk() {
-		return "kiosk-order";
-	}
+	
+    @GetMapping("/my-websocket")
+    public String chatGET(){
+
+        log.info("@ChatController, chat GET()");
+        
+        return "pos-main";
+    }
 
 }

@@ -22,6 +22,7 @@ public class MyWebSocketHandler implements WebSocketHandler {
         String payload = (String) message.getPayload();
         System.out.println("WebSocket message received: " + payload);
         session.sendMessage(new TextMessage("Hello, " + payload + "!"));
+        
     }
 
     @Override
