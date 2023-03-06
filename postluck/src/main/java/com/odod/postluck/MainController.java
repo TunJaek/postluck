@@ -52,12 +52,6 @@ public class MainController {
 		return "index";
 	}
 	
-	@PostMapping("/View/MoveKiosk")
-	public String moveKiosk(ModelAndView mav, @ModelAttribute StoreBean store, @ModelAttribute("JWTForPostluck") String jwt) {
-		mav.addObject("jwt", jwt);
-		mav.addObject("store", store);
-		return "kiosk-menu";
-	}
 	
 	
 	@GetMapping("/index-callBack")
