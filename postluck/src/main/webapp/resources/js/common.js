@@ -97,6 +97,7 @@ function serverCallByFetchAjax(formData, jobCode, methodType, callBackFunc) {
 		})
 }
 function moveIndex() {
+	sessionStorage.clear();
 	serverCallByRequest("/Index", "get", "");
 }
 /* JWT 사용한 서버 요청 */
@@ -329,11 +330,7 @@ function getJWT() {
 	return accessToken;
 }
 
-function accessOut() {
-	const form = createForm("", "LogOut", "post");
-	document.body.appendChild(form);
-	form.submit();
-}
+
 
 function afterIssuance(jsonData) {
 	console.log(jsonData);

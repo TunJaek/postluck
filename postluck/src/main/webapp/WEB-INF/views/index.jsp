@@ -1,4 +1,5 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="ko">
 
@@ -29,10 +30,16 @@ function isMem(){
 <link rel="icon" href="../../resources/image/fabicon.png">
 <link rel="stylesheet" href="../../resources/css/main.css">
 <link rel="stylesheet" href="../../resources/css/mainBootstrap.css">
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR&amp;display=swap" rel="stylesheet">
-<script type="text/javascript" src="https://static.nid.naver.com/js/naverLogin_implicit-1.0.3.js" charset="utf-8"></script>
-<script type="text/javascript" src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css" />
+<link
+	href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR&amp;display=swap"
+	rel="stylesheet">
+<script type="text/javascript"
+	src="https://static.nid.naver.com/js/naverLogin_implicit-1.0.3.js"
+	charset="utf-8"></script>
+<script type="text/javascript"
+	src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
+<link rel="stylesheet"
+	href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css" />
 <script src="https://developers.kakao.com/sdk/js/kakao.min.js"></script>
 <script src="../../resources/js/common.js"></script>
 
@@ -41,22 +48,31 @@ function isMem(){
 	<div class="main">
 		<div id="left">
 			<div id="foodTruckNews">
-				푸드트럭 소식 보러가기 <img class="position-absolute start-0 bottom-0" src="/resources/image/arrow.png" style="width: 120%;">
+				푸드트럭 소식 보러가기 <img class="position-absolute start-0 bottom-0"
+					src="/resources/image/arrow.png" style="width: 120%;">
 			</div>
 		</div>
 
-		<div id="right" style="display: flex; justify-content: center; align-items: center;">
-			<div class="loginArea" style="display: flex; flex-direction: column; width: 60%; display: flex; flex-direction: column; height: 50%;">
-				<img src="../../resources/image/indexTextLogo.png" style="margin-bottom: 3%;">
-				<div class="loginLogo" >
-					<div class="loginInputArea" style="display: flex; flex-direction: column; gap: 5px;">
+		<div id="right"
+			style="display: flex; justify-content: center; align-items: center;">
+			<div class="loginArea"
+				style="display: flex; flex-direction: column; width: 60%; display: flex; flex-direction: column; height: 50%;">
+				<img src="../../resources/image/indexTextLogo.png"
+					style="margin-bottom: 3%;">
+				<div class="loginLogo">
+					<div class="loginInputArea"
+						style="display: flex; flex-direction: column; gap: 5px;">
 						<div class="loginText" style="position: relative;">사업자회원로그인</div>
 						<div id="naver_id_login" style="display: none"></div>
-						<div class="row" style="background-color: #03C75A; border-radius: 5px; align-items: center; cursor: pointer" id="naverLogin" onclick="naverLogin()">
+						<div class="row"
+							style="background-color: #03C75A; border-radius: 5px; align-items: center; cursor: pointer"
+							id="naverLogin" onclick="naverLogin()">
 							<img class="col-3" src="../../resources/image/naverLoginBtn.png">
 							<div class="col-9" style="color: white">네이버로 로그인하기</div>
 						</div>
-						<div class="row" style="background-color: #F9E000; border-radius: 5px; align-items: center; cursor: pointer" id="kakaoLogin" onclick="kakaoLogin()">
+						<div class="row"
+							style="background-color: #F9E000; border-radius: 5px; align-items: center; cursor: pointer"
+							id="kakaoLogin" onclick="kakaoLogin()">
 							<img class="col-3" src="../../resources/image/kakaoLoginBtn.png">
 							<div class="col-9">카카오로 로그인하기</div>
 						</div>
@@ -65,35 +81,20 @@ function isMem(){
 				</div>
 			</div>
 		</div>
-		<div class="modal fade" id="messageModal" style="background-color: rgba(0, 0, 0, 0.2)">
-			<div class="modal-dialog modal-dialog-centered" role="document">
-				<div class="modal-content">
-					<div class="modal-header">
-						<h5 class="modal-title col-10">메세지 제목이 없습니다.</h5>
-						<button type="button" id="modalClose" class="btn-close col-1" data-bs-dismiss="modal" aria-label="Close"></button>
-					</div>
-					<div class="modal-body text-center">
-						<div class="my-2 mx-5" id="svgZone"></div>
-						<div id="alertContent">메세지 내용이 없습니다.</div>
-					</div>
-					<div class="modal-footer text-center">
-						<button type="button" id="btnCancel" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
-						<button type="button" id="btnOk" class="btn">확인</button>
-					</div>
-				</div>
-			</div>
-		</div>
+		<div class="modal fade" id="messageModal"
+			style="background-color: rgba(0, 0, 0, 0.2); z-index: 1080"></div>
+
 	</div>
 
 
 	<script>
-   
+	sessionStorage.clear();
 		function naverLogin() {
 			let btnNaverLogin = document.getElementById("naver_id_login").firstChild;
 			console.log("click");
 			btnNaverLogin.click();
 		}
-		
+// 		var naver_id_login = new naver_id_login("Y_j7t1EE1fX_0Xi6Qr5y", "http://192.168.0.5/index-callBack");
 		var naver_id_login = new naver_id_login("9mtn5PALlynAVoBKSbrl", "http://localhost/index-callBack");
 		var state = naver_id_login.getUniqState();
 		naver_id_login.setButton("green", 3);
@@ -155,8 +156,6 @@ function isMem(){
 	</script>
 
 	<style>
-
-
 .icon {
 	margin: 10px;
 	position: relative;
@@ -242,9 +241,9 @@ function isMem(){
 }
 
 #foodTruckNews {
-	    position: absolute;
-    right: 15%;
-    bottom: 5%;
+	position: absolute;
+	right: 15%;
+	bottom: 5%;
 	color: white;
 	font-size: 50px;
 	font-weight: bold;
@@ -254,7 +253,6 @@ function isMem(){
 #foodTruckNews:hover {
 	text-decoration: underline
 }
-
 
 #logo {
 	position: relative;
@@ -296,8 +294,6 @@ function isMem(){
 	border: 0px;
 	font-family: 'Noto Sans KR', sans-serif
 }
-
-
 </style>
 
 	<!-- Code injected by live-server -->
