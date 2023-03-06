@@ -313,57 +313,57 @@ public class MenuService extends TransactionAssistant {
 		}
 	}
 
-	public void imageUploader(Model model) {
-		StoreBean store = (StoreBean) model.getAttribute("store");
-
-		// String imagePath = menu.getMenuImageCode();
-		// 가져올 이미지 경로 : MenuImageLocation
-		// ex) D:\Project\PosTLUCK\resources\image
-		String imagePath = store.getMenuList().get(0).getMenuImageLocation();
-		// 생성할 폴더 이름 : 사업자번호(1998033001)
-		String folderName = store.getStoreCode();
-		// 폴더경로 프로젝트폴더 resources > image폴더 안에 사업자번호(1998033001)로 생성.
-		String folderPath = "D:\\Project\\PosTLUCK\\resources\\image" + folderName;
-		// 생성할 파일 이름 : 폴더이름(1998033001) + 메뉴코드(M00) + ".jpg"
-		String newFileName = null;
-		// 파일 객체 생성
-		File file = new File(imagePath);
-
-		try {
-			// folderPath(resources\\image\\~)사업자번호로 만든 폴더가 존재하지 않으면 폴더 생성
-			if (!new File(folderPath).exists()) {
-				boolean createFolder = new File(folderPath).mkdir();
-				if (!createFolder) {
-					System.out.println("폴더 생성 실패");
-					return;
-				}
-			} else {
-				// 파일의 MIME 타입을 확인.
-				String mimeType = Files.probeContentType(file.toPath());
-				if (mimeType == null || !mimeType.startsWith("image/")) {
-					// mimeType이 없거나 image.png/jpg 등을 구별하는 'image/' 문구가없으면 이미지파일이 아님.
-					System.out.println("올바른 이미지 파일이 아닙니다.");
-					return;
-				} else {
-					// mimeType이 판별되면 파일복사 작업 시작.
-
-					// 새로 생성할 파일의 이름 : 사업자번호 + 메뉴코드 +. + mimeType
-					// 1998033001M00.jpg
-					newFileName = folderName + store.getMenuList().get(0).getMenuCode() + "." + mimeType;
-
-					FileInputStream inputStream = new FileInputStream(file);
-					// 새로 만들 파일의 이름 : 폴더이름(1998033001) + file의 값(SM_CODE)
-					File newFile = new File(newFileName);
-					newFile.createNewFile();
-					java.nio.file.Files.copy(inputStream, newFile.toPath(),
-							java.nio.file.StandardCopyOption.REPLACE_EXISTING);
-					inputStream.close();
-				}
-			}
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
+//	public void imageUploader(Model model) {
+//		StoreBean store = (StoreBean) model.getAttribute("store");
+//
+//		// String imagePath = menu.getMenuImageCode();
+//		// 가져올 이미지 경로 : MenuImageLocation
+//		// ex) D:\Project\PosTLUCK\resources\image
+//		String imagePath = store.getMenuList().get(0).getMenuImageLocation();
+//		// 생성할 폴더 이름 : 사업자번호(1998033001)
+//		String folderName = store.getStoreCode();
+//		// 폴더경로 프로젝트폴더 resources > image폴더 안에 사업자번호(1998033001)로 생성.
+//		String folderPath = "D:\\Project\\PosTLUCK\\resources\\image" + folderName;
+//		// 생성할 파일 이름 : 폴더이름(1998033001) + 메뉴코드(M00) + ".jpg"
+//		String newFileName = null;
+//		// 파일 객체 생성
+//		File file = new File(imagePath);
+//
+//		try {
+//			// folderPath(resources\\image\\~)사업자번호로 만든 폴더가 존재하지 않으면 폴더 생성
+//			if (!new File(folderPath).exists()) {
+//				boolean createFolder = new File(folderPath).mkdir();
+//				if (!createFolder) {
+//					System.out.println("폴더 생성 실패");
+//					return;
+//				}
+//			} else {
+//				// 파일의 MIME 타입을 확인.
+//				String mimeType = Files.probeContentType(file.toPath());
+//				if (mimeType == null || !mimeType.startsWith("image/")) {
+//					// mimeType이 없거나 image.png/jpg 등을 구별하는 'image/' 문구가없으면 이미지파일이 아님.
+//					System.out.println("올바른 이미지 파일이 아닙니다.");
+//					return;
+//				} else {
+//					// mimeType이 판별되면 파일복사 작업 시작.
+//
+//					// 새로 생성할 파일의 이름 : 사업자번호 + 메뉴코드 +. + mimeType
+//					// 1998033001M00.jpg
+//					newFileName = folderName + store.getMenuList().get(0).getMenuCode() + "." + mimeType;
+//
+//					FileInputStream inputStream = new FileInputStream(file);
+//					// 새로 만들 파일의 이름 : 폴더이름(1998033001) + file의 값(SM_CODE)
+//					File newFile = new File(newFileName);
+//					newFile.createNewFile();
+//					java.nio.file.Files.copy(inputStream, newFile.toPath(),
+//							java.nio.file.StandardCopyOption.REPLACE_EXISTING);
+//					inputStream.close();
+//				}
+//			}
+//		} catch (IOException e) {
+//			e.printStackTrace();
+//		}
+//	}
 }
 
 //		try {
