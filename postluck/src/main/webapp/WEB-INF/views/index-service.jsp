@@ -14,7 +14,7 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css" />
 </head>
 
-<body class="vsc-initialized" onload="pageInit('${param.message}')">
+<body class="vsc-initialized" >
 	<div class="main">
 		<div id="left">
 			<div id="foodTruckNews">
@@ -153,7 +153,7 @@
 		jsonString = '${store}';
 		let isChecked = false;
 		const jsonData = JSON.parse(jsonString);
-		if (jsonData.storeCode!='') {
+		if (jsonData.storeCode!=null) {
 			document.getElementById("regStoreInfoModal").style.display = "none"
 		} else {
 			document.getElementById("regStoreInfoModal").style.display = "flex"

@@ -93,8 +93,8 @@ function isMem(){
 			console.log("click");
 			btnNaverLogin.click();
 		}
-		
-		var naver_id_login = new naver_id_login("9mtn5PALlynAVoBKSbrl", "http://localhost/index-callBack");
+		var naver_id_login = new naver_id_login("Y_j7t1EE1fX_0Xi6Qr5y", "http://192.168.0.5/index-callBack");
+// 		var naver_id_login = new naver_id_login("9mtn5PALlynAVoBKSbrl", "http://localhost/index-callBack");
 		var state = naver_id_login.getUniqState();
 		naver_id_login.setButton("green", 3);
 		naver_id_login.setDomain("YOUR_SERVICE_URL");
