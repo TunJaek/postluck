@@ -247,9 +247,7 @@
 	serverCallByRequest('/View/logOut', 'post', getJWT());
 	sessionStorage.removeItem("JWT");
     }
-    function moveKiosk() {
-	serverCallByRequest('/View/MoveKiosk', 'get', '');
-    }
+    
 </script>
 <style>
 .loginArea {
