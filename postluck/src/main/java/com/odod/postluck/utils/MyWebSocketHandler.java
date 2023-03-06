@@ -34,6 +34,7 @@ public class MyWebSocketHandler implements WebSocketHandler {
     public void afterConnectionClosed(WebSocketSession session, CloseStatus closeStatus) throws Exception {
         System.out.println("WebSocket disconnected: " + session.getId());
         session.getAttributes().remove(closeStatus);
+
     }
 
     @Override
