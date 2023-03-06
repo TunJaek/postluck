@@ -244,10 +244,9 @@
         </div>
 </body>
 <script>
-let jsonString = '${store}';
-jsonData = JSON.parse(jsonString);
+
 function connect(){
-let sock = new WebSocket("ws://localhost:80/"+jsonData.storeCode);
+let sock = new WebSocket("ws://localhost:80/my-websocket");
 
 sock.onopen = function(event) {
 	alert(event.code);
