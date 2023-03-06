@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- <configuration scan="true" scanPeriod="30 seconds"> -->
+<configuration>
+    <appender name="Console" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <pattern>%d{HH:mm:ss.SSS} [%-5level] %logger{0}.%method\(%line\) :: %msg :: %n</pattern>
+        </encoder>
+    </appender>
+ 
+    <appender name="File" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>C:\Users\user\git\repository\postluck\logging\postluck.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>C:\Users\user\git\repository\postluck\logging\postluck-%d{yyyy-MM-dd}.log</fileNamePattern>
+            <maxHistory>30</maxHistory>
+        </rollingPolicy>
+        <encoder>
+            <Pattern>%d{HH:mm:ss.SSS} [%-5level] %logger{0}.%method\(%line\) :: %msg :: %n</Pattern>
+        </encoder>
+    </appender>
+ 
+    <logger name="com.odod.postluck" level="info">
+    	<appender-ref ref="Console"/>
+    	<appender-ref ref="File"/>
+    </logger>
+    <!-- <logger name="org.springframework.web.servlet.mvc.method.annotation.RequestResponseBodyMethodProcessor" level="DEBUG" /> -->
+		<logger name="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping" level="WARN" />
+ 
+    <root level="info">
+      <appender-ref ref="File"/>
+    </root>
+</configuration>
