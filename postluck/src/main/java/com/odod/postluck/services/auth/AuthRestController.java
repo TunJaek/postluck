@@ -43,9 +43,7 @@ public class AuthRestController {
     }
 
     @PostMapping("/Api/RegStoreInfo")
-    public StoreBean regStoreInfo(Model model, @ModelAttribute StoreBean store,
-	    @ModelAttribute("JWTForPostluck") String jwt) {
-	model.addAttribute("jwt", jwt);
+    public StoreBean regStoreInfo(Model model, @ModelAttribute StoreBean store) {
 	model.addAttribute("store", store);
 	auth.backController("AU03", model);
 	System.out.println((StoreBean) model.getAttribute("store"));

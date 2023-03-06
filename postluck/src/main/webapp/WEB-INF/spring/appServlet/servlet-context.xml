@@ -33,8 +33,7 @@
 			<exclude-mapping path="/Index"/>
 			<exclude-mapping path="/index-callBack"/>
 			<exclude-mapping path="/"/>
-			<exclude-mapping path="/my-websocket"/>
-			<exclude-mapping path="/View/MoveKiosk"/>
+			<exclude-mapping path="/**/my-websocket"/>
 			<exclude-mapping path="/resources/**"/>
 			
 			

@@ -330,11 +330,7 @@ function getJWT() {
 	return accessToken;
 }
 
-function accessOut() {
-	const form = createForm("", "LogOut", "post");
-	document.body.appendChild(form);
-	form.submit();
-}
+
 
 function afterIssuance(jsonData) {
 	console.log(jsonData);
