@@ -414,12 +414,12 @@
 	}
 	let storeCode ='${store.storeCode}';
 	let sock;
-	if (getJWT()[0][1] && getJWT()[0][1].length >= 5) {
+	if (${store.storeCode}) {
 		sock = new WebSocket("ws://192.168.0.5:80/my-websocket?"
 				+ "storeCode="+'${store.storeCode}');
 		// WebSocket 처리 코드
 	} else {
-		console.log("Invalid JWT: " + jwt);
+		alert("다시 로그인해주세요.")
 	}
 
 	sock.onopen = function(event) {
@@ -428,13 +428,13 @@
 
 		sock.send('${store.storeCode}');
 	};
-	sock.onmessage = function(e) {
-		if (e.data.split(':')[0] == '주문') {
-			alert("주문이 들어왔습니다! " + e.data.split(':')[1])
-		} else {
-			console.log(e.data);
-		}
-	};
+// 	sock.onmessage = function(e) {
+// 		if (e.data.split(':')[0] == '주문') {
+// 			alert("주문이 들어왔습니다! " + e.data.split(':')[1])
+// 		} else {
+// 			console.log(e.data);
+// 		}
+// 	};
 	sock.onclose = function(event) {
 		alert(event.code);
 		if (event.wasClean) {

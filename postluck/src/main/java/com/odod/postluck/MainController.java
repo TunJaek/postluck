@@ -37,12 +37,7 @@ public class MainController {
 	public String moveHome() {
 		return "homePage";
 	}
-	@PostMapping("/View/MovePos") //
-	public String movePos(ModelAndView mav, @ModelAttribute StoreBean store, @ModelAttribute("JWTForPostluck") String jwt) {
-		mav.addObject("jwt", jwt);
-		mav.addObject("store", store);
-		return "pos-main";
-	}
+	
 	@PostMapping("/View/logOut")
 	public String logOut(ModelAndView mav, @ModelAttribute StoreBean store, @ModelAttribute("JWTForPostluck") String jwt) {
 		mav.addObject("jwt",jwt);
