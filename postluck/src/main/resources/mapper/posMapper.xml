@@ -34,6 +34,7 @@
 	</insert>
 
 	
+
 <!-- 	<update id="insMenu"
 		parameterType="com.odod.postluck.beans.StoreBean">
 		INSERT INTO STOREMENU(SM_STCODE, SM_CODE, SM_NAME,
@@ -80,6 +81,7 @@
 		FROM STOREMENU WHERE SM_STCODE = #{storeCode})}, -->
 	<!-- #{menuList[0].menuName},#{menuList[0].menuPrice}) ; -->
 	<!-- </insert> -->
+
 
 
 	<update id="updMenu"

@@ -6,59 +6,44 @@ body {
 }
 
 .main {
-	width: 100vw;
 	height: 100vh;
 	background-color: #f5f5f5;
-	overflow:hidden;
 }
 
-.menuHeader {
+.header {
+	position: relative;
 	height: 5%;
 	background-color: #333333;
+	margin: 0px;
 	color: white;
-	align-items: center;
-}
-
-.orderHeader {
-	height: 5%;
-	background-color: #333333;
-	color: white;
+	display: flex;
 	align-items: center;
 }
 
 .mainContents {
-	width: 80%;
-	height: 95%;
-	/* background-color: aqua; */
+	width: 75%;
+	height: 100%;
 	float: left;
-	overflow-y: auto;
 }
 
 .menuListHeader {
 	text-align: center;
 	background-color: white;
-	position: fixed;
-	width: 80%;
-	z-index: 1;
-	margin-bottom: 3%;
 }
 
 .menuList {
 	width: 100%;
 	position: relative;
-	display: grid;
-	justify-content: center;
-	grid-template-columns: 25% 25% 25%;
-	gap: 1% 1%;
-	
-}
-
-.card {
-	width: 18rem;
 }
 
 .menuCard {
 	text-align: center;
+}
+
+#orderPage {
+	height: 95%;
+	position: absolute;
+	overflow: hidden
 }
 
 .cardTop {
@@ -66,23 +51,17 @@ body {
 }
 
 .subContents {
-	width: 20%;
-	height: 95%;
-	/* background-color: blue; */
+	width: 25%;
+	height: 100%;
 	float: right;
+	background: white;
 }
 
 .subContentsHeader {
-	text-align: center;
-	width: 20%;
-	position: fixed;
 	background-color: white;
-	z-index: 1;
-	overflow-y: auto;
 }
 
 .subContentsOrderList {
-	margin-top: 15%;
 	overflow-y: auto;
 }
 
@@ -96,52 +75,21 @@ body {
 	float: right;
 }
 
-.menuName {
-	position: relative;
-	left: 5%;
-}
-
 .mButton {
-	position: relative;
-	left: 13%;
 	cursor: pointer;
 }
 
 .menuCount {
-	float: right;
-	position: relative;
-	right: 50%;
-	border: solid 2px rgba(0, 0, 0, 0.2);
-	width: 15%;
-	height: 0%;
 	text-align: center;
 	color: #1ED760;
 }
 
 .pButton {
-	position: relative;
-	left: 35%;
 	cursor: pointer;
 }
 
-.orderPrice {
-	position: relative;
-	left: 40%;
-}
-
-.xButton {
-	position: relative;
-	right: -45%;
-}
-
 .cancleButton {
-	width: 8%;
-	height: 5%;
 	background-color: rgb(220, 226, 222, 1);
-	position: absolute;
-	bottom: 0%;
-	right: 12%;
-	padding: 10px 0;
 	cursor: pointer;
 }
 
@@ -150,14 +98,7 @@ body {
 }
 
 .orderButton {
-	width: 12%;
-	height: 5%;
-	float: right;
 	background-color: rgb(30, 215, 96, 0.1);;
-	position: absolute;
-	bottom: 0%;
-	right: 0%;
-	padding: 10px 0;
 	cursor: pointer;
 }
 
@@ -167,7 +108,6 @@ body {
 
 .orderContents {
 	width: 20%;
-	height: 95%;
 	float: left;
 	background-color: #ffffff;
 }
@@ -182,43 +122,19 @@ body {
 	font-size: 30px;
 }
 
-.orderZoneContents {
-	overflow-y: auto;
+.orderZone {
 	width: 100%;
-	height: 100%;
-	
+	height: 93%
 }
-
-
-
-/* .menuName {
-	margin-left: 5%;
-}
- */
 .menuCount {
 	border: solid 0px !important;
 }
 
-.menuPrice {
-	position: relative;
-	left: 50%;
-}
-
 .orderZoneFooter {
-	width: 20%;
-	position: fixed;
-	bottom: 0%;
-	left: 0%;
 	background-color: #ffffff;
 }
 
-.allCount {
-	margin-left: 5%;
-	font-size: 20px;
-}
-
 .allPrice {
-	margin-left: 40%;
 	font-size: 30px;
 }
 
@@ -233,20 +149,10 @@ body {
 	background-color: #ffffff;
 }
 
-.paymentText {
-	font-weight: bold;
-	font-size: 60px;
-	position: relative;
-	top: 15%;
-	margin-right: 5%;
-}
-
 .paymentPrice {
 	font-weight: bold;
 	font-size: 100px;
 	position: relative;
-	margin-right: 3%;
-	top: 15%
 }
 
 .paymentChoice {
@@ -254,17 +160,16 @@ body {
 	flex-direction: row;
 	justify-content: space-evenly;
 	width: 100%;
-	height: 40%;
+	height: 50%;
 	text-align: center;
-	margin-top: 10%;
 }
 
 .paymentMethod {
-	width: 20%;
-	height: 50%;
+	height: 40%;
 	font-weight: bold;
 	font-size: 40px;
-	line-height: 130px;
+	display: flex;
+	justify-content: center;
 	cursor: pointer;
 }
 

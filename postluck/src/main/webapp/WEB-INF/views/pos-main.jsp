@@ -2,9 +2,7 @@
 	pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="ko">
-
 <head>
-<meta http-equiv="page-enter" content="blendTrans(duration=0.3)">
 <meta http-equiv="page-exit" content="blendTrans(duration=0.3)">
 <meta charset="UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -13,6 +11,10 @@
 <link rel="icon" href="/resources/image/fabicon.png">
 <link rel="stylesheet"
 	href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css" />
+<script
+	src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+	integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+	crossorigin="anonymous"></script>
 <link rel="stylesheet" href="/resources/css/mainBootstrap.css">
 <link rel="stylesheet" href="/resources/css/main.css">
 <script src="/resources/js/common.js"></script>
@@ -89,23 +91,16 @@
 </style>
 </head>
 
-<body class="vsc-initialized"
-	onload="pageInit('${param.message}');showClock()">
 
-	<div class="main">
-		<div class="header">
+<body class="vsc-initialized" onload="pageInit('${param.message}');showClock()">
+	
+		<div class="main">
+			<div class="header">
+	<span class="px-3 " style="cursor: pointer" onclick="movePage('Back')"><svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-arrow-left" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z" />
+                </svg></span> <span><img src="/resources/image/mainLogo-dark.png"></span>
+			</div>
 
-			<span class="px-3" style="cursor: pointer"> <!-- onclick="location.href='pos-calendar.html'"-->
-				<svg xmlns="http://www.w3.org/2000/svg"
-					onclick="movePage('PosManage')" width="30" height="30"
-					fill="currentColor" class="bi bi-gear-wide-connected"
-					viewBox="0 0 16 16">
-                        <path
-						d="M7.068.727c.243-.97 1.62-.97 1.864 0l.071.286a.96.96 0 0 0 1.622.434l.205-.211c.695-.719 1.888-.03 1.613.931l-.08.284a.96.96 0 0 0 1.187 1.187l.283-.081c.96-.275 1.65.918.931 1.613l-.211.205a.96.96 0 0 0 .434 1.622l.286.071c.97.243.97 1.62 0 1.864l-.286.071a.96.96 0 0 0-.434 1.622l.211.205c.719.695.03 1.888-.931 1.613l-.284-.08a.96.96 0 0 0-1.187 1.187l.081.283c.275.96-.918 1.65-1.613.931l-.205-.211a.96.96 0 0 0-1.622.434l-.071.286c-.243.97-1.62.97-1.864 0l-.071-.286a.96.96 0 0 0-1.622-.434l-.205.211c-.695.719-1.888.03-1.613-.931l.08-.284a.96.96 0 0 0-1.186-1.187l-.284.081c-.96.275-1.65-.918-.931-1.613l.211-.205a.96.96 0 0 0-.434-1.622l-.286-.071c-.97-.243-.97-1.62 0-1.864l.286-.071a.96.96 0 0 0 .434-1.622l-.211-.205c-.719-.695-.03-1.888.931-1.613l.284.08a.96.96 0 0 0 1.187-1.186l-.081-.284c-.275-.96.918-1.65 1.613-.931l.205.211a.96.96 0 0 0 1.622-.434l.071-.286zM12.973 8.5H8.25l-2.834 3.779A4.998 4.998 0 0 0 12.973 8.5zm0-1a4.998 4.998 0 0 0-7.557-3.779l2.834 3.78h4.723zM5.048 3.967c-.03.021-.058.043-.087.065l.087-.065zm-.431.355A4.984 4.984 0 0 0 3.002 8c0 1.455.622 2.765 1.615 3.678L7.375 8 4.617 4.322zm.344 7.646.087.065-.087-.065z" />
-
-                    </svg>
-			</span> <img src="/resources/image/mainLogo-dark.png">
-		</div>
 
 		<div class="contents">
 			<span class="mainContent border"
@@ -218,78 +213,82 @@
 				</div>
 			</div>
 		</div>
+		<div class="modal fade" id="messageModal"
+			style="background-color: rgba(0, 0, 0, 0.2); z-index: 1080"></div>
 	</div>
 
 
 	<script>
-// 	if('${AccessInfo.menuList}' == ''){
-// 		showModal('error::등록된 메뉴가 없습니다. 메뉴 등록 페이지로 이동합니다.:movePosManage');
-// 	}
-	let storeCode ='${store.storeCode}';
-	let sock;
-	if (${store.storeCode}) {
-		sock = new WebSocket("ws://192.168.0.5:80/my-websocket?"
-				+ "storeCode="+'${store.storeCode}');
-		// WebSocket 처리 코드
-	} else {
-		alert("다시 로그인해주세요.")
-	}
-
-	sock.onopen = function(event) {
-		alert(event.code);
-		console.log('open');
-
-		sock.send('${store.storeCode}');
-	};
-	sock.onmessage = function(e) {
-		if (e.data.split(':')[0] == '주문') {
-			alert("주문이 들어왔습니다! " + e.data.split(':')[1])
+		// 	if('${AccessInfo.menuList}' == ''){
+		// 		showModal('error::등록된 메뉴가 없습니다. 메뉴 등록 페이지로 이동합니다.:movePosManage');
+		// 	}
+		jsonString = '${store}'
+		let sock;
+		let storeCode
+		if (JSON.parse(jsonString).storeCode) {
+			storeCode = JSON.parse(jsonString).storeCode;
+			sock = new WebSocket("ws://192.168.0.5:80/postluck/" + storeCode);
+			// WebSocket 처리 코드
 		} else {
-			console.log(e.data);
-		}
-	};
-	sock.onclose = function(event) {
-		alert(event.code);
-		if (event.wasClean) {
-			console.log('웹 소켓이 정상적으로 닫혔습니다.');
-		} else {
-			console.error('웹 소켓이 예기치 않게 닫혔습니다. 이유: ' + event.reason + ', 코드: '
-					+ event.code);
-		}
-	};
-	
-	sock.onerror = function(error) {
-		alert([ error ]);
-	};
-        var Target = document.getElementById("clock");
-        var Target_apm = document.getElementById("apm");
-        function clock() {
-            var time = new Date();
-            var hours = time.getHours();
-            var minutes = time.getMinutes();
-            var seconds = time.getSeconds();
-            var AmPm = "AM";
-            if (hours > 12) {
-                var AmPm = "PM";
-                hours %= 12;
-            }
-
-            Target.innerText =
-                '${hours < 10 ? '0${hours}' : hours}:${minutes < 10 ? '0${minutes}' : minutes}:${seconds < 10 ? '0${seconds}' : seconds}';
-            Target_apm.innerText = '${AmPm}';
-
-
-        }
-        clock();
-        setInterval(clock, 1000); // 1초마다 실행
-        function moveMenuReg(){
-        	
-       }
-        function movePosManage() {
-			serverCallByRequest('/View/MovePosManage', 'post',getJWT());
+			showModal("error:세션 오류:세션이 만료되었습니다. 다시 로그인해주세요.:moveIndex:")
 		}
 
-    </script>
+		sock.onopen = function(event) {
+			showModal("plain:연결 성공!:서버와 연결되었습니다!::")
+			sock.send(storeCode);
+		};
+
+		sock.onmessage = function(e) {
+			showModal('plain:연결 성공!:동일한 아이디로 접속하여, 연결을 했습니다!::')
+		};
+		sock.onclose = function(event) {
+			if (event.wasClean) {
+				showModal('plain:연결 종료:서버와의 연결이 정상적으로 종료되었습니다.::')
+			} else {
+				showModal('error:연결 오류:서버와의 연결이 비정상적으로 종료되었습니다.::')
+			}
+		};
+		function order() {
+			sock.send("주문: 햄버거 1개");
+		}
+
+		sock.onerror = function(error) {
+			alert([ error ]);
+		};
+		function order() {
+			sock.send("주문: 햄버거 1개");
+		}
+
+		sock.onerror = function(error) {
+			alert([ error ]);
+		};
+		//         var Target = document.getElementById("clock");
+		//         var Target_apm = document.getElementById("apm");
+		//         function clock() {
+		//             var time = new Date();
+		//             var hours = time.getHours();
+		//             var minutes = time.getMinutes();
+		//             var seconds = time.getSeconds();
+		//             var AmPm = "AM";
+		//             if (hours > 12) {
+		//                 var AmPm = "PM";
+		//                 hours %= 12;
+		//             }
+
+		//             Target.innerText =
+		//                 '${hours < 10 ? '0${hours}' : hours}:${minutes < 10 ? '0${minutes}' : minutes}:${seconds < 10 ? '0${seconds}' : seconds}';
+		//             Target_apm.innerText = '${AmPm}';
+
+		//         }
+		//         clock();
+		//         setInterval(clock, 1000); // 1초마다 실행
+		function moveMenuReg() {
+
+		}
+		function movePosManage() {
+			serverCallByRequest('/View/MovePosManage', 'post', getJWT());
+		}
+	</script>
 
 
 

@@ -21,4 +21,11 @@ public class AuthController {
 		this.auth.backController("AU03", mav);
 		return mav;
 	}
+	@PostMapping("/View/MoveBack")
+	public ModelAndView moveBack(ModelAndView mav,@ModelAttribute("JWTForPostluck") String jwt,@ModelAttribute StoreBean store) {
+		mav.addObject("jwt",jwt);
+		mav.addObject("store",store);
+		mav.setViewName("index-service");
+		return mav;
+	}
 }

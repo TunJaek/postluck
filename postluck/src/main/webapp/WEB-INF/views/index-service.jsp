@@ -29,6 +29,7 @@
 				<div class="loginLogo" style="width: 100%;">
 					<div class="loginInputArea" style="display: flex; flex-direction: column; gap: 5px;">
 						<div class="loginText" style="position: relative;">${AccessInfo.ceoName}사장님안녕하세요!</div>
+						<button onclick="movePage('PosManage')" class="btn btn-sm btn-outline-dark mt-3 rounded-pill">매장관리</button>
 						<div class="loginInput" style="display: flex; flex-direction: column; gap: 5px; width: 100%;">
 							<div class="d-grid gap-2">
 								<button class="btn btn-lg btn-primary" type="button" onclick="movePage('Pos')" id="posService"></button>

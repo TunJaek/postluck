@@ -8,448 +8,382 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>KIOSK - POS.TLUCK</title>
 <link rel="icon" href="/resources/image/fabicon.png">
-<link rel="stylesheet" href="../../resources/css/mainBootstrap.css">
-<link rel="icon" href="../../resources/image/fabicon.png">
-<script src="../../resources/js/common.js"></script>
+<link rel="stylesheet" href="/resources/css/mainBootstrap.css">
+<script
+	src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+	integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+	crossorigin="anonymous"></script>
 <link rel="stylesheet"
 	href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css" />
 <link
 	href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR&amp;display=swap"
 	rel="stylesheet">
-<link rel="stylesheet" href="../../resources/css/kiosk.css">
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-
+<script src="/resources/js/common.js"></script>
+<link rel="stylesheet" href="/resources/css/kiosk.css">
 </head>
-
-<body class="vsc-initialized" onload="pageInit('${param.message}')">
-
+<body>
 	<div class="main">
-		<div id="menuPage" style="disply: block;">
-			<div class="menuHeader">
-				<span class="px-3"><svg xmlns="http://www.w3.org/2000/svg"
-						width="30" height="30" fill="currentColor"
-						class="bi bi-arrow-left" viewBox="0 0 16 16">
-                    <path fill-rule="evenodd"
-							d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z" />
-                </svg></span> <span><img
-					src="../../resources/image/mainLogo-dark.png"></span>
-			</div>
+		<div class="header">
 
-			<div class="mainContents border ">
-				<div class="border p-3 menuListHeader">핫도그라운드KIOSK</div>
-				<div class="menuList">
-					<div class="menuCard">
-						<div class="card">
-							<img src="../../resources/image/hotdog2.jpg"
-								class="card-img-top cardTop" alt="...">
-							<div class="card-body">
-								<h4 class="card-title">핫도그</h4>
-								<p class="card-text">1,500원</p>
-								<a href="#" class="btn btn-primary">주문하기</a>
-							</div>
-						</div>
-					</div>
-					<div class="menuCard">
-						<div class="card">
-							<img src="../../resources/image/hotdog2.jpg"
-								class="card-img-top cardTop" alt="...">
-							<div class="card-body">
-								<h4 class="card-title">핫도그</h4>
-								<p class="card-text">1,500원</p>
-								<a href="#" class="btn btn-primary">주문하기</a>
-							</div>
-						</div>
-					</div>
-					<div class="menuCard">
-						<div class="card">
-							<img src="../../resources/image/hotdog2.jpg"
-								class="card-img-top cardTop" alt="...">
-							<div class="card-body">
-								<h4 class="card-title">핫도그</h4>
-								<p class="card-text">1,500원</p>
-								<a href="#" class="btn btn-primary">주문하기</a>
-							</div>
-						</div>
-					</div>
-					<div class="menuCard">
-						<div class="card">
-							<img src="../../resources/image/hotdog2.jpg"
-								class="card-img-top cardTop" alt="...">
-							<div class="card-body">
-								<h4 class="card-title">핫도그</h4>
-								<p class="card-text">1,500원</p>
-								<a href="#" class="btn btn-primary">주문하기</a>
-							</div>
-						</div>
-					</div>
-					<div class="menuCard">
-						<div class="card">
-							<img src="../../resources/image/hotdog2.jpg"
-								class="card-img-top cardTop" alt="...">
-							<div class="card-body">
-								<h4 class="card-title">핫도그</h4>
-								<p class="card-text">1,500원</p>
-								<a href="#" class="btn btn-primary">주문하기</a>
-							</div>
-						</div>
-					</div>
-					<div class="menuCard">
-						<div class="card">
-							<img src="../../resources/image/hotdog2.jpg"
-								class="card-img-top cardTop" alt="...">
-							<div class="card-body">
-								<h4 class="card-title">핫도그</h4>
-								<p class="card-text">1,500원</p>
-								<a href="#" class="btn btn-primary">주문하기</a>
-							</div>
-						</div>
-					</div>
-					<div class="menuCard">
-						<div class="card">
-							<img src="../../resources/image/hotdog2.jpg"
-								class="card-img-top cardTop" alt="...">
-							<div class="card-body">
-								<h4 class="card-title">핫도그</h4>
-								<p class="card-text">1,500원</p>
-								<a href="#" class="btn btn-primary">주문하기</a>
-							</div>
-						</div>
-					</div>
-					<div class="menuCard">
-						<div class="card">
-							<img src="../../resources/image/hotdog2.jpg"
-								class="card-img-top cardTop" alt="...">
-							<div class="card-body">
-								<h4 class="card-title">핫도그</h4>
-								<p class="card-text">1,500원</p>
-								<a href="#" class="btn btn-primary">주문하기</a>
-							</div>
-						</div>
-					</div>
-					<div class="menuCard">
-						<div class="card">
-							<img src="../../resources/image/hotdog2.jpg"
-								class="card-img-top cardTop" alt="...">
-							<div class="card-body">
-								<h4 class="card-title">핫도그</h4>
-								<p class="card-text">1,500원</p>
-								<a href="#" class="btn btn-primary">주문하기</a>
-							</div>
-						</div>
-					</div>
-					<div class="menuCard">
-						<div class="card">
-							<img src="../../resources/image/hotdog2.jpg"
-								class="card-img-top cardTop" alt="...">
-							<div class="card-body">
-								<h4 class="card-title">핫도그</h4>
-								<p class="card-text">1,500원</p>
-								<a href="#" class="btn btn-primary">주문하기</a>
-							</div>
-						</div>
-					</div>
-					<div class="menuCard">
-						<div class="card">
-							<img src="../../resources/image/hotdog2.jpg"
-								class="card-img-top cardTop" alt="...">
-							<div class="card-body">
-								<h4 class="card-title">핫도그</h4>
-								<p class="card-text">1,500원</p>
-								<a href="#" class="btn btn-primary">주문하기</a>
-							</div>
-						</div>
-					</div>
-					<div class="menuCard">
-						<div class="card">
-							<img src="../../resources/image/hotdog2.jpg"
-								class="card-img-top cardTop" alt="...">
-							<div class="card-body">
-								<h4 class="card-title">핫도그</h4>
-								<p class="card-text">1,500원</p>
-								<a href="#" class="btn btn-primary">주문하기</a>
-							</div>
-						</div>
-					</div>
-					<div class="menuCard">
-						<div class="card">
-							<img src="../../resources/image/hotdog2.jpg"
-								class="card-img-top cardTop" alt="...">
-							<div class="card-body">
-								<h4 class="card-title">핫도그</h4>
-								<p class="card-text">1,500원</p>
-								<a href="#" class="btn btn-primary">주문하기</a>
-							</div>
-						</div>
-					</div>
-					<div class="menuCard">
-						<div class="card">
-							<img src="../../resources/image/hotdog2.jpg"
-								class="card-img-top cardTop" alt="...">
-							<div class="card-body">
-								<h4 class="card-title">핫도그</h4>
-								<p class="card-text">1,500원</p>
-								<a href="#" class="btn btn-primary">주문하기</a>
-							</div>
-						</div>
-					</div>
-					<div class="menuCard">
-						<div class="card">
-							<img src="../../resources/image/hotdog2.jpg"
-								class="card-img-top cardTop" alt="...">
-							<div class="card-body">
-								<h4 class="card-title">핫도그</h4>
-								<p class="card-text">1,500원</p>
-								<a href="#" class="btn btn-primary">주문하기</a>
-							</div>
-						</div>
-					</div>
-					<div class="menuCard">
-						<div class="card">
-							<img src="../../resources/image/hotdog2.jpg"
-								class="card-img-top cardTop" alt="...">
-							<div class="card-body">
-								<h4 class="card-title">핫도그</h4>
-								<p class="card-text">1,500원</p>
-								<a href="#" class="btn btn-primary">주문하기</a>
-							</div>
-						</div>
-					</div>
-					<div class="menuCard">
-						<div class="card">
-							<img src="../../resources/image/hotdog2.jpg"
-								class="card-img-top cardTop" alt="...">
-							<div class="card-body">
-								<h4 class="card-title">핫도그</h4>
-								<p class="card-text">1,500원</p>
-								<a href="#" class="btn btn-primary">주문하기</a>
-							</div>
-						</div>
-					</div>
-					<div class="menuCard">
-						<div class="card">
-							<img src="../../resources/image/hotdog2.jpg"
-								class="card-img-top cardTop" alt="...">
-							<div class="card-body">
-								<h4 class="card-title">핫도그</h4>
-								<p class="card-text">1,500원</p>
-								<a href="#" class="btn btn-primary">주문하기</a>
-							</div>
-						</div>
-					</div>
+			<i class="bi bi-arrow-left fs-3 mx-3" id="backspace"
+				style="color: white; display: none;" onclick="kioskPage()"></i> <img
+				src="/resources/image/mainLogo-dark.png" class="mx-3">
 
-				</div>
-
-			</div>
-			<div class="subContents">
-				<div class="subContentsHeader">
-					<div class="border p-3">목록</div>
-				</div>
-				<div class="subContentsOrderList">
-					<div class="p-3 orderList">
-						<span class="menuName">핫도그</span>
-						<!-- 수량줄이는 -버튼 -->
-						<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-							fill="currentColor" class="bi bi-dash-circle mButton"
-							viewBox="0 0 16 16">
-                            <path
-								d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
-                            <path
-								d="M4 8a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7A.5.5 0 0 1 4 8z" />
-                        </svg>
-						<!-- 수량줄이는 -버튼 -->
-
-						<!-- 수량표시 -->
-						<div class="menuCount">5</div>
-						<!-- 수량표시 -->
-
-						<!-- 수량 늘리는 + 버튼 -->
-						<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"
-							fill="currentColor" class="bi bi-plus-circle pButton"
-							viewBox="0 0 16 16">
-                            <path
-								d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
-                            <path
-								d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z" />
-                        </svg>
-						<!-- 수량 늘리는 + 버튼 -->
-
-						<!-- 가격 -->
-						<span class="orderPrice">155,500원</span>
-						<!-- 가격 -->
-
-						<!-- 주문지우는 X 버튼 -->
-						<button type="button" class="btn-close btn-close-white xButton"
-							aria-label="Close"></button>
-						<!-- 주문지우는 X 버튼 -->
-					</div>
-
-
-				</div>
-				<div class="subContentsBtnZone">
-					<div class="cancleButton">주문취소</div>
-					<div class="orderButton" onClick="kioskPage(0)">주문확인</div>
-				</div>
-
-			</div>
 		</div>
-
-		<div id="orderPage" style="display: none;">
-			<div class="orderHeader">
-				<span class="px-3"><svg xmlns="http://www.w3.org/2000/svg"
-						width="30" height="30" fill="currentColor"
-						class="bi bi-arrow-left" viewBox="0 0 16 16"
-						onClick="kioskPage(1)">
-                <path fill-rule="evenodd"
-							d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z" />
-            </svg></span> <span><img src="/resources/image/mainLogo-dark.png"></span>
-			</div>
-			<!-- 주문내역확인 -->
-			<div class="orderContents">
-				<div class="orderZoneHeader">
-					<div class="menu border p-2">
-						<span class="orderNumber"> # 12 </span>
+		<div id="menuPage" class="w-100"
+			style="display: block; position: absolute; height: 95%;">
+			<div class="row" style="height: 100%;">
+				<div class="mainContents border col-3">
+					<div
+						class="border menuListHeader fs-4 d-flex align-items-center justify-content-center"
+						style="height: 7%;">
+						<div id="storeName"></div>
 					</div>
-				</div>
-				<div class="orderZoneContents">
-					<div class="orderZone">
-						<div class="menu border p-2">
-							<span class="menuName">치킨햄버거</span> <span class="menuCount">x2</span>
-							<span class="menuPrice">20,000원</span>
+					<div class="text-center " style="overflow-y: auto; height: 93%;">
+						<div class="menuList row row-cols-3" id="menuListZone">
+							<div class="col p-4">
+								<div class="card">
+									<div
+										class="position-absolute m-3 badge bg-success rounded-pill fs-6 mx-3 col-3">
+										대표</div>
+									<img src="\resources\image\hotdog2.jpg"
+										class="card-img-top cardTop" alt="...">
+									<div class="card-body">
+										<div class="row p-1">
+											<div class="col fs-4">핫도그</div>
+										</div>
+										<div class="fs-4">1,500원</div>
+
+									</div>
+								</div>
+							</div>
+							<div class="col p-4">
+								<div class="card">
+									<div
+										class="position-absolute m-3 badge bg-success rounded-pill fs-6 mx-3 col-3">
+										대표</div>
+									<img src="\resources\image\hotdog2.jpg"
+										class="card-img-top cardTop" alt="...">
+									<div class="card-body">
+										<div class="row p-1">
+											<div class="col fs-4">핫도그</div>
+										</div>
+										<div class="fs-4">1,500원</div>
+
+									</div>
+								</div>
+							</div>
 						</div>
 					</div>
+
 				</div>
-				<div class="orderZoneFooter">
-					<div class="menu border p-2">
-						<span class="allCount">총 4건</span> <span class="allPrice">80,000원</span>
+				<div class="subContents col">
+					<div class="subContentsHeader fs-5 p-3 border-bottom"
+						style="height: 7%;">목록</div>
+					<div class="subContentsOrderList" style="height: 86%;">
+						<div class="row text-center fs-5 border-bottom p-3"
+							style="-bs-gutter-x: 0px;">
+							<div class="menuName col-3 ">핫도그</div>
+							<!-- 수량줄이는 -버튼 -->
+							<div class="col">
+								<i class="bi bi-dash-circle"></i>
+							</div>
+							<!-- 수량줄이는 -버튼 -->
+
+							<!-- 수량표시 -->
+							<div class="menuCount col-1">5</div>
+							<!-- 수량표시 -->
+
+							<!-- 수량 늘리는 + 버튼 -->
+							<div class="col">
+								<i class="bi bi-plus-circle"></i>
+							</div>
+							<!-- 수량 늘리는 + 버튼 -->
+
+							<!-- 가격 -->
+							<div class="orderPrice col-4">155,500원</div>
+							<!-- 가격 -->
+
+							<!-- 주문지우는 X 버튼 -->
+							<div class="col">
+								<i class="bi bi-x-lg"></i>
+							</div>
+							<!-- 주문지우는 X 버튼 -->
+						</div>
+						<div class="row text-center fs-5 border-bottom p-3"
+							style="-bs-gutter-x: 0px;">
+							<div class="menuName col-3 ">핫도그</div>
+							<!-- 수량줄이는 -버튼 -->
+							<div class="col">
+								<i class="bi bi-dash-circle"></i>
+							</div>
+							<!-- 수량줄이는 -버튼 -->
+
+							<!-- 수량표시 -->
+							<div class="menuCount col-1">5</div>
+							<!-- 수량표시 -->
+
+							<!-- 수량 늘리는 + 버튼 -->
+							<div class="col">
+								<i class="bi bi-plus-circle"></i>
+							</div>
+							<!-- 수량 늘리는 + 버튼 -->
+
+							<!-- 가격 -->
+							<div class="orderPrice col-4">155,500원</div>
+							<!-- 가격 -->
+
+							<!-- 주문지우는 X 버튼 -->
+							<div class="col">
+								<i class="bi bi-x-lg"></i>
+							</div>
+							<!-- 주문지우는 X 버튼 -->
+						</div>
+					</div>
+					<div class="subContentsBtnZone row" style="height: 7%;">
+						<div
+							class="cancleButton p-3 col h-100 d-flex justify-content-center align-items-center">주문취소</div>
+						<div
+							class="orderButton p-3 col h-100 d-flex justify-content-center align-items-center"
+							onclick="kioskPage(0)">주문하기</div>
 					</div>
 				</div>
+			</div>
+
+
+			<!-- 결제방식 결정 -->
+		</div>
+		<div id="orderPage" class="w-100"
+			style="display: none; overflow: hidden; height: 95%;">
+			<!-- 주문내역확인 -->
+			<div class="orderContents border-end h-100">
+				<div class="orderZoneHeader border-bottom p-2" style="">
+					<div class="menu row fs-3 "># 12</div>
+				</div>
+				<div class="orderZone border-bottom" style="position: relative;">
+					<div style="height: 93%; overflow-y: auto; position: relative;">
+						<div class="menu border-bottom p-3 row text-center fs-5 " style="">
+							<div class="menuName col ">치킨햄버거</div>
+							<div class="menuCount col-2">x2</div>
+							<div class="menuPrice col">20,000원</div>
+						</div>
+					</div>
+					<div class="menu border-top p-3 row w-100 text-center"
+						style="position: absolute; bottom: 0;">
+						<div class="allCount col-4 fs-5">총 4건</div>
+						<div class="allPrice col fs-3">80,000원</div>
+					</div>
+				</div>
+
 			</div>
 			<!-- 주문내역확인 -->
 
 			<!-- 결제방식 결정 -->
-			<div class="payMentContens">
-				<div class="menu border p-3 payment">
-					<span class="paymentText" style="">결제금액</span> <span
-						class="paymentPrice" style="">80,000</span> <span
-						class="paymentText">원</span><br> <span
-						style="font-size: 30px; position: relative; top: 20%"> <br>주문
-						내역 확인 후 결제 방법을 선택 해주세요.<br> 결제는 음식 수령과 함께 해주세요.
+			<div class="payMentContens col" style="height: 100%;">
+				<div class="menu p-5 payment" style="height: 50%;">
+					<div class="row" style="align-items: baseline;">
+						<div class="paymentText col fs-3" style="">결제금액</div>
+						<div class="paymentPrice col" style="">80,000</div>
+						<div class="paymentText text-start fs-3 col h-100">원</div>
+					</div>
+
+
+					<br> <span style="font-size: 30px;"> <br>주문 내역 확인
+						후 결제 방법을 선택 해주세요.<br> 결제는 음식 수령과 함께 해주세요.
 					</span>
 				</div>
-				<div class="paymentChoice">
-					<div class="card paymentMethod">
+				<div class="paymentChoice row">
+					<div class="card paymentMethod d-flex col m-5">
 						<div class="menu p-3">
-							<svg xmlns="http://www.w3.org/2000/svg" width="50" height="50"
-								fill="currentColor" class="bi bi-credit-card"
-								viewBox="0 0 16 16">
-                        <path
-									d="M0 4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V4zm2-1a1 1 0 0 0-1 1v1h14V4a1 1 0 0 0-1-1H2zm13 4H1v5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V7z" />
-                        <path
-									d="M2 10a1 1 0 0 1 1-1h1a1 1 0 0 1 1 1v1a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1v-1z" />
-                    </svg>
-							카드결제 >
+							<i class="bi bi-credit-card"></i> 카드결제 >
 						</div>
 					</div>
-					<div class="card paymentMethod">
+					<div class="card paymentMethod d-flex col m-5">
 						<div class="menu p-3">
-							<svg xmlns="http://www.w3.org/2000/svg" width="50" height="50"
-								fill="currentColor" class="bi bi-cash-coin" viewBox="0 0 16 16">
-                        <path fill-rule="evenodd"
-									d="M11 15a4 4 0 1 0 0-8 4 4 0 0 0 0 8zm5-4a5 5 0 1 1-10 0 5 5 0 0 1 10 0z" />
-                        <path
-									d="M9.438 11.944c.047.596.518 1.06 1.363 1.116v.44h.375v-.443c.875-.061 1.386-.529 1.386-1.207 0-.618-.39-.936-1.09-1.1l-.296-.07v-1.2c.376.043.614.248.671.532h.658c-.047-.575-.54-1.024-1.329-1.073V8.5h-.375v.45c-.747.073-1.255.522-1.255 1.158 0 .562.378.92 1.007 1.066l.248.061v1.272c-.384-.058-.639-.27-.696-.563h-.668zm1.36-1.354c-.369-.085-.569-.26-.569-.522 0-.294.216-.514.572-.578v1.1h-.003zm.432.746c.449.104.655.272.655.569 0 .339-.257.571-.709.614v-1.195l.054.012z" />
-                        <path
-									d="M1 0a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h4.083c.058-.344.145-.678.258-1H3a2 2 0 0 0-2-2V3a2 2 0 0 0 2-2h10a2 2 0 0 0 2 2v3.528c.38.34.717.728 1 1.154V1a1 1 0 0 0-1-1H1z" />
-                        <path
-									d="M9.998 5.083 10 5a2 2 0 1 0-3.132 1.65 5.982 5.982 0 0 1 3.13-1.567z" />
-                    </svg>
-							현금결제 >
+							<i class="bi bi-cash-coin"></i> 현금결제 >
 						</div>
 					</div>
 				</div>
 			</div>
 		</div>
-
 	</div>
-	<script>
-        var Target = document.getElementById("clock");
-        var Target_apm = document.getElementById("apm");
-        function clock() {
-            var time = new Date();
-            var hours = time.getHours();
-            var minutes = time.getMinutes();
-            var seconds = time.getSeconds();
-            var AmPm = "AM";
-            if (hours > 12) {
-                var AmPm = "PM";
-                hours %= 12;
-            }
-
-            Target.innerText =
-                '${hours < 10 ? '0${hours}' : hours}:${minutes < 10 ? '0${minutes}' : minutes}:${seconds < 10 ? '0${seconds}' : seconds}';
-
-            Target_apm.innerText = '${AmPm}';
-
-        }
-        clock();
-        setInterval(clock, 1000); // 1초마다 실행
-    </script>
+	<div class="modal fade" id="messageModal"
+		style="background-color: rgba(0, 0, 0, 0.2); z-index: 1080"></div>
 </body>
 <script>
-	function kioskPage(ldx) {
-	const menuPage = document.getElementById("menuPage");
-	const orderPage = document.getElementById("orderPage");
 	
-	if(orderPage.style.display=="none"){
-		menuPage.style.display="none";
-		orderPage.style.display="block";
-		
-	} else if(orderPage.style.display=="block"){
-		orderPage.style.display="none";
-		menuPage.style.display="block";
+	function kioskPage() {
+		const menuPage = document.getElementById("menuPage");
+		const orderPage = document.getElementById("orderPage");
+
+		if (orderPage.style.display == "none") {
+			document.getElementById("backspace").style.display = "block";
+			orderPage.style.display = "block";
+			menuPage.style.display = "none";
+
+		} else if (orderPage.style.display == "block") {
+			document.getElementById("backspace").style.display = "none";
+			orderPage.style.display = "none";
+			menuPage.style.display = "block";
+		}
+
 	}
+
+	// 	var Target = document.getElementById("clock");
+	// 	var Target_apm = document.getElementById("apm");
+	// 	function clock() {
+	// 		var time = new Date();
+	// 		var hours = time.getHours();
+	// 		var minutes = time.getMinutes();
+	// 		var seconds = time.getSeconds();
+	// 		var AmPm = "AM";
+	// 		if (hours > 12) {
+	// 			var AmPm = "PM";
+	// 			hours %= 12;
+	// 		}
+
+	// 		Target.innerText = '::';
+
+	// 		Target_apm.innerText = '';
+
+	// 	}
+	// 	clock();
+	// 	setInterval(clock, 1000); // 1초마다 실행
+
+	jsonString = '${store}'
+	jsonData = JSON.parse(jsonString);
+	document.getElementById("storeName").innerText = jsonData.storeName;
+	if(jsonData.menuList.length>0){
+		// 카드를 생성할 div 요소를 선택합니다.
+		const menuListZone = document.querySelector('#menuListZone');
+		const cardContent = ''; 
+		menuList.forEach((menu) => {
+			const card = document.createElement('div');
+			card.classList.add('col', 'p-4');
+			cardContent += "<div class=\"card\" value=\""+menu.menuCode+"\">"
+			if(menu.isMain == 'Y'){
+				cardContent+="<div class=\"position-absolute m-3 badge bg-success rounded-pill fs-6 mx-3 col-3\">대표</div>"
+			}
+			if (menu.menuImageLocation != ''){
+				cardContent+="<img src=\"\resources\image\hotdog2.jpg\" class=\"card-img-top cardTop\">"
+			}else{
+				cardContent+="<img src=\"http://placehold.it/1000X600\" class=\"card-img-top cardTop\">"
+			}
+			cardContent += "<div class=\"card-body\"><div class=\"row p-1\"><div class=\"col fs-4\">";
+			cardContent += menu.menuName;
+			cardContent += "</div> </div> <div class=\"fs-4\">";
+			cardContent += menu.menuPrice;       
+			cardContent += "원</div>  </div>  </div>";
+		});
+		// 동적으로 카드를 생성합니다.
 		
-	
-	
+		card.innerHTML = cardContent;
+
+		// 카드를 추가합니다.
+		menuListZone.appendChild(card);
 	}
-	let storeCode ='${store.storeCode}';
 	let sock;
-	if (${store.storeCode}) {
-		sock = new WebSocket("ws://192.168.0.5:80/my-websocket?"
-				+ "storeCode="+'${store.storeCode}');
+	let storeCode
+	if (JSON.parse(jsonString).storeCode) {
+		storeCode = JSON.parse(jsonString).storeCode;
+		sock = new WebSocket("ws://192.168.0.5:80/postluck/" + storeCode);
 		// WebSocket 처리 코드
 	} else {
-		alert("다시 로그인해주세요.")
+		showModal("error:세션 오류:세션이 만료되었습니다. 다시 로그인해주세요.:moveIndex:")
 	}
 
 	sock.onopen = function(event) {
-		alert(event.code);
-		console.log('open');
-
-		sock.send('${store.storeCode}');
+		showModal("plain:연결 성공!:서버와 연결되었습니다!::")
+		sock.send(storeCode);
 	};
-// 	sock.onmessage = function(e) {
-// 		if (e.data.split(':')[0] == '주문') {
-// 			alert("주문이 들어왔습니다! " + e.data.split(':')[1])
-// 		} else {
-// 			console.log(e.data);
-// 		}
-// 	};
+
+	sock.onmessage = function(e) {
+		showModal('plain:연결 성공!:동일한 아이디로 접속하여, 연결을 했습니다!::')
+	};
 	sock.onclose = function(event) {
 		alert(event.code);
 		if (event.wasClean) {
-			console.log('웹 소켓이 정상적으로 닫혔습니다.');
+			showModal('plain:연결 종료:서버와의 연결이 정상적으로 종료되었습니다.::')
 		} else {
-			console.error('웹 소켓이 예기치 않게 닫혔습니다. 이유: ' + event.reason + ', 코드: '
-					+ event.code);
+			showModal('error:연결 오류:서버와의 연결이 비정상적으로 종료되었습니다.::')
 		}
 	};
 	function order() {
 		sock.send("주문: 햄버거 1개");
 	}
+
 	sock.onerror = function(error) {
 		alert([ error ]);
 	};
 </script>
+<style>
+.body {
+	margin: 0px;
+	margin-bottom: 0px;
+	font-family: 'Noto Sans KR', sans-serif;
+	font-weight: bold;
+}
+
+.main {
+	width: 100vw;
+	height: 100vh;
+	background-color: #f5f5f5;
+}
+
+.header {
+	position: relative;
+	height: 5%;
+	background-color: #333333;
+	margin: 0px;
+	color: white;
+	display: flex;
+	align-items: center;
+}
+
+.mainContents {
+	width: 80%;
+	float: left;
+	position: relative;
+}
+
+.menuCard {
+	position: relative;
+	top: 20%;
+	margin-bottom: 3%;
+}
+
+.subContents {
+	width: 20%;
+	background-color: #ffffff;
+	float: right;
+}
+
+.orderButton {
+	height: 5%;
+	text-align: center;
+	padding: 10px 0;
+	cursor: pointer;
+	z-index: 1;
+}
+
+.orderButton:hover {
+	background-color: #AFAFAF !important;
+}
+
+.orderButton1 {
+	height: 5%;
+	text-align: center;
+	padding: 10px 0;
+	cursor: pointer;
+}
+
+.orderButton1:hover {
+	height: 5%;
+	text-align: center;
+	padding: 10px 0;
+	background-color: #71F9A2 !important;
+}
+</style>
+
 
 </html>

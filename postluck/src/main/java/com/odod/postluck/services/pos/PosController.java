@@ -33,7 +33,6 @@ public class PosController {
 			@ModelAttribute("JWTForPostluck") String jwt) {
 		mav.addObject("store", store);
 		mav.addObject("jwt", jwt);
-		System.out.println("MovePos");
 		this.mainService.backController("PO03", mav);
 		return mav;
 	}

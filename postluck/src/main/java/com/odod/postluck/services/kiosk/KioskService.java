@@ -5,6 +5,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.odod.postluck.beans.StoreBean;
 import com.odod.postluck.services.pos.MainService;
 import com.odod.postluck.utils.JsonWebTokenService;
@@ -48,9 +50,14 @@ public class KioskService extends TransactionAssistant {
 	}
 
 	private void moveKiosk(ModelAndView mav) {
-		StoreBean store =(StoreBean) mav.getModel().get("store");
+		StoreBean store = (StoreBean) mav.getModel().get("store");
 		store.setStoreCode(this.jwt.getTokenInfoFromJWT(mav.getModel().get("jwt").toString()).getStoreCode());
-		mav.addObject("store", this.main.getStoreInfoAsStoreBean(mav));
+		try {
+			mav.addObject("store", new ObjectMapper().writeValueAsString(this.main.getStoreInfoAsStoreBean(mav)));
+		} catch (JsonProcessingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		mav.setViewName("kiosk-menu");
 	}
 }
