@@ -4,7 +4,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -74,6 +76,7 @@ public class PosRestController {
 	public StoreBean regMenu(Model model, @ModelAttribute StoreBean store) {
 		model.addAttribute("store", store);
 //		System.out.println(model.addAttribute("store", store));
+		System.out.println("PostMapping들어옴");
 		this.menuService.backController("ME03", model);
 		return (StoreBean) model.getAttribute("store");
 	}
@@ -86,14 +89,24 @@ public class PosRestController {
 		return (StoreBean) model.getAttribute("store");
 	}
 
-	@PostMapping("/Api/SaveImg")
-	public StoreBean imgUploader(Model model, @ModelAttribute StoreBean store) {
+//	@PostMapping("/Api/SaveImg")
+//	public StoreBean imgUploader(Model model, @ModelAttribute StoreBean store) {
+//		model.addAttribute("store", store);
+//		System.out.println(model.addAttribute("store", store));
+//		this.menuService.backController("ME09", model);
+//
+//		return (StoreBean) model.getAttribute("store");
+//
+//	}
+	@PostMapping("/fileUpload")
+    public StoreBean uploadFile(Model model, @ModelAttribute StoreBean store ,@RequestParam("file") MultipartFile[] files) {
+       		
 		model.addAttribute("store", store);
-		System.out.println(model.addAttribute("store", store));
-		this.menuService.backController("ME09", model);
+		model.addAttribute("file",files);
+		
+		this.menuService.backController("M09", model);
 
-		return (StoreBean) model.getAttribute("store");
-
+		return (StoreBean)model.getAttribute("store");
 	}
 
 }

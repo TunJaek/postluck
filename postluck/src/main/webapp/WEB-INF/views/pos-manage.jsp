@@ -1103,7 +1103,7 @@ document.addEventListener('DOMContentLoaded', function() {
 		  buttonRow.innerHTML = '<div class="btn btn-outline-danger col-1" onclick="deleteMenu(\'' + menuCode + '\')">삭제</div>' +
 	    '<div class="btn btn-primary col-1" onclick="modifyMenu(\'' + menuCode + '\')">저장</div>';
 	    }else{
-		 buttonRow.innerHTML = '<div class="btn btn-primary col-1" onclick="regMenu(); saveImg();">등록</div>';
+		 buttonRow.innerHTML = '<div class="btn btn-primary col-1" onclick="regMenu();">등록</div>';
 	    }
 	  
 	    menuInputZone.appendChild(buttonRow);
@@ -1114,7 +1114,7 @@ document.addEventListener('DOMContentLoaded', function() {
 		const menuCode = document.getElementById("menuCode"); 
 	  	const menuName = document.getElementById("menuName").value;
 	  	const menuPrice = document.getElementById("menuPrice").value;
-	  	const menuImage = document.querySelector('input[type=file]').files[0];
+	  	const menuImage = document.getElementById("menuImage");
 	 	const isMain = document.getElementById("isMain").checked;
 	 	const isKiosk = document.getElementById("isKiosk").checked;
 		const isSoldOut = document.getElementById("isSoldOut").checked;
@@ -1151,7 +1151,7 @@ document.addEventListener('DOMContentLoaded', function() {
 		  serverCallByFetch(formData,"/Api/RegMenu","post","afterDeleteMenu",header);
 	}
 	
-	function saveImg(){
+	/* function saveImg(){
 	  	const menuImage = document.getElementById("menuImage");
 		  
 		  
@@ -1160,7 +1160,7 @@ document.addEventListener('DOMContentLoaded', function() {
 		  console.log(menuImage.files[0]);
 		  
 		  serverCallByFetch(formData,"/Api/SaveImg","post","afterDeleteMenu",header);
-	}
+	} */
 	//메뉴 수정 버튼 클릭시 나타나는 페이지
 	function modifyMenuPage(menuCode){
 		sideMenu(3); //메뉴관리 content header 띄우기
