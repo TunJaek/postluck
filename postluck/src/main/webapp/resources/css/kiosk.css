@@ -108,7 +108,6 @@ body {
 
 .orderContents {
 	width: 20%;
-	height: 95%;
 	float: left;
 	background-color: #ffffff;
 }
@@ -127,11 +126,6 @@ body {
 	width: 100%;
 	height: 93%
 }
-
-/* .menuName {
-	margin-left: 5%;
-}
- */
 .menuCount {
 	border: solid 0px !important;
 }

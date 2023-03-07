@@ -134,8 +134,7 @@ public class Authentication extends TransactionAssistant {
 					st.setMessage("true"); // 사업자 정보가 있음.
 					model.addAttribute("store", st);
 
-					this.pu.setAttribute("AccessInfo",
-							model.getAttribute("store"));
+					this.pu.setAttribute("AccessInfo",model.getAttribute("store"));
 					this.tranManager.commit();
 				} else {
 					// 사업자코드가 존재하지 않을 때 토큰 발행
