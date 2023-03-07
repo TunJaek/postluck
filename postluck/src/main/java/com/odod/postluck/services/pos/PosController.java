@@ -11,19 +11,29 @@ import com.odod.postluck.beans.StoreBean;
 
 @Controller
 public class PosController {
-    @Autowired
-    private LocationService locService;
-    @Autowired
-    private MainService mainService;
-    @Autowired
-    private StoreService storeService;
+	@Autowired
+	private LocationService locService;
+	@Autowired
+	private MainService mainService;
+	@Autowired
+	private StoreService storeService;
 
-    @PostMapping("/View/MovePosManage")
-    public ModelAndView movePosManage(ModelAndView mav, @ModelAttribute StoreBean store, @ModelAttribute("JWTForPostluck") String jwt) {
-	mav.addObject("store",store);
-	mav.addObject("jwt",jwt);
-	System.out.println(jwt);
-	this.mainService.backController("PO02", mav);
-	return mav; 
-    }
+	@PostMapping("/View/MovePosManage")
+	public ModelAndView movePosManage(ModelAndView mav, @ModelAttribute StoreBean store,
+			@ModelAttribute("JWTForPostluck") String jwt) {
+		mav.addObject("store", store);
+		mav.addObject("jwt", jwt);
+		System.out.println(jwt);
+		this.mainService.backController("PO02", mav);
+		return mav;
+	}
+
+	@PostMapping("/View/MovePos") //
+	public ModelAndView movePos(ModelAndView mav, @ModelAttribute StoreBean store,
+			@ModelAttribute("JWTForPostluck") String jwt) {
+		mav.addObject("store", store);
+		mav.addObject("jwt", jwt);
+		this.mainService.backController("PO03", mav);
+		return mav;
+	}
 }
