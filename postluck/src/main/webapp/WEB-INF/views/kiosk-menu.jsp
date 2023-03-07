@@ -337,4 +337,72 @@ let storeCode
 	}
 </script>
 
+<style>
+.body {
+	margin: 0px;
+	margin-bottom: 0px;
+	font-family: 'Noto Sans KR', sans-serif;
+	font-weight: bold;
+}
+
+.main {
+	width: 100vw;
+	height: 100vh;
+	background-color: #f5f5f5;
+}
+
+.header {
+	position: relative;
+	height: 5%;
+	background-color: #333333;
+	margin: 0px;
+	color: white;
+	display: flex;
+	align-items: center;
+}
+
+.mainContents {
+	width: 80%;
+	float: left;
+	position: relative;
+}
+
+.menuCard {
+	position: relative;
+	top: 20%;
+	margin-bottom: 3%;
+}
+
+.subContents {
+	width: 20%;
+	background-color: #ffffff;
+	float: right;
+}
+
+.orderButton {
+	height: 5%;
+	text-align: center;
+	padding: 10px 0;
+	cursor: pointer;
+	z-index: 1;
+}
+
+.orderButton:hover {
+	background-color: #AFAFAF !important;
+}
+
+.orderButton1 {
+	height: 5%;
+	text-align: center;
+	padding: 10px 0;
+	cursor: pointer;
+}
+
+.orderButton1:hover {
+	height: 5%;
+	text-align: center;
+	padding: 10px 0;
+	background-color: #71F9A2 !important;
+}
+</style>
 </html>
