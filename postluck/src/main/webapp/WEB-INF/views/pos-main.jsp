@@ -213,8 +213,7 @@
 				</div>
 			</div>
 		</div>
-		<div class="modal fade" id="messageModal"
-			style="background-color: rgba(0, 0, 0, 0.2); z-index: 1080"></div>
+	
 	</div>
 
 

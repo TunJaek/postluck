@@ -129,17 +129,30 @@
 </body>
 <script>
 let sock;
-let storeCode
+let storeCode;
+let orderNum='000';
+let isSend = false;
+	function addOrderNum(){
+		orderNum =(parseInt(orderNum) +1).toString();
+		orderNum = orderNum.padStart(3,'0')
+		console.log(orderNum)
+	}
 	function kioskPage(isNext) {
 		const menuPage = document.getElementById("menuPage");
 		const orderPage = document.getElementById("orderPage");
-
-		if (isNext) {
-			document.getElementById("backspace").style.display = "block";
-			orderPage.style.display = "block";
-			menuPage.style.display = "none";
-
+		
+		if (isNext==true) {
+			if(document.getElementsByClassName("subContentsOrderList")[0].children.length > 0){
+				document.getElementById("backspace").style.display = "block";
+				orderPage.style.display = "block";
+				menuPage.style.display = "none";
+			}else{
+				showModal("error::주문을 해주세요.::")
+			}
 		} else{
+			if(isSend == true){
+				cancelOrder();
+			}
 			document.getElementById("backspace").style.display = "none";
 			orderPage.style.display = "none";
 			menuPage.style.display = "block";
@@ -207,14 +220,43 @@ let storeCode
 	} else {
 		showModal("error:세션 오류:세션이 만료되었습니다. 다시 로그인해주세요.:moveIndex:")
 	}
-	function sendOrder(payment){
-		let orderString = JSON.stringify(orderList);
-		console.log(orderString)
-		if(payment == 'CA') { //현금일 경우
-				sock.send(orderString);
-		} else { //카드일 경우
-			sock.send(orderString);
+	function getCurrentDateTime() {
+		  const now = new Date();
+		  const year = now.getFullYear();
+		  const month = String(now.getMonth() + 1).padStart(2, '0');
+		  const date = String(now.getDate()).padStart(2, '0');
+		  const hour = String(now.getHours()).padStart(2, '0');
+		  const minute = String(now.getMinutes()).padStart(2, '0');
+		  const second = String(now.getSeconds()).padStart(2, '0');
+		  return year+month+date+hour+minute+second;
 		}
+	function sendOrder(payment){
+			let orderString = JSON.stringify(orderList);
+			isSend = true;
+		if(payment == 'CA') { //현금일 경우
+			orderList['payment']="CA";
+		let jsonexam = {"storeCode":"1234567890","orderList":[{
+			"orderPaymentType":"CA","orderDate":getCurrentDateTime(),"orderState":"주문",
+			"orderMenuList": [{
+				"menu":{
+					"menuCode":"M01"
+				},"quantity":"12"
+			}]
+		}]};
+			serverCallByFetchAjaxUsingJson(JSON.stringify(jsonexam), "/Api/makeOrder", "post", "afterMakeOrder", header);
+		} else { //카드일 경우
+			orderList['payment']="CR";
+			serverCallByFetchAjaxUsingJson(orderString, "/Api/makeOrder", "post", "afterMakeOrder", header);
+			showModal("plain::주문이 완료되었습니다.:kioskPage:false")
+		}
+		
+	}
+	function afterMakeOrder(jsonData){
+		cancelOrder();
+		console.log(jsonData)
+		addOrderNum();
+		showModal("plain:주문번호 #"+orderNum+":주문이 완료되었습니다.\n발급된 주문 번호를 확인해주세요.:kioskPage:false")
+		
 	}
 	sock.onopen = function(event) {
 		showModal("plain:연결 성공!:서버와 연결되었습니다!::")
@@ -237,16 +279,16 @@ let storeCode
 		alert([ error ]);
 	};
 	function cancelOrder(){
-		const subContentsOrderList = document.getElementsByClassName("subContentsOrderList")[0]
-		if(subContentsOrderList.innerHTML == ''){
-			showModal("error::취소할 주문이 없습니다.::");
-		}
+		const subContentsOrderList = document.getElementsByClassName("subContentsOrderList")[0];
 		document.getElementsByClassName("subContentsOrderList")[0].innerHTML = '';
 		 orderList = {"storeCode":storeCode,"order":{}};
 		 getTotal();
 	}
 	
-	let orderList ={"storeCode":storeCode,"order":{}};
+	let sendOrderJs ={"storeCode":storeCode,"orderList":[{
+		"orderPaymentType":"","orderDate":"","orderState":"주문",
+		"orderMenuList": []
+	}]};
 	function addMenu(calc,mc,price){
 		const menuItem = document.getElementsByClassName("subContentsOrderList")[0];
 		for(let i=0;i<menuItem.children.length;i++){
@@ -268,21 +310,30 @@ let storeCode
 		const menuCode = mc;
 		console.log(menuCode)
 		//JSON 객체 처리
-		let order =  orderList.order ;
-		if(Object.keys(order).includes(menuCode)){
-			if(calc == 'add'){
-			order[menuCode]++;
-			}else{
-				order[menuCode]--;
-				if(order[menuCode]== '0'){
-					delete order[menuCode];
+		let orderMenuListJs = {"menu":{
+			"menuCode":""
+		},"quantity":""}
+		let isFound =false;
+		let menuJs ;
+		for(i=0;i<sendOrderJs.orderList[0].orderMenuList.length;i++){
+			if(sendOrderJs.orderList[0].orderMenuList[i].menu.menuCode == mc){ //이미 담은 메뉴
+				if(calc == 'add'){
+				sendOrderJs.orderList[0].orderMenuList[i].quantity ++;
+				}else{
+				sendOrderJs.orderList[0].orderMenuList[i].quantity--;
 				}
+			isFound = true; return;
+			}else{ //새로운 메뉴
+				orderMenuListJs.menu.menuCode = mc;
+				orderMenuListJs.quantity = 1;
+				sendOrderJs.orderList[0].orderMenuList.push(orderMenuListJs);
 			}
-		}else{
-			order[menuCode] = 1;
-			 createMenuItem(mc, price);
+			if(sendOrderJs.orderList[0].orderMenuList[i].quantity == 0){
+				 sendOrderJs.orderList[0].orderMenuList[i].splice(i, 1)
+			}
 		}
-		console.log(order);
+		if(isFound == false )createMenuItem(mc, price);
+		console.log(sendOrderJs);
 		getTotal()
 	}
 	

@@ -121,11 +121,12 @@ function serverCallByFetch(formData, jobCode, methodType, callBackFunc, header) 
 		})
 }
 
-function serverCallByFetchAjaxUsingJson(jsonString, jobCode, methodType, callBackFunc) {
+function serverCallByFetchAjaxUsingJson(jsonString, jobCode, methodType, callBackFunc, header) {
 
 	fetch(jobCode, {
 		method: methodType,
 		headers: {
+			'JWTForPostluck': sessionStorage.getItem('JWT'),
 			'Content-Type': 'application/json;charset=UTF-8'
 		},
 		body: jsonString
@@ -372,8 +373,9 @@ function kakaoLogout() {
 
 
 function showModal(messageString) {
+
 	const messageModalString = `
-    <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-dialog modal-dialog-centered" role="document" >
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title col-10">메세지 제목이 없습니다.</h5>
@@ -384,14 +386,19 @@ function showModal(messageString) {
           <div id="alertContent">메세지 내용이 없습니다.</div>
         </div>
         <div class="modal-footer text-center">
-          <button type="button" id="btnCancel" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
-          <button type="button" id="btnOk" class="btn">확인</button>
+          <button type="button" id="btnCancel" class="btn btn-secondary" data-bs-dismiss="modal" aria-label="Close">취소</button>
+          <button type="button" id="btnOk" class="btn" data-bs-dismiss="modal" aria-label="Close">확인</button>
         </div>
       </div>
     </div>
 `;
- 
-	document.getElementById("messageModal").innerHTML = messageModalString;
+	let messageModalDiv = document.createElement("div");
+	messageModalDiv.setAttribute("class", "modal fade");
+	messageModalDiv.setAttribute("id", "messageModal");
+	messageModalDiv.setAttribute("data-bs-backdrop", "static");
+	document.body.insertBefore(messageModalDiv, document.body.firstChild);
+
+	messageModalDiv.innerHTML = messageModalString;
 	if (typeof messageString === 'object') {
 		try {
 			if (messageString.message != null) {
@@ -436,20 +443,10 @@ function showModal(messageString) {
 			btnCancel.setAttribute("class", "btn btn-secondary d-none");
 		}
 		document.getElementsByClassName('modal-title col-10')[0].innerText = message[1];
-		let result = "";
-		if (message[2].includes('.')) {
-			const messages = message[2].split(".");
-			for (let i = 0; i < messages.length; i++) {
-				if (i != 0) {
-					result += ".<br>";
-				}
-				result += messages[i].trim();
-			}
-		} else {
-			result = message[2];
-		}
-
-		document.getElementById('alertContent').innerHTML = result;
+		document.getElementById("alertContent").innerText = message[2];
+		document.getElementById("messageModal").addEventListener('hidden.bs.modal', function() {
+			document.getElementById("messageModal").remove();
+		});
 	}
 }
 

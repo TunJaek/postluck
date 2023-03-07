@@ -5,6 +5,7 @@ import java.net.URISyntaxException;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.server.ServerHttpRequest;
 import org.springframework.http.server.ServerHttpResponse;
@@ -22,7 +23,7 @@ import org.springframework.web.socket.server.HandshakeInterceptor;
 @Configuration
 @EnableWebSocket
 public class WebSocketConfig implements WebSocketConfigurer {
-
+	
 	private final Map<String, Map<String, WebSocketSession>> sessionMap = new ConcurrentHashMap<>();
 
 	@Override
