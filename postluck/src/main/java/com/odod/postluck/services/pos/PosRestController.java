@@ -73,7 +73,7 @@ public class PosRestController {
 	@PostMapping("/Api/RegMenu")
 	public StoreBean regMenu(Model model, @ModelAttribute StoreBean store) {
 		model.addAttribute("store", store);
-		System.out.println(model.addAttribute("store", store));
+//		System.out.println(model.addAttribute("store", store));
 		this.menuService.backController("ME03", model);
 		return (StoreBean) model.getAttribute("store");
 	}
@@ -85,4 +85,15 @@ public class PosRestController {
 		this.menuService.backController("ME06", model);
 		return (StoreBean) model.getAttribute("store");
 	}
+
+	@PostMapping("/Api/SaveImg")
+	public StoreBean imgUploader(Model model, @ModelAttribute StoreBean store) {
+		model.addAttribute("store", store);
+		System.out.println(model.addAttribute("store", store));
+		this.menuService.backController("ME09", model);
+
+		return (StoreBean) model.getAttribute("store");
+
+	}
+
 }

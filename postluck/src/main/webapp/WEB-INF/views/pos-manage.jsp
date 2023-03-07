@@ -1093,7 +1093,7 @@ document.addEventListener('DOMContentLoaded', function() {
 		  buttonRow.innerHTML = '<div class="btn btn-outline-danger col-1" onclick="deleteMenu(\'' + menuCode + '\')">삭제</div>' +
 	    '<div class="btn btn-primary col-1" onclick="modifyMenu(\'' + menuCode + '\')">저장</div>';
 	    }else{
-		 buttonRow.innerHTML = '<div class="btn btn-primary col-1" onclick="regMenu()">등록</div>';
+		 buttonRow.innerHTML = '<div class="btn btn-primary col-1" onclick="regMenu(); saveImg();">등록</div>';
 	    }
 	  
 	    menuInputZone.appendChild(buttonRow);
@@ -1101,29 +1101,55 @@ document.addEventListener('DOMContentLoaded', function() {
 	
 	function regMenu() {
 		  // 입력값들을 추가
-		 // const menuCode = document.getElementById("menuCode").value;
-		  const menuName = document.getElementById("menuName").value;
-		  const menuPrice = document.getElementById("menuPrice").value;
-		  const menuImage = document.getElementById("menuImage").value;
-		  let isSoldOut = document.getElementById("isSoldOut").value;
-		  let isMain = document.getElementById("isMain");
-		  let isKiosk = document.getElementById("isKisok");
+		const menuCode = document.getElementById("menuCode"); 
+	  	const menuName = document.getElementById("menuName").value;
+	  	const menuPrice = document.getElementById("menuPrice").value;
+	  	const menuImage = document.querySelector('input[type=file]').files[0];
+	 	const isMain = document.getElementById("isMain").checked;
+	 	const isKiosk = document.getElementById("isKiosk").checked;
+		const isSoldOut = document.getElementById("isSoldOut").checked;
 		  
 		  
 		  const formData = new FormData();
-		  //formData.append("menuList[0].menuCode", menuCode);
+		  formData.append("storeCode", storeNum);
+		  //formData.append("menuList[0].menuCode", menuCode); 
 		  formData.append("menuList[0].menuName", menuName);
 		  formData.append("menuList[0].menuPrice", menuPrice);
-		  formData.append("menuList[0].menuImageCode", menuImage);
-		  if(isKiosk.value == "on") {
-			  isKiosk.checked = true;
-			  formData.append("menuList[0].isKiosk", isKiosk);}
-		  if(isMain == "on") {
-			  isMain.checked = true;
-			  formData.append("menuList[0].isMain", isMain);
-		  }
+		  formData.append("menuList[0].menuImageCode", menuImage.files[0]);
+		  // 영준님 이거 .files[0]로 접근하면 된대요!! 
+		  console.log(menuImage.files[0]);
+		 
+		  if(isKiosk) {
+				formData.append("menuList[0].isKiosk", "Y");
+			} else {
+				formData.append("menuList[0].isKiosk", "N");
+			}
+
+			if(isMain) {
+				formData.append("menuList[0].isMain", "Y");
+			} else{
+				formData.append("menuList[0].isMain", "N");
+			}
+			
+			if(isSoldOut) {
+				formData.append("menuList[0].isSoldOut", "Y");
+			} else{
+				formData.append("menuList[0].isSoldOut", "N");
+			}
+		  
 		  
 		  serverCallByFetch(formData,"/Api/RegMenu","post","afterDeleteMenu",header);
+	}
+	
+	function saveImg(){
+	  	const menuImage = document.getElementById("menuImage");
+		  
+		  
+		  formData.append("menuList[0].menuImageCode", menuImage.files[0]);
+		  // 영준님 이거 .files[0]로 접근하면 된대요!! 
+		  console.log(menuImage.files[0]);
+		  
+		  serverCallByFetch(formData,"/Api/SaveImg","post","afterDeleteMenu",header);
 	}
 	//메뉴 수정 버튼 클릭시 나타나는 페이지
 	function modifyMenuPage(menuCode){
