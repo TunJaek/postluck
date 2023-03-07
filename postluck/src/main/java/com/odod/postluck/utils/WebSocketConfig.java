@@ -122,7 +122,6 @@ public class WebSocketConfig implements WebSocketConfigurer {
 			return null;
 		}
 
-		// ...
 
 	}
 

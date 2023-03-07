@@ -16,6 +16,7 @@
 <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=0203ee3bafbf6d3fe50695090bc89516&libraries=services"></script>
 <script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.1/index.global.min.js'></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
 if('${store}'!=''){
 	jsonString = '${store}'
@@ -37,7 +38,7 @@ document.addEventListener('DOMContentLoaded', function() {
 	
 	<div class="main">
 		<div class="header">
-			<span class="px-3 " style="cursor: pointer" onclick="movePage('Pos')"><svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-arrow-left" viewBox="0 0 16 16">
+			<span class="px-3 " style="cursor: pointer" onclick="movePage('Back')"><svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-arrow-left" viewBox="0 0 16 16">
                     <path fill-rule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z" />
                 </svg></span> <span><img src="/resources/image/mainLogo-dark.png"></span>
 
@@ -312,14 +313,26 @@ document.addEventListener('DOMContentLoaded', function() {
 				<div class="mainContentFooter m-3">
 					<div class="footerChoiceTab" style="position: relative;">
 						<ul class="nav nav-tabs" role="tablist">
-							<li class="nav-item" role="presentation"><a class="nav-link" data-bs-toggle="tab" href="#home" aria-selected="false" role="tab" tabindex="-1">결제수단별</a></li>
-							<li class="nav-item" role="presentation"><a class="nav-link active" data-bs-toggle="tab" href="#profile" aria-selected="true" role="tab">메뉴별</a></li>
-							<li class="nav-item" role="presentation"><a class="nav-link" data-bs-toggle="tab" href="#locate" aria-selected="false" role="tab" tabindex="-1">지역별</a></li>
+							<li class="nav-item" role="presentation"><a class="nav-link"
+								data-bs-toggle="tab" href="#home" aria-selected="false"
+								role="tab" tabindex="-1">결제수단별</a></li>
+							<li class="nav-item" role="presentation"><a
+								class="nav-link active" data-bs-toggle="tab" href="#profile"
+								aria-selected="true" role="tab">메뉴별</a></li>
+							<li class="nav-item" role="presentation"><a class="nav-link"
+								data-bs-toggle="tab" href="#locate" aria-selected="false"
+								role="tab" tabindex="-1">지역별</a></li>
 
 						</ul>
-						<div id="myTabContent" class="tab-content" style="width: 100%; text-align: center;">
+						<!-- 채팅창 내부에 차트가 위치할 div -->
+						<div id="chart-container">
+							<canvas id="chart"></canvas>
+						</div>
+						<div id="myTabContent" class="tab-content"
+							style="width: 100%; text-align: center;">
 							<div class="tab-pane fade" id="home" role="tabpanel">
-								<div class="paymentTab" style="width: 80%; display: flex; flex-direction: row; font-size: 20px;">
+								<div class="paymentTab"
+									style="width: 80%; display: flex; flex-direction: row; font-size: 20px;">
 									<br> <br>
 									<div class="textBox1">
 										<h4>결제수단</h4>
@@ -340,60 +353,75 @@ document.addEventListener('DOMContentLoaded', function() {
 										<hr style="border: 1px color= silver; width: 100%;">
 									</div>
 								</div>
-								<div class="actualSales" style="display: flex; position: relative; left: 51.3%;">
+								<div class="actualSales"
+									style="display: flex; position: relative; left: 51.3%;">
 									<h4 style="">실매출 &nbsp&nbsp&nbsp</h4>
 									<span style="font-size: 20px;">415,000원</span>
 								</div>
 								<!-- <p> 결제수단별 </p> -->
 
 							</div>
-							<div class="tab-pane fade active show" id="profile" role="tabpanel">
-								<div class="menuTab" style="width: 80%; display: flex; flex-direction: row; font-size: 20px;">
+							<div class="tab-pane fade active show" id="profile"
+								role="tabpanel">
+								<div class="menuTab"
+									style="width: 80%; display: flex; flex-direction: row; font-size: 20px;">
 									<div class="textBox1">
 										<h4>순위</h4>
 										<hr style="border: 1px color= silver;">
-										1<br> <br> 2<br> <br> 3<br> <br> 4<br> <br> 5
+										1<br> <br> 2<br> <br> 3<br> <br>
+										4<br> <br> 5
 									</div>
 									<div class="textBox1">
 										<h4>메뉴명</h4>
 										<hr style="border: 1px color= silver;">
-										1<br> <br> 2<br> <br> 3<br> <br> 4<br> <br> 5
+										1<br> <br> 2<br> <br> 3<br> <br>
+										4<br> <br> 5
 
 									</div>
 									<div class="textBox1">
 										<h4>건수</h4>
 										<hr style="border: 1px color= silver;">
-										1<br> <br> 2<br> <br> 3<br> <br> 4<br> <br> 5
+										1<br> <br> 2<br> <br> 3<br> <br>
+										4<br> <br> 5
 									</div>
-									<div class="textBox1" style="text-align: right; position: relative; left: -10%;">
+									<div class="textBox1"
+										style="text-align: right; position: relative; left: -10%;">
 										<h4>결제금액</h4>
 										<hr style="border: 1px color= silver; width: 135%;">
-										1,197,000원<br> <br> 197,000원<br> <br> 197,000원<br> <br> 97,000원<br> <br> 7,000원
+										1,197,000원<br> <br> 197,000원<br> <br>
+										197,000원<br> <br> 97,000원<br> <br> 7,000원
 									</div>
 								</div>
 							</div>
-							<div class="tab-pane fade active show" id="locate" role="tabpanel">
-								<div class="menuTab" style="width: 80%; display: flex; flex-direction: row; font-size: 20px;">
+							<div class="tab-pane fade active show" id="locate"
+								role="tabpanel">
+								<div class="menuTab"
+									style="width: 80%; display: flex; flex-direction: row; font-size: 20px;">
 									<div class="textBox1">
 										<h4>지역</h4>
 										<hr style="border: 1px color= silver;">
-										서울<br> <br> 경기<br> <br> 인천<br> <br> 강릉<br> <br> 5
+										서울<br> <br> 경기<br> <br> 인천<br> <br>
+										강릉<br> <br> 5
 									</div>
 									<div class="textBox1">
 										<h4>메뉴명</h4>
 										<hr style="border: 1px color= silver;">
-										1<br> <br> 2<br> <br> 3<br> <br> 4<br> <br> 5
+										1<br> <br> 2<br> <br> 3<br> <br>
+										4<br> <br> 5
 
 									</div>
 									<div class="textBox1">
 										<h4>건수</h4>
 										<hr style="border: 1px color= silver;">
-										1<br> <br> 2<br> <br> 3<br> <br> 4<br> <br> 5
+										1<br> <br> 2<br> <br> 3<br> <br>
+										4<br> <br> 5
 									</div>
-									<div class="textBox1" style="text-align: right; position: relative; left: -10%;">
+									<div class="textBox1"
+										style="text-align: right; position: relative; left: -10%;">
 										<h4>결제금액</h4>
 										<hr style="border: 1px color= silver; width: 135%;">
-										1,197,000원<br> <br> 197,000원<br> <br> 197,000원<br> <br> 97,000원<br> <br> 7,000원
+										1,197,000원<br> <br> 197,000원<br> <br>
+										197,000원<br> <br> 97,000원<br> <br> 7,000원
 									</div>
 								</div>
 							</div>
@@ -707,7 +735,6 @@ document.addEventListener('DOMContentLoaded', function() {
 		if (salesToggle.checked) {
 			console.log("false")
 			showModal("plain::영업을 시작합니다.:")
-			salesToggle.setAttribute("checked", "true");
 			formData.append('salesLogList[0].salesState', 'O');
 		} else {
 			console.log("true")
@@ -716,7 +743,20 @@ document.addEventListener('DOMContentLoaded', function() {
 		}
 		formData.append('locationList[0].locationCode', 'L01');
 		formData.append('storeCode', storeNum);
-		serverCallByFetch(formData, '/Api/UpdSalesLog', 'post', '', header);
+		serverCallByFetch(formData, '/Api/UpdSalesLog', 'post', 'afterUpdSalesLog', header);
+	}
+	//영업기록 callback
+	function afterUpdSalesLog(jsonData){
+		if ('${isOpen}' == 'true'){
+			salesToggle.setAttribute("checked", "true");
+			document.getElementById("isOpenText").innerText = "영업중";
+			showModal(jsonData.message);
+		}else{
+			salesToggle.setAttribute("checked", "false");
+			document.getElementById("isOpenText").innerText = "영업전";
+			showModal(jonData.message);
+			
+		}
 	}
 	//모달창 숨기는 func
 	function regCancel() {
@@ -1050,6 +1090,33 @@ document.addEventListener('DOMContentLoaded', function() {
 	function afterDeleteMenu(jsonData){
 	    showModal(jsonData.message+"reload:2");
 	}
+	// 차트 생성
+	var ctx = document.getElementById('chart').getContext('2d');
+	var myChart = new Chart(ctx, {
+	  type: 'doughnut',
+	  data: {
+	    labels: ['Red', 'Blue', 'Yellow'],
+	    datasets: [{
+	      label: '# of Votes',
+	      data: [66.7, 11.1, 22.2],
+	      backgroundColor: [
+	        'rgb(255, 99, 132)',
+	        'rgb(54, 162, 235)',
+	        'rgb(255, 205, 86)'
+	      ],
+	      borderWidth: 0
+	    }]
+	  },
+	  options: {
+	    maintainAspectRatio: false
+	  }
+	});
+
+	// 차트 컨테이너 크기 설정
+	var chartContainer = document.getElementById('chart-container');
+	chartContainer.style.width = '50vw';
+	chartContainer.style.height = '30vh';
+
 </script>
 
 <style>
