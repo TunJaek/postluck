@@ -1,16 +1,12 @@
 package com.odod.postluck.services.pos;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.nio.file.Files;
 import java.util.ArrayList;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
-import org.springframework.web.method.support.ModelAndViewContainer;
-import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.odod.postluck.beans.MenuBean;
 import com.odod.postluck.beans.StoreBean;
@@ -34,10 +30,6 @@ public class MenuService extends TransactionAssistant {
 		case "ME01":
 			this.getAllMenuList(model);
 			break;
-//		case "ME01":
-////			this.getAllMenuList(model);
-////			break;
-//>>>>>>> branch 'main' of https://github.com/dPfal/postluck.git
 //		case "ME02":
 //			this.dupCheckMenu(model);
 //			break;
@@ -53,7 +45,6 @@ public class MenuService extends TransactionAssistant {
 		case "ME06":
 			this.deleteMenu(model);
 			break;
-
 		}
 	}
 
@@ -72,7 +63,6 @@ public class MenuService extends TransactionAssistant {
 		 */
 		StoreBean storeMenu = (StoreBean) model.getAttribute("store");
 		try {
-			this.tranManager = getTransaction(false);
 			this.tranManager.tranStart();
 			// storeCode가 존재한다면 oracle count값 = 1
 			if (this.convertToBoolean(this.sqlSession.selectOne("isStCode", storeMenu))) {
@@ -83,7 +73,6 @@ public class MenuService extends TransactionAssistant {
 			}
 		} catch (Exception e) {
 		} finally {
-
 			this.tranManager.tranEnd();
 		}
 	}
@@ -109,32 +98,74 @@ public class MenuService extends TransactionAssistant {
 //		}
 //	}
 
-	private void regMenu(Model model, boolean... isDup) {
+	private void regMenu(Model model) {
 		StoreBean store = (StoreBean) model.getAttribute("store");
-
+		MultipartFile file = (MultipartFile) model.getAttribute("file");
+		System.out.println(file);
+//		System.out.println(store);
 		String message = null;
+		// 가져올 이미지 경로 : MenuImageLocation
+		// ex) D:\Project\PosTLUCK\resources\image
+		// 생성할 폴더 이름 : 사업자번호(1998033001)
+		// 폴더경로 프로젝트폴더 resources > image폴더 안에 사업자번호(1998033001)로 생성.
+		String folderPath = "C:\\Users\\user\\git\\postluck\\postluck\\src\\main\\webapp\\resources\\image\\"
+				+ store.getStoreCode() + "\\";
+		String filePath = folderPath;
+		// 파일 객체 생성
+		/*
+		 * System.out.println("imgPath : " + imagePath);
+		 * System.out.println("folderName : " + folderName );
+		 * System.out.println("folderPath : " + folderPath);
+		 */
 		/* Transaction Start */
+		this.tranManager.tranStart();
 		try {
-			this.tranManager = getTransaction(false);
-			this.tranManager.tranStart();
-
-			if (this.convertToBoolean(this.sqlSession.insert("insMenu", store))) {
-				// 추가
-				if (this.convertToBoolean(this.sqlSession.selectOne("isMenuName", store))) {
-					store.setMessage("메뉴추가가 완료되었습니다.");
-					this.tranManager.commit();
-				} else {
-					store.setMessage("중복된 메뉴입니다 다시 설정해주세요");
-				}
+			System.out.println("트랜안에 들어옴");
+			String menuCode = this.sqlSession.selectOne("selMaxMenuCode", store);
+			if (menuCode == null) {
+				menuCode = "M00";
+				System.out.println("메뉴코드널");
 			} else {
-				store.setMessage("메뉴 추가작업 도중 오류가 발생하였습니다. 다시 시도해주세요.");
+				System.out.println("메뉴코드널아님");
+				menuCode = this.sqlSession.selectOne("selMaxMenuCode", store);
+				System.out.println("바꾸기전메뉴코드" + menuCode);
+				menuCode = "M" + (Integer.parseInt(menuCode.substring(2)) + 1 < 10
+						? "0" + (Integer.parseInt(menuCode.substring(2)) + 1)
+						: Integer.parseInt(menuCode.substring(2)) + 1);
+				System.out.println("바꾼후메뉴코드" + menuCode);
+			}
+			store.getMenuList().get(0).setMenuCode(menuCode);
+			filePath += store.getStoreCode() + menuCode + ".jpg";
+			store.getMenuList().get(0).setMenuImageCode(store.getStoreCode() + menuCode);
+			// 생성할 파일 이름 : 폴더이름(1998033001) + 메뉴코드(M00) + ".jpg"
+			store.getMenuList().get(0).setMenuImageLocation(filePath);
+			if (this.convertToBoolean(this.sqlSession.insert("insMenu", store))) {
+				this.tranManager.commit();
+			} else {
+				System.out.println("menuIns실패");
+			}
+			if (!file.isEmpty()) {
+				file.transferTo(new File(filePath));
+				System.out.println("파일 저장 완료. path: " + filePath);
+			} else {
+				System.out.println("파일이 없습니다.");
+			}
+			// if (this.convertToBoolean(this.sqlSession.insert("insMenuCode", store))) {
+			// 메뉴코드 우선추가 ('1998033036', M00, '00000','00000')
+			if (!new File(folderPath).exists()) {
+				new File(folderPath).mkdir();
+			}
+			if (this.convertToBoolean(this.sqlSession.insert("insStoreImage", store))) {
+				System.out.println("ins성공!");
+				this.tranManager.commit();
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 			this.tranManager.rollback();
 		} finally {
-			this.tranManager.tranEnd();
+			store.setMessage("plain::메뉴 등록이 완료되었습니다!:showModal:");
 		}
+
 	}
 
 //	private void dupCheckMenu(Model model) {
@@ -312,6 +343,7 @@ public class MenuService extends TransactionAssistant {
 			this.tranManager.tranEnd();
 		}
 	}
+}
 
 //	public void imageUploader(Model model) {
 //		StoreBean store = (StoreBean) model.getAttribute("store");
@@ -364,7 +396,6 @@ public class MenuService extends TransactionAssistant {
 //			e.printStackTrace();
 //		}
 //	}
-}
 
 //		try {
 //			if (!new File(folderPath).exists()) {

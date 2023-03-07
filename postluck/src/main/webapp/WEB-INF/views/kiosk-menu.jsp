@@ -342,7 +342,6 @@
 
 .mainContents {
 	width: 80%;
-	height: 95%;
 	float: left;
 	position: relative;
 }
@@ -385,6 +384,5 @@
 	background-color: #71F9A2 !important;
 }
 </style>
-
 
 </html>
