@@ -21,9 +21,9 @@ body {
 }
 
 .mainContents {
-	    width: 75%;
-    height: 100%;
-    float: left;
+	width: 75%;
+	height: 100%;
+	float: left;
 }
 
 .menuListHeader {
@@ -33,16 +33,17 @@ body {
 
 .menuList {
 	width: 100%;
-    position: relative;
-   
-}
-
-.card {
-	width: 18rem;
+	position: relative;
 }
 
 .menuCard {
 	text-align: center;
+}
+
+#orderPage {
+	height: 95%;
+	position: absolute;
+	overflow: hidden
 }
 
 .cardTop {
@@ -51,9 +52,9 @@ body {
 
 .subContents {
 	width: 25%;
-    height: 100%;
-    float: right;
-    background: white;
+	height: 100%;
+	float: right;
+	background: white;
 }
 
 .subContentsHeader {
@@ -73,7 +74,6 @@ body {
 	width: 100%;
 	float: right;
 }
-
 
 .mButton {
 	cursor: pointer;
@@ -136,11 +136,9 @@ body {
 	border: solid 0px !important;
 }
 
-
 .orderZoneFooter {
 	background-color: #ffffff;
 }
-
 
 .allPrice {
 	font-size: 30px;
@@ -156,7 +154,6 @@ body {
 	text-align: center;
 	background-color: #ffffff;
 }
-
 
 .paymentPrice {
 	font-weight: bold;
@@ -174,10 +171,10 @@ body {
 }
 
 .paymentMethod {
-	    height: 40%;
+	height: 40%;
 	font-weight: bold;
 	font-size: 40px;
-	display:flex;
+	display: flex;
 	justify-content: center;
 	cursor: pointer;
 }

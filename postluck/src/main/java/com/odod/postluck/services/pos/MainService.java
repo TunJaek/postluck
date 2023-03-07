@@ -68,7 +68,12 @@ public class MainService extends TransactionAssistant {
 	private void movePos(ModelAndView mav) {
 		StoreBean store =(StoreBean) mav.getModel().get("store");
 		store.setStoreCode(this.jwt.getTokenInfoFromJWT(mav.getModel().get("jwt").toString()).getStoreCode());
-		mav.addObject("store", this.main.getStoreInfoAsStoreBean(mav));
+		try {
+			mav.addObject("store", new ObjectMapper().writeValueAsString(this.main.getStoreInfoAsStoreBean(mav)));
+		} catch (JsonProcessingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		mav.setViewName("pos-main");
 	}
 	/**

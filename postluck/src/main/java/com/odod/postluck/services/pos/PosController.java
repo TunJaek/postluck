@@ -28,12 +28,11 @@ public class PosController {
 		return mav;
 	}
 
-	@PostMapping("/View/Pos") //
+	@PostMapping("/View/MovePos") //
 	public ModelAndView movePos(ModelAndView mav, @ModelAttribute StoreBean store,
 			@ModelAttribute("JWTForPostluck") String jwt) {
 		mav.addObject("store", store);
 		mav.addObject("jwt", jwt);
-		System.out.println("MovePos");
 		this.mainService.backController("PO03", mav);
 		return mav;
 	}

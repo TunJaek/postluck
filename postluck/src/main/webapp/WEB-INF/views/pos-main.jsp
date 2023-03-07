@@ -2,9 +2,7 @@
 	pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="ko">
-
 <head>
-<meta http-equiv="page-enter" content="blendTrans(duration=0.3)">
 <meta http-equiv="page-exit" content="blendTrans(duration=0.3)">
 <meta charset="UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -13,6 +11,10 @@
 <link rel="icon" href="/resources/image/fabicon.png">
 <link rel="stylesheet"
 	href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css" />
+<script
+	src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+	integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+	crossorigin="anonymous"></script>
 <link rel="stylesheet" href="/resources/css/mainBootstrap.css">
 <link rel="stylesheet" href="/resources/css/main.css">
 <script src="/resources/js/common.js"></script>
@@ -218,78 +220,82 @@
 				</div>
 			</div>
 		</div>
+		<div class="modal fade" id="messageModal"
+			style="background-color: rgba(0, 0, 0, 0.2); z-index: 1080"></div>
 	</div>
 
 
 	<script>
-// 	if('${AccessInfo.menuList}' == ''){
-// 		showModal('error::등록된 메뉴가 없습니다. 메뉴 등록 페이지로 이동합니다.:movePosManage');
-// 	}
-	let storeCode ='${store.storeCode}';
-	let sock;
-	if (${store.storeCode}) {
-		sock = new WebSocket("ws://192.168.0.5:80/my-websocket?"
-				+ "storeCode="+'${store.storeCode}');
-		// WebSocket 처리 코드
-	} else {
-		alert("다시 로그인해주세요.")
-	}
-
-	sock.onopen = function(event) {
-		alert(event.code);
-		console.log('open');
-
-		sock.send('${store.storeCode}');
-	};
-	sock.onmessage = function(e) {
-		if (e.data.split(':')[0] == '주문') {
-			alert("주문이 들어왔습니다! " + e.data.split(':')[1])
+		// 	if('${AccessInfo.menuList}' == ''){
+		// 		showModal('error::등록된 메뉴가 없습니다. 메뉴 등록 페이지로 이동합니다.:movePosManage');
+		// 	}
+		jsonString = '${store}'
+		let sock;
+		let storeCode
+		if (JSON.parse(jsonString).storeCode) {
+			storeCode = JSON.parse(jsonString).storeCode;
+			sock = new WebSocket("ws://192.168.0.5:80/postluck/" + storeCode);
+			// WebSocket 처리 코드
 		} else {
-			console.log(e.data);
-		}
-	};
-	sock.onclose = function(event) {
-		alert(event.code);
-		if (event.wasClean) {
-			console.log('웹 소켓이 정상적으로 닫혔습니다.');
-		} else {
-			console.error('웹 소켓이 예기치 않게 닫혔습니다. 이유: ' + event.reason + ', 코드: '
-					+ event.code);
-		}
-	};
-	
-	sock.onerror = function(error) {
-		alert([ error ]);
-	};
-        var Target = document.getElementById("clock");
-        var Target_apm = document.getElementById("apm");
-        function clock() {
-            var time = new Date();
-            var hours = time.getHours();
-            var minutes = time.getMinutes();
-            var seconds = time.getSeconds();
-            var AmPm = "AM";
-            if (hours > 12) {
-                var AmPm = "PM";
-                hours %= 12;
-            }
-
-            Target.innerText =
-                '${hours < 10 ? '0${hours}' : hours}:${minutes < 10 ? '0${minutes}' : minutes}:${seconds < 10 ? '0${seconds}' : seconds}';
-            Target_apm.innerText = '${AmPm}';
-
-
-        }
-        clock();
-        setInterval(clock, 1000); // 1초마다 실행
-        function moveMenuReg(){
-        	
-       }
-        function movePosManage() {
-			serverCallByRequest('/View/MovePosManage', 'post',getJWT());
+			showModal("error:세션 오류:세션이 만료되었습니다. 다시 로그인해주세요.:moveIndex:")
 		}
 
-    </script>
+		sock.onopen = function(event) {
+			showModal("plain:연결 성공!:서버와 연결되었습니다!::")
+			sock.send(storeCode);
+		};
+
+		sock.onmessage = function(e) {
+			showModal('plain:연결 성공!:동일한 아이디로 접속하여, 연결을 했습니다!::')
+		};
+		sock.onclose = function(event) {
+			if (event.wasClean) {
+				showModal('error:연결 종료:서버와의 연결이 정상적으로 종료되었습니다.::')
+			} else {
+				showModal('error:연결 오류:서버와의 연결이 비정상적으로 종료되었습니다.::')
+			}
+		};
+		function order() {
+			sock.send("주문: 햄버거 1개");
+		}
+
+		sock.onerror = function(error) {
+			alert([ error ]);
+		};
+		function order() {
+			sock.send("주문: 햄버거 1개");
+		}
+
+		sock.onerror = function(error) {
+			alert([ error ]);
+		};
+		//         var Target = document.getElementById("clock");
+		//         var Target_apm = document.getElementById("apm");
+		//         function clock() {
+		//             var time = new Date();
+		//             var hours = time.getHours();
+		//             var minutes = time.getMinutes();
+		//             var seconds = time.getSeconds();
+		//             var AmPm = "AM";
+		//             if (hours > 12) {
+		//                 var AmPm = "PM";
+		//                 hours %= 12;
+		//             }
+
+		//             Target.innerText =
+		//                 '${hours < 10 ? '0${hours}' : hours}:${minutes < 10 ? '0${minutes}' : minutes}:${seconds < 10 ? '0${seconds}' : seconds}';
+		//             Target_apm.innerText = '${AmPm}';
+
+		//         }
+		//         clock();
+		//         setInterval(clock, 1000); // 1초마다 실행
+		function moveMenuReg() {
+
+		}
+		function movePosManage() {
+			serverCallByRequest('/View/MovePosManage', 'post', getJWT());
+		}
+	</script>
 
 
 

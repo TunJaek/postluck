@@ -34,6 +34,7 @@
 			<exclude-mapping path="/index-callBack"/>
 			<exclude-mapping path="/"/>
 			<exclude-mapping path="/**/my-websocket"/>
+			<exclude-mapping path="/**/postluck/*"/>
 			<exclude-mapping path="/resources/**"/>
 			<beans:bean id="Interceptor" class="com.odod.postluck.utils.JwtIntercepter"/>	
   	</interceptor>

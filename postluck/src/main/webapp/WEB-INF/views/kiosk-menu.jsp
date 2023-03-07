@@ -9,23 +9,21 @@
 <title>KIOSK - POS.TLUCK</title>
 <link rel="icon" href="/resources/image/fabicon.png">
 <link rel="stylesheet" href="/resources/css/mainBootstrap.css">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
 <link rel="stylesheet"
 	href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css" />
 <link
 	href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR&amp;display=swap"
 	rel="stylesheet">
+	<script src="/resources/js/common.js"></script>
 <link rel="stylesheet" href="/resources/css/kiosk.css">
 </head>
 <body>
 	<div class="main">
 		<div class="header">
-			<span class="px-3"><svg xmlns="http://www.w3.org/2000/svg"
-					width="30" height="30" fill="currentColor" class="bi bi-arrow-left"
-					viewBox="0 0 16 16">
-                    <path fill-rule="evenodd"
-						d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z"></path>
-                </svg></span> <span><img
-				src="/resources/image/mainLogo-dark.png"></span>
+			<i class="bi bi-arrow-left fs-3 mx-3" id="backspace"
+				style="color: white; display: none;" onclick="kioskPage()"></i> <img
+				src="/resources/image/mainLogo-dark.png" class="mx-3">
 		</div>
 		<div id="menuPage" class="w-100"
 			style="display: block; position: absolute; height: 95%;">
@@ -262,9 +260,8 @@
 
 			<!-- 결제방식 결정 -->
 		</div>
-		<div id="orderPage"
-			style="height: 95%; position: absolute; overflow: hidden;"
-			class="w-100">
+		<div id="orderPage" class="w-100"
+			style="display: none; overflow: hidden; height: 95%;">
 			<!-- 주문내역확인 -->
 			<div class="orderContents border-end h-100">
 				<div class="orderZoneHeader border-bottom p-2" style="">
@@ -291,11 +288,13 @@
 			<!-- 결제방식 결정 -->
 			<div class="payMentContens col" style="height: 100%;">
 				<div class="menu p-5 payment" style="height: 50%;">
-					<div class="row" style="
-    align-items: baseline;
-"><div class="paymentText col fs-3" style="">결제금액</div><div class="paymentPrice col" style="">80,000</div><div class="paymentText text-start fs-3 col h-100">원</div></div>
-					
-					
+					<div class="row" style="align-items: baseline;">
+						<div class="paymentText col fs-3" style="">결제금액</div>
+						<div class="paymentPrice col" style="">80,000</div>
+						<div class="paymentText text-start fs-3 col h-100">원</div>
+					</div>
+
+
 					<br> <span style="font-size: 30px;"> <br>주문 내역 확인
 						후 결제 방법을 선택 해주세요.<br> 결제는 음식 수령과 함께 해주세요.
 					</span>
@@ -303,313 +302,94 @@
 				<div class="paymentChoice row">
 					<div class="card paymentMethod d-flex col m-5">
 						<div class="menu p-3">
-							<svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" fill="currentColor" class="bi bi-credit-card" viewBox="0 0 16 16">
-                        <path d="M0 4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V4zm2-1a1 1 0 0 0-1 1v1h14V4a1 1 0 0 0-1-1H2zm13 4H1v5a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V7z"></path>
-                        <path d="M2 10a1 1 0 0 1 1-1h1a1 1 0 0 1 1 1v1a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1v-1z"></path>
-                    </svg>
-							카드결제 &gt;
+							<i class="bi bi-credit-card"></i> 카드결제 >
 						</div>
 					</div>
 					<div class="card paymentMethod d-flex col m-5">
 						<div class="menu p-3">
-							<svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" fill="currentColor" class="bi bi-cash-coin" viewBox="0 0 16 16">
-                        <path fill-rule="evenodd" d="M11 15a4 4 0 1 0 0-8 4 4 0 0 0 0 8zm5-4a5 5 0 1 1-10 0 5 5 0 0 1 10 0z"></path>
-                        <path d="M9.438 11.944c.047.596.518 1.06 1.363 1.116v.44h.375v-.443c.875-.061 1.386-.529 1.386-1.207 0-.618-.39-.936-1.09-1.1l-.296-.07v-1.2c.376.043.614.248.671.532h.658c-.047-.575-.54-1.024-1.329-1.073V8.5h-.375v.45c-.747.073-1.255.522-1.255 1.158 0 .562.378.92 1.007 1.066l.248.061v1.272c-.384-.058-.639-.27-.696-.563h-.668zm1.36-1.354c-.369-.085-.569-.26-.569-.522 0-.294.216-.514.572-.578v1.1h-.003zm.432.746c.449.104.655.272.655.569 0 .339-.257.571-.709.614v-1.195l.054.012z"></path>
-                        <path d="M1 0a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h4.083c.058-.344.145-.678.258-1H3a2 2 0 0 0-2-2V3a2 2 0 0 0 2-2h10a2 2 0 0 0 2 2v3.528c.38.34.717.728 1 1.154V1a1 1 0 0 0-1-1H1z"></path>
-                        <path d="M9.998 5.083 10 5a2 2 0 1 0-3.132 1.65 5.982 5.982 0 0 1 3.13-1.567z"></path>
-                    </svg>
-							현금결제 &gt;
+							<i class="bi bi-cash-coin"></i> 현금결제 >
 						</div>
 					</div>
 				</div>
 			</div>
 		</div>
-		<script>
-        var Target = document.getElementById("clock");
-        var Target_apm = document.getElementById("apm");
-        function clock() {
-            var time = new Date();
-            var hours = time.getHours();
-            var minutes = time.getMinutes();
-            var seconds = time.getSeconds();
-            var AmPm = "AM";
-            if (hours > 12) {
-                var AmPm = "PM";
-                hours %= 12;
-            }
-
-            Target.innerText =
-                '::';
-
-            Target_apm.innerText = '';
-
-        }
-        clock();
-        setInterval(clock, 1000); // 1초마다 실행
-    </script>
-
-		<script>
-	function kioskPage(ldx) {
-	const menuPage = document.getElementById("menuPage");
-	const orderPage = document.getElementById("orderPage");
-	
-	if(orderPage.style.display=="none"){
-		orderPage.style.display="block";
-		menuPage.style.display="none";
-		
-	} else if(orderPage.style.display=="block"){
-		orderPage.style.display="none";
-		menuPage.style.display="block";
-	}
-		
-	
-	
-	}
-</script>
-		<script>
-	let storeCode ='6913651651';
-	let sock;
-	if (6913651651) {
-		sock = new WebSocket("ws://192.168.0.5:80/my-websocket?"
-				+ "storeCode="+'6913651651');
-		// WebSocket 처리 코드
-	} else {
-		alert("다시 로그인해주세요.")
-	}
-
-	sock.onopen = function(event) {
-		alert(event.code);
-		console.log('open');
-
-		sock.send('6913651651');
-	};
-// 	sock.onmessage = function(e) {
-// 		if (e.data.split(':')[0] == '주문') {
-// 			alert("주문이 들어왔습니다! " + e.data.split(':')[1])
-// 		} else {
-// 			console.log(e.data);
-// 		}
-// 	};
-	sock.onclose = function(event) {
-		alert(event.code);
-		if (event.wasClean) {
-			console.log('웹 소켓이 정상적으로 닫혔습니다.');
-		} else {
-			console.error('웹 소켓이 예기치 않게 닫혔습니다. 이유: ' + event.reason + ', 코드: '
-					+ event.code);
-		}
-	};
-	function order() {
-		sock.send("주문: 햄버거 1개");
-	}
-	sock.onerror = function(error) {
-		alert([ error ]);
-	};
-</script>
 	</div>
-	<script>
-        var Target = document.getElementById("clock");
-        var Target_apm = document.getElementById("apm");
-        function clock() {
-            var time = new Date();
-            var hours = time.getHours();
-            var minutes = time.getMinutes();
-            var seconds = time.getSeconds();
-            var AmPm = "AM";
-            if (hours > 12) {
-                var AmPm = "PM";
-                hours %= 12;
-            }
-
-            Target.innerText =
-                '::';
-
-            Target_apm.innerText = '';
-
-        }
-        clock();
-        setInterval(clock, 1000); // 1초마다 실행
-    </script>
-
-	<script>
-	function kioskPage(ldx) {
-	const menuPage = document.getElementById("menuPage");
-	const orderPage = document.getElementById("orderPage");
-	
-	if(orderPage.style.display=="none"){
-		orderPage.style.display="block";
-		menuPage.style.display="none";
-		
-	} else if(orderPage.style.display=="block"){
-		orderPage.style.display="none";
-		menuPage.style.display="block";
-	}
-		
-	
-	
-	}
-</script>
-	<script>
-	let storeCode ='6913651651';
-	let sock;
-	if (6913651651) {
-		sock = new WebSocket("ws://192.168.0.5:80/my-websocket?"
-				+ "storeCode="+'6913651651');
-		// WebSocket 처리 코드
-	} else {
-		alert("다시 로그인해주세요.")
-	}
-
-	sock.onopen = function(event) {
-		alert(event.code);
-		console.log('open');
-
-		sock.send('6913651651');
-	};
-// 	sock.onmessage = function(e) {
-// 		if (e.data.split(':')[0] == '주문') {
-// 			alert("주문이 들어왔습니다! " + e.data.split(':')[1])
-// 		} else {
-// 			console.log(e.data);
-// 		}
-// 	};
-	sock.onclose = function(event) {
-		alert(event.code);
-		if (event.wasClean) {
-			console.log('웹 소켓이 정상적으로 닫혔습니다.');
-		} else {
-			console.error('웹 소켓이 예기치 않게 닫혔습니다. 이유: ' + event.reason + ', 코드: '
-					+ event.code);
-		}
-	};
-	function order() {
-		sock.send("주문: 햄버거 1개");
-	}
-	sock.onerror = function(error) {
-		alert([ error ]);
-	};
-</script>
-
-
-	<script>
-	function kioskPage(ldx) {
-	const menuPage = document.getElementById("menuPage");
-	const orderPage = document.getElementById("orderPage");
-	
-	if(orderPage.style.display=="none"){
-		orderPage.style.display="block";
-		menuPage.style.display="none";
-		
-	} else if(orderPage.style.display=="block"){
-		orderPage.style.display="none";
-		menuPage.style.display="block";
-	}
-		
-	
-	
-	}
-</script>
-	<script>
-	let storeCode ='2134124312';
-	let sock;
-	if (2134124312) {
-		sock = new WebSocket("ws://192.168.0.5:80/my-websocket?"
-				+ "storeCode="+'2134124312');
-		// WebSocket 처리 코드
-	} else {
-		alert("다시 로그인해주세요.")
-	}
-
-	sock.onopen = function(event) {
-		alert(event.code);
-		console.log('open');
-
-		sock.send('2134124312');
-	};
-// 	sock.onmessage = function(e) {
-// 		if (e.data.split(':')[0] == '주문') {
-// 			alert("주문이 들어왔습니다! " + e.data.split(':')[1])
-// 		} else {
-// 			console.log(e.data);
-// 		}
-// 	};
-	sock.onclose = function(event) {
-		alert(event.code);
-		if (event.wasClean) {
-			console.log('웹 소켓이 정상적으로 닫혔습니다.');
-		} else {
-			console.error('웹 소켓이 예기치 않게 닫혔습니다. 이유: ' + event.reason + ', 코드: '
-					+ event.code);
-		}
-	};
-	function order() {
-		sock.send("주문: 햄버거 1개");
-	}
-	sock.onerror = function(error) {
-		alert([ error ]);
-	};
-</script>
-	<style>
-</style>
+	<div class="modal fade" id="messageModal" style="background-color: rgba(0, 0, 0, 0.2); z-index: 1080">
+		</div>
 </body>
 <script>
-	function kioskPage(ldx) {
-	const menuPage = document.getElementById("menuPage");
-	const orderPage = document.getElementById("orderPage");
-	
-	if(orderPage.style.display=="none"){
-		orderPage.style.display="block";
-		menuPage.style.display="none";
-		
-	} else if(orderPage.style.display=="block"){
-		orderPage.style.display="none";
-		menuPage.style.display="block";
+	function kioskPage() {
+		const menuPage = document.getElementById("menuPage");
+		const orderPage = document.getElementById("orderPage");
+
+		if (orderPage.style.display == "none") {
+			document.getElementById("backspace").style.display ="block";
+			orderPage.style.display = "block";
+			menuPage.style.display = "none";
+
+		} else if (orderPage.style.display == "block") {
+			document.getElementById("backspace").style.display ="none";
+			orderPage.style.display = "none";
+			menuPage.style.display = "block";
+		}
+
 	}
-		
-	
-	
-	}
-</script>
-<script>
-	let storeCode ='${store.storeCode}';
+
+// 	var Target = document.getElementById("clock");
+// 	var Target_apm = document.getElementById("apm");
+// 	function clock() {
+// 		var time = new Date();
+// 		var hours = time.getHours();
+// 		var minutes = time.getMinutes();
+// 		var seconds = time.getSeconds();
+// 		var AmPm = "AM";
+// 		if (hours > 12) {
+// 			var AmPm = "PM";
+// 			hours %= 12;
+// 		}
+
+// 		Target.innerText = '::';
+
+// 		Target_apm.innerText = '';
+
+// 	}
+// 	clock();
+// 	setInterval(clock, 1000); // 1초마다 실행
+
+	jsonString = '${store}'
 	let sock;
-	if (${store.storeCode}) {
-		sock = new WebSocket("ws://192.168.0.5:80/my-websocket?"
-				+ "storeCode="+'${store.storeCode}');
+	let storeCode
+	if (JSON.parse(jsonString).storeCode) {
+		storeCode = JSON.parse(jsonString).storeCode;
+		sock = new WebSocket("ws://192.168.0.5:80/postluck/" + storeCode);
 		// WebSocket 처리 코드
 	} else {
-		alert("다시 로그인해주세요.")
+		showModal("error:세션 오류:세션이 만료되었습니다. 다시 로그인해주세요.:moveIndex:")	
 	}
 
 	sock.onopen = function(event) {
-		alert(event.code);
-		console.log('open');
-
-		sock.send('${store.storeCode}');
+		showModal("plain:연결 성공!:서버와 연결되었습니다!::")		
+		sock.send(storeCode);
 	};
-// 	sock.onmessage = function(e) {
-// 		if (e.data.split(':')[0] == '주문') {
-// 			alert("주문이 들어왔습니다! " + e.data.split(':')[1])
-// 		} else {
-// 			console.log(e.data);
-// 		}
-// 	};
+
+	sock.onmessage = function(e) {
+		showModal('plain:연결 성공!:동일한 아이디로 접속하여, 연결을 했습니다!::')
+	};
 	sock.onclose = function(event) {
 		alert(event.code);
 		if (event.wasClean) {
-			console.log('웹 소켓이 정상적으로 닫혔습니다.');
+			showModal('error:연결 종료:서버와의 연결이 정상적으로 종료되었습니다.::')
 		} else {
-			console.error('웹 소켓이 예기치 않게 닫혔습니다. 이유: ' + event.reason + ', 코드: '
-					+ event.code);
+			showModal('error:연결 오류:서버와의 연결이 비정상적으로 종료되었습니다.::')
 		}
 	};
 	function order() {
 		sock.send("주문: 햄버거 1개");
 	}
+
 	sock.onerror = function(error) {
 		alert([ error ]);
 	};
 </script>
-<style>
-</style>
+
 </html>
