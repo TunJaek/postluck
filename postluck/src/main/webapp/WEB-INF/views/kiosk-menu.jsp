@@ -9,13 +9,16 @@
 <title>KIOSK - POS.TLUCK</title>
 <link rel="icon" href="/resources/image/fabicon.png">
 <link rel="stylesheet" href="/resources/css/mainBootstrap.css">
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+<script
+	src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+	integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+	crossorigin="anonymous"></script>
 <link rel="stylesheet"
 	href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css" />
 <link
 	href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR&amp;display=swap"
 	rel="stylesheet">
-	<script src="/resources/js/common.js"></script>
+<script src="/resources/js/common.js"></script>
 <link rel="stylesheet" href="/resources/css/kiosk.css">
 </head>
 <body>
@@ -32,122 +35,10 @@
 					<div
 						class="border menuListHeader fs-4 d-flex align-items-center justify-content-center"
 						style="height: 7%;">
-						<div>핫도그라운드KIOSK</div>
+						<div id="storeName"></div>
 					</div>
 					<div class="text-center " style="overflow-y: auto; height: 93%;">
-						<div class="menuList row row-cols-3">
-							<div class="col p-4">
-								<div class="card">
-									<div
-										class="position-absolute m-3 badge bg-success rounded-pill fs-6 mx-3 col-3">
-										대표</div>
-									<img src="\resources\image\hotdog2.jpg"
-										class="card-img-top cardTop" alt="...">
-									<div class="card-body">
-										<div class="row p-1">
-											<div class="col fs-4">핫도그</div>
-										</div>
-										<div class="fs-4">1,500원</div>
-
-									</div>
-								</div>
-							</div>
-							<div class="col p-4">
-								<div class="card">
-									<div
-										class="position-absolute m-3 badge bg-success rounded-pill fs-6 mx-3 col-3">
-										대표</div>
-									<img src="\resources\image\hotdog2.jpg"
-										class="card-img-top cardTop" alt="...">
-									<div class="card-body">
-										<div class="row p-1">
-											<div class="col fs-4">핫도그</div>
-										</div>
-										<div class="fs-4">1,500원</div>
-
-									</div>
-								</div>
-							</div>
-							<div class="col p-4">
-								<div class="card">
-									<div
-										class="position-absolute m-3 badge bg-success rounded-pill fs-6 mx-3 col-3">
-										대표</div>
-									<img src="\resources\image\hotdog2.jpg"
-										class="card-img-top cardTop" alt="...">
-									<div class="card-body">
-										<div class="row p-1">
-											<div class="col fs-4">핫도그</div>
-										</div>
-										<div class="fs-4">1,500원</div>
-
-									</div>
-								</div>
-							</div>
-							<div class="col p-4">
-								<div class="card">
-									<div
-										class="position-absolute m-3 badge bg-success rounded-pill fs-6 mx-3 col-3">
-										대표</div>
-									<img src="\resources\image\hotdog2.jpg"
-										class="card-img-top cardTop" alt="...">
-									<div class="card-body">
-										<div class="row p-1">
-											<div class="col fs-4">핫도그</div>
-										</div>
-										<div class="fs-4">1,500원</div>
-
-									</div>
-								</div>
-							</div>
-							<div class="col p-4">
-								<div class="card">
-									<div
-										class="position-absolute m-3 badge bg-success rounded-pill fs-6 mx-3 col-3">
-										대표</div>
-									<img src="\resources\image\hotdog2.jpg"
-										class="card-img-top cardTop" alt="...">
-									<div class="card-body">
-										<div class="row p-1">
-											<div class="col fs-4">핫도그</div>
-										</div>
-										<div class="fs-4">1,500원</div>
-
-									</div>
-								</div>
-							</div>
-							<div class="col p-4">
-								<div class="card">
-									<div
-										class="position-absolute m-3 badge bg-success rounded-pill fs-6 mx-3 col-3">
-										대표</div>
-									<img src="\resources\image\hotdog2.jpg"
-										class="card-img-top cardTop" alt="...">
-									<div class="card-body">
-										<div class="row p-1">
-											<div class="col fs-4">핫도그</div>
-										</div>
-										<div class="fs-4">1,500원</div>
-
-									</div>
-								</div>
-							</div>
-							<div class="col p-4">
-								<div class="card">
-									<div
-										class="position-absolute m-3 badge bg-success rounded-pill fs-6 mx-3 col-3">
-										대표</div>
-									<img src="\resources\image\hotdog2.jpg"
-										class="card-img-top cardTop" alt="...">
-									<div class="card-body">
-										<div class="row p-1">
-											<div class="col fs-4">핫도그</div>
-										</div>
-										<div class="fs-4">1,500원</div>
-
-									</div>
-								</div>
-							</div>
+						<div class="menuList row row-cols-3" id="menuListZone">
 							<div class="col p-4">
 								<div class="card">
 									<div
@@ -314,49 +205,81 @@
 			</div>
 		</div>
 	</div>
-	<div class="modal fade" id="messageModal" style="background-color: rgba(0, 0, 0, 0.2); z-index: 1080">
-		</div>
+	<div class="modal fade" id="messageModal"
+		style="background-color: rgba(0, 0, 0, 0.2); z-index: 1080"></div>
 </body>
 <script>
+	
 	function kioskPage() {
 		const menuPage = document.getElementById("menuPage");
 		const orderPage = document.getElementById("orderPage");
 
 		if (orderPage.style.display == "none") {
-			document.getElementById("backspace").style.display ="block";
+			document.getElementById("backspace").style.display = "block";
 			orderPage.style.display = "block";
 			menuPage.style.display = "none";
 
 		} else if (orderPage.style.display == "block") {
-			document.getElementById("backspace").style.display ="none";
+			document.getElementById("backspace").style.display = "none";
 			orderPage.style.display = "none";
 			menuPage.style.display = "block";
 		}
 
 	}
 
-// 	var Target = document.getElementById("clock");
-// 	var Target_apm = document.getElementById("apm");
-// 	function clock() {
-// 		var time = new Date();
-// 		var hours = time.getHours();
-// 		var minutes = time.getMinutes();
-// 		var seconds = time.getSeconds();
-// 		var AmPm = "AM";
-// 		if (hours > 12) {
-// 			var AmPm = "PM";
-// 			hours %= 12;
-// 		}
+	// 	var Target = document.getElementById("clock");
+	// 	var Target_apm = document.getElementById("apm");
+	// 	function clock() {
+	// 		var time = new Date();
+	// 		var hours = time.getHours();
+	// 		var minutes = time.getMinutes();
+	// 		var seconds = time.getSeconds();
+	// 		var AmPm = "AM";
+	// 		if (hours > 12) {
+	// 			var AmPm = "PM";
+	// 			hours %= 12;
+	// 		}
 
-// 		Target.innerText = '::';
+	// 		Target.innerText = '::';
 
-// 		Target_apm.innerText = '';
+	// 		Target_apm.innerText = '';
 
-// 	}
-// 	clock();
-// 	setInterval(clock, 1000); // 1초마다 실행
+	// 	}
+	// 	clock();
+	// 	setInterval(clock, 1000); // 1초마다 실행
 
 	jsonString = '${store}'
+	jsonData = JSON.parse(jsonString);
+	document.getElementById("storeName").innerText = jsonData.storeName;
+	if(jsonData.menuList.length>0){
+		// 카드를 생성할 div 요소를 선택합니다.
+		const menuListZone = document.querySelector('#menuListZone');
+		const cardContent = ''; 
+		menuList.forEach((menu) => {
+			const card = document.createElement('div');
+			card.classList.add('col', 'p-4');
+			cardContent += "<div class=\"card\" value=\""+menu.menuCode+"\">"
+			if(menu.isMain == 'Y'){
+				cardContent+="<div class=\"position-absolute m-3 badge bg-success rounded-pill fs-6 mx-3 col-3\">대표</div>"
+			}
+			if (menu.menuImageLocation != ''){
+				cardContent+="<img src=\"\resources\image\hotdog2.jpg\" class=\"card-img-top cardTop\">"
+			}else{
+				cardContent+="<img src=\"http://placehold.it/1000X600\" class=\"card-img-top cardTop\">"
+			}
+			cardContent += "<div class=\"card-body\"><div class=\"row p-1\"><div class=\"col fs-4\">";
+			cardContent += menu.menuName;
+			cardContent += "</div> </div> <div class=\"fs-4\">";
+			cardContent += menu.menuPrice;       
+			cardContent += "원</div>  </div>  </div>";
+		});
+		// 동적으로 카드를 생성합니다.
+		
+		card.innerHTML = cardContent;
+
+		// 카드를 추가합니다.
+		menuListZone.appendChild(card);
+	}
 	let sock;
 	let storeCode
 	if (JSON.parse(jsonString).storeCode) {
@@ -364,11 +287,11 @@
 		sock = new WebSocket("ws://192.168.0.5:80/postluck/" + storeCode);
 		// WebSocket 처리 코드
 	} else {
-		showModal("error:세션 오류:세션이 만료되었습니다. 다시 로그인해주세요.:moveIndex:")	
+		showModal("error:세션 오류:세션이 만료되었습니다. 다시 로그인해주세요.:moveIndex:")
 	}
 
 	sock.onopen = function(event) {
-		showModal("plain:연결 성공!:서버와 연결되었습니다!::")		
+		showModal("plain:연결 성공!:서버와 연결되었습니다!::")
 		sock.send(storeCode);
 	};
 

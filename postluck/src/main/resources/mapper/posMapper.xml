@@ -22,13 +22,13 @@
 	</update>
 
 	
-	<!-- <insert id="insMenu" parameterType="com.odod.postluck.beans.StoreBean"> -->
-	<!-- INSERT INTO POSDBA.STOREMENU(SM_STCODE, SM_CODE, SM_NAME, SM_PRICE) -->
-	<!-- VALUES(#{storeCode}, -->
-	<!-- #{menuList[0].(SELECT'M'||LPAD(NVL(SUBSTR(MAX(SM_CODE),2,2),-1)+1,2,'0') 
-		FROM STOREMENU WHERE SM_STCODE = #{storeCode})}, -->
-	<!-- #{menuList[0].menuName},#{menuList[0].menuPrice}) ; -->
-	<!-- </insert> -->
+	<insert id="insMenu" parameterType="com.odod.postluck.beans.StoreBean">
+	INSERT INTO POSDBA.STOREMENU(SM_STCODE, SM_CODE, SM_NAME, SM_PRICE)
+	VALUES(#{storeCode},
+	#{menuList[0].(SELECT'M'||LPAD(NVL(SUBSTR(MAX(SM_CODE),2,2),-1)+1,2,'0') 
+		FROM STOREMENU WHERE SM_STCODE = #{storeCode})},
+	#{menuList[0].menuName},#{menuList[0].menuPrice}) ;
+	</insert>
 	
 
 	<update id="updMenu"
