@@ -39,22 +39,30 @@
 						style="height: 7%;">
 						<div id="storeName"></div>
 					</div>
-					<div class="text-center " style="overflow-y: auto; height: 93%;">
+					<div class="text-center" style="overflow-y: auto; height: 93%;">
 						<div class="menuList row row-cols-3" id="menuListZone"></div>
 					</div>
 
 				</div>
 				<div class="subContents col">
 					<div class="subContentsHeader fs-5 p-3 border-bottom">목록</div>
-					<div class="subContentsOrderList">
+					<div class="subContentsOrderList" style="height: 79%">
 						<!-- 메뉴 집어넣는 곳 -->
+					</div>
+					<div class="resultSum row fs-4 border-top"
+						style="height: 7%; display: flex; align-items: baseline; justify-content: center;">
+						<div
+							class="p-3 col-4 h-100 d-flex justify-content-center align-items-center">총</div>
+						<div id="total"
+							class="p-3 col h-100 fs-3 d-flex justify-content-center align-items-center">0원</div>
 					</div>
 					<div class="subContentsBtnZone row">
 						<div id="subContensBtn"
-							class="cancleButton p-3 col h-100 d-flex justify-content-center align-items-center">주문취소</div>
+							class="cancleButton p-3 col h-100 d-flex justify-content-center align-items-center"
+							onclick="showModal('warn::주문을 취소하시겠습니까?:cancelOrder:')">주문취소</div>
 						<div
 							class="orderButton p-3 col h-100 d-flex justify-content-center align-items-center"
-							onclick="kioskPage(0)">주문하기</div>
+							onclick="kioskPage(true)">주문하기</div>
 					</div>
 				</div>
 			</div>
@@ -100,12 +108,14 @@
 					</span>
 				</div>
 				<div class="paymentChoice row">
-					<div class="card paymentMethod d-flex col m-5">
+					<div class="card paymentMethod d-flex col m-5"
+						onclick="sendOrder('CR')">
 						<div class="menu p-3">
 							<i class="bi bi-credit-card"></i> 카드결제 >
 						</div>
 					</div>
-					<div class="card paymentMethod d-flex col m-5">
+					<div class="card paymentMethod d-flex col m-5"
+						onclick="sendOrder('CA')">
 						<div class="menu p-3">
 							<i class="bi bi-cash-coin"></i> 현금결제 >
 						</div>
@@ -120,16 +130,16 @@
 <script>
 let sock;
 let storeCode
-	function kioskPage() {
+	function kioskPage(isNext) {
 		const menuPage = document.getElementById("menuPage");
 		const orderPage = document.getElementById("orderPage");
 
-		if (orderPage.style.display == "none") {
+		if (isNext) {
 			document.getElementById("backspace").style.display = "block";
 			orderPage.style.display = "block";
 			menuPage.style.display = "none";
 
-		} else if (orderPage.style.display == "block") {
+		} else{
 			document.getElementById("backspace").style.display = "none";
 			orderPage.style.display = "none";
 			menuPage.style.display = "block";
@@ -197,7 +207,15 @@ let storeCode
 	} else {
 		showModal("error:세션 오류:세션이 만료되었습니다. 다시 로그인해주세요.:moveIndex:")
 	}
-
+	function sendOrder(payment){
+		let orderString = JSON.stringify(orderList);
+		console.log(orderString)
+		if(payment == 'CA') { //현금일 경우
+				sock.send(orderString);
+		} else { //카드일 경우
+			sock.send(orderString);
+		}
+	}
 	sock.onopen = function(event) {
 		showModal("plain:연결 성공!:서버와 연결되었습니다!::")
 		sock.send(storeCode);
@@ -218,6 +236,15 @@ let storeCode
 	sock.onerror = function(error) {
 		alert([ error ]);
 	};
+	function cancelOrder(){
+		const subContentsOrderList = document.getElementsByClassName("subContentsOrderList")[0]
+		if(subContentsOrderList.innerHTML == ''){
+			showModal("error::취소할 주문이 없습니다.::");
+		}
+		document.getElementsByClassName("subContentsOrderList")[0].innerHTML = '';
+		 orderList = {"storeCode":storeCode,"order":{}};
+		 getTotal();
+	}
 	
 	let orderList ={"storeCode":storeCode,"order":{}};
 	function addMenu(calc,mc,price){
@@ -233,8 +260,7 @@ let storeCode
 						 menuItemDiv.remove();
 					 }
 				 }
-				 menuItemDiv.children[4].innerText = price *  menuItemDiv.children[2].innerText;
-				 menuItemDiv.children[4].innerText+="원"
+				 menuItemDiv.children[4].innerText = price *  menuItemDiv.children[2].innerText+"원";
 			 }else{
 				 console.log("no data-menuCode")
 			 }
@@ -244,7 +270,7 @@ let storeCode
 		//JSON 객체 처리
 		let order =  orderList.order ;
 		if(Object.keys(order).includes(menuCode)){
-			if(calc == 'add'){				
+			if(calc == 'add'){
 			order[menuCode]++;
 			}else{
 				order[menuCode]--;
@@ -257,18 +283,34 @@ let storeCode
 			 createMenuItem(mc, price);
 		}
 		console.log(order);
+		getTotal()
 	}
+	
+	function getTotal(){
+		let total = 0;
+		const menuItem = document.getElementsByClassName("subContentsOrderList")[0];
+		if(menuItem.children.length>0){
+			for(let i=0;i<menuItem.children.length;i++){
+				console.log(i+menuItem.children[i].children[4].innerText);
+				total += parseInt(menuItem.children[i].children[4].innerText);
+			}
+		}
+		document.getElementById("total").innerText = total+"원";
+	}
+	
 	function deleteDiv(menuCode){
 		const menuItem = document.getElementsByClassName("subContentsOrderList")[0];
 		let order =  orderList.order ;
 		for(let i=0;i<menuItem.children.length;i++){
 			if(menuCode == menuItem.children[i].getAttribute("data-menuCode")){
 				menuItem.children[i].remove();
+				getTotal()
 				delete order[menuCode];
 			}else{
 				console.log("error")
 			}
 		}
+		getTotal()
 	}
 	function createMenuItem(mc,price){
 		const menuList = jsonData.menuList;
@@ -337,4 +379,72 @@ let storeCode
 	}
 </script>
 
+<style>
+.body {
+	margin: 0px;
+	margin-bottom: 0px;
+	font-family: 'Noto Sans KR', sans-serif;
+	font-weight: bold;
+}
+
+.main {
+	width: 100vw;
+	height: 100vh;
+	background-color: #f5f5f5;
+}
+
+.header {
+	position: relative;
+	height: 5%;
+	background-color: #333333;
+	margin: 0px;
+	color: white;
+	display: flex;
+	align-items: center;
+}
+
+.mainContents {
+	width: 80%;
+	float: left;
+	position: relative;
+}
+
+.menuCard {
+	position: relative;
+	top: 20%;
+	margin-bottom: 3%;
+}
+
+.subContents {
+	width: 20%;
+	background-color: #ffffff;
+	float: right;
+}
+
+.orderButton {
+	height: 5%;
+	text-align: center;
+	padding: 10px 0;
+	cursor: pointer;
+	z-index: 1;
+}
+
+.orderButton:hover {
+	background-color: #AFAFAF !important;
+}
+
+.orderButton1 {
+	height: 5%;
+	text-align: center;
+	padding: 10px 0;
+	cursor: pointer;
+}
+
+.orderButton1:hover {
+	height: 5%;
+	text-align: center;
+	padding: 10px 0;
+	background-color: #71F9A2 !important;
+}
+</style>
 </html>

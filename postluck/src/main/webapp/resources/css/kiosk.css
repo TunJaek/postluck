@@ -25,6 +25,7 @@ body {
 	width: 75%;
 	height: 100%;
 	float: left;
+	   
 }
 
 .menuListHeader {
@@ -183,7 +184,6 @@ body {
 	display: flex;
 	flex-direction: row;
 	justify-content: space-evenly;
-	width: 100%;
 	height: 50%;
 	text-align: center;
 }
