@@ -132,11 +132,15 @@ let sock;
 let storeCode;
 let orderNum='000';
 let isSend = false;
+jsonString = '${store}'
+	jsonData = JSON.parse(jsonString);
+	document.getElementById("storeName").innerText = jsonData.storeName;
 	function addOrderNum(){
 		orderNum =(parseInt(orderNum) +1).toString();
 		orderNum = orderNum.padStart(3,'0')
 		console.log(orderNum)
 	}
+
 	function kioskPage(isNext) {
 		const menuPage = document.getElementById("menuPage");
 		const orderPage = document.getElementById("orderPage");
@@ -181,9 +185,14 @@ let isSend = false;
 	// 	clock();
 	// 	setInterval(clock, 1000); // 1초마다 실행
 
-	jsonString = '${store}'
-	jsonData = JSON.parse(jsonString);
-	document.getElementById("storeName").innerText = jsonData.storeName;
+	
+	if (JSON.parse(jsonString).storeCode) {
+		storeCode = JSON.parse(jsonString).storeCode;
+		sock = new WebSocket("ws://192.168.0.5:80/postluck/" + storeCode);
+		// WebSocket 처리 코드
+	} else {
+		showModal("error:세션 오류:세션이 만료되었습니다. 다시 로그인해주세요.:moveIndex:")
+	}
 	if(jsonData.menuList.length>0){
 		// 카드를 생성할 div 요소를 선택합니다.
 		const menuListZone = document.querySelector('#menuListZone');
@@ -198,7 +207,7 @@ let isSend = false;
 				cardContent+="<div class=\"position-absolute m-3 badge bg-success rounded-pill fs-6 mx-3 col-3\">대표</div>"
 			}
 			if (menu.menuImageLocation != ''){
-				cardContent+="<img src=\"..\\..\\resources\\image\\hotdog2.jpg\" class=\"card-img-top cardTop\">"
+				cardContent+="<img src= \"/resources/image/"+storeCode+"/"+menu.menuImageCode+".jpg"+"\"class=\"card-img-top cardTop\">"
 			}else{
 				cardContent+="<img src=\"http://placehold.it/1000X600\" class=\"card-img-top cardTop\">"
 			}
@@ -229,7 +238,8 @@ let isSend = false;
 		  const minute = String(now.getMinutes()).padStart(2, '0');
 		  const second = String(now.getSeconds()).padStart(2, '0');
 		  return year+month+date+hour+minute+second;
-		}
+	}
+	
 	function sendOrder(payment){
 			let orderString = JSON.stringify(orderList);
 			isSend = true;

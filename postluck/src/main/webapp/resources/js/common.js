@@ -371,7 +371,6 @@ function kakaoLogout() {
 	}
 }
 
-
 function showModal(messageString) {
 
 	const messageModalString = `

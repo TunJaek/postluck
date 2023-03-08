@@ -2,9 +2,6 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.odod.postluck.mapper.PosMapperInter">
-
-
-
 	<update id="updStoreInfo"
 		parameterType="com.odod.postluck.beans.StoreBean">
 		UPDATE STORE SET ST_STNAME =#{storeName},
@@ -29,20 +26,24 @@
 
 	<insert id="insMenu"
 		parameterType="com.odod.postluck.beans.StoreBean">
-		INSERT INTO STOREMENU(SM_STCODE, SM_CODE, SM_NAME, SM_PRICE)
-		VALUES(#{storeCode},(SELECT 'M'||LPAD(NVL(SUBSTR(MAX(SM_CODE),2,2),-1)+1,2,'0') FROM STOREMENU WHERE SM_STCODE = #{storeCode}),#{menuList[0].menuName}, #{menuList[0].menuPrice})
+		INSERT INTO STOREMENU(SM_STCODE, SM_CODE, SM_NAME,
+		SM_PRICE, SM_SICODE, SM_ISMAIN, SM_ISKIOSK, SM_ISSOLD)
+		VALUES(#{storeCode},#{menuList[0].menuCode},#{menuList[0].menuName},
+		#{menuList[0].menuPrice},#{menuList[0].menuImageCode},#{menuList[0].isMain},#{menuList[0].isKiosk},#{menuList[0].isSoldOut})
 	</insert>
 
-	
+	<insert id="insStoreImage"
+		parameterType="com.odod.postluck.beans.StoreBean"> INSERT INTO STOREIMAGE(SI_CODE,SI_NAME,SI_LOCATION)
+		VALUES(#{menuList[0].menuImageCode},null,#{menuList[0].menuImageLocation})
+	</insert>
 
-<!-- 	<update id="insMenu"
-		parameterType="com.odod.postluck.beans.StoreBean">
-		INSERT INTO STOREMENU(SM_STCODE, SM_CODE, SM_NAME,
-		SM_PRICE)
-		VALUES(#{storeCode},(SELECT MAX(SM_CODE)FROM STOREMENU WHERE
-		SM_STCODE = #{storeCode}),
-		#{menuList[0].menuName},#{menuList[0].menuPrice})
-	</update> -->
+
+
+
+	<!-- <update id="insMenu" parameterType="com.odod.postluck.beans.StoreBean"> 
+		INSERT INTO STOREMENU(SM_STCODE, SM_CODE, SM_NAME, SM_PRICE) VALUES(#{storeCode},(SELECT 
+		MAX(SM_CODE)FROM STOREMENU WHERE SM_STCODE = #{storeCode}), #{menuList[0].menuName},#{menuList[0].menuPrice}) 
+		</update> -->
 
 	<!-- <insert id="insMenu" parameterType="com.odod.postluck.beans.StoreBean"> 
 		INSERT INTO STOREMENU(SM_STCODE, SM_CODE, SM_NAME, SM_PRICE) VALUES(#{storeCode}, 
@@ -56,22 +57,10 @@
 		WHERE SM_STCODE =
 		#{storeCode} AND SM_NAME = #{menuList[0].menuName};
 	</select>
-
-	<select id="selMenuInfo"
-		parameterType="com.odod.postluck.beans.StoreBean">
+	<select id="selMaxMenuCode"
+		parameterType="com.odod.postluck.beans.StoreBean" resultType="String">
 		SELECT
-		SM_NAME AS MENUNAME,
-		SM_PRICE AS MENUPRICE,
-		SM_SICODE AS
-		MENUIMAGE,
-		SM_ISMAIN AS MAIN,
-		SM_ISSOLD AS SOLD,
-		SM_ISKIOSK
-		AS KIOSK
-		FROM
-		POSDBA.STOREMENU
-		WHERE SM_STCODE = #{storeCode};
-		<!-- 메뉴 수정 버튼클릭시 출력되는 정보 -->
+		MAX(SM_CODE) FROM STOREMENU WHERE SM_STCODE = #{storeCode}
 	</select>
 
 	<!-- <insert id="insMenu" parameterType="com.odod.postluck.beans.StoreBean"> -->
@@ -81,7 +70,6 @@
 		FROM STOREMENU WHERE SM_STCODE = #{storeCode})}, -->
 	<!-- #{menuList[0].menuName},#{menuList[0].menuPrice}) ; -->
 	<!-- </insert> -->
-
 
 
 	<update id="updMenu"
@@ -124,9 +112,12 @@
 		parameterType="com.odod.postluck.beans.StoreBean"
 		resultType="com.odod.postluck.beans.MenuBean">
 		select SM_CODE as menuCode, SM_NAME as menuName, SM_PRICE
-		as menuPrice, SM_SICODE as menuImageCode , SM_ISMAIN as isMain,
-		SM_ISKIOSK as isKiosk, SM_ISSOLD as isSoldOut from STOREMENU WHERE
-		SM_STCODE=#{storeCode} ORDER BY SM_ISMAIN DESC
+		as menuPrice,
+		SM_SICODE as menuImageCode , SM_ISMAIN as isMain,
+		SM_ISKIOSK as
+		isKiosk, SM_ISSOLD as isSoldOut from storemenu where
+		SM_STCODE=#{storeCode} ORDER BY
+		SM_ISMAIN DESC
 	</select>
 	<select id="selLocationList"
 		parameterType="com.odod.postluck.beans.StoreBean"
