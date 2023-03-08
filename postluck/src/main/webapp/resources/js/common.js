@@ -370,7 +370,6 @@ function kakaoLogout() {
 	}
 }
 
-
 function showModal(messageString) {
 	const messageModalString = `
     <div class="modal-dialog modal-dialog-centered" role="document">
