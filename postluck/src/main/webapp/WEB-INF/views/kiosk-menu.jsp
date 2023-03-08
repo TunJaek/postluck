@@ -285,7 +285,6 @@ jsonString = '${store}'
 					 }
 				 }
 				 menuItemDiv.children[4].innerText = price *  menuItemDiv.children[2].innerText+"원";
-				 break;
 			 }else{
 				 console.log("no data-menuCode")
 			 }
@@ -315,7 +314,7 @@ jsonString = '${store}'
 				 sendOrderJs.orderList[0].orderMenuList[i].splice(i, 1)
 			}
 		}
-		if(isFound == false );
+		if(isFound == false )createMenuItem(mc, price);
 		console.log(sendOrderJs);
 		getTotal()
 	}
