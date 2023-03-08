@@ -266,7 +266,6 @@ jsonString = '${store}'
 		console.log(jsonData)
 		addOrderNum();
 		showModal("plain:주문번호 #"+orderNum+":주문이 완료되었습니다.\n발급된 주문 번호를 확인해주세요.:kioskPage:false")
-		
 	}
 	sock.onopen = function(event) {
 		showModal("plain:연결 성공!:서버와 연결되었습니다!::")
