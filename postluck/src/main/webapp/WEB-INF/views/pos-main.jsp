@@ -289,8 +289,7 @@
 			serverCallByRequest('/View/MovePosManage', 'post', getJWT());
 		}
 	</script>
-
-
+	
 
 </body>
 
