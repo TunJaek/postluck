@@ -80,14 +80,27 @@ public class PosRestController {
 		model.addAttribute("file", file);
 		model.addAttribute("store", store);
 //		System.out.println(model.addAttribute("store", store));
-		System.out.println("PostMapping들어옴");
+		System.out.println("RegMenu PostMapping들어옴");
 		this.menuService.backController("ME03", model);
+		return (StoreBean) model.getAttribute("store");
+	}
+
+	@PostMapping("/Api/ModifyMenu")
+	public StoreBean modifyMenu(Model model, @ModelAttribute StoreBean store, @RequestParam("file") MultipartFile file)
+			throws IOException {
+		model.addAttribute("file", file);
+		model.addAttribute("model", model);
+		System.out.println(model.addAttribute("store", store));
+		System.out.println("ModifyMenu PostMapping들어옴");
+		this.menuService.backController("ME05", model);
+
 		return (StoreBean) model.getAttribute("store");
 	}
 
 	@PostMapping("/Api/DeleteMenu")
 	public StoreBean deleteMenu(Model model, @ModelAttribute StoreBean store) {
 		model.addAttribute("store", store);
+		System.out.println("DeleteMenu PostMapping들어옴");
 		System.out.println(model.addAttribute("store", store));
 		this.menuService.backController("ME06", model);
 		return (StoreBean) model.getAttribute("store");

@@ -162,6 +162,105 @@ public class MenuService extends TransactionAssistant {
 
 	}
 
+	private void modifyMenuInfo(Model model) {
+		StoreBean store = (StoreBean) model.getAttribute("store");
+		MultipartFile file = (MultipartFile) model.getAttribute("file");
+		System.out.println("modiFyMenuInfo로 들어옴.");
+//		String message = null;
+//		ArrayList<MenuBean> menuList = null;
+//		MenuBean menu = null;
+		String folderPath = "C:\\Users\\user\\git\\postluck\\postluck\\src\\main\\webapp\\resources\\image\\"
+				+ store.getStoreCode() + "\\";
+		String filePath = folderPath;
+		/* Transaction Start */
+		try {
+			System.out.println("트랜안에 들어옴");
+			String menuCode = this.sqlSession.selectOne("selMaxMenuCode", store);
+			if (menuCode != null) {
+				System.out.println("메뉴코드 존재");
+				System.out.println(store.getMenuList());
+				store.getMenuList().get(0).setMenuCode(menuCode);
+				filePath += store.getStoreCode() + menuCode + ".jpg";
+				store.getMenuList().get(0).setMenuImageCode(store.getStoreCode() + menuCode);
+				// 생성할 파일 이름 : 폴더이름(1998033001) + 메뉴코드(M00) + ".jpg"
+				store.getMenuList().get(0).setMenuImageLocation(filePath);
+				if (this.convertToBoolean(this.sqlSession.insert("updMenu", store))) {
+					this.tranManager.commit();
+				} else {
+					System.out.println("MenuUpadate실패");
+				}
+				if (!file.isEmpty()) {
+					file.transferTo(new File(filePath));
+					System.out.println("파일 저장 완료. path: " + filePath);
+				} else {
+					System.out.println("파일이 없습니다.");
+				}
+				// if (this.convertToBoolean(this.sqlSession.insert("insMenuCode", store))) {
+				// 메뉴코드 우선추가 ('1998033036', M00, '00000','00000')
+				this.tranManager.commit();
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			this.tranManager.rollback();
+		} finally {
+			store.setMessage("plain::메뉴 수정이 완료되었습니다!:showModal:");
+			this.tranManager.tranEnd();
+		}
+	}
+
+	private void deleteMenu(Model model) {
+		StoreBean store = (StoreBean) model.getAttribute("store");
+		MultipartFile file = (MultipartFile) model.getAttribute("file");
+		System.out.println("deleteMenu로 들어옴.");
+//		String message = null;
+//		ArrayList<MenuBean> menuList = null;
+//		MenuBean menu = null;
+		String folderPath = "C:\\Users\\user\\git\\postluck\\postluck\\src\\main\\webapp\\resources\\image\\"
+				+ store.getStoreCode() + "\\";
+		String filePath = folderPath;
+		String message = "warn:오류:오류가 발생했습니다. 잠시후 다시 시도해주세요.:sideMenu:2";
+
+		try {
+			this.tranManager = getTransaction(false);
+			this.tranManager.tranStart();
+			System.out.println("MenuCode : " + store.getMenuList().get(0).getMenuCode());
+			// 선택한 메뉴코드의 값이 비어있지않다면
+			if(store.getMenuList().get(0).getMenuCode() != null) {
+				if(this.convertToBoolean(this.sqlSession.delete("delMenu",store))) {
+					this.tranManager.commit();
+				}
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			this.tranManager.rollback();
+		} finally {
+			store.setMessage("plain::메뉴 삭제가 완료되었습니다!:showModal:");
+			this.tranManager.tranEnd();
+		}
+	}
+
+	private void getMenuInfo(Model model) {
+		/*
+		 * 메뉴리스트에서 해당 메뉴를 클릭시 해당 메뉴에대한 정보가 나옴.
+		 */
+		StoreBean storeMenu = (StoreBean) model.getAttribute("store");
+		String message = "메뉴를 불러오는 과정에서 오류가 발생했습니다 다시 시도해주세요.";
+
+		this.tranManager = getTransaction(false);
+
+		try {
+			this.tranManager.tranStart();
+			// 선택한 메뉴의 메뉴코드가 존재한다면
+			if (storeMenu.getMenuList().get(0).getMenuCode() != "") {
+				storeMenu.setMenuList(this.sqlSession.selectOne("selMenuInfo", storeMenu));
+			}
+		} catch (Exception e) {
+			storeMenu.setMessage(message);
+		}
+	}
+
+}
 //	private void dupCheckMenu(Model model) {
 //		// 메뉴코드는 자동생성 메뉴이름을 입력했을 때 중복검사.
 //		StoreBean store = (StoreBean) model.getAttribute("store");
@@ -191,26 +290,6 @@ public class MenuService extends TransactionAssistant {
 //			this.tranManager.tranEnd();
 //		}
 //	}
-
-	private void getMenuInfo(Model model) {
-		/*
-		 * 메뉴리스트에서 해당 메뉴를 클릭시 해당 메뉴에대한 정보가 나옴.
-		 */
-		StoreBean storeMenu = (StoreBean) model.getAttribute("store");
-		String message = "메뉴를 불러오는 과정에서 오류가 발생했습니다 다시 시도해주세요.";
-
-		this.tranManager = getTransaction(false);
-
-		try {
-			this.tranManager.tranStart();
-			// 선택한 메뉴의 메뉴코드가 존재한다면
-			if (storeMenu.getMenuList().get(0).getMenuCode() != "") {
-				storeMenu.setMenuList(this.sqlSession.selectOne("selMenuInfo", storeMenu));
-			}
-		} catch (Exception e) {
-			storeMenu.setMessage(message);
-		}
-	}
 
 //	private void dupCheckMenu(Model model) {
 //		// 메뉴코드는 자동생성 메뉴이름을 입력했을 때 중복검사.
@@ -261,83 +340,6 @@ public class MenuService extends TransactionAssistant {
 //			storeMenu.setMessage(message);
 //		}
 //	}
-
-	private void modifyMenuInfo(Model model) {
-		StoreBean store = (StoreBean) model.getAttribute("store");
-		String message = null;
-		ArrayList<MenuBean> menuList = null;
-		MenuBean menu = null;
-		/* Transaction Start */
-		try {
-			this.tranManager = getTransaction(false);
-			this.tranManager.tranStart();
-
-			if (store.getMenuList().get(0).getMenuName() != "") {
-				if (!this.convertToBoolean(this.sqlSession.selectOne("isMenuName", store))) {
-					menuList = new ArrayList<MenuBean>();
-					menu = new MenuBean();
-					menuList.add(menu);
-					store.setMenuList(menuList);
-					store.setMessage("메뉴수정을 완료했습니다.");
-					this.tranManager.commit();
-				} else {
-					message = "중복된 메뉴 이름입니다. 다시 설정해주세요";
-				}
-			} else {
-				message = "수정하려는 메뉴의 정보를 불러오지 못했습니다. 다시 시도해주세요.";
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-			this.tranManager.rollback();
-		} finally {
-			this.tranManager.tranEnd();
-		}
-	}
-
-	private void deleteMenu(Model model) {
-		StoreBean storeMenu = (StoreBean) model.getAttribute("store");
-
-//		try {
-//			this.tranManager = getTransaction(false);
-//			this.tranManager.tranStart();
-//			// 선택한 메뉴코드의 값이 비어있지않다면
-//			if (storeMenu.getMenuList().get(0).getMenuCode() != "") {
-//				this.convertToBoolean(this.sqlSession.delete("delMenu", storeMenu));
-//
-//				storeMenu.getMenuList().get(0).setMenuCode(null);
-//				storeMenu.getMenuList().get(0).setMenuName(null);
-//				storeMenu.getMenuList().get(0).setMenuPrice(null);
-//				storeMenu.getMenuList().get(0).setMenuImageCode(null);
-//				storeMenu.setMessage("성공적으로 메뉴를 삭제하였습니다.");
-//				this.tranManager.commit();}
-		String message = "warn:오류:오류가 발생했습니다. 잠시후 다시 시도해주세요.:sideMenu:2";
-
-		try {
-			this.tranManager = getTransaction(false);
-			this.tranManager.tranStart();
-			// 선택한 메뉴코드의 값이 비어있지않다면
-			if (storeMenu.getMenuList().get(0).getMenuCode() != null) {
-				System.out.println("menuCode is not null");
-				if (this.convertToBoolean(this.sqlSession.delete("delMenu", storeMenu))) {
-					storeMenu.setMessage("plain::메뉴를 삭제했습니다.:");
-					storeMenu = this.main.getStoreInfoAsStoreBean(model);
-					System.out.println("delete성공");
-					this.tranManager.commit();
-				} else {
-					storeMenu.setMessage(message);
-				}
-			} else {
-				storeMenu.setMessage(message);
-			}
-
-		} catch (Exception e) {
-			e.printStackTrace();
-			this.tranManager.rollback();
-		} finally {
-			this.tranManager.tranEnd();
-		}
-	}
-}
 
 //	public void saveImg(Model model) {
 /*
