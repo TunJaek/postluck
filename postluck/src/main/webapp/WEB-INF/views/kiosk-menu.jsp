@@ -239,7 +239,7 @@ jsonString = '${store}'
 		  const second = String(now.getSeconds()).padStart(2, '0');
 		  return year+month+date+hour+minute+second;
 	}
-	
+
 	function sendOrder(payment){
 			let orderString = JSON.stringify(orderList);
 			isSend = true;

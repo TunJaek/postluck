@@ -36,7 +36,21 @@
 		parameterType="com.odod.postluck.beans.StoreBean"> INSERT INTO STOREIMAGE(SI_CODE,SI_NAME,SI_LOCATION)
 		VALUES(#{menuList[0].menuImageCode},null,#{menuList[0].menuImageLocation})
 	</insert>
+	
+<select id="selPayment" parameterType="com.odod.postluck.beans.StoreBean" resultType="com.odod.postluck.beans.OrderBean">
+ SELECT SA_PAYMENTTYPE AS salespaymentType, SA_PRICE AS amount, SA_DATE AS salesDate
+FROM POSDBA.SALES
+WHERE SA_STCODE = #{storeCode}
 
+</select>
+
+
+<select id="selTypeSalesList" parameterType="com.odod.postluck.beans.StoreBean" resultType="com.odod.postluck.beans.OrderBean">
+ SELECT SA_PAYMENTTYPE AS salespaymentType, SA_PRICE AS amount, SA_DATE AS salesDate
+FROM POSDBA.SALES
+WHERE SA_PAYMENTTYPE = #{orderList[0].salespaymentType} AND SA_STCODE = #{storeCode}
+
+</select>
 
 
 
