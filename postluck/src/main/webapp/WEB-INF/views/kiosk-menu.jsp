@@ -1,5 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -9,15 +8,9 @@
 <title>KIOSK - POS.TLUCK</title>
 <link rel="icon" href="/resources/image/fabicon.png">
 <link rel="stylesheet" href="/resources/css/mainBootstrap.css">
-<script
-	src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
-	integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
-	crossorigin="anonymous"></script>
-<link rel="stylesheet"
-	href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css" />
-<link
-	href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR&amp;display=swap"
-	rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css" />
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR&amp;display=swap" rel="stylesheet">
 <script src="/resources/js/common.js"></script>
 <link rel="stylesheet" href="/resources/css/kiosk.css">
 </head>
@@ -25,18 +18,13 @@
 	<div class="main">
 		<div class="header">
 
-			<i class="bi bi-arrow-left fs-3 mx-3" id="backspace"
-				style="color: white; display: none;" onclick="kioskPage()"></i> <img
-				src="/resources/image/mainLogo-dark.png" class="mx-3">
+			<i class="bi bi-arrow-left fs-3 mx-3" id="backspace" style="color: white; display: none;" onclick="kioskPage()"></i> <img src="/resources/image/mainLogo-dark.png" class="mx-3">
 
 		</div>
-		<div id="menuPage" class="w-100"
-			style="display: block; position: absolute; height: 95%;">
+		<div id="menuPage" class="w-100" style="display: block; position: absolute; height: 95%;">
 			<div class="row" style="height: 100%;">
 				<div class="mainContents border col-3">
-					<div
-						class="border menuListHeader fs-4 d-flex align-items-center justify-content-center"
-						style="height: 7%;">
+					<div class="border menuListHeader fs-4 d-flex align-items-center justify-content-center" style="height: 7%;">
 						<div id="storeName"></div>
 					</div>
 					<div class="text-center" style="overflow-y: auto; height: 93%;">
@@ -49,20 +37,13 @@
 					<div class="subContentsOrderList" style="height: 79%">
 						<!-- 메뉴 집어넣는 곳 -->
 					</div>
-					<div class="resultSum row fs-4 border-top"
-						style="height: 7%; display: flex; align-items: baseline; justify-content: center;">
-						<div
-							class="p-3 col-4 h-100 d-flex justify-content-center align-items-center">총</div>
-						<div id="total"
-							class="p-3 col h-100 fs-3 d-flex justify-content-center align-items-center">0원</div>
+					<div class="resultSum row fs-4 border-top" style="height: 7%; display: flex; align-items: baseline; justify-content: center;">
+						<div class="p-3 col-4 h-100 d-flex justify-content-center align-items-center">총</div>
+						<div id="total" class="p-3 col h-100 fs-3 d-flex justify-content-center align-items-center">0원</div>
 					</div>
 					<div class="subContentsBtnZone row">
-						<div id="subContensBtn"
-							class="cancleButton p-3 col h-100 d-flex justify-content-center align-items-center"
-							onclick="showModal('warn::주문을 취소하시겠습니까?:cancelOrder:')">주문취소</div>
-						<div
-							class="orderButton p-3 col h-100 d-flex justify-content-center align-items-center"
-							onclick="kioskPage(true)">주문하기</div>
+						<div id="subContensBtn" class="cancleButton p-3 col h-100 d-flex justify-content-center align-items-center" onclick="showModal('warn::주문을 취소하시겠습니까?:cancelOrder:')">주문취소</div>
+						<div class="orderButton p-3 col h-100 d-flex justify-content-center align-items-center" onclick="kioskPage(true)">주문하기</div>
 					</div>
 				</div>
 			</div>
@@ -84,8 +65,7 @@
 							<div class="menuPrice col">20,000원</div>
 						</div>
 					</div>
-					<div id="orderResultZone"
-						class="menu border-top p-3 row w-100 text-center">
+					<div id="orderResultZone" class="menu border-top p-3 row w-100 text-center">
 						<div class="allCount col-4 fs-5">총 4건</div>
 						<div class="allPrice col fs-3">80,000원</div>
 					</div>
@@ -103,19 +83,16 @@
 						<div class="paymentText text-start fs-3 col h-100">원</div>
 					</div>
 
-					<br> <span style="font-size: 30px;"> <br>주문 내역 확인
-						후 결제 방법을 선택 해주세요.<br> 결제는 음식 수령과 함께 해주세요.
+					<br> <span style="font-size: 30px;"> <br>주문 내역 확인 후 결제 방법을 선택 해주세요.<br> 결제는 음식 수령과 함께 해주세요.
 					</span>
 				</div>
 				<div class="paymentChoice row">
-					<div class="card paymentMethod d-flex col m-5"
-						onclick="sendOrder('CR')">
+					<div class="card paymentMethod d-flex col m-5" onclick="sendOrder('CR')">
 						<div class="menu p-3">
 							<i class="bi bi-credit-card"></i> 카드결제 >
 						</div>
 					</div>
-					<div class="card paymentMethod d-flex col m-5"
-						onclick="sendOrder('CA')">
+					<div class="card paymentMethod d-flex col m-5" onclick="sendOrder('CA')">
 						<div class="menu p-3">
 							<i class="bi bi-cash-coin"></i> 현금결제 >
 						</div>
@@ -124,8 +101,7 @@
 			</div>
 		</div>
 	</div>
-	<div class="modal fade" id="messageModal"
-		style="background-color: rgba(0, 0, 0, 0.2); z-index: 1080"></div>
+	<div class="modal fade" id="messageModal" style="background-color: rgba(0, 0, 0, 0.2); z-index: 1080"></div>
 </body>
 <script>
 let sock;
@@ -245,14 +221,11 @@ jsonString = '${store}'
 			isSend = true;
 		if(payment == 'CA') { //현금일 경우
 			orderList['payment']="CA";
-		let jsonexam = {"storeCode":"1234567890","orderList":[{
-			"orderPaymentType":"CA","orderDate":getCurrentDateTime(),"orderState":"주문",
+		
+		let jsonexam = {"storeCode":storeCode,"orderList":[{
+			"orderPaymentType":"","orderDate":getCurrentDateTime(),"orderState":"주문",
 			"orderMenuList": [{
-				"menu":{
-					"menuCode":"M01"
-				},"quantity":"12"
-			}]
-		}]};
+				"menu":]};
 			serverCallByFetchAjaxUsingJson(JSON.stringify(jsonexam), "/Api/makeOrder", "post", "afterMakeOrder", header);
 		} else { //카드일 경우
 			orderList['payment']="CR";
@@ -266,7 +239,6 @@ jsonString = '${store}'
 		console.log(jsonData)
 		addOrderNum();
 		showModal("plain:주문번호 #"+orderNum+":주문이 완료되었습니다.\n발급된 주문 번호를 확인해주세요.:kioskPage:false")
-		
 	}
 	sock.onopen = function(event) {
 		showModal("plain:연결 성공!:서버와 연결되었습니다!::")
@@ -313,6 +285,7 @@ jsonString = '${store}'
 					 }
 				 }
 				 menuItemDiv.children[4].innerText = price *  menuItemDiv.children[2].innerText+"원";
+				 break;
 			 }else{
 				 console.log("no data-menuCode")
 			 }
@@ -342,7 +315,7 @@ jsonString = '${store}'
 				 sendOrderJs.orderList[0].orderMenuList[i].splice(i, 1)
 			}
 		}
-		if(isFound == false )createMenuItem(mc, price);
+		if(isFound == false );
 		console.log(sendOrderJs);
 		getTotal()
 	}

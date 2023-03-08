@@ -56,7 +56,7 @@ function isMem(){
 		<div id="right"
 			style="display: flex; justify-content: center; align-items: center;">
 			<div class="loginArea"
-				style="display: flex; flex-direction: column; width: 60%; display: flex; flex-direction: column; height: 50%;">
+				style="display: flex; flex-direction: column; width: 60%; height: 50%;">
 				<img src="../../resources/image/indexTextLogo.png"
 					style="margin-bottom: 3%;">
 				<div class="loginLogo">
