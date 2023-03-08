@@ -32,10 +32,14 @@
 		#{menuList[0].menuPrice},#{menuList[0].menuImageCode},#{menuList[0].isMain},#{menuList[0].isKiosk},#{menuList[0].isSoldOut})
 	</insert>
 
-	<!-- <insert id="insStoreImage" -->
-	<!-- parameterType="com.odod.postluck.beans.StoreBean"> INSERT INTO STOREIMAGE(SI_CODE,SI_NAME,SI_LOCATION) -->
-	<!-- VALUES(#{menuList[0].menuImageCode},null,#{menuList[0].menuImageLocation}) -->
-	<!-- </insert> -->
+	<insert id="insStoreImage"
+		parameterType="com.odod.postluck.beans.StoreBean"> INSERT INTO STOREIMAGE(SI_CODE,SI_NAME,SI_LOCATION)
+		VALUES(#{menuList[0].menuImageCode},null,#{menuList[0].menuImageLocation})
+	</insert>
+
+
+
+>>>>>>> refs/remotes/origin/main
 
 	<!-- <update id="insMenu" parameterType="com.odod.postluck.beans.StoreBean"> 
 		INSERT INTO STOREMENU(SM_STCODE, SM_CODE, SM_NAME, SM_PRICE) VALUES(#{storeCode},(SELECT 
@@ -56,6 +60,21 @@
 	</select>
 	<select id="isMinMenuCode"
 		parameterType="com.odod.postluck.beans.StoreBean" resultType="String">
+<<<<<<< HEAD
+=======
+		SELECT
+		MIN(CAST(SUBSTR(sm_code, 2) AS INTEGER)) FROM STOREMENU WHERE
+		SM_STCODE = #{storeCode}
+	</select>
+	<select id="selMaxMenuCode"
+		parameterType="com.odod.postluck.beans.StoreBean" resultType="String">
+		SELECT
+		MAX(SM_CODE) FROM STOREMENU WHERE SM_STCODE = #{storeCode}
+	</select>
+
+	<select id="selMenuInfo"
+		parameterType="com.odod.postluck.beans.StoreBean">
+>>>>>>> refs/remotes/origin/main
 		SELECT
 		MIN(CAST(SUBSTR(sm_code, 2) AS INTEGER)) FROM STOREMENU WHERE
 		SM_STCODE = #{storeCode}
