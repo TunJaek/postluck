@@ -79,12 +79,10 @@
 		SET
 		SM_NAME = #{menuList[0].menuName},
 		SM_PRICE = #{menuList[0].menuPrice},
-		SM_SICODE =
-		#{menuList[0].menuImageCode},
-		SM_ISMAIN =
-		#{menuList[0].isMain},SM_ISKIOSK = #{menuList[0].isKiosk},
-		SM_ISSOLD =
-		#{menuList[0].isSold}
+		SM_SICODE =	#{menuList[0].menuImageCode},
+		SM_ISMAIN =	#{menuList[0].isMain},
+		SM_ISKIOSK = #{menuList[0].isKiosk},
+		SM_ISSOLD =	 #{menuList[0].isSoldOut}
 
 		WHERE SM_STCODE = #{storeCode} AND SM_CODE =
 		#{menuList[0].menuCode}
