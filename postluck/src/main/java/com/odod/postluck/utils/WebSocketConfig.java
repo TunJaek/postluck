@@ -58,6 +58,7 @@ public class WebSocketConfig implements WebSocketConfigurer {
 		    String storeCode = extractStoreCodeAsUri(session.getUri());
 		    Map<String, WebSocketSession> sIdWithSession = sessionMap.get(storeCode);
 		    String message= wsMessage.getPayload().toString();
+		    System.out.println(message);
 		    for (WebSocketSession s : sIdWithSession.values()) {
 		        if (!s.equals(session)) {
 		            s.sendMessage(new TextMessage(message));

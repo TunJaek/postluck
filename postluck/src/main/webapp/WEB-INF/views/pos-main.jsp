@@ -239,7 +239,7 @@
 		};
 
 		sock.onmessage = function(e) {
-			showModal('plain:연결 성공!:동일한 아이디로 접속하여, 연결을 했습니다!::')
+			showModal("plain:알림:새로운 주문이 들어왔습니다."+e.data+"::")
 		};
 		sock.onclose = function(event) {
 			if (event.wasClean) {
