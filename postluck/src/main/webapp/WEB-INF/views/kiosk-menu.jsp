@@ -206,8 +206,8 @@ jsonString = '${store}'
 			if(menu.isMain == 'Y'){
 				cardContent+="<div class=\"position-absolute m-3 badge bg-success rounded-pill fs-6 mx-3 col-3\">대표</div>"
 			}
-			if (menu.menuImageLocation != ''){
-				cardContent+="<img src= \"/resources/image/"+storeCode+"/"+menu.menuImageCode+".jpg"+"\"class=\"card-img-top cardTop\">"
+			if (menu.menuImageCode != ''){
+				cardContent+="<img src=\"/resources/image/"+storeCode+"/"+menu.menuImageCode+".jpg\" class=\"card-img-top cardTop\">"
 			}else{
 				cardContent+="<img src=\"http://placehold.it/1000X600\" class=\"card-img-top cardTop\">"
 			}
@@ -239,7 +239,7 @@ jsonString = '${store}'
 		  const second = String(now.getSeconds()).padStart(2, '0');
 		  return year+month+date+hour+minute+second;
 	}
-	
+
 	function sendOrder(payment){
 			let orderString = JSON.stringify(orderList);
 			isSend = true;

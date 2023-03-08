@@ -122,11 +122,11 @@ public class MenuService extends TransactionAssistant {
 				System.out.println("메뉴코드널");
 			} else {
 				System.out.println("메뉴코드널아님");
-				menuCode = this.sqlSession.selectOne("selMaxMenuCode", store);
 				System.out.println("바꾸기전메뉴코드" + menuCode);
-				menuCode = "M" + (Integer.parseInt(menuCode.substring(2)) + 1 < 10
+				
+				menuCode = "M" + (Integer.parseInt(menuCode.substring(1)) + 1 < 10
 						? "0" + (Integer.parseInt(menuCode.substring(2)) + 1)
-						: Integer.parseInt(menuCode.substring(2)) + 1);
+						: Integer.parseInt(menuCode.substring(1)) + 1);
 				System.out.println("바꾼후메뉴코드" + menuCode);
 			}
 			store.getMenuList().get(0).setMenuCode(menuCode);
@@ -135,13 +135,14 @@ public class MenuService extends TransactionAssistant {
 			// 생성할 파일 이름 : 폴더이름(1998033001) + 메뉴코드(M00) + ".jpg"
 			store.getMenuList().get(0).setMenuImageLocation(filePath);
 			if (this.convertToBoolean(this.sqlSession.insert("insMenu", store))) {
+				if (!new File(folderPath).exists()) {
+					new File(folderPath).mkdir();
+				}
 				this.tranManager.commit();
 			} else {
 				System.out.println("menuIns실패");
 			}
-			if (!new File(folderPath).exists()) {
-				new File(folderPath).mkdir();
-			}
+			
 			if (!file.isEmpty()) {
 				file.transferTo(new File(filePath));
 				System.out.println("파일 저장 완료. path: " + filePath);
@@ -152,6 +153,7 @@ public class MenuService extends TransactionAssistant {
 			// 메뉴코드 우선추가 ('1998033036', M00, '00000','00000')
 			this.tranManager.commit();
 		} catch (Exception e) {
+			System.out.println("메뉴 reg 실패");
 			e.printStackTrace();
 			this.tranManager.rollback();
 		} finally {
