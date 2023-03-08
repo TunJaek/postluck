@@ -32,10 +32,13 @@
 		#{menuList[0].menuPrice},#{menuList[0].menuImageCode},#{menuList[0].isMain},#{menuList[0].isKiosk},#{menuList[0].isSoldOut})
 	</insert>
 
-	<!-- <insert id="insStoreImage" -->
-	<!-- parameterType="com.odod.postluck.beans.StoreBean"> INSERT INTO STOREIMAGE(SI_CODE,SI_NAME,SI_LOCATION) -->
-	<!-- VALUES(#{menuList[0].menuImageCode},null,#{menuList[0].menuImageLocation}) -->
-	<!-- </insert> -->
+	<insert id="insStoreImage"
+		parameterType="com.odod.postluck.beans.StoreBean"> INSERT INTO STOREIMAGE(SI_CODE,SI_NAME,SI_LOCATION)
+		VALUES(#{menuList[0].menuImageCode},null,#{menuList[0].menuImageLocation})
+	</insert>
+
+
+
 
 	<!-- <update id="insMenu" parameterType="com.odod.postluck.beans.StoreBean"> 
 		INSERT INTO STOREMENU(SM_STCODE, SM_CODE, SM_NAME, SM_PRICE) VALUES(#{storeCode},(SELECT 
@@ -54,11 +57,10 @@
 		WHERE SM_STCODE =
 		#{storeCode} AND SM_NAME = #{menuList[0].menuName};
 	</select>
-	<select id="isMinMenuCode"
+	<select id="selMaxMenuCode"
 		parameterType="com.odod.postluck.beans.StoreBean" resultType="String">
 		SELECT
-		MIN(CAST(SUBSTR(sm_code, 2) AS INTEGER)) FROM STOREMENU WHERE
-		SM_STCODE = #{storeCode}
+		MAX(SM_CODE) FROM STOREMENU WHERE SM_STCODE = #{storeCode}
 	</select>
 	<select id="selMaxMenuCode"
 		parameterType="com.odod.postluck.beans.StoreBean" resultType="String">

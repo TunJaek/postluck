@@ -46,7 +46,6 @@ public class MenuService extends TransactionAssistant {
 		case "ME06":
 			this.deleteMenu(model);
 			break;
-
 		}
 	}
 
