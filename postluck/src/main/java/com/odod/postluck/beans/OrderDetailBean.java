@@ -4,6 +4,6 @@ import lombok.Data;
 
 @Data
 public class OrderDetailBean {
-	private MenuBean menu;
+	private String menuCode;
 	private int quantity;
 }

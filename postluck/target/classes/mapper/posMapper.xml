@@ -132,17 +132,6 @@
 		max(sl_date) from saleslog where sl_stcode= #{storeCode} GROUP BY
 		sl_stcode)
 	</select>
-	<select id="selSchedule"
-		parameterType="com.odod.postluck.beans.StoreBean"
-		resultType="com.odod.postluck.beans.ScheduleBean">
-		select SC_STARTDATE as startDate, SC_ENDDATE as endDate,
-		SC_STARTTIME as startTime, SC_ENDTIME as endTime, SC_LOCODE as
-		location.locationCode, LO_NAME as location.locationName,
-		LO_LATITUDE as
-		location.latitude, LO_LONGITUDE as location.longitude, LO_DETAIL as
-		location.locationDetail,LO_ADDR as locationAddr from schedule INNER
-		JOIN LOCATION ON SC_LOCODE = LO_CODE where sc_stcode =#{storeCode}
-	</select>
 	<update id="updLocation"
 		parameterType="com.odod.postluck.beans.StoreBean">
 		update location set LO_NAME =
