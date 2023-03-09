@@ -264,10 +264,8 @@
 		function showOrder(){
 		}
 		function addOrderDiv(){
-			
 		}
 		function getOrderDetail(){
-			
 		} 
 		function showOrderDetail(){
 		}

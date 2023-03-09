@@ -32,7 +32,7 @@
 					<h6 id="orderDateZone">주문일시 :</h6>
 					<div class="my-3">
 						<i class="bi bi-check-circle fs-1"
-							style="color: var(- -bs-primary); font-size: 10rem"></i>
+							style="color: var(--bs-primary)"></i>
 					</div>
 					<h5>주문이 완료되었습니다!</h5>
 					<h5 class="mb-5">결제는 음식 수령과 함께 해주세요.</h5>
@@ -98,7 +98,8 @@
 
 				<div class="orderZone border-bottom">
 					<div id="orderItem"></div>
-					<div id="orderResultZone" class="row text-center" style="align-items: baseline;"></div>
+					<div id="orderResultZone" class="row text-center"
+						style="align-items: baseline;"></div>
 				</div>
 
 			</div>
@@ -108,7 +109,7 @@
 			<div class="paymentContens col">
 				<div class="menu p-5 payment" style="height: 50%;">
 					<div class="row" style="align-items: baseline;">
-						<div class="paymentText col fs-3" >결제금액</div>
+						<div class="paymentText col fs-3">결제금액</div>
 						<div class="paymentPrice col"></div>
 						<div class="paymentText text-start fs-3 col h-100">원</div>
 					</div>
@@ -360,14 +361,18 @@ jsonString = '${store}'
 		document.getElementById("total").innerText = total+"원";
 	}
 	
-	function deleteDiv(menuCode){
+	function deleteDiv(menuNum){
+		isFound =false;
 		const menuItem = document.getElementsByClassName("subContentsOrderList")[0];
-		let order =  orderList.order ;
+		
 		for(let i=0;i<menuItem.children.length;i++){
-			if(menuCode == menuItem.children[i].getAttribute("data-menuCode")){
+			if(menuNum == menuItem.children[i].getAttribute("data-menuCode")){
 				menuItem.children[i].remove();
-				getTotal()
-				delete order[menuCode];
+				if(sendOrderJs.orderList[0].orderMenuList[i].menuCode == menuNum){
+					sendOrderJs.orderList[0].orderMenuList.splice(i,1);
+					getTotal()
+				}
+				
 			}else{
 				console.log("error")
 			}
@@ -378,7 +383,10 @@ jsonString = '${store}'
 	function showOrderList(){
 		const orderMenuList = document.getElementsByClassName("subContentsOrderList")[0];
 		const total = document.getElementById("total").textContent;
+		const orderResultZone = document.getElementById("orderResultZone");
+		orderResultZone.innerHTML ='';
 		let orderDiv='';
+		
 		for(let i=0;i<orderMenuList.children.length;i++){
 		orderDiv += "<div id=\"orderMenuItem\"><div class=\"menu border-bottom p-3 row text-center fs-5\"><div class=\"menuName col\">"
 		orderDiv += orderMenuList.children[i].children[0].textContent;
@@ -389,7 +397,7 @@ jsonString = '${store}'
 		orderDiv += "</div></div></div>"
 		}
 		document.getElementById("orderItem").innerHTML = orderDiv;
-		const orderResultZone = document.getElementById("orderResultZone");
+		
 		const div = document.createElement("div")
 		div.setAttribute("class","allCount col-4 fs-5");
 		div.innerText ="총 "+orderMenuList.children.length+"건"
