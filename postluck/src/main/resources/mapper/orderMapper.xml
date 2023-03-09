@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.odod.postluck.mapper.OrderMapperInter">
+	<select id="selOrderNum"
+		parameterType="com.odod.postluck.beans.StoreBean" resultType="int">
+		select count(*) from orders where substr(os_date,0,8) = substr(CURRENT_DATE,0,8)  and os_stcode =#{storeCode}
+	</select>
+	<insert id="insOrder"
+		parameterType="com.odod.postluck.beans.StoreBean">
+		insert into
+		orders(os_stcode,os_date,os_type,os_statement)
+		values(#{storeCode},TO_DATE(#{orderList[0].orderDate},'YYYYMMDDHH24MISS'),#{orderList[0].orderPaymentType},#{orderList[0].orderState})
+	</insert>
+	<insert id="insOrderDetail"
+		parameterType="com.odod.postluck.beans.StoreBean">
+		INSERT ALL
+		<foreach collection="orderList" item="order">
+			<foreach collection="order.orderMenuList" item="menu">
+				INTO ordersdetail (od_osstcode, od_osdate, od_smcode, od_count)
+				VALUES (#{storeCode},TO_DATE(#{order.orderDate},
+				'YYYYMMDDHH24MISS'), #{menu.menuCode},
+				#{menu.quantity})
+			</foreach>
+		</foreach>
+		SELECT 1 FROM dual
+	</insert>
+</mapper>

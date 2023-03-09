@@ -32,10 +32,6 @@
 		#{menuList[0].menuPrice},#{menuList[0].menuImageCode},#{menuList[0].isMain},#{menuList[0].isKiosk},#{menuList[0].isSoldOut})
 	</insert>
 
-	<insert id="insStoreImage"
-		parameterType="com.odod.postluck.beans.StoreBean"> INSERT INTO STOREIMAGE(SI_CODE,SI_NAME,SI_LOCATION)
-		VALUES(#{menuList[0].menuImageCode},null,#{menuList[0].menuImageLocation})
-	</insert>
 	
 <select id="selPayment" parameterType="com.odod.postluck.beans.StoreBean" resultType="com.odod.postluck.beans.OrderBean">
  SELECT SA_PAYMENTTYPE AS salespaymentType, SA_PRICE AS amount, SA_DATE AS salesDate
@@ -93,12 +89,10 @@ WHERE SA_PAYMENTTYPE = #{orderList[0].salespaymentType} AND SA_STCODE = #{storeC
 		SET
 		SM_NAME = #{menuList[0].menuName},
 		SM_PRICE = #{menuList[0].menuPrice},
-		SM_SICODE =
-		#{menuList[0].menuImageCode},
-		SM_ISMAIN =
-		#{menuList[0].isMain},SM_ISKIOSK = #{menuList[0].isKiosk},
-		SM_ISSOLD =
-		#{menuList[0].isSold}
+		SM_SICODE =	#{menuList[0].menuImageCode},
+		SM_ISMAIN =	#{menuList[0].isMain},
+		SM_ISKIOSK = #{menuList[0].isKiosk},
+		SM_ISSOLD =	 #{menuList[0].isSoldOut}
 
 		WHERE SM_STCODE = #{storeCode} AND SM_CODE =
 		#{menuList[0].menuCode}
@@ -147,17 +141,6 @@ WHERE SA_PAYMENTTYPE = #{orderList[0].salespaymentType} AND SA_STCODE = #{storeC
 		sl_state as salsesState from saleslog where sl_date=(select
 		max(sl_date) from saleslog where sl_stcode= #{storeCode} GROUP BY
 		sl_stcode)
-	</select>
-	<select id="selSchedule"
-		parameterType="com.odod.postluck.beans.StoreBean"
-		resultType="com.odod.postluck.beans.ScheduleBean">
-		select SC_STARTDATE as startDate, SC_ENDDATE as endDate,
-		SC_STARTTIME as startTime, SC_ENDTIME as endTime, SC_LOCODE as
-		location.locationCode, LO_NAME as location.locationName,
-		LO_LATITUDE as
-		location.latitude, LO_LONGITUDE as location.longitude, LO_DETAIL as
-		location.locationDetail,LO_ADDR as locationAddr from schedule INNER
-		JOIN LOCATION ON SC_LOCODE = LO_CODE where sc_stcode =#{storeCode}
 	</select>
 	<update id="updLocation"
 		parameterType="com.odod.postluck.beans.StoreBean">

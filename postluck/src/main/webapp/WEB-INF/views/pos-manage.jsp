@@ -1102,7 +1102,7 @@ document.addEventListener('DOMContentLoaded', function() {
 		const menuCode = document.getElementById("menuCode"); 
 	  	const menuName = document.getElementById("menuName").value;
 	  	const menuPrice = document.getElementById("menuPrice").value;
-	  	const menuImage =document.getElementById("menuImage");
+	  	const menuImage = document.getElementById("menuImage");
 	  	//const menuImage = createFileBox("form-control");
 	 	const isMain = document.getElementById("isMain").checked;
 	 	const isKiosk = document.getElementById("isKiosk").checked;
@@ -1138,7 +1138,6 @@ document.addEventListener('DOMContentLoaded', function() {
 		  serverCallByFetch(formData,"/Api/RegMenu","post","afterDeleteMenu",header);
 	}
 	
-
 	//메뉴 수정 버튼 클릭시 나타나는 페이지
 	function modifyMenuPage(menuCode){
 		sideMenu(3); //메뉴관리 content header 띄우기
@@ -1163,17 +1162,91 @@ document.addEventListener('DOMContentLoaded', function() {
 	}
 	
 	function deleteMenu(menuCode){
+		const menuName = document.getElementById("menuName").value;
+		const menuPrice = document.getElementById("menuPrice").value;
+		const menuImage = document.getElementById("menuImage");
+		const isMain = document.getElementById("isMain").checked;
+	 	const isKiosk = document.getElementById("isKiosk").checked;
+		const isSoldOut = document.getElementById("isSoldOut").checked;
 	    formData = new FormData();
 	    formData.append("storeCode",storeNum);
 	    formData.append("menuList[0].menuCode",menuCode);
+	    formData.append("menuList[0].menuName", menuName);
+	    formData.append("menuList[0].menuPrice", menuPrice);
+	    formData.append("file", menuImage.files[0]);
+	    
+	    if(isKiosk) {
+			formData.append("menuList[0].isKiosk", "Y");
+		} else {
+			formData.append("menuList[0].isKiosk", "N");
+		}
+
+		if(isMain) {
+			formData.append("menuList[0].isMain", "Y");
+		} else{
+			formData.append("menuList[0].isMain", "N");
+		}
+		
+		if(isSoldOut) {
+			formData.append("menuList[0].isSoldOut", "Y");
+		} else{
+			formData.append("menuList[0].isSoldOut", "N");
+		}
+	    
 	    serverCallByFetch(formData,"/Api/DeleteMenu","post","afterDeleteMenu",header);
 	}
+	
 	function modifyMenu(menuCode){
+		const menuName = document.getElementById("menuName").value;
+		const menuPrice = document.getElementById("menuPrice").value;
+		const menuImage = document.getElementById("menuImage");
+	  	//const menuImage = createFileBox("form-control");
+	 	const isMain = document.getElementById("isMain").checked;
+	 	const isKiosk = document.getElementById("isKiosk").checked;
+		const isSoldOut = document.getElementById("isSoldOut").checked;
+		
 	    formData = new FormData();
 	    formData.append("storeCode",storeNum);
 	    formData.append("menuList[0].menuCode",menuCode);
+	    formData.append("menuList[0].menuName", menuName);
+	    formData.append("menuList[0].menuPrice", menuPrice);
+	    formData.append("file", menuImage.files[0]);
+	    
+	    if(isKiosk) {
+			formData.append("menuList[0].isKiosk", "Y");
+		} else {
+			formData.append("menuList[0].isKiosk", "N");
+		}
+
+		if(isMain) {
+			formData.append("menuList[0].isMain", "Y");
+		} else{
+			formData.append("menuList[0].isMain", "N");
+		}
+		
+		if(isSoldOut) {
+			formData.append("menuList[0].isSoldOut", "Y");
+		} else{
+			formData.append("menuList[0].isSoldOut", "N");
+		}
+	    
 	    serverCallByFetch(formData,"/Api/ModifyMenu","post","afterDeleteMenu",header);
 	}
+// 	function deleteMenu(menuCode){
+		
+// 	    formData = new FormData();
+// 	    formData.append("storeCode",storeNum);
+// 	    formData.append("menuList[0].menuCode",menuCode);
+// 	    serverCallByFetch(formData,"/Api/DeleteMenu","post","afterDeleteMenu",header);
+// 	}
+	
+// 	function modifyMenu(menuCode){
+// 		  // 입력값들을 추가
+// 		c
+		  
+// 	    serverCallByFetch(formData,"/Api/ModifyMenu","post","afterDeleteMenu",header);
+// 	}
+
 	
 	 function afterDeleteMenu(jsonData){
 	    showModal(jsonData.message+"reload:2");

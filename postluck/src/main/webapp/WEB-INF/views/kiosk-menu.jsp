@@ -22,9 +22,28 @@
 <link rel="stylesheet" href="/resources/css/kiosk.css">
 </head>
 <body>
+	<div class="modal fade" tabindex="-1" id="completeOrderModal"
+		aria-modal="true" role="dialog">
+		<div class="modal-dialog modal-dialog-centered">
+			<div class="modal-content" style="text-align: center;">
+				<div class="modal-body">
+					<h1>주문번호</h1>
+					<h1 id="orderNumZone"></h1>
+					<h6 id="orderDateZone">주문일시 :</h6>
+					<div class="my-3">
+						<i class="bi bi-check-circle fs-1"
+							style="color: var(--bs-primary)"></i>
+					</div>
+					<h5>주문이 완료되었습니다!</h5>
+					<h5 class="mb-5">결제는 음식 수령과 함께 해주세요.</h5>
+					<p>3초후 자동으로 닫힙니다.</p>
+				</div>
+
+			</div>
+		</div>
+	</div>
 	<div class="main">
 		<div class="header">
-
 			<i class="bi bi-arrow-left fs-3 mx-3" id="backspace"
 				style="color: white; display: none;" onclick="kioskPage()"></i> <img
 				src="/resources/image/mainLogo-dark.png" class="mx-3">
@@ -40,7 +59,7 @@
 						<div id="storeName"></div>
 					</div>
 					<div class="text-center" style="overflow-y: auto; height: 93%;">
-						<div class="menuList row row-cols-3" id="menuListZone"></div>
+						<div class="menuList row row-cols-4" id="menuListZone"></div>
 					</div>
 
 				</div>
@@ -73,22 +92,14 @@
 		<div id="orderPage">
 			<!-- 주문내역확인 -->
 			<div class="orderContents border-end h-100">
-				<div class="orderZoneHeader border-bottom p-2" style="">
-					<div class="menu row fs-3 "># 12</div>
+				<div class="orderZoneHeader border-bottom ">
+					<div class="menu row fs-5 p-3">주문 내역</div>
 				</div>
+
 				<div class="orderZone border-bottom">
-					<div id="orderItem">
-						<div class="menu border-bottom p-3 row text-center fs-5 ">
-							<div class="menuName col">치킨햄버거</div>
-							<div class="menuCount col-2">x2</div>
-							<div class="menuPrice col">20,000원</div>
-						</div>
-					</div>
-					<div id="orderResultZone"
-						class="menu border-top p-3 row w-100 text-center">
-						<div class="allCount col-4 fs-5">총 4건</div>
-						<div class="allPrice col fs-3">80,000원</div>
-					</div>
+					<div id="orderItem"></div>
+					<div id="orderResultZone" class="row text-center"
+						style="align-items: baseline;"></div>
 				</div>
 
 			</div>
@@ -98,8 +109,8 @@
 			<div class="paymentContens col">
 				<div class="menu p-5 payment" style="height: 50%;">
 					<div class="row" style="align-items: baseline;">
-						<div class="paymentText col fs-3" style="">결제금액</div>
-						<div class="paymentPrice col" style="">80,000</div>
+						<div class="paymentText col fs-3">결제금액</div>
+						<div class="paymentPrice col"></div>
 						<div class="paymentText text-start fs-3 col h-100">원</div>
 					</div>
 
@@ -130,16 +141,11 @@
 <script>
 let sock;
 let storeCode;
-let orderNum='000';
+let ='000';
 let isSend = false;
 jsonString = '${store}'
 	jsonData = JSON.parse(jsonString);
 	document.getElementById("storeName").innerText = jsonData.storeName;
-	function addOrderNum(){
-		orderNum =(parseInt(orderNum) +1).toString();
-		orderNum = orderNum.padStart(3,'0')
-		console.log(orderNum)
-	}
 
 	function kioskPage(isNext) {
 		const menuPage = document.getElementById("menuPage");
@@ -150,6 +156,7 @@ jsonString = '${store}'
 				document.getElementById("backspace").style.display = "block";
 				orderPage.style.display = "block";
 				menuPage.style.display = "none";
+				showOrderList()
 			}else{
 				showModal("error::주문을 해주세요.::")
 			}
@@ -206,12 +213,12 @@ jsonString = '${store}'
 			if(menu.isMain == 'Y'){
 				cardContent+="<div class=\"position-absolute m-3 badge bg-success rounded-pill fs-6 mx-3 col-3\">대표</div>"
 			}
-			if (menu.menuImageLocation != ''){
-				cardContent+="<img src= \"/resources/image/"+storeCode+"/"+menu.menuImageCode+".jpg"+"\"class=\"card-img-top cardTop\">"
+			if (menu.menuImageCode != ''){
+				cardContent+="<div class=\"ratio ratio-4x3\"><img src=\"/resources/image/"+storeCode+"/"+menu.menuImageCode+".jpg\" class=\"card-img-top cardTop\"></div>"
 			}else{
-				cardContent+="<img src=\"http://placehold.it/1000X600\" class=\"card-img-top cardTop\">"
+				cardContent+="<div class=\"ratio ratio-4x3\"><img src=\"/resources/image/placeholder-image.jpg\" class=\"card-img-top cardTop\"></div>"
 			}
-			cardContent += "<div class=\"card-body\"><div class=\"row p-1\"><div class=\"col fs-4\">";
+			cardContent += "<div class=\"card-body\" ><div class=\"row p-1\"><div class=\"col fs-4\">";
 			cardContent += menu.menuName;
 			cardContent += "</div> </div> <div class=\"fs-4\">";
 			cardContent += menu.menuPrice;       
@@ -222,13 +229,6 @@ jsonString = '${store}'
 		});
 	}
 	
-	if (JSON.parse(jsonString).storeCode) {
-		storeCode = JSON.parse(jsonString).storeCode;
-		sock = new WebSocket("ws://192.168.0.5:80/postluck/" + storeCode);
-		// WebSocket 처리 코드
-	} else {
-		showModal("error:세션 오류:세션이 만료되었습니다. 다시 로그인해주세요.:moveIndex:")
-	}
 	function getCurrentDateTime() {
 		  const now = new Date();
 		  const year = now.getFullYear();
@@ -241,32 +241,25 @@ jsonString = '${store}'
 	}
 
 	function sendOrder(payment){
-			let orderString = JSON.stringify(orderList);
 			isSend = true;
-		if(payment == 'CA') { //현금일 경우
-			orderList['payment']="CA";
-		let jsonexam = {"storeCode":"1234567890","orderList":[{
-			"orderPaymentType":"CA","orderDate":getCurrentDateTime(),"orderState":"주문",
-			"orderMenuList": [{
-				"menu":{
-					"menuCode":"M01"
-				},"quantity":"12"
-			}]
-		}]};
-			serverCallByFetchAjaxUsingJson(JSON.stringify(jsonexam), "/Api/makeOrder", "post", "afterMakeOrder", header);
-		} else { //카드일 경우
-			orderList['payment']="CR";
-			serverCallByFetchAjaxUsingJson(orderString, "/Api/makeOrder", "post", "afterMakeOrder", header);
-			showModal("plain::주문이 완료되었습니다.:kioskPage:false")
-		}
-		
+			isFound= false;
+			sendOrderJs.orderList[0]['orderPaymentType'] = payment;
+			sendOrderJs.orderList[0]['orderDate'] = getCurrentDateTime();
+			serverCallByFetchAjaxUsingJson(JSON.stringify(sendOrderJs), "/Api/makeOrder", "post", "afterMakeOrder", header);
 	}
+	const completeOrderModal = new bootstrap.Modal(document.getElementById("completeOrderModal"))
+
 	function afterMakeOrder(jsonData){
 		cancelOrder();
-		console.log(jsonData)
-		addOrderNum();
-		showModal("plain:주문번호 #"+orderNum+":주문이 완료되었습니다.\n발급된 주문 번호를 확인해주세요.:kioskPage:false")
+		document.getElementById("orderNumZone").innerText = "#"+jsonData.orderNum;
+		document.getElementById("orderDateZone").innerText = "주문일시 : "+jsonData.orderDate;
+		completeOrderModal.show();
+		setTimeout(function(){
+			completeOrderModal.hide();
+			kioskPage(false);
+			}, 5000);
 		
+		sock.send("storeCode="+storeCode+"&orderDate="+jsonData.orderDate+"&orderNum="+jsonData.orderNum);
 	}
 	sock.onopen = function(event) {
 		showModal("plain:연결 성공!:서버와 연결되었습니다!::")
@@ -291,7 +284,10 @@ jsonString = '${store}'
 	function cancelOrder(){
 		const subContentsOrderList = document.getElementsByClassName("subContentsOrderList")[0];
 		document.getElementsByClassName("subContentsOrderList")[0].innerHTML = '';
-		 orderList = {"storeCode":storeCode,"order":{}};
+		sendOrderJs ={"storeCode":storeCode,"orderList":[{
+			"orderPaymentType":"","orderDate":"","orderState":"주문",
+			"orderMenuList": []
+		}]};
 		 getTotal();
 	}
 	
@@ -299,10 +295,12 @@ jsonString = '${store}'
 		"orderPaymentType":"","orderDate":"","orderState":"주문",
 		"orderMenuList": []
 	}]};
+	let isFound =false;
 	function addMenu(calc,mc,price){
 		const menuItem = document.getElementsByClassName("subContentsOrderList")[0];
 		for(let i=0;i<menuItem.children.length;i++){
 			 if(menuItem.children[i].getAttribute("data-menuCode") == mc){
+				 isFound = true;
 				 const menuItemDiv = menuItem.children[i];
 				 if(calc =='add'){
 				 menuItemDiv.children[2].innerText ++;					 
@@ -314,35 +312,39 @@ jsonString = '${store}'
 				 }
 				 menuItemDiv.children[4].innerText = price *  menuItemDiv.children[2].innerText+"원";
 			 }else{
+				 isFound = false;
 				 console.log("no data-menuCode")
 			 }
 		}
-		const menuCode = mc;
-		console.log(menuCode)
 		//JSON 객체 처리
-		let orderMenuListJs = {"menu":{
-			"menuCode":""
-		},"quantity":""}
-		let isFound =false;
+		let orderMenuListJs = {"menuCode":"","quantity":""}
+		
 		let menuJs ;
 		for(i=0;i<sendOrderJs.orderList[0].orderMenuList.length;i++){
-			if(sendOrderJs.orderList[0].orderMenuList[i].menu.menuCode == mc){ //이미 담은 메뉴
+			if(sendOrderJs.orderList[0].orderMenuList[i].menuCode == mc){ //이미 담은 메뉴
+				isFound = true; 
 				if(calc == 'add'){
 				sendOrderJs.orderList[0].orderMenuList[i].quantity ++;
 				}else{
 				sendOrderJs.orderList[0].orderMenuList[i].quantity--;
+				if(sendOrderJs.orderList[0].orderMenuList[i].quantity == 0){
+					 sendOrderJs.orderList[0].orderMenuList[i].splice(i, 1)
 				}
-			isFound = true; return;
-			}else{ //새로운 메뉴
-				orderMenuListJs.menu.menuCode = mc;
-				orderMenuListJs.quantity = 1;
-				sendOrderJs.orderList[0].orderMenuList.push(orderMenuListJs);
-			}
-			if(sendOrderJs.orderList[0].orderMenuList[i].quantity == 0){
-				 sendOrderJs.orderList[0].orderMenuList[i].splice(i, 1)
+				}
+			break;
 			}
 		}
-		if(isFound == false )createMenuItem(mc, price);
+			
+		if(isFound == false) {
+				console.log("it is new menu in for loop")
+				orderMenuListJs.menuCode = mc;
+				orderMenuListJs.quantity = 1;
+				sendOrderJs.orderList[0].orderMenuList.push(orderMenuListJs);
+				createMenuItem(mc,price)
+		}else{ //새로운 메뉴
+			console.log("already added");
+				
+		}
 		console.log(sendOrderJs);
 		getTotal()
 	}
@@ -359,20 +361,53 @@ jsonString = '${store}'
 		document.getElementById("total").innerText = total+"원";
 	}
 	
-	function deleteDiv(menuCode){
+	function deleteDiv(menuNum){
+		isFound =false;
 		const menuItem = document.getElementsByClassName("subContentsOrderList")[0];
-		let order =  orderList.order ;
+		
 		for(let i=0;i<menuItem.children.length;i++){
-			if(menuCode == menuItem.children[i].getAttribute("data-menuCode")){
+			if(menuNum == menuItem.children[i].getAttribute("data-menuCode")){
 				menuItem.children[i].remove();
-				getTotal()
-				delete order[menuCode];
+				if(sendOrderJs.orderList[0].orderMenuList[i].menuCode == menuNum){
+					sendOrderJs.orderList[0].orderMenuList.splice(i,1);
+					getTotal()
+				}
+				
 			}else{
 				console.log("error")
 			}
 		}
 		getTotal()
-	}
+		}
+
+	function showOrderList(){
+		const orderMenuList = document.getElementsByClassName("subContentsOrderList")[0];
+		const total = document.getElementById("total").textContent;
+		const orderResultZone = document.getElementById("orderResultZone");
+		orderResultZone.innerHTML ='';
+		let orderDiv='';
+		
+		for(let i=0;i<orderMenuList.children.length;i++){
+		orderDiv += "<div id=\"orderMenuItem\"><div class=\"menu border-bottom p-3 row text-center fs-5\"><div class=\"menuName col\">"
+		orderDiv += orderMenuList.children[i].children[0].textContent;
+		orderDiv +="</div><div class=\"menuCount col-2\">x ";
+		orderDiv += orderMenuList.children[i].children[2].textContent;
+		orderDiv += "</div><div class=\"menuPrice col\">"
+		orderDiv +=  orderMenuList.children[i].children[4].textContent;
+		orderDiv += "</div></div></div>"
+		}
+		document.getElementById("orderItem").innerHTML = orderDiv;
+		
+		const div = document.createElement("div")
+		div.setAttribute("class","allCount col-4 fs-5");
+		div.innerText ="총 "+orderMenuList.children.length+"건"
+		orderResultZone.appendChild(div);
+		const div2 = document.createElement("div");
+		div2.setAttribute("class","allPrice col fs-3");
+		div2.innerText = total;
+		orderResultZone.appendChild(div2);
+		document.getElementsByClassName("paymentPrice col")[0].innerText = total.substring(0,total.length-1)
+		}
 	function createMenuItem(mc,price){
 		const menuList = jsonData.menuList;
 		let menu;
