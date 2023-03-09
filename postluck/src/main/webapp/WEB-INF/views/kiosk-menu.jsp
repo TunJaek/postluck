@@ -32,7 +32,7 @@
 					<h6 id="orderDateZone">주문일시 :</h6>
 					<div class="my-3">
 						<i class="bi bi-check-circle fs-1"
-							style="color: var(--bs-primary)"></i>
+							style="color: var(- -bs-primary)"></i>
 					</div>
 					<h5>주문이 완료되었습니다!</h5>
 					<h5 class="mb-5">결제는 음식 수령과 함께 해주세요.</h5>
@@ -295,8 +295,9 @@ jsonString = '${store}'
 		"orderPaymentType":"","orderDate":"","orderState":"주문",
 		"orderMenuList": []
 	}]};
-	let isFound =false;
+	let isFound;
 	function addMenu(calc,mc,price){
+		isFound=false;
 		const menuItem = document.getElementsByClassName("subContentsOrderList")[0];
 		for(let i=0;i<menuItem.children.length;i++){
 			 if(menuItem.children[i].getAttribute("data-menuCode") == mc){
@@ -328,7 +329,7 @@ jsonString = '${store}'
 				}else{
 				sendOrderJs.orderList[0].orderMenuList[i].quantity--;
 				if(sendOrderJs.orderList[0].orderMenuList[i].quantity == 0){
-					 sendOrderJs.orderList[0].orderMenuList[i].splice(i, 1)
+					 sendOrderJs.orderList[0].orderMenuList.splice(i, 1)
 				}
 				}
 			break;
@@ -343,7 +344,6 @@ jsonString = '${store}'
 				createMenuItem(mc,price)
 		}else{ //새로운 메뉴
 			console.log("already added");
-				
 		}
 		console.log(sendOrderJs);
 		getTotal()
