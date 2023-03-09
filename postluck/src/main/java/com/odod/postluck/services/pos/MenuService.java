@@ -55,7 +55,7 @@ public class MenuService extends TransactionAssistant {
 		case "ME06":
 //			this.deleteMenu(mav);
 			break;
-		}
+		}	
 	}
 
 	private void getAllMenuList(Model model) {
