@@ -449,11 +449,4 @@ function showModal(messageString) {
 	}
 }
 
-function modalClose() {
-	const messageModal = new bootstrap.Modal(document.querySelector('#messageModal'));
-	messageModal.addEventListener('shown.bs.modal', function() {
-		messageModal.hide();
-	});
-}
-
 

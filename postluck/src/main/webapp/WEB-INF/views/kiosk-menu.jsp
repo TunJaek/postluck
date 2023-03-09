@@ -313,7 +313,6 @@ jsonString = '${store}'
 				 }
 				 menuItemDiv.children[4].innerText = price *  menuItemDiv.children[2].innerText+"원";
 			 }else{
-				 isFound = false;
 				 console.log("no data-menuCode")
 			 }
 		}
