@@ -121,6 +121,10 @@ WHERE  SA_STCODE = #{storeBean} AND SA_DATE= #{orderList[0].salesDate};
 		SM_STCODE = #{storeCode} AND
 		SM_CODE = #{menuList[0].menuCode}
 	</delete>
+	<insert id="insMenuImgCode" parameterType="com.odod.postluck.beans.StoreBean">
+		INSERT INTO STOREIMAGE(SI_CODE, SI_LOCATION)
+		VALUES(#{storeCode}||#{menuList[0].menuCode}, #{menuList[0].menuImageLocation})
+	</insert>
 
 
 	<insert id="insLocation"
