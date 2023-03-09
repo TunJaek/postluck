@@ -49,6 +49,7 @@ document.addEventListener('DOMContentLoaded', function() {
 <!-- 헤더랑 옆 클릭바 고정을 고정. -->
 
 <body class="vsc-initialized">
+
 	<!-- 위치 리스트 Modal -->
 	<div class="modal fade show" id="locationListModal"
 		style="display: none; z-index: 1060;">
@@ -775,11 +776,9 @@ document.addEventListener('DOMContentLoaded', function() {
 		console.log(salesToggle.checked)
 		if (salesToggle.checked) {
 			console.log("false")
-			showModal("plain::영업을 시작합니다.:")
 			formData.append('salesLogList[0].salesState', 'O');
 		} else {
 			console.log("true")
-			showModal("plain::영업을 종료합니다.:")
 			formData.append('salesLogList[0].salesState', 'C');
 		}
 		formData.append('locationList[0].locationCode', 'L01');
@@ -795,7 +794,7 @@ document.addEventListener('DOMContentLoaded', function() {
 		}else{
 			salesToggle.setAttribute("checked", "false");
 			document.getElementById("isOpenText").innerText = "영업전";
-			showModal(jonData.message);
+			showModal(jsonData.message);
 			
 		}
 	}
@@ -943,7 +942,7 @@ document.addEventListener('DOMContentLoaded', function() {
 		document.getElementById("locationAddr").value = '';
 		document.getElementById("locationName").value = '';
 		document.getElementById("locationDetail").value = '';
-		showModal(jsonData.message+"reload:1");
+		showModal(jsonData.message+":");
 	}
 	//위치 리스트 모달 보여주기 
 	function showLocationList() {
@@ -1001,11 +1000,6 @@ document.addEventListener('DOMContentLoaded', function() {
 		locationListModal.hide()
 		showModal(jsonData.message+"sideMenu:1")	
 	}
-	//페이지 reload
-	function reload(Idx){
-		movePage('PosManage');
-		sideMenu(Idx);
-	}
 	
 	//메뉴 입력 Zone 생성 
 	function showMenuInput(menuCode){
@@ -1030,16 +1024,16 @@ document.addEventListener('DOMContentLoaded', function() {
 	    	<input type="text" class="form-control w-25" placeholder="가격을 입력해주세요." id="menuPrice">
 	    `;
 	    menuInputZone.appendChild(menuPriceRow);
-
+	    
 	    // 매장 사진 등록
 	    const menuImageRow = document.createElement("div");
 	    menuImageRow.classList.add("row");
 	    menuImageRow.style.alignItems = "center";
 	    menuImageRow.innerHTML = `
-	    	<div class="col-2">매장 사진 등록</div>
-	    	<div class="form-group col-6 p-0">
-	    		<input class="form-control" type="file" id="menuImage">
-	    	</div>
+			<div class="col-2">매장 사진 등록</div>
+			<div class="col"><div class="form-group w-50 p-0">
+			<input class="form-control" type="file" id="formFile">
+			<div class="ratio ratio-4x3"><img src="/resources/image/6913651651/6913651651M01.jpg" class="mt-3"></div></div></div>
 	    `;
 	    menuInputZone.appendChild(menuImageRow);
 
@@ -1238,14 +1232,12 @@ document.addEventListener('DOMContentLoaded', function() {
 	
 // 	function modifyMenu(menuCode){
 // 		  // 입력값들을 추가
-// 		c
-		  
 // 	    serverCallByFetch(formData,"/Api/ModifyMenu","post","afterDeleteMenu",header);
 // 	}
 
 	
 	 function afterDeleteMenu(jsonData){
-	    showModal(jsonData.message+"reload:2");
+	    showModal(jsonData.message+":");
 	}
 	// 차트 생성
 	var ctx = document.getElementById('chart').getContext('2d');
