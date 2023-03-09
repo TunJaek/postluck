@@ -73,7 +73,7 @@ function isMem(){
 						<div class="row"
 							style="background-color: #F9E000; border-radius: 5px; align-items: center; cursor: pointer"
 							id="kakaoLogin" onclick="kakaoLogin()">
-							<img class="col-3" src="..\\..\resources\image\1234123412">
+							<img class="col-3" src="..\..\resources\image\kakaoLoginBtn.png">
 							<div class="col-9">카카오로 로그인하기</div>
 						</div>
 					</div>
@@ -240,7 +240,6 @@ function isMem(){
 	position: relative;
 	right: 4%;
 	top: 50%;
-
 	/*수직 중앙 -> container의 높이값이 있어야 적용됨*/
 }
 

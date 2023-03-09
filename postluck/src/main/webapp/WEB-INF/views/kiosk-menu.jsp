@@ -22,6 +22,8 @@
 <link rel="stylesheet" href="/resources/css/kiosk.css">
 </head>
 <body>
+	<div class="modal fade" id="messageModal"
+		style="background-color: rgba(0, 0, 0, 0.2); z-index: 1080"></div>
 	<div class="modal fade" tabindex="-1" id="completeOrderModal"
 		aria-modal="true" role="dialog">
 		<div class="modal-dialog modal-dialog-centered">
@@ -135,8 +137,7 @@
 			</div>
 		</div>
 	</div>
-	<div class="modal fade" id="messageModal"
-		style="background-color: rgba(0, 0, 0, 0.2); z-index: 1080"></div>
+
 </body>
 <script>
 let sock;
@@ -313,7 +314,6 @@ jsonString = '${store}'
 				 }
 				 menuItemDiv.children[4].innerText = price *  menuItemDiv.children[2].innerText+"원";
 			 }else{
-				 isFound = false;
 				 console.log("no data-menuCode")
 			 }
 		}

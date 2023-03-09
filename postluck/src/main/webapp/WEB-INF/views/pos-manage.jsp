@@ -41,15 +41,79 @@ document.addEventListener('DOMContentLoaded', function() {
 </script>
 <script
 	src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.1/index.global.min.js'></script>
-
+<script
+	src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+	integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+	crossorigin="anonymous"></script>
 </head>
 <!-- 헤더랑 옆 클릭바 고정을 고정. -->
 
 <body class="vsc-initialized">
-	<script
-		src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
-		integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
-		crossorigin="anonymous"></script>
+	<!-- 위치 리스트 Modal -->
+	<div class="modal fade show" id="locationListModal"
+		style="display: none; z-index: 1060;">
+		<div class="modal-dialog modal-dialog-centered"
+			style="max-width: 40%;">
+			<div class="modal-content ">
+				<div class="modal-header">
+					<h5 class="modal-title" id="modifyModalTitle">위치 편집</h5>
+					<button type="button" class="btn-close" data-bs-dismiss="modal"
+						aria-label="Close"></button>
+				</div>
+				<div class="modal-body" style="max-height: 60vh; overflow-y: auto"
+					id="locations"></div>
+			</div>
+		</div>
+	</div>
+	<!-- 위치 등록 Modal -->
+	<div class="modal fade " id="regLocationModal"
+		data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+		aria-modal="true" role="dialog"
+		style="display: none; - -bs-modal-width: 50%; z-index: 1070">
+		<div class="modal-dialog modal-dialog-centered "
+			style="max-width: 50%;">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="regModalTitle"></h5>
+					<button type="button" class="btn-close" data-bs-dismiss="modal"
+						aria-label="Close" id="regCancel"></button>
+				</div>
+				<div class="modal-body; px-5 my-4">
+					<div class="row p-2">
+						<div class="col-3 text-center">위치명</div>
+						<div class="col-9">
+							<input type="text" class="form-control" id="reglocationName">
+						</div>
+					</div>
+					<div class="row p-2">
+						<div class="col-3 text-center">주소</div>
+						<div class="col-7">
+							<input type="text" class="form-control " id="locationAddr"
+								placeholder="주소">
+						</div>
+						<div class="col-2">
+							<input type="button" class="btn btn-primary"
+								onclick="sample5_execDaumPostcode()" value="주소 검색"> <br>
+						</div>
+					</div>
+					<div class="row p-2">
+						<div class="col-3"></div>
+						<div class="col-9">
+							<input type="text" class="form-control" id="locationDetail"
+								placeholder="상세주소를 입력해주세요." maxlength="200">
+							<div id="map1"
+								style="height: 30vh; margin-top: 10px; display: none"></div>
+						</div>
+					</div>
+				</div>
+				<div class="modal-footer justify-content-center">
+					<button type="button" class="btn btn-primary"
+						id="locationServerCall"></button>
+				</div>
+			</div>
+		</div>
+	</div>
+
 	<div class="main">
 		<div class="header">
 			<span class="px-3 " style="cursor: pointer"
@@ -83,7 +147,6 @@ document.addEventListener('DOMContentLoaded', function() {
 						<li><a class="dropdown-item" href="#">로그아웃</a></li>
 					</ul>
 				</div>
-				<div class="menu  p-3 sideMenu" onclick="sideMenu(0)">일정</div>
 				<div class="menu  p-3 sideMenu" onclick="sideMenu(1)">매장관리</div>
 				<div class="menu  p-3 sideMenu" onclick="sideMenu(2)">메뉴관리</div>
 				<div class="menu  p-3 sideMenu" onclick="sideMenu(5)">결제내역</div>
@@ -239,7 +302,8 @@ document.addEventListener('DOMContentLoaded', function() {
 								<input type="date">
 							</div>
 							<div class="form-group col-6">
-								<select class="form-select" id="paymentCategory" onchange="changePayment()">
+								<select class="form-select" id="paymentCategory"
+									onchange="changePayment()">
 									<option value="결제수단">결제수단</option>
 									<option value="카드">카드</option>
 									<option value="현금">현금</option>
@@ -248,7 +312,7 @@ document.addEventListener('DOMContentLoaded', function() {
 						</div>
 
 						<div class="overflow-auto" id="salesList">
-						<!-- 결제내역 들어감 '카드'or현금 -->
+							<!-- 결제내역 들어감 '카드'or현금 -->
 						</div>
 					</div>
 					<div class="paymentDetail" style="width: 60%">
@@ -463,75 +527,6 @@ document.addEventListener('DOMContentLoaded', function() {
 		<!-- 헤더랑 옆 클릭바 고정을 고정. -->
 		<!--  메세지 모달 -->
 
-
-
-		<!-- 위치 리스트 Modal -->
-		<div class="modal fade show" id="locationListModal" tabindex="-1"
-			style="display: none; z-index: 1060;">
-			<div class="modal-dialog modal-dialog-centered"
-				style="max-width: 40%;">
-				<div class="modal-content ">
-					<div class="modal-header">
-						<h5 class="modal-title" id="modifyModalTitle">위치 편집</h5>
-						<button type="button" class="btn-close" data-bs-dismiss="modal"
-							aria-label="Close"></button>
-					</div>
-					<div class="modal-body" style="max-height: 60vh; overflow-y: auto"
-						id="locations"></div>
-				</div>
-			</div>
-		</div>
-		<!-- 위치 등록 Modal -->
-		<div class="modal fade show" id="regLocationModal"
-			data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-			aria-modal="true" role="dialog"
-			style="display: none; - -bs-modal-width: 50%; z-index: 1070">
-			<div class="modal-dialog modal-dialog-centered "
-				style="max-width: 50%;">
-				<div class="modal-content">
-					<div class="modal-header">
-						<h5 class="modal-title" id="regModalTitle"></h5>
-						<button type="button" class="btn-close" data-bs-dismiss="modal"
-							aria-label="Close" id="regCancel"
-							onclick="regLocationModal.hide()"></button>
-					</div>
-					<div class="modal-body; px-5 my-4">
-						<div class="row p-2">
-							<div class="col-3 text-center">위치명</div>
-							<div class="col-9">
-								<input type="text" class="form-control" id="reglocationName">
-							</div>
-						</div>
-						<div class="row p-2">
-							<div class="col-3 text-center">주소</div>
-							<div class="col-7">
-								<input type="text" class="form-control " id="locationAddr"
-									placeholder="주소">
-							</div>
-							<div class="col-2">
-								<input type="button" class="btn btn-primary"
-									onclick="sample5_execDaumPostcode()" value="주소 검색"> <br>
-							</div>
-						</div>
-						<div class="row p-2">
-							<div class="col-3"></div>
-							<div class="col-9">
-								<input type="text" class="form-control" id="locationDetail"
-									placeholder="상세주소를 입력해주세요." maxlength="200">
-								<div id="map1"
-									style="height: 30vh; margin-top: 10px; display: none"></div>
-							</div>
-						</div>
-					</div>
-					<div class="modal-footer justify-content-center">
-						<button type="button" class="btn btn-primary"
-							id="locationServerCall"></button>
-					</div>
-				</div>
-			</div>
-		</div>
-		<div class="modal fade" id="messageModal"
-			style="background-color: rgba(0, 0, 0, 0.2); z-index: 1080"></div>
 	</div>
 
 </body>
@@ -942,6 +937,7 @@ document.addEventListener('DOMContentLoaded', function() {
 	const regLocationModal = new bootstrap.Modal(document.getElementById('regLocationModal'))
 	//위치 등록 후 callback func
 	function afterRegLocation(jsonData) {
+		locationListModal.hide()
 		regLocationModal.hide()
 		document.getElementById("regLocationModal").display ="none"
 		document.getElementById("locationAddr").value = '';
@@ -998,7 +994,7 @@ document.addEventListener('DOMContentLoaded', function() {
 	}
 	
 	//지역 리스트 모달(부트스트랩 객체)
-	const locationListModal = new bootstrap.Modal(document.getElementById('locationListModal'))
+	const locationListModal = new bootstrap.Modal(document.getElementById('locationListModal'));
 	//지역 삭제 callback
 	function afterDelLocation(jsonData) {
 		deleteIdx ='';
