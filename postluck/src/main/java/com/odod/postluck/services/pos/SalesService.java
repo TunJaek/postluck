@@ -78,12 +78,23 @@ public class SalesService extends TransactionAssistant {
 		
 	}
 	private void getSalesDetail(Model model) {
-		StoreBean store = (StoreBean)model.getAttribute("store");
+		StoreBean store = (StoreBean)model.getAttribute("salesStore");
 		try {
 			this.tranManager.tranStart();
-			
+			List<OrderBean> orderList = this.sqlSession.selectList("selPaymentList", store);
+			System.out.println("오더리스트"+orderList);
+//			store.setOrderList((ArrayList<OrderBean>)orderList);
+	//		System.out.println("스토어에넣기"+store);
+			List<StoreBean>storeList=this.sqlSession.selectList("selSalesList", store);
+			System.out.println("스토어리스트만들기"+storeList);
+			storeList.get(0).setOrderList((ArrayList<OrderBean>)orderList);
+			System.out.println("스토어리스트"+storeList);
+			store=storeList.get(0);
+			System.out.println("스토어"+store);
 		} catch (Exception e) {
 			e.printStackTrace();
+		}finally {
+			this.tranManager.tranEnd();
 		}
 		
 	}

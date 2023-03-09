@@ -30,7 +30,7 @@ public class MainService extends TransactionAssistant {
 	private JsonWebTokenService jwt;
 	@Autowired
 	private MainService main;
-	
+
 	public MainService() {
 
 	}
@@ -65,8 +65,9 @@ public class MainService extends TransactionAssistant {
 		model.addAttribute("store", this.getStoreInfoAsStoreBean(model));
 
 	}
+
 	private void movePos(ModelAndView mav) {
-		StoreBean store =(StoreBean) mav.getModel().get("store");
+		StoreBean store = (StoreBean) mav.getModel().get("store");
 		store.setStoreCode(this.jwt.getTokenInfoFromJWT(mav.getModel().get("jwt").toString()).getStoreCode());
 		try {
 			mav.addObject("store", new ObjectMapper().writeValueAsString(this.main.getStoreInfoAsStoreBean(mav)));
@@ -76,6 +77,7 @@ public class MainService extends TransactionAssistant {
 		}
 		mav.setViewName("pos-main");
 	}
+
 	/**
 	 * @method private StoreBean getUserInfo(Model model)
 	 * 
@@ -125,11 +127,11 @@ public class MainService extends TransactionAssistant {
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
-		} finally {
-			store.setMessage(message);
 		}
+		store.setMessage(message);
 
 		return store;
+
 	}
 
 	private void movePosManage(ModelAndView mav) {

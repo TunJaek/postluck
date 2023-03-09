@@ -4725,7 +4725,8 @@ fieldset:disabled .btn {
     }
 
     .navbar-expand-xxl .offcanvas .offcanvas-header {
-        display: none
+        display: none;
+        
     }
 
     .navbar-expand-xxl .offcanvas .offcanvas-body {
@@ -7565,7 +7566,7 @@ fieldset:disabled .btn {
 
 .offcanvas-header {
     display: flex;
-    align-items: center;
+    align-items: baseline;
     justify-content: space-between;
     padding: var(--bs-offcanvas-padding-y) var(--bs-offcanvas-padding-x)
 }

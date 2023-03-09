@@ -25,20 +25,24 @@
 	<div class="modal fade" id="messageModal"
 		style="background-color: rgba(0, 0, 0, 0.2); z-index: 1080"></div>
 	<div class="modal fade" tabindex="-1" id="completeOrderModal"
-		aria-modal="true" role="dialog">
+		aria-modal="true" role="dialog" data-bs-backdrop="static"
+		data-bs-keyboard="false">
 		<div class="modal-dialog modal-dialog-centered">
 			<div class="modal-content" style="text-align: center;">
 				<div class="modal-body">
 					<h1>주문번호</h1>
 					<h1 id="orderNumZone"></h1>
-					<h6 id="orderDateZone">주문일시 :</h6>
+					<div class="row text-center mt-3" style="justify-content: center;">
+						<div class="col-5 fs-4">결제 예정 금액 :</div>
+						<div class="col-3 fs-4" id="salesPrice"></div>
+					</div>
 					<div class="my-3">
 						<i class="bi bi-check-circle fs-1"
-							style="color: var(- -bs-primary)"></i>
+							style="color: var(--bs-primary)"></i>
 					</div>
 					<h5>주문이 완료되었습니다!</h5>
 					<h5 class="mb-5">결제는 음식 수령과 함께 해주세요.</h5>
-					<p>3초후 자동으로 닫힙니다.</p>
+					<p>5초 후 자동으로 닫힙니다.</p>
 				</div>
 
 			</div>
@@ -122,13 +126,13 @@
 				</div>
 				<div class="paymentChoice row">
 					<div class="card paymentMethod d-flex col m-5"
-						onclick="sendOrder('CR')">
+						onclick="sendOrder('카드')">
 						<div class="menu p-3">
 							<i class="bi bi-credit-card"></i> 카드결제 >
 						</div>
 					</div>
 					<div class="card paymentMethod d-flex col m-5"
-						onclick="sendOrder('CA')">
+						onclick="sendOrder('현금')">
 						<div class="menu p-3">
 							<i class="bi bi-cash-coin"></i> 현금결제 >
 						</div>
@@ -251,9 +255,8 @@ jsonString = '${store}'
 	const completeOrderModal = new bootstrap.Modal(document.getElementById("completeOrderModal"))
 
 	function afterMakeOrder(jsonData){
-		cancelOrder();
 		document.getElementById("orderNumZone").innerText = "#"+jsonData.orderNum;
-		document.getElementById("orderDateZone").innerText = "주문일시 : "+jsonData.orderDate;
+		document.getElementById("salesPrice").innerText = document.getElementById("total").textContent;
 		completeOrderModal.show();
 		setTimeout(function(){
 			completeOrderModal.hide();
@@ -261,17 +264,17 @@ jsonString = '${store}'
 			}, 5000);
 		
 		sock.send("storeCode="+storeCode+"&orderDate="+jsonData.orderDate+"&orderNum="+jsonData.orderNum);
+		cancelOrder();
 	}
 	sock.onopen = function(event) {
 		showModal("plain:연결 성공!:서버와 연결되었습니다!::")
-		sock.send(storeCode);
+// 		sock.send(storeCode);
 	};
 
 	sock.onmessage = function(e) {
 		showModal('plain:연결 성공!:동일한 아이디로 접속하여, 연결을 했습니다!::')
 	};
 	sock.onclose = function(event) {
-		alert(event.code);
 		if (event.wasClean) {
 			showModal('plain:연결 종료:서버와의 연결이 정상적으로 종료되었습니다.::')
 		} else {

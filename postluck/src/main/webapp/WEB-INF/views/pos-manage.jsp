@@ -20,24 +20,17 @@
 	src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 <script type="text/javascript"
 	src="//dapi.kakao.com/v2/maps/sdk.js?appkey=0203ee3bafbf6d3fe50695090bc89516&libraries=services"></script>
-<script
-	src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.1/index.global.min.js'></script>
+
 <script
 	src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
 	integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
 	crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
+
 if('${store}'!=''){
 	jsonString = '${store}'
 }
-document.addEventListener('DOMContentLoaded', function() {
-	let calendarEl = document.getElementById('calendar');
-	let calendar = new FullCalendar.Calendar(calendarEl, {
-		initialView : 'dayGridMonth'
-	});
-	calendar.render();
-});
 </script>
 <script
 	src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.1/index.global.min.js'></script>
@@ -147,27 +140,16 @@ document.addEventListener('DOMContentLoaded', function() {
 						<li><a class="dropdown-item" href="#">로그아웃</a></li>
 					</ul>
 				</div>
-				<div class="menu  p-3 sideMenu" onclick="sideMenu(0)">일정</div>
 				<div class="menu  p-3 sideMenu" onclick="sideMenu(1)">매장관리</div>
 				<div class="menu  p-3 sideMenu" onclick="sideMenu(2)">메뉴관리</div>
 				<div class="menu  p-3 sideMenu" onclick="sideMenu(5)">결제내역</div>
 				<div class="menu  p-3 sideMenu" onclick="sideMenu(6)">매출분석</div>
 			</div>
 			<!-- sideMenu(3) : 메뉴추가 / sideMenu(4) : 메뉴수정 -->
-			<!-- 0. 일정 -->
-			<div class="mainContent" id="menu0" style="display: block;">
-				<div class="border-bottom p-3 h-7">
-					<h5>일정</h5>
-				</div>
-				<div class="mt-5 d-flex" id='calendar-container'
-					style="justify-content: center;">
-					<div id='calendar' style="width: 50%;"></div>
-				</div>
-			</div>
-			<!-- 0. 일정 -->
+		
 
 			<!-- 1. 매장관리 -->
-			<div class="mainContent" id="menu1" style="display: none;">
+			<div class="mainContent" id="menu1" style="display: block;">
 				<div class="border-bottom p-3 h-7">
 					<h5>매장 관리</h5>
 				</div>
@@ -554,13 +536,13 @@ document.addEventListener('DOMContentLoaded', function() {
 		document.getElementById("isOpenText").innerText = "영업전"
 	}
 
-	let selectedIdx = 0;
+	let selectedIdx = 1;
 	
 	
 	function setStoreInfo(JsonData){
 		jsonData = JsonData;
 	}
-	
+	sideMenu(1);
 	//메뉴 탭을 누를때 
 	function sideMenu(newIdx) {
 		 const formData = new FormData;
@@ -1301,7 +1283,8 @@ document.addEventListener('DOMContentLoaded', function() {
 			// div 요소에 onclick 이벤트를 추가합니다.
 			  divElement.onclick = function() {
 			    // 클릭 시 실행될 함수를 작성합니다.
-			    	formData.append(data);
+			    	formData.append("storeCode",storeNum);
+			    	formData.append('orderList[0].salesDate',data.salesDate);
 				  serverCallByFetch(formData,'/Api/selSalesDetail','post','selSalesDetail',header);
 			  };
 
