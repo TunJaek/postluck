@@ -24,4 +24,3 @@ public class StoreBean {
 	private ArrayList<SalesLogBean> salesLogList;
 	private String message;
 }
- 

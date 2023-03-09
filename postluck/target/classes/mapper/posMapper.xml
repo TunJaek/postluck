@@ -31,7 +31,6 @@
 		VALUES(#{storeCode},#{menuList[0].menuCode},#{menuList[0].menuName},
 		#{menuList[0].menuPrice},#{menuList[0].menuImageCode},#{menuList[0].isMain},#{menuList[0].isKiosk},#{menuList[0].isSoldOut})
 	</insert>
-
 	
 <select id="selPayment" parameterType="com.odod.postluck.beans.StoreBean" resultType="com.odod.postluck.beans.OrderBean">
  SELECT SA_PAYMENTTYPE AS salespaymentType, SA_PRICE AS amount, SA_DATE AS salesDate
@@ -47,8 +46,25 @@ FROM POSDBA.SALES
 WHERE SA_PAYMENTTYPE = #{orderList[0].salespaymentType} AND SA_STCODE = #{storeCode}
 
 </select>
-
-
+<select id="selPaymentList" parameterType="com.odod.postluck.beans.StoreBean" resultType="com.odod.postluck.beans.OrderBean">
+SELECT SM_NAME AS OrderDetailBean[0].menuName,
+SM_PRICE AS OrderDetailBean[0].menuPrice,
+OD_COUNT AS OrderDetailBean[0].quantity
+FROM  POSDBA.SALES SA
+INNER JOIN ORDERSDETAIL ON SA_ODOSTIME = OD_OSDATE AND SA_STCODE = OD_OSSTCODE
+INNER JOIN STOREMENU ON OD_SMCODE = SM_CODE AND SA_STCODE = SM_STCODE
+WHERE SA_STCODE =#{storeBean} AND SA_DATE= #{orderList[0].salesDate}
+</select>
+<select id ="selSalesList" parameterType="com.odod.postluck.beans.StoreBean" resultType="com.odod.postluck.beans.StoreBean">
+SELECT SA_ODOSTIME AS orderList[0].salesDate,
+SA_PAYMENTTYPE AS orderList[0].orderPaymentType,
+SA_PRICE AS orderList[0].amount,
+LO_ADDR AS locationList[0].locationAddr,
+LO_DETAIL AS locationList[0].locationDetail
+FROM POSDBA.SALES SA
+INNER JOIN POSDBA.LOCATION ON SA_LOCODE = LO_CODE AND SA_STCODE = LO_STCODE
+WHERE  SA_STCODE = #{storeBean} AND SA_DATE= #{orderList[0].salesDate};
+</select>
 
 	<!-- <update id="insMenu" parameterType="com.odod.postluck.beans.StoreBean"> 
 		INSERT INTO STOREMENU(SM_STCODE, SM_CODE, SM_NAME, SM_PRICE) VALUES(#{storeCode},(SELECT 
@@ -105,6 +121,10 @@ WHERE SA_PAYMENTTYPE = #{orderList[0].salespaymentType} AND SA_STCODE = #{storeC
 		SM_STCODE = #{storeCode} AND
 		SM_CODE = #{menuList[0].menuCode}
 	</delete>
+	<insert id="insMenuImgCode" parameterType="com.odod.postluck.beans.StoreBean">
+		INSERT INTO STOREIMAGE(SI_CODE, SI_LOCATION)
+		VALUES(#{storeCode}||#{menuList[0].menuCode}, #{menuList[0].menuImageLocation})
+	</insert>
 
 
 	<insert id="insLocation"

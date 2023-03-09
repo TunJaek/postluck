@@ -109,9 +109,7 @@ public class MenuService extends TransactionAssistant {
 		// ex) D:\Project\PosTLUCK\resources\image
 		// 생성할 폴더 이름 : 사업자번호(1998033001)
 		// 폴더경로 프로젝트폴더 resources > image폴더 안에 사업자번호(1998033001)로 생성.
-		String folderPath = "C:\\Users\\user\\git\\postluck\\postluck\\src\\main\\webapp\\resources\\image\\"
-				+ store.getStoreCode() + "\\";
-		String filePath = folderPath;
+
 		/* Transaction Start */
 		this.tranManager.tranStart();
 		try {
@@ -123,33 +121,46 @@ public class MenuService extends TransactionAssistant {
 			} else {
 				System.out.println("메뉴코드널아님");
 				System.out.println("바꾸기전메뉴코드" + menuCode);
-				
+
 				menuCode = "M" + (Integer.parseInt(menuCode.substring(1)) + 1 < 10
 						? "0" + (Integer.parseInt(menuCode.substring(2)) + 1)
 						: Integer.parseInt(menuCode.substring(1)) + 1);
 				System.out.println("바꾼후메뉴코드" + menuCode);
 			}
 			store.getMenuList().get(0).setMenuCode(menuCode);
-			filePath += store.getStoreCode() + menuCode + ".jpg";
+
+			String originalFilename = file.getOriginalFilename();
+			String extension = originalFilename.substring(originalFilename.lastIndexOf("."));
+			System.out.println("ImgType : " + extension);
+			// 이미지 파일 저장할 폴더 경로.
+			String folderPath = "C:\\Users\\user\\git\\postluck\\postluck\\src\\main\\webapp\\resources\\image\\"
+					+ store.getStoreCode() + "\\";
+
+			// 이미지 파일 이름. 19980336 M00 .png
+			String fileName = store.getStoreCode() + store.getMenuList().get(0).getMenuCode() + extension;
+
+//			filePath += store.getStoreCode() + menuCode + ".jpg";
 			store.getMenuList().get(0).setMenuImageCode(store.getStoreCode() + menuCode);
 			// 생성할 파일 이름 : 폴더이름(1998033001) + 메뉴코드(M00) + ".jpg"
-			store.getMenuList().get(0).setMenuImageLocation(filePath);
-			if (this.convertToBoolean(this.sqlSession.insert("insMenu", store))) {
-				if(this.convertToBoolean(this.sqlSession.insert("insMenuImageCode",store))){
+
+			store.getMenuList().get(0).setMenuImageLocation(folderPath + fileName);
+			if (this.convertToBoolean(this.sqlSession.insert("insMenuImgCode", store))) {
+				System.out.println("ImgCode : " + store.getMenuList().get(0).getMenuImageCode());
+				if (this.convertToBoolean(this.sqlSession.insert("insMenu", store))) {
 					if (!new File(folderPath).exists()) {
 						new File(folderPath).mkdir();
 					}
+				} else {
+					System.out.println("menuIns실패");
+				}
+
+				if (!file.isEmpty()) {
+					file.transferTo(new File(folderPath + fileName));
+					System.out.println("파일 저장 완료. path: " + fileName);
+				} else {
+					System.out.println("파일이 없습니다.");
 				}
 				this.tranManager.commit();
-			} else {
-				System.out.println("menuIns실패");
-			}
-			
-			if (!file.isEmpty()) {
-				file.transferTo(new File(filePath));
-				System.out.println("파일 저장 완료. path: " + filePath);
-			} else {
-				System.out.println("파일이 없습니다.");
 			}
 			// if (this.convertToBoolean(this.sqlSession.insert("insMenuCode", store))) {
 			// 메뉴코드 우선추가 ('1998033036', M00, '00000','00000')

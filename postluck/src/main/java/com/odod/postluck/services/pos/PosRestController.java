@@ -120,9 +120,9 @@ public class PosRestController {
 	}
 	@PostMapping("/Api/selSalesDetail")
 	public StoreBean selSalesDetail(Model model, @ModelAttribute StoreBean store) {
-		model.addAttribute("store", store);
+		model.addAttribute("salesStore", store);
 		this.salesService.backController("SA03", model);
-		return (StoreBean)model.getAttribute("store");
+		return (StoreBean)model.getAttribute("salesStore");
 	}
 
 }

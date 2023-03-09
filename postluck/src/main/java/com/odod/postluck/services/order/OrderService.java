@@ -1,10 +1,15 @@
 package com.odod.postluck.services.order;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.odod.postluck.beans.OrderBean;
+import com.odod.postluck.beans.OrderDetailBean;
 import com.odod.postluck.beans.OrderInfoBean;
 import com.odod.postluck.beans.StoreBean;
 import com.odod.postluck.utils.SimpleTransactionManager;
@@ -24,14 +29,12 @@ public class OrderService extends TransactionAssistant {
 		switch (serviceCode) {
 		case "OR01":
 			this.makeOrder(model);
+			break;
 		case "OR02":
-			this.updOrderStateToCancel(model);
+			this.selOrderDetail(model);
 			break;
 		case "OR03":
-			this.updOrderStateToAccept(model);
-			break;
-		case "OR04":
-			this.selOrderDetail(model);
+			this.getOrderList(model);
 			break;
 		}
 	}
@@ -39,9 +42,7 @@ public class OrderService extends TransactionAssistant {
 	/* View 방식의 요청 컨트롤러 */
 	public void backController(String serviceCode, ModelAndView mav) {
 		switch (serviceCode) {
-		case "OR01":
-			this.updOrderStateToComplete(mav);
-			break;
+
 		}
 	}
 
@@ -68,6 +69,31 @@ public class OrderService extends TransactionAssistant {
 		}
 	}
 
+	private void getOrderList(Model model) {
+		String storeCode = ((OrderInfoBean) model.getAttribute("storeInfo")).getStoreCode();
+		ArrayList<OrderBean> orderBeanArr = new ArrayList<OrderBean>();
+		OrderInfoBean orderInfo = new OrderInfoBean();
+		orderInfo.setStoreCode(storeCode);
+		try {
+			this.tranManager.tranStart();
+			List<OrderBean> orderList = this.sqlSession.selectList("selOrderList", storeCode);
+			orderBeanArr = (ArrayList<OrderBean>) orderList;
+
+			for (OrderBean order : orderBeanArr) {
+				orderInfo.setOrderDate(order.getOrderDate().replaceAll("[^0-9]", ""));
+				List<OrderDetailBean> orderDetailBeanList = this.sqlSession.selectList("selOrderDetail", orderInfo);
+				ArrayList<OrderDetailBean> orderDetailBeanArr = (ArrayList<OrderDetailBean>) orderDetailBeanList;
+				order.setOrderMenuList(orderDetailBeanArr);
+				
+			}
+			model.addAttribute("orderList",orderBeanArr);
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			this.tranManager.tranEnd();
+		}
+	}
+
 	private void updOrderStateToComplete(ModelAndView mav) {
 		// 주문 상태 -> 완료
 
@@ -85,6 +111,29 @@ public class OrderService extends TransactionAssistant {
 
 	private void selOrderDetail(Model model) {
 		// 주문상세내역리스트 불러오기
+		OrderInfoBean orderInfo = (OrderInfoBean) model.getAttribute("orderInfo");
+		System.out.println(orderInfo);
+		OrderBean order = new OrderBean();
+		ArrayList<OrderDetailBean> orderDetailArrList = new ArrayList<OrderDetailBean>();
+
+		System.out.println(orderInfo.getStoreCode());
+		System.out.println(orderInfo.getOrderDate());
+		System.out.println(orderInfo.getOrderNum());
+
+		try {
+			this.tranManager.tranStart();
+			order = this.sqlSession.selectOne("selOrderInfo", orderInfo);
+			List<OrderDetailBean> orderDetailList = this.sqlSession.selectList("selOrderDetail", orderInfo);
+			System.out.println(orderDetailList);
+			orderDetailArrList = (ArrayList<OrderDetailBean>) (orderDetailList);
+			order.setOrderMenuList(orderDetailArrList);
+			model.addAttribute("order", order);
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.out.println("실패");
+		} finally {
+			this.tranManager.tranEnd();
+		}
 
 	}
 
