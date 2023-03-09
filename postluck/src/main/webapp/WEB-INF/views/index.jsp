@@ -47,8 +47,8 @@ function isMem(){
 <body class="vsc-initialized" onload="isMem()">
 	<div class="main">
 		<div id="left">
-			<div id="foodTruckNews">
-				푸드트럭 소식 보러가기 <img class="position-absolute start-0 bottom-0"
+			<div id="foodTruckNews"  onclick="moveHome()">
+				푸드트럭 소식 보러가기 <img class="position-absolute start-0 bottom-0" onclick="moveHome()"
 					src="/resources/image/arrow.png" style="width: 120%;">
 			</div>
 		</div>
@@ -73,7 +73,7 @@ function isMem(){
 						<div class="row"
 							style="background-color: #F9E000; border-radius: 5px; align-items: center; cursor: pointer"
 							id="kakaoLogin" onclick="kakaoLogin()">
-							<img class="col-3" src="../../resources/image/kakaoLoginBtn.png">
+							<img class="col-3" src="..\\..\resources\image\1234123412">
 							<div class="col-9">카카오로 로그인하기</div>
 						</div>
 					</div>
@@ -85,6 +85,7 @@ function isMem(){
 			style="background-color: rgba(0, 0, 0, 0.2); z-index: 1080"></div>
 
 	</div>
+	
 
 
 	<script>
@@ -152,6 +153,9 @@ function isMem(){
 					.catch(function(error) {
 						console.error(error);
 					});
+			}
+			function moveHome(){
+				serverCallByRequest("Home/moveHome", 'post','');
 			}
 	</script>
 

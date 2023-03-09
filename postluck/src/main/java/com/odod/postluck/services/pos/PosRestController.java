@@ -10,8 +10,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.odod.postluck.beans.StoreBean;
 
 @RestController
@@ -24,6 +22,8 @@ public class PosRestController {
 	private StoreService storeService;
 	@Autowired
 	private MenuService menuService;
+	@Autowired
+	private SalesService salesService;
 
 	@PostMapping("/Api/UpdSalesLog")
 	public StoreBean updSalesLog(Model model, @ModelAttribute StoreBean store) {
@@ -104,6 +104,25 @@ public class PosRestController {
 		System.out.println(model.addAttribute("store", store));
 		this.menuService.backController("ME06", model);
 		return (StoreBean) model.getAttribute("store");
+	}
+	
+	@PostMapping("/Api/ChangePayment")
+	public StoreBean changePayment(Model model, @ModelAttribute StoreBean store) {
+		model.addAttribute("store", store);
+		this.salesService.backController("SA02", model);
+		return (StoreBean)model.getAttribute("store");
+	}
+	@PostMapping("/Api/SelPayment")
+	public StoreBean selPayment(Model model, @ModelAttribute StoreBean store) {
+		model.addAttribute("store",store);
+		this.salesService.backController("SA01", model);
+		return (StoreBean)model.getAttribute("store");
+	}
+	@PostMapping("/Api/selSalesDetail")
+	public StoreBean selSalesDetail(Model model, @ModelAttribute StoreBean store) {
+		model.addAttribute("store", store);
+		this.salesService.backController("SA03", model);
+		return (StoreBean)model.getAttribute("store");
 	}
 
 }

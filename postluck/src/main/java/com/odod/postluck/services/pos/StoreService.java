@@ -15,8 +15,7 @@ import com.odod.postluck.utils.TransactionAssistant;
 @Service
 public class StoreService extends TransactionAssistant {
 
-	@Autowired
-	private ProjectUtils pu;
+
 	@Autowired
 	private SimpleTransactionManager tranManager;
 	@Autowired

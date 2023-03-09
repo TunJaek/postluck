@@ -31,6 +31,25 @@
 		VALUES(#{storeCode},#{menuList[0].menuCode},#{menuList[0].menuName},
 		#{menuList[0].menuPrice},#{menuList[0].menuImageCode},#{menuList[0].isMain},#{menuList[0].isKiosk},#{menuList[0].isSoldOut})
 	</insert>
+
+	
+<select id="selPayment" parameterType="com.odod.postluck.beans.StoreBean" resultType="com.odod.postluck.beans.OrderBean">
+ SELECT SA_PAYMENTTYPE AS salespaymentType, SA_PRICE AS amount, SA_DATE AS salesDate
+FROM POSDBA.SALES
+WHERE SA_STCODE = #{storeCode}
+
+</select>
+
+
+<select id="selTypeSalesList" parameterType="com.odod.postluck.beans.StoreBean" resultType="com.odod.postluck.beans.OrderBean">
+ SELECT SA_PAYMENTTYPE AS salespaymentType, SA_PRICE AS amount, SA_DATE AS salesDate
+FROM POSDBA.SALES
+WHERE SA_PAYMENTTYPE = #{orderList[0].salespaymentType} AND SA_STCODE = #{storeCode}
+
+</select>
+
+
+
 	<!-- <update id="insMenu" parameterType="com.odod.postluck.beans.StoreBean"> 
 		INSERT INTO STOREMENU(SM_STCODE, SM_CODE, SM_NAME, SM_PRICE) VALUES(#{storeCode},(SELECT 
 		MAX(SM_CODE)FROM STOREMENU WHERE SM_STCODE = #{storeCode}), #{menuList[0].menuName},#{menuList[0].menuPrice}) 

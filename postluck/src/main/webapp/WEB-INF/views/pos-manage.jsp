@@ -239,31 +239,16 @@ document.addEventListener('DOMContentLoaded', function() {
 								<input type="date">
 							</div>
 							<div class="form-group col-6">
-								<select class="form-select">
-									<option>결제수단</option>
-									<option>카드</option>
-									<option>현금</option>
+								<select class="form-select" id="paymentCategory" onchange="changePayment()">
+									<option value="결제수단">결제수단</option>
+									<option value="카드">카드</option>
+									<option value="현금">현금</option>
 								</select>
 							</div>
 						</div>
 
-						<div class="overflow-auto">
-							<div class="row border m-0 align-items-center text-center p-3">
-								<span class="badge rounded-pill bg-primary w-25">카드</span>
-								<div class="col-5">80,000원</div>
-								<div class="col-3">2023.02.02.11:23</div>
-							</div>
-							<div class="row border m-0 align-items-center text-center p-3 ">
-								<span class="badge rounded-pill bg-primary w-25">카드</span>
-								<div class="col-5">80,000원</div>
-								<div class="col-3">2023.02.02.11:23</div>
-							</div>
-
-							<div class="row border m-0 align-items-center text-center p-3">
-								<span class="badge rounded-pill bg-secondary w-25">현금</span>
-								<div class="col-5">80,000원</div>
-								<div class="col-3">2023.02.02.11:23</div>
-							</div>
+						<div class="overflow-auto" id="salesList">
+						<!-- 결제내역 들어감 '카드'or현금 -->
 						</div>
 					</div>
 					<div class="paymentDetail" style="width: 60%">
@@ -725,7 +710,10 @@ document.addEventListener('DOMContentLoaded', function() {
 			}
 		}else if(newIdx == 3){
 		    showMenuInput('');
+		}else if(newIdx == 5){
+			serverCallByFetch(formData,'/Api/SelPayment','post','selSalesInfo',header);
 		}
+		
 
 	}
 	
@@ -1289,136 +1277,65 @@ document.addEventListener('DOMContentLoaded', function() {
 	var chartContainer = document.getElementById('chart-container');
 	chartContainer.style.width = '50vw';
 	chartContainer.style.height = '30vh';
-
 	
-	
-	var fileNo = 0;
-	var filesArr = new Array();
-
-	let storeData;
-
-	function cancelAddFile() {
-		for (let i = 0; i < filesArr.length; i++) {
-			if (!filesArr[i].is_delete) {
-				document.querySelector("#file" + i).remove();
-				filesArr[i].is_delete = true;
-			}
-		}
+	//매출분석
+	function changePayment(){
+		let payment=document.getElementById("paymentCategory").value;
+		 formData = new FormData();
+		 if(payment == '결제수단') {sideMenu(5)}
+		 else{
+		formData.append('orderList[0].salespaymentType',payment);
+		formData.append("storeCode",storeNum);
+		serverCallByFetch(formData,'/Api/ChangePayment','post','selSalesInfo',header);
+		 }
 	}
-	
-	/* 이미지 선택 */
-	
-	/* 상품 등록 버튼 생성 */
-	/* 첨부파일 추가 */
-	function formFile(obj) {
-		var maxFileCnt = 1; // 첨부파일 최대 개수
-		var attFileCnt = document.querySelectorAll('.filebox').length; // 기존 추가된 첨부파일 개수
-		var remainFileCnt = maxFileCnt - attFileCnt; // 추가로 첨부가능한 개수
-		var curFileCnt = obj.files.length; // 현재 선택된 첨부파일 개수
+	function selSalesInfo(jsonData){
+		const salesListZone= document.querySelector('#salesList');
+		formData = new FormData();
+		salesListZone.innerHTML='';
+		let salesList= jsonData.orderList;
+		
+			// salesList 배열의 요소 수만큼 반복하며 HTML 요소를 동적으로 생성합니다.
+			salesList.forEach((data) => {
+			  // div 요소를 생성합니다.
+			  const divElement = document.createElement("div");
+			  divElement.classList.add("row", "border", "m-0", "align-items-center", "text-center", "p-3");
+			  
+			// div 요소에 onclick 이벤트를 추가합니다.
+			  divElement.onclick = function() {
+			    // 클릭 시 실행될 함수를 작성합니다.
+			    	formData.append(data);
+				  serverCallByFetch(formData,'/Api/selSalesDetail','post','selSalesDetail',header);
+			  };
 
-		// 첨부파일 개수 확인
-		if (curFileCnt > remainFileCnt) {
-			alert("첨부파일은 최대 " + maxFileCnt + "개 까지 첨부 가능합니다.");
-		}
+			  // span 요소를 생성합니다.
+			  const spanElement = document.createElement("span");
+			  if(data.salespaymentType=='카드'){
+			  spanElement.classList.add("badge", "rounded-pill", "bg-secondary", "w-25");
+			  }else{
+			  spanElement.classList.add("badge", "rounded-pill", "bg-primary", "w-25");}
+			  spanElement.textContent = data.salespaymentType;
+		
 
-		for (var i = 0; i < Math.min(curFileCnt, remainFileCnt); i++) {
+			  // div 요소를 생성합니다.
+			  const col5Element = document.createElement("div");
+			  col5Element.classList.add("col-5");
+			  col5Element.textContent = data.amount+"원";
 
-			const file = obj.files[i];
+			  // div 요소를 생성합니다.
+			  const col3Element = document.createElement("div");
+			  col3Element.classList.add("col-3");
+			  col3Element.textContent = data.salesDate;
 
-			// 첨부파일 검증
-			if (validation(file)) {
-				// 파일 배열에 담기
-				var reader = new FileReader();
-				reader.onload = function() {
-					filesArr.push(file);
-				};
-				reader.readAsDataURL(file)
-
-				// 목록 추가
-				let htmlData = '';
-				htmlData += '<div id="file' + fileNo + '" class="filebox">';
-				htmlData += '   <p class="name">' + file.name + '</p>';
-				htmlData += '   <a class="delete" onclick="deleteFile('
-						+ fileNo
-						+ ');"><i class="far fa-minus-square"></i></a>';
-				htmlData += '</div>';
-				$('.file-list').append(htmlData);
-				fileNo++;
-			} else {
-				continue;
-			}
-		}
-		// 초기화
-		document.querySelector("input[type=file]").value = "";
+			  // 생성한 요소들을 부모 요소에 추가합니다.
+			  divElement.appendChild(spanElement);
+			  divElement.appendChild(col5Element);
+			  divElement.appendChild(col3Element);
+			  salesListZone.appendChild(divElement);
+			});
 	}
-
-	/* 첨부파일 삭제 */
-	function deleteFile(num) {
-		document.querySelector("#file" + num).remove();
-		filesArr[num].is_delete = true;
-	}
-
-	/* 폼 전송 */
-	function submitForm() {
-
-		storeData = '${storeInfo.storeCode}';
-
-		console.log(storeData);
-		// 폼데이터 담기
-		var form = document.querySelector("form");
-		var formData = new FormData(form);
-		for (var i = 0; i < filesArr.length; i++) {
-			// 삭제되지 않은 파일만 폼데이터에 담기
-			if (!filesArr[i].is_delete) {
-				formData.append("file", filesArr[i]);
-				console.log(filesArr[i]);
-			}
-		}
-
-		formData.append("imageList[0].imageCode", "0");
-		formData.append("storeCode", '${storeInfo.storeCode}');
-		const accessToken = getJWT();
-
-		serverCallByFetch(formData, "fileUpload", "post", "checkFile",
-				accessToken);
-
-	}
-
-	function checkFile(jsonData) {
-		storeData = '${storeInfo}'
-		for (let i = 0; i < filesArr.length; i++) {
-			if (!filesArr[i].is_delete) {
-				document.querySelector("#file" + i).remove();
-				filesArr[i].is_delete = true;
-			}
-		}
-		let modal = document.getElementById("staticBackdrop1");
-		let modalInstance = bootstrap.Modal.getInstance(modal);
-		modalInstance.hide();
-
-		alert(storeData);
-	}
-
-	/* 첨부파일 검증 */
-	function validation(obj) {
-		const fileTypes = [ 'application/pdf', 'image/gif', 'image/jpeg',
-				'image/png', 'image/bmp', 'image/tif',
-				'application/haansofthwp', 'application/x-hwp' ];
-		if (obj.name.length > 100) {
-			alert("파일명이 100자 이상인 파일은 제외되었습니다.");
-			return false;
-		} else if (obj.size > (100 * 1024 * 1024)) {
-			alert("최대 파일 용량인 100MB를 초과한 파일은 제외되었습니다.");
-			return false;
-		} else if (obj.name.lastIndexOf('.') == -1) {
-			alert("확장자가 없는 파일은 제외되었습니다.");
-			return false;
-		} else if (!fileTypes.includes(obj.type)) {
-			alert("첨부가 불가능한 파일은 제외되었습니다.");
-			return false;
-		} else {
-			return true;
-		}
+	function selSalesDetail(jsonData){
+		
 	}
 
 </script>
