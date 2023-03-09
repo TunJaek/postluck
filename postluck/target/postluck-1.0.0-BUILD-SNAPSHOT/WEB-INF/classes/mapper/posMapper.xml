@@ -91,10 +91,7 @@
 	<select id="isOpen" parameterType="com.odod.postluck.beans.StoreBean" resultType="String">
 		select sl_state as salsesState from saleslog where sl_date=(select max(sl_date) from saleslog where sl_stcode= #{storeCode} GROUP BY sl_stcode)
 	</select>
-	<select id="selSchedule" parameterType="com.odod.postluck.beans.StoreBean" resultType="com.odod.postluck.beans.ScheduleBean">
-		select SC_STARTDATE as startDate, SC_ENDDATE as endDate, SC_STARTTIME as startTime, SC_ENDTIME as endTime, SC_LOCODE as location.locationCode, LO_NAME as location.locationName,
-		LO_LATITUDE as location.latitude, LO_LONGITUDE as location.longitude, LO_DETAIL as location.locationDetail,LO_ADDR as locationAddr from schedule INNER JOIN LOCATION ON SC_LOCODE = LO_CODE where sc_stcode =#{storeCode}
-	</select>
+	
 	<update id="updLocation" parameterType="com.odod.postluck.beans.StoreBean">
 		update location set LO_NAME  = #{locationList[0].locationName}, LO_LATITUDE  = #{locationList[0].latitude}, LO_LONGITUDE  = #{locationList[0].longitude}, LO_DETAIL  = #{locationList[0].locationDetail},LO_ADDR  = #{locationList[0].locationAddr}  WHERE LO_STCODE=#{storeCode} and LO_CODE =  #{locationList[0].locationCode}
 	</update>

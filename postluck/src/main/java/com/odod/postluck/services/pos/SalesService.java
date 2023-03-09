@@ -1,10 +1,23 @@
 package com.odod.postluck.services.pos;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.odod.postluck.beans.OrderBean;
+import com.odod.postluck.beans.StoreBean;
+import com.odod.postluck.utils.SimpleTransactionManager;
+import com.odod.postluck.utils.TransactionAssistant;
+
 @Service
-public class SalesService {
+public class SalesService extends TransactionAssistant {
+	@Autowired
+	private SimpleTransactionManager tranManager;
+
+
 	public SalesService() {
 		
 	}
@@ -15,13 +28,13 @@ public class SalesService {
 			this.getSalesList(model);
 			break;
 		case "SA02":
-			this.getPeriodSalesList(model);
-			break;
-		case "SA03":
 			this.getTypeSalesList(model);
 			break;
-		case "SA04":
+		case "SA03":
 			this.getSalesDetail(model);
+			break;
+		case "SA04":
+			this.getPeriodSalesList(model);
 			break;
 		case "SA05":
 			this.getAllSalesAnalysis(model);
@@ -35,6 +48,23 @@ public class SalesService {
 		}
 	}
 
+	private void getSalesList(Model model) {
+		StoreBean store = (StoreBean) model.getAttribute("store");
+		try {
+			this.tranManager.tranStart();
+			List<OrderBean> orderList = this.sqlSession.selectList("selPayment", store);
+			if (orderList != null) {
+				store.setOrderList((ArrayList<OrderBean>) orderList);
+			}
+			this.tranManager.commit();
+		} catch (Exception e) {
+			e.printStackTrace();
+			this.tranManager.rollback();
+		} finally {
+			this.tranManager.tranEnd();
+		}
+
+	}
 	private void getHotMenu() {
 		// TODO Auto-generated method stub
 		
@@ -48,28 +78,42 @@ public class SalesService {
 		
 	}
 	private void getSalesDetail(Model model) {
-		// TODO Auto-generated method stub
+		StoreBean store = (StoreBean)model.getAttribute("store");
+		try {
+			this.tranManager.tranStart();
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		
 	}
-	private void getTypeSalesList(Model model) {
-		// TODO Auto-generated method stub
-		
-	}
+
 	private void getPeriodSalesList(Model model) {
 		// TODO Auto-generated method stub
 		
 	}
-	private void getSalesList(Model model) {
-		// TODO Auto-generated method stub
-		
+
+	private void getTypeSalesList(Model model) {
+		StoreBean store = (StoreBean) model.getAttribute("store");
+		try {
+			this.tranManager.tranStart();
+			List<OrderBean> orderList = this.sqlSession.selectList("selTypeSalesList", store);
+			if (orderList != null) {
+				store.setOrderList((ArrayList<OrderBean>) orderList);
+			}
+			this.tranManager.commit();
+		} catch (Exception e) {
+			e.printStackTrace();
+			this.tranManager.rollback();
+		} finally {
+			this.tranManager.tranEnd();
+		}
 	}
+
 	/* View 방식의 요청 컨트롤러 */
 	public void backController(String serviceCode, ModelAndView mav) {
 		switch(serviceCode) {
 		}
 	}
 
-	private boolean convertToBoolean(int value) {
-		return value>=1?true:false;
-	}
 }

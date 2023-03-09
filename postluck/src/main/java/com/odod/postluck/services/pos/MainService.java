@@ -133,7 +133,6 @@ public class MainService extends TransactionAssistant {
 	}
 
 	private void movePosManage(ModelAndView mav) {
-		;
 		try {
 			mav.addObject("store", new ObjectMapper().writeValueAsString(this.getStoreInfoAsStoreBean(mav)));
 		} catch (JsonProcessingException e) {
@@ -147,7 +146,6 @@ public class MainService extends TransactionAssistant {
 		StoreBean store = (StoreBean) model.getAttribute("store");
 		System.out.println(store.getStoreCode());
 		try {
-			this.tranManager = this.getTransaction(false);
 			this.tranManager.tranStart();
 			if (this.convertToBoolean(this.sqlSession.insert("insSalesLog", store))) {
 				if (store.getSalesLogList().get(0).getSalesState() == 'O') {
