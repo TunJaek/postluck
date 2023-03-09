@@ -49,6 +49,7 @@ document.addEventListener('DOMContentLoaded', function() {
 <!-- 헤더랑 옆 클릭바 고정을 고정. -->
 
 <body class="vsc-initialized">
+
 	<!-- 위치 리스트 Modal -->
 	<div class="modal fade show" id="locationListModal"
 		style="display: none; z-index: 1060;">
