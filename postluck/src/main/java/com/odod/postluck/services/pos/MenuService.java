@@ -55,7 +55,7 @@ public class MenuService extends TransactionAssistant {
 		case "ME06":
 //			this.deleteMenu(mav);
 			break;
-		}	
+		}
 	}
 
 	private void getAllMenuList(Model model) {
@@ -135,8 +135,10 @@ public class MenuService extends TransactionAssistant {
 			// 생성할 파일 이름 : 폴더이름(1998033001) + 메뉴코드(M00) + ".jpg"
 			store.getMenuList().get(0).setMenuImageLocation(filePath);
 			if (this.convertToBoolean(this.sqlSession.insert("insMenu", store))) {
-				if (!new File(folderPath).exists()) {
-					new File(folderPath).mkdir();
+				if(this.convertToBoolean(this.sqlSession.insert("insMenuImageCode",store))){
+					if (!new File(folderPath).exists()) {
+						new File(folderPath).mkdir();
+					}
 				}
 				this.tranManager.commit();
 			} else {
@@ -224,8 +226,8 @@ public class MenuService extends TransactionAssistant {
 			this.tranManager.tranStart();
 			System.out.println("MenuCode : " + store.getMenuList().get(0).getMenuCode());
 			// 선택한 메뉴코드의 값이 비어있지않다면
-			if(store.getMenuList().get(0).getMenuCode() != null) {
-				if(this.convertToBoolean(this.sqlSession.delete("delMenu",store))) {
+			if (store.getMenuList().get(0).getMenuCode() != null) {
+				if (this.convertToBoolean(this.sqlSession.delete("delMenu", store))) {
 					this.tranManager.commit();
 				}
 			}
