@@ -292,7 +292,7 @@ public class Authentication extends TransactionAssistant {
 		String messege = "Access Error:시스템 접속이 실패하였습니다.";
 		StoreBean storeCode = (StoreBean) model.getAttribute("storeCode");
 		if (storeCode.getStoreCode() != null) {
-			this.tranManager = this.getTransaction(false);
+			this.tranManager = this.getTransaction(true);
 			this.tranManager.tranStart();
 			System.out.println(storeCode);
 			if (this.convertToBoolean(

@@ -12,10 +12,14 @@ import com.odod.postluck.beans.OrderBean;
 import com.odod.postluck.beans.OrderDetailBean;
 import com.odod.postluck.beans.OrderInfoBean;
 import com.odod.postluck.beans.StoreBean;
+import com.odod.postluck.services.auth.AuthRestController;
 import com.odod.postluck.utils.SimpleTransactionManager;
 import com.odod.postluck.utils.TransactionAssistant;
 
+import lombok.extern.slf4j.Slf4j;
+
 @Service
+@Slf4j
 public class OrderService extends TransactionAssistant {
 	@Autowired
 	private SimpleTransactionManager tranManager;
@@ -51,36 +55,37 @@ public class OrderService extends TransactionAssistant {
 
 		}
 	}
+
 	private void cancelOrder(Model model) {
-		OrderInfoBean orderInfo = (OrderInfoBean)model.getAttribute("cancelOrder");
+		OrderInfoBean orderInfo = (OrderInfoBean) model.getAttribute("cancelOrder");
 		try {
 			this.tranManager.setTransactionConf(false);
 			this.tranManager.tranStart();
-			this.sqlSession.update("updOrderStateToCancel",orderInfo);
+			this.sqlSession.update("updOrderStateToCancel", orderInfo);
 			this.tranManager.commit();
-		}catch(Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 			this.tranManager.rollback();
-		}
-		finally {
+		} finally {
 			this.tranManager.tranEnd();
 		}
 	}
+
 	private void completeOrder(Model model) {
-		OrderInfoBean orderInfo = (OrderInfoBean)model.getAttribute("completeOrder");
+		OrderInfoBean orderInfo = (OrderInfoBean) model.getAttribute("completeOrder");
 		try {
 			this.tranManager.setTransactionConf(false);
 			this.tranManager.tranStart();
-			this.sqlSession.update("updOrderStateToComplete",orderInfo);
+			this.sqlSession.update("updOrderStateToComplete", orderInfo);
 			this.tranManager.commit();
-		}catch(Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 			this.tranManager.rollback();
-		}
-		finally {
+		} finally {
 			this.tranManager.tranEnd();
 		}
 	}
+
 	private void makeOrder(Model model) {
 		StoreBean order = (StoreBean) model.getAttribute("order");
 		OrderInfoBean orderInfo;
@@ -89,12 +94,13 @@ public class OrderService extends TransactionAssistant {
 			this.tranManager.tranStart();
 			if (this.convertToBoolean(this.sqlSession.insert("insOrder", order))) {
 				if (this.convertToBoolean(this.sqlSession.insert("insOrderDetail", order))) {
-					this.tranManager.commit();
+
 					orderInfo = new OrderInfoBean();
 					orderInfo.setOrderDate(order.getOrderList().get(0).getOrderDate());
 					orderInfo.setOrderNum(String.format("%3s", this.sqlSession.selectOne("selOrderNum", order) + "")
 							.replace(' ', '0'));
 					model.addAttribute("orderInfo", orderInfo);
+					this.tranManager.commit();
 				}
 			}
 		} catch (Exception e) {
@@ -120,17 +126,17 @@ public class OrderService extends TransactionAssistant {
 				List<OrderDetailBean> orderDetailBeanList = this.sqlSession.selectList("selOrderDetail", orderInfo);
 				ArrayList<OrderDetailBean> orderDetailBeanArr = (ArrayList<OrderDetailBean>) orderDetailBeanList;
 				order.setOrderMenuList(orderDetailBeanArr);
-				
+
 			}
-			model.addAttribute("orderList",orderBeanArr);
+			model.addAttribute("orderList", orderBeanArr);
 		} catch (Exception e) {
 			this.tranManager.rollback();
+
 			e.printStackTrace();
 		} finally {
 			this.tranManager.tranEnd();
 		}
 	}
-
 
 	private void selOrderDetail(Model model) {
 		// 주문상세내역리스트 불러오기
@@ -138,7 +144,7 @@ public class OrderService extends TransactionAssistant {
 		System.out.println(orderInfo);
 		OrderBean order = new OrderBean();
 		ArrayList<OrderDetailBean> orderDetailArrList = new ArrayList<OrderDetailBean>();
-		this.tranManager.setTransactionConf(false);
+		
 		System.out.println(orderInfo.getStoreCode());
 		System.out.println(orderInfo.getOrderDate());
 		System.out.println(orderInfo.getOrderNum());

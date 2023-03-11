@@ -740,7 +740,7 @@ progress {
 }
 
 .row {
-    --bs-gutter-x: 1.5rem;
+/*     --bs-gutter-x: 1.5rem; */
     --bs-gutter-y: 0;
     display: flex;
     flex-wrap: wrap;
@@ -758,7 +758,9 @@ progress {
     padding-left: calc(var(--bs-gutter-x) * .5);
     margin-top: var(--bs-gutter-y)
 }
-
+.pointer {
+	cursor:pointer;
+}
 .col {
     flex: 1 0 0%
 }
@@ -4723,7 +4725,8 @@ fieldset:disabled .btn {
     }
 
     .navbar-expand-xxl .offcanvas .offcanvas-header {
-        display: none
+        display: none;
+        
     }
 
     .navbar-expand-xxl .offcanvas .offcanvas-body {
@@ -7563,7 +7566,7 @@ fieldset:disabled .btn {
 
 .offcanvas-header {
     display: flex;
-    align-items: center;
+    align-items: baseline;
     justify-content: space-between;
     padding: var(--bs-offcanvas-padding-y) var(--bs-offcanvas-padding-x)
 }

@@ -42,12 +42,14 @@ public class OrderRestController {
 	public OrderInfoBean cancelOrder(Model model,@ModelAttribute OrderInfoBean orderInfo) {
 		model.addAttribute("cancelOrder",orderInfo);
 		this.orderService.backController("OR04",model);
+		System.out.println("cancelOrder"+ orderInfo);
 		return (OrderInfoBean)model.getAttribute("cancelOrder");
 	}
 	@PostMapping("/Api/CompleteOrder")
 	public OrderInfoBean completeOrder(Model model,@ModelAttribute OrderInfoBean orderInfo) {
 		model.addAttribute("completeOrder",orderInfo);
 		this.orderService.backController("OR05",model);
+		System.out.println("completeOrder" + orderInfo);
 		return (OrderInfoBean)model.getAttribute("completeOrder");
 	}
 

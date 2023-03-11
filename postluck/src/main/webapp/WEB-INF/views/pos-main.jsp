@@ -134,10 +134,10 @@
 				</div>
 				<div class="row text-center fs-5 pointer" style="height: 10%;">
 					<div class="h-100 col-4 bg-light row justify-content-center"
-						id="cancelOrder">주문취소</div>
+						id="cancelOrder" onclick="cancelOrder(this)">주문취소</div>
 					<div
 						class="h-100 justify-content-center col bg-success bg-opacity-10 row pointer"
-						id="completeOrder">결제</div>
+						id="completeOrder" onclick="completeOrder(this)">결제</div>
 				</div>
 			</div>
 		</div>
@@ -203,8 +203,6 @@
 			sock.onclose = function(event) {
 				if (event.wasClean) {
 					showModal('error:연결 오류:Kiosk와 통신이 불안정합니다. Kiosk 서비스를 실행해주세요.::')
-				} else {
-					showModal('error:연결 오류:서버와의 연결이 비정상적으로 종료되었습니다.::')
 				}
 			};
 			sock.onerror = function(error) {
@@ -245,7 +243,7 @@
 				orderDiv.setAttribute('data-bs-toggle', 'offcanvas');
 				orderDiv.setAttribute('data-bs-target', '#offcanvasScrolling');
 				orderDiv.setAttribute('aria-controls', 'offcanvasScrolling');
-				orderDiv.setAttribute('id',jsonData.orderDate);
+				orderDiv.setAttribute('id',"div"+jsonData.orderDate);
 				orderDiv.setAttribute('onclick',"getOrderDetail(\'"+jsonData.orderDate+"',\'"+orderNum+"\')")
 				
 			const orderContent = "<div class=\"row\" style=\"align-items: baseline; height: 10%\">"+
@@ -258,8 +256,8 @@
 			orderDiv.appendChild(menuListZone)
 			
 				menuList.forEach(menuItem => {
-					let menuContent = "<div class=\"row mb-3 border-bottom\" style=\"height:10%\"><h4 class=\"col-5\">"+
-					menuItem.menuName+"</h4><h4 class=\"col-1\">x</h4><h4 class=\"col-5\">"+
+					let menuContent = "<div class=\"row mb-3 border-bottom\" style=\"height:10%\"><h4 class=\"col-9\">"+
+					menuItem.menuName+"</h4><h4 class=\"col-1\">x</h4><h4 class=\"col-2\">"+
 					menuItem.quantity+"</h4></div>"
 					menuListZone.innerHTML+=menuContent;
 				})
@@ -279,19 +277,21 @@ if(btn.innerText == '주문'){
 }
 			}
 			function getOrderList(jsonData){
-				if(!document.getElementById("orderListZone").children.length>0){
-					isEmpty = true;
-					document.getElementById("orderListZone").style.textAlign="center";
-					document.getElementById("orderListZone").innerHTML ="<h5><div class=\"m11\"><i class=\"bi bi-exclamation-circle \" style=\"font-size:2rem\"></i></div><br>주문 내역이 없습니다.</div>"
-					
-				}
+				document.getElementById("orderListZone").innerHTML = '';
 				const orderList = jsonData.orderList;
 				jsonData.forEach(order => {
 					createOrderDiv(order);
 				})
+				alertEmpty();
 				console.log(jsonData)
 			}
-			
+			function alertEmpty(){
+				if(!document.getElementById("orderListZone").children.length>0){
+					isEmpty = true;
+					document.getElementById("orderListZone").style.textAlign="center";
+					document.getElementById("orderListZone").innerHTML ="<h5><div class=\"m11\"><i class=\"bi bi-exclamation-circle \" style=\"font-size:2rem\"></i></div><br>주문 내역이 없습니다.</div>"
+				}
+			}
 			function createToast(orderDate) {
 				const toastZone = document.getElementById("toastZone");
 				const toastDiv = document.createElement('div');
@@ -339,6 +339,7 @@ if(btn.innerText == '주문'){
 				serverCallByFetch(formData,"/Api/getOrderInfo","post","changeOffCanvas",header);
 			}
 			let orderNumForOffCanvas;
+			
 			function changeOffCanvas(jsonData){
 				console.log(jsonData)
 				let orderNo = orderNumForOffCanvas;
@@ -353,10 +354,10 @@ if(btn.innerText == '주문'){
 					menuItem.style="height: 10%; align-items: center;";
 					menuItem.classList.add("row" ,"border-bottom", "text-center");
 					
-					menuItem.innerHTML = `<div class="col-4">\${menu.menuName}</div>
+					menuItem.innerHTML = `<div class="col">\${menu.menuName}</div>
 						<div class="col-1">X</div>
 						<div class="col-1">\${menu.quantity}</div>
-						<div class="col text-end">\${menu.quantity * menu.menuPrice}</div>
+						<div class="col-3 text-end">\${menu.quantity * menu.menuPrice}</div>
 						<div class="col-1">원</div>`
 						menuListZone.appendChild(menuItem);
 						total += menu.quantity * menu.menuPrice
@@ -367,27 +368,40 @@ if(btn.innerText == '주문'){
 				}else{
 					document.getElementById("inlineRadio2").checked ="true"
 				}
-				formData = new FormData;
-				formData.append("storeCode",storeCode);
-				formData.append("orderDate",jsonData.orderDate);
-				document.getElementById("cancelOrder").addEventListener("click",function(event){
-					serverCallByFetch(formData,"/Api/CancelOrder","post","removeOrderDiv",header)
-				})
-				document.getElementById("completeOrder").addEventListener("click",function(event){
-					serverCallByFetch(formData,"/Api/CompleteOrder","post","removeOrderDiv",header)
-				})
+				console.log(jsonData.orderDate)
+				document.getElementById("cancelOrder").setAttribute("data-orderDate",jsonData.orderDate);
+				document.getElementById("completeOrder").setAttribute("data-orderDate",jsonData.orderDate);
+				
 			}
-			function addOrderDiv() {
+			
+			function cancelOrder(div){
+				 const formData = new FormData();
+				    formData.append("storeCode", storeCode);
+				    formData.append("orderDate",div.getAttribute("data-orderDate"));
+				    serverCallByFetch(formData, "/Api/CancelOrder", "post", "afterCancelOrder", header);
 			}
-			function showOrderDetail() {
+			function completeOrder(div){
+				 const formData = new FormData();
+				    formData.append("storeCode", storeCode);
+				    formData.append("orderDate", div.getAttribute("data-orderDate"));
+				    serverCallByFetch(formData, "/Api/CompleteOrder", "post", "afterCompleteOrder", header);
 			}
-			function acceptOrder() {
+			
+			function afterCancelOrder(jsonData){
+				console.log("afcancel")
+				console.log("div"+jsonData.orderDate)
+				document.getElementById("div"+jsonData.orderDate).remove();
+				alertEmpty();
+				showModal("plain::주문이 취소되었습니다.::")
 			}
-			function removeOrderDiv(jsonData) {
-			console.log("removeOrderDiv"+jsonData);
-			document.getElementById(jsonData.orderDate).remove();
-			getOrderListOnLoad();
+			function afterCompleteOrder(jsonData){
+				console.log("afcomplete")
+				console.log("div"+jsonData.orderDate)
+				document.getElementById("div"+jsonData.orderDate).remove();
+				alertEmpty();
+				showModal("plain::결제 처리되었습니다.::")
 			}
+			
 		</script>
 </body>
 

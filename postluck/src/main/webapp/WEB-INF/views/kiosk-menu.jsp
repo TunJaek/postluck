@@ -401,7 +401,7 @@ jsonString = '${store}'
 		let orderDiv='';
 		
 		for(let i=0;i<orderMenuList.children.length;i++){
-		orderDiv += "<div id=\"orderMenuItem\"><div class=\"menu border-bottom p-3 row text-center fs-5\"><div class=\"menuName col\">"
+		orderDiv += "<div id=\"orderMenuItem\"><div class=\" menu border-bottom p-3 row text-center fs-5\"><div class=\"menuName col\">"
 		orderDiv += orderMenuList.children[i].children[0].textContent;
 		orderDiv +="</div><div class=\"menuCount col-2\">x ";
 		orderDiv += orderMenuList.children[i].children[2].textContent;
@@ -436,17 +436,17 @@ jsonString = '${store}'
 		let subContentsOrderList = document.getElementsByClassName("subContentsOrderList")[0];
 		// 메뉴 아이템을 담을 div
 		  let menuItem = document.createElement('div');
-		  menuItem.setAttribute('class', 'row text-center fs-5 border-bottom p-3');
+		  menuItem.setAttribute('class', ' row text-center fs-5 border-bottom p-3');
 		  menuItem.setAttribute("data-menuCode",mc);
 		  // 메뉴 이름을 담을 div
 		  let menuName = document.createElement('div');
-		  menuName.setAttribute('class', 'menuName col-3');
+		  menuName.setAttribute('class', 'text-truncate menuName col-5');
 		  menuName.innerText = menu.menuName;
 		  menuItem.appendChild(menuName);
 		  
 		  // 수량을 줄이는 버튼을 담을 div
 		  let minusButton = document.createElement('div');
-		  minusButton.setAttribute('class', 'col');
+		  minusButton.setAttribute('class', 'col-1');
 		  let minusIcon = document.createElement('i');
 		  minusIcon.setAttribute('class', 'bi bi-dash-circle pointer');
 		  minusIcon.setAttribute("onclick","addMenu(\"minus\",\'"+mc+"\',\'"+price+"\')");
@@ -461,7 +461,7 @@ jsonString = '${store}'
 		  
 		  // 수량을 늘리는 버튼을 담을 div
 		  let plusButton = document.createElement('div');
-		  plusButton.setAttribute('class', 'col');
+		  plusButton.setAttribute('class', 'col-1');
 		  let plusIcon = document.createElement('i');
 		  plusIcon.setAttribute('class', 'bi bi-plus-circle pointer');
 		  plusIcon.setAttribute("onclick","addMenu(\"add\",\'"+mc+"\',\'"+price+"\')");
@@ -470,13 +470,13 @@ jsonString = '${store}'
 		  
 		  // 가격을 표시하는 div
 		  let orderPrice = document.createElement('div');
-		  orderPrice.setAttribute('class', 'orderPrice col-4');
+		  orderPrice.setAttribute('class', 'orderPrice col-3');
 		  orderPrice.innerText = menu.menuPrice + '원';
 		  menuItem.appendChild(orderPrice);
 		  
 		  // 주문을 삭제하는 버튼을 담을 div
 		  let deleteButton = document.createElement('div');
-		  deleteButton.setAttribute('class', 'col');
+		  deleteButton.setAttribute('class', 'col-1');
 		  let deleteIcon = document.createElement('i');
 		  deleteIcon.setAttribute('class', 'bi bi-x-lg pointer');
 		  deleteIcon.setAttribute('onclick','deleteDiv(\''+mc+'\')');
@@ -512,11 +512,6 @@ jsonString = '${store}'
 	align-items: center;
 }
 
-.mainContents {
-	width: 80%;
-	float: left;
-	position: relative;
-}
 
 .menuCard {
 	position: relative;
