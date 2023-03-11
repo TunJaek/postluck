@@ -254,6 +254,7 @@ public class MenuService extends TransactionAssistant {
 							if (this.convertToBoolean(sqlSession.delete("delMenuImgDB", store))) {
 
 								store.setMessage("plain::메뉴 삭제가 완료되었습니다!(사진포함):showModal:");
+								this.tranManager.commit();
 							} else {
 								store.setMessage("plain:: DB STOREIMAGE TALBE을 확인해주세요!:showModal:");
 							}
@@ -263,16 +264,7 @@ public class MenuService extends TransactionAssistant {
 					} else {
 						System.out.println("이미지 파일 삭제에 실패하였습니다: " + imgLocate);
 					}
-					this.tranManager = getTransaction(false);
-					this.tranManager.tranStart();
-					System.out.println("MenuCode : " + store.getMenuList().get(0).getMenuCode());
-					// 선택한 메뉴코드의 값이 비어있지않다면
-					if (store.getMenuList().get(0).getMenuCode() != null) {
-						if (this.convertToBoolean(this.sqlSession.delete("delMenu", store))) {
-							this.tranManager.commit();
-						}
-						tranManager.commit();
-					}
+
 				}
 			}
 
