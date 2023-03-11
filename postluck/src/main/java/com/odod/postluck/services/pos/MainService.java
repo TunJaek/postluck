@@ -30,7 +30,7 @@ public class MainService extends TransactionAssistant {
 	private JsonWebTokenService jwt;
 	@Autowired
 	private MainService main;
-	
+
 	public MainService() {
 
 	}
@@ -65,8 +65,9 @@ public class MainService extends TransactionAssistant {
 		model.addAttribute("store", this.getStoreInfoAsStoreBean(model));
 
 	}
+
 	private void movePos(ModelAndView mav) {
-		StoreBean store =(StoreBean) mav.getModel().get("store");
+		StoreBean store = (StoreBean) mav.getModel().get("store");
 		store.setStoreCode(this.jwt.getTokenInfoFromJWT(mav.getModel().get("jwt").toString()).getStoreCode());
 		try {
 			mav.addObject("store", new ObjectMapper().writeValueAsString(this.main.getStoreInfoAsStoreBean(mav)));
@@ -76,6 +77,7 @@ public class MainService extends TransactionAssistant {
 		}
 		mav.setViewName("pos-main");
 	}
+
 	/**
 	 * @method private StoreBean getUserInfo(Model model)
 	 * 
@@ -107,7 +109,9 @@ public class MainService extends TransactionAssistant {
 		} else {
 			System.out.println("this is not mav or model");
 		}
-		message = store.getMessage();
+		if(store.getMessage()!=null) {
+			message = store.getMessage();
+		}
 		List<MenuBean> menuList;
 		List<LocationBean> locationList;
 
@@ -125,15 +129,14 @@ public class MainService extends TransactionAssistant {
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
-		} finally {
-			store.setMessage(message);
 		}
+		store.setMessage(message);
 
 		return store;
+
 	}
 
 	private void movePosManage(ModelAndView mav) {
-		;
 		try {
 			mav.addObject("store", new ObjectMapper().writeValueAsString(this.getStoreInfoAsStoreBean(mav)));
 		} catch (JsonProcessingException e) {
@@ -147,15 +150,14 @@ public class MainService extends TransactionAssistant {
 		StoreBean store = (StoreBean) model.getAttribute("store");
 		System.out.println(store.getStoreCode());
 		try {
-			this.tranManager = this.getTransaction(false);
 			this.tranManager.tranStart();
 			if (this.convertToBoolean(this.sqlSession.insert("insSalesLog", store))) {
 				if (store.getSalesLogList().get(0).getSalesState() == 'O') {
 					this.pu.setAttribute("isOpen", "true");
-					store.setMessage("plain::영업이 시작되었습니다.:");
+					store.setMessage("plain::영업이 시작되었습니다.::");
 				} else if (store.getSalesLogList().get(0).getSalesState() == 'C') {
 					this.pu.setAttribute("isOpen", "false");
-					store.setMessage("plain::영업이 종료되었습니다.:");
+					store.setMessage("plain::영업이 종료되었습니다.::");
 				} else {
 					store.setMessage("error:서버 오류:통신이 불안정합니다. 잠시후 다시 시도해주세요.::");
 					// warn::삭제시 복구가 불가능합니다. 삭제하시겠습니까?: <, 버튼이 두개

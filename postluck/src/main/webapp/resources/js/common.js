@@ -152,11 +152,6 @@ function serverCallByFetchAjaxUsingUrl(jobCode, methodType, callBackFunc) {
 		})
 }
 
-/* Page Initialize */
-function pageInit(messageString) {
-	if (messageString != '') showModal(messageString);
-}
-
 function pageInitJson() {
 	serverCallByFetchAjaxUsingUrl("https://api64.ipify.org?format=json", "get", "getPublicIp");
 
@@ -447,13 +442,6 @@ function showModal(messageString) {
 			document.getElementById("messageModal").remove();
 		});
 	}
-}
-
-function modalClose() {
-	const messageModal = new bootstrap.Modal(document.querySelector('#messageModal'));
-	messageModal.addEventListener('shown.bs.modal', function() {
-		messageModal.hide();
-	});
 }
 
 

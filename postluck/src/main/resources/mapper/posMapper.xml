@@ -32,24 +32,91 @@
 		#{menuList[0].menuPrice},#{menuList[0].menuImageCode},#{menuList[0].isMain},#{menuList[0].isKiosk},#{menuList[0].isSoldOut})
 	</insert>
 
-	<insert id="insStoreImage"
-		parameterType="com.odod.postluck.beans.StoreBean"> INSERT INTO STOREIMAGE(SI_CODE,SI_NAME,SI_LOCATION)
-		VALUES(#{menuList[0].menuImageCode},null,#{menuList[0].menuImageLocation})
-	</insert>
+	<select id="selPayment"
+		parameterType="com.odod.postluck.beans.StoreBean"
+		resultType="com.odod.postluck.beans.OrderBean">
+		SELECT SA_PAYMENTTYPE AS salespaymentType, SA_PRICE AS
+		amount, SA_DATE AS
+		salesDate
+		FROM POSDBA.SALES
+		WHERE SA_STCODE =
+		#{storeCode}
+
+	</select>
+
+	<select id="selTypeSalesList"
+		parameterType="com.odod.postluck.beans.StoreBean"
+		resultType="com.odod.postluck.beans.OrderBean">
+		SELECT SA_PAYMENTTYPE AS salespaymentType, SA_PRICE AS
+		amount, SA_DATE AS
+		salesDate
+		FROM POSDBA.SALES
+		WHERE SA_PAYMENTTYPE =
+		#{orderList[0].salespaymentType} AND SA_STCODE =
+		#{storeCode}
+
+	</select>
+	
+	<select id="selPaymentList"
+		parameterType="com.odod.postluck.beans.StoreBean"
+		resultType="com.odod.postluck.beans.OrderBean">
+		SELECT SM_NAME AS OrderDetailBean[0].menuName,
+		SM_PRICE AS
+		OrderDetailBean[0].menuPrice,
+		OD_COUNT AS OrderDetailBean[0].quantity
+		FROM POSDBA.SALES SA
+		INNER JOIN ORDERSDETAIL ON SA_ODOSTIME = OD_OSDATE
+		AND SA_STCODE =
+		OD_OSSTCODE
+		INNER JOIN STOREMENU ON OD_SMCODE = SM_CODE
+		AND SA_STCODE = SM_STCODE
+		WHERE SA_STCODE =#{storeBean} AND SA_DATE=
+		#{orderList[0].salesDate}
+	</select>
+	<select id="selSalesList"
+		parameterType="com.odod.postluck.beans.StoreBean"
+		resultType="com.odod.postluck.beans.StoreBean">
+		SELECT SA_ODOSTIME AS orderList[0].salesDate,
+		SA_PAYMENTTYPE AS orderList[0].orderPaymentType,
+		SA_PRICE AS
+		orderList[0].amount,
+		LO_ADDR AS locationList[0].locationAddr,
+		LO_DETAIL
+		AS locationList[0].locationDetail
+		FROM POSDBA.SALES SA
+		INNER JOIN
+		POSDBA.LOCATION ON SA_LOCODE = LO_CODE AND SA_STCODE = LO_STCODE
+		WHERE
+		SA_STCODE = #{storeBean} AND SA_DATE= #{orderList[0].salesDate};
+	</select>
+<select id="selTypeSalesList" parameterType="com.odod.postluck.beans.StoreBean" resultType="com.odod.postluck.beans.OrderBean">
+ SELECT SA_PAYMENTTYPE AS salespaymentType, SA_PRICE AS amount
+FROM POSDBA.SALES
+WHERE SA_PAYMENTTYPE = #{orderList[0].salespaymentType} AND SA_STCODE = #{storeCode}
+</select>
+
+ <select id="selPaymentList" parameterType="com.odod.postluck.beans.StoreBean" resultType="com.odod.postluck.beans.OrderDetailBean">
+SELECT
+SM_NAME AS menuName,
+SM_PRICE AS menuPrice,
+OD_COUNT AS  quantity
+FROM POSDBA.SALES SA
+  INNER JOIN POSDBA.ORDERSDETAIL ON SA_ODOSTIME = OD_OSDATE AND SA_STCODE = OD_OSSTCODE
+  INNER JOIN POSDBA.STOREMENU ON OD_SMCODE = SM_CODE AND SA_STCODE = SM_STCODE
+WHERE SA_STCODE = #{storeCode} AND TO_CHAR(SA_DATE, 'YYYY-MM-DD HH24:MI:SS') = #{orderList[0].salesDate}
+</select> 
 
 
+<select id ="selSalesLocation" parameterType="com.odod.postluck.beans.StoreBean" resultType="com.odod.postluck.beans.LocationBean">
+SELECT 
+LO_ADDR AS locationAddr,
+LO_DETAIL AS locationDetail
+FROM POSDBA.SALES SA
+INNER JOIN POSDBA.LOCATION ON SA_LOCODE = LO_CODE AND SA_STCODE = LO_STCODE
+WHERE SA_STCODE = #{storeCode} AND TO_CHAR(SA_DATE, 'YYYY-MM-DD HH24:MI:SS') = #{orderList[0].salesDate}
+</select>
 
 
-	<!-- <update id="insMenu" parameterType="com.odod.postluck.beans.StoreBean"> 
-		INSERT INTO STOREMENU(SM_STCODE, SM_CODE, SM_NAME, SM_PRICE) VALUES(#{storeCode},(SELECT 
-		MAX(SM_CODE)FROM STOREMENU WHERE SM_STCODE = #{storeCode}), #{menuList[0].menuName},#{menuList[0].menuPrice}) 
-		</update> -->
-
-	<!-- <insert id="insMenu" parameterType="com.odod.postluck.beans.StoreBean"> 
-		INSERT INTO STOREMENU(SM_STCODE, SM_CODE, SM_NAME, SM_PRICE) VALUES(#{storeCode}, 
-		(SELECT 'M'||LPAD(NVL(SUBSTR(MAX(SM_CODE),2,2),-1)+1,2,' 0') FROM STOREMENU 
-		WHERE SM_STCODE = #{storeCode}), #{menuList[0].menuName},#{menuList[0].menuPrice}) 
-		</insert> -->
 	<select id="isMenuName"
 		parameterType="com.odod.postluck.beans.StoreBean">
 		SELECT COUNT(*)
@@ -63,13 +130,6 @@
 		MAX(SM_CODE) FROM STOREMENU WHERE SM_STCODE = #{storeCode}
 	</select>
 
-	<!-- <insert id="insMenu" parameterType="com.odod.postluck.beans.StoreBean"> -->
-	<!-- INSERT INTO POSDBA.STOREMENU(SM_STCODE, SM_CODE, SM_NAME, SM_PRICE) -->
-	<!-- VALUES(#{storeCode}, -->
-	<!-- #{menuList[0].(SELECT'M'||LPAD(NVL(SUBSTR(MAX(SM_CODE),2,2),-1)+1,2,'0') 
-		FROM STOREMENU WHERE SM_STCODE = #{storeCode})}, -->
-	<!-- #{menuList[0].menuName},#{menuList[0].menuPrice}) ; -->
-	<!-- </insert> -->
 
 
 	<update id="updMenu"
@@ -79,22 +139,58 @@
 		SET
 		SM_NAME = #{menuList[0].menuName},
 		SM_PRICE = #{menuList[0].menuPrice},
-		SM_SICODE =	#{menuList[0].menuImageCode},
-		SM_ISMAIN =	#{menuList[0].isMain},
+		SM_SICODE =
+		#{menuList[0].menuImageCode},
+		SM_ISMAIN = #{menuList[0].isMain},
 		SM_ISKIOSK = #{menuList[0].isKiosk},
-		SM_ISSOLD =	 #{menuList[0].isSoldOut}
+		SM_ISSOLD =
+		#{menuList[0].isSoldOut}
 
 		WHERE SM_STCODE = #{storeCode} AND SM_CODE =
 		#{menuList[0].menuCode}
 	</update>
 
+	<select id="selImgLocation"
+		parameterType="com.odod.postluck.beans.StoreBean" resultType="String">
+		SELECT
+		SI.SI_LOCATION AS IMAGE_LOCATE
+		FROM STOREIMAGE SI INNER JOIN STOREMENU
+		SM ON SI.SI_CODE = SM.SM_SICODE
+		WHERE (SUBSTR(SI.SI_CODE,1,10) =
+		SM.SM_STCODE AND SM.SM_STCODE =
+		#{storeCode})
+		AND
+		((SUBSTR(SI.SI_CODE,11,13)) = SM.SM_CODE AND SM.SM_CODE =
+		#{menuList[0].menuCode})
+	</select>
+	<delete id="delMenuImgDB"
+		parameterType="com.odod.postluck.beans.StoreBean">
 
+		DELETE FROM STOREIMAGE
+		WHERE SI_CODE =
+		#{storeCode}||#{menuList[0].menuCode}
+	</delete>
+
+	<delete id="delImgCode"
+		parameterType="com.odod.postluck.beans.StoreBean">
+		DELETE FROM STOREIMAGE WHERE
+		SI_CODE =
+		(#{storeCode}||#{menuList[0].menuCode})
+	</delete>
 	<delete id="delMenu"
 		parameterType="com.odod.postluck.beans.StoreBean">
 		DELETE FROM STOREMENU WHERE
 		SM_STCODE = #{storeCode} AND
 		SM_CODE = #{menuList[0].menuCode}
 	</delete>
+
+
+	<insert id="insMenuImgCode"
+		parameterType="com.odod.postluck.beans.StoreBean">
+		INSERT INTO STOREIMAGE(SI_CODE, SI_LOCATION)
+		VALUES(#{storeCode}||#{menuList[0].menuCode},
+		#{menuList[0].menuImageLocation})
+	</insert>
 
 
 	<insert id="insLocation"
@@ -131,17 +227,6 @@
 		sl_state as salsesState from saleslog where sl_date=(select
 		max(sl_date) from saleslog where sl_stcode= #{storeCode} GROUP BY
 		sl_stcode)
-	</select>
-	<select id="selSchedule"
-		parameterType="com.odod.postluck.beans.StoreBean"
-		resultType="com.odod.postluck.beans.ScheduleBean">
-		select SC_STARTDATE as startDate, SC_ENDDATE as endDate,
-		SC_STARTTIME as startTime, SC_ENDTIME as endTime, SC_LOCODE as
-		location.locationCode, LO_NAME as location.locationName,
-		LO_LATITUDE as
-		location.latitude, LO_LONGITUDE as location.longitude, LO_DETAIL as
-		location.locationDetail,LO_ADDR as locationAddr from schedule INNER
-		JOIN LOCATION ON SC_LOCODE = LO_CODE where sc_stcode =#{storeCode}
 	</select>
 	<update id="updLocation"
 		parameterType="com.odod.postluck.beans.StoreBean">

@@ -21,8 +21,6 @@ public class StoreBean {
 	private ArrayList<MenuBean> menuList;
 	private ArrayList<AccessLogBean> accessLogList;
 	private ArrayList<OrderBean> orderList;
-	private ArrayList<ScheduleBean> scheduleList;
 	private ArrayList<SalesLogBean> salesLogList;
 	private String message;
 }
- 
