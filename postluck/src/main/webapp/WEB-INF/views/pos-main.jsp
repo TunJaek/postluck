@@ -372,6 +372,7 @@ if(btn.innerText == '주문'){
 				document.getElementById("cancelOrder").setAttribute("data-orderDate",jsonData.orderDate);
 				document.getElementById("completeOrder").setAttribute("data-orderDate",jsonData.orderDate);
 				
+
 			}
 			
 			function cancelOrder(div){
@@ -379,15 +380,26 @@ if(btn.innerText == '주문'){
 				    formData.append("storeCode", storeCode);
 				    formData.append("orderDate",div.getAttribute("data-orderDate"));
 				    serverCallByFetch(formData, "/Api/CancelOrder", "post", "afterCancelOrder", header);
+
 			}
 			function completeOrder(div){
 				 const formData = new FormData();
+				if(document.getElementsByName("inlineRadioOptions")[0].checked){
+					formData.append("orderList[0].salespaymentType","현금");
+				}else{
+					formData.append("orderList[0].salespaymentType","카드");
+					
+				}
+				formData.append("orderList[0].amount",document.getElementById("priceTotal").innerText);
+				
 				    formData.append("storeCode", storeCode);
-				    formData.append("orderDate", div.getAttribute("data-orderDate"));
+				    formData.append("orderList[0].orderDate", div.getAttribute("data-orderDate"));
+				    formData.append("locationList[0].locationCode",'L00')
 				    serverCallByFetch(formData, "/Api/CompleteOrder", "post", "afterCompleteOrder", header);
 			}
 			
 			function afterCancelOrder(jsonData){
+				console.log(jsonData)
 				console.log("afcancel")
 				console.log("div"+jsonData.orderDate)
 				document.getElementById("div"+jsonData.orderDate).remove();
@@ -396,12 +408,13 @@ if(btn.innerText == '주문'){
 			}
 			function afterCompleteOrder(jsonData){
 				console.log("afcomplete")
-				console.log("div"+jsonData.orderDate)
-				document.getElementById("div"+jsonData.orderDate).remove();
+				console.log("div"+jsonData.orderList[0].orderDate)
+				document.getElementById("div"+jsonData.orderList[0].orderDate).remove();
 				alertEmpty();
 				showModal("plain::결제 처리되었습니다.::")
 			}
 			
+
 		</script>
 </body>
 

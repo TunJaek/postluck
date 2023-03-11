@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.odod.postluck.mapper.HomeMapperInter">
+<!-- 	<select id="getStoreList"> -->
+<!-- 		select ST_CODE as storeCode, st_stname as storeName, -->
+<!-- 		st_info as storeInfo, st_infoDetail as storeInfoDetail, st_phone as -->
+<!-- 		storePhone, ca_name as storeCategory, -->
+<!-- 		st_locode as storeLocation, -->
+<!-- 		st_isopen as isOpen * from store inner join on st_category = ca_code -->
+<!-- 		inner join on location on st_locode=lo_code; -->
+
+
+<!-- 	</select> -->
+</mapper>

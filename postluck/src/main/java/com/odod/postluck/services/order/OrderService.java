@@ -72,11 +72,13 @@ public class OrderService extends TransactionAssistant {
 	}
 
 	private void completeOrder(Model model) {
-		OrderInfoBean orderInfo = (OrderInfoBean) model.getAttribute("completeOrder");
+		StoreBean salesInfo = (StoreBean) model.getAttribute("completeOrder");
 		try {
 			this.tranManager.setTransactionConf(false);
 			this.tranManager.tranStart();
-			this.sqlSession.update("updOrderStateToComplete", orderInfo);
+			if (this.convertToBoolean(this.sqlSession.update("updOrderStateToComplete", salesInfo))) {
+				this.sqlSession.insert("insSales", salesInfo);
+			}
 			this.tranManager.commit();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -131,7 +133,6 @@ public class OrderService extends TransactionAssistant {
 			model.addAttribute("orderList", orderBeanArr);
 		} catch (Exception e) {
 			this.tranManager.rollback();
-
 			e.printStackTrace();
 		} finally {
 			this.tranManager.tranEnd();
@@ -144,7 +145,7 @@ public class OrderService extends TransactionAssistant {
 		System.out.println(orderInfo);
 		OrderBean order = new OrderBean();
 		ArrayList<OrderDetailBean> orderDetailArrList = new ArrayList<OrderDetailBean>();
-		
+
 		System.out.println(orderInfo.getStoreCode());
 		System.out.println(orderInfo.getOrderDate());
 		System.out.println(orderInfo.getOrderNum());

@@ -37,9 +37,13 @@
 	<update id="updOrderStateToCancel" parameterType ="com.odod.postluck.beans.OrderInfoBean">
 	update Orders set os_Statement = '취소' where os_stcode =#{storeCode} and os_date = TO_DATE(#{orderDate},'YYYYMMDDHH24MISS')
 	</update>
-	<update id="updOrderStateToComplete" parameterType ="com.odod.postluck.beans.OrderInfoBean">
-	update Orders set os_Statement = '완료' where os_stcode =#{storeCode} and os_date = TO_DATE(#{orderDate},'YYYYMMDDHH24MISS')
+	<update id="updOrderStateToComplete" parameterType ="com.odod.postluck.beans.StoreBean">
+	update Orders set os_Statement = '완료' where os_stcode =#{storeCode} and os_date = TO_DATE(#{orderList[0].orderDate},'YYYYMMDDHH24MISS')
 	</update>
-
+	<insert id="insSales" parameterType="com.odod.postluck.beans.StoreBean">
+	insert into sales(SA_STCODE, SA_DATE, SA_PAYMENTTYPE, SA_ODOSTIME, SA_PRICE, SA_LOCODE) 
+	values (#{storeCode},sysdate,#{orderList[0].salespaymentType}, TO_DATE(#{orderList[0].orderDate},'YYYYMMDDHH24MISS'),#{orderList[0].amount},#{locationList[0].locationCode})
+	
+	</insert>
 	
 </mapper>

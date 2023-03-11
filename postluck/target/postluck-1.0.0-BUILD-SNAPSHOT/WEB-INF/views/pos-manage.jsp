@@ -158,11 +158,9 @@ if('${store}'!=''){
 					<div class="row" style="align-items: center;">
 						<div class="col-2">사업자 명</div>
 						<input type="text" class="form-control w-25" disabled id="ceoName">
-
 						<div class="col-2 ms-4">사업자번호</div>
 						<input type="text" id="storeCodeDisabled"
 							class="form-control w-25" disabled>
-
 					</div>
 					<div class="row" style="align-items: center;">
 						<div class="col-2">매장명</div>
@@ -173,7 +171,6 @@ if('${store}'!=''){
 						<div class="col-2">전화번호</div>
 						<input type="text" id="storePhone" class="form-control w-25"
 							placeholder="전화번호를 입력해주세요." maxlength="11">
-
 					</div>
 					<div class="row" style="align-items: center;">
 						<div class="col-2">카테고리</div>
@@ -205,28 +202,22 @@ if('${store}'!=''){
 								disabled>
 							<div class="mt-3" id="map" style="height: 40vh; display: none"></div>
 						</div>
-
 					</div>
-
 					<div class="row" style="align-items: center;">
 						<div class="col-2">영업시간</div>
 						<input type="text" class="form-control w-25"
 							placeholder="영업시간을 입력해주세요.">
 					</div>
-
 					<div class="row" style="align-items: center;">
 						<div class="col-2">매장 한 줄소개</div>
-
 						<input type="text" class="form-control w-25" id="storeInfo"
 							placeholder="매장 한 줄 소개를  입력해주세요." maxlength="30">
-
 					</div>
 					<div class="row" style="align-items: center;">
 						<div class="col-2 mb-3">매장 상세정보</div>
 						<div class="form-group w-50 p-0">
 							<textarea class="form-control" id="storeInfoDetail" rows="3"
 								maxlength="2000"></textarea>
-
 						</div>
 					</div>
 					<div class="row" style="align-items: center;">
@@ -241,13 +232,11 @@ if('${store}'!=''){
 				</div>
 			</div>
 			<!-- 1. 매장관리 -->
-
 			<!-- 2. 메뉴관리 -->
 			<div class="mainContent" id="menu2" style="display: none;">
 				<div class="border p-3 " style="height: 7%;">
 					<h5>메뉴관리</h5>
 				</div>
-
 				<div class="text-end ">
 					<button class="btn btn-outline-primary m-4 " onClick="sideMenu(3)">+메뉴추가</button>
 				</div>
@@ -255,13 +244,11 @@ if('${store}'!=''){
 					style="overflow-y: auto; overflow-y: auto; height: 80%">
 					<div class="m-2 text-center">
 						<table class="table table-hover text-center " id="menuList">
-
 						</table>
 					</div>
 				</div>
 			</div>
 			<!-- 2. 메뉴관리 -->
-
 			<!-- 2-1. 메뉴추가 -->
 			<div class="mainContent" id="menu3" style="display: none;">
 				<div class="border p-3 " style="height: 7%;">
@@ -293,7 +280,6 @@ if('${store}'!=''){
 								</select>
 							</div>
 						</div>
-
 						<div class="overflow-auto" id="salesList">
 							<!-- 결제내역 들어감 '카드'or현금 -->
 						</div>
@@ -303,39 +289,21 @@ if('${store}'!=''){
 							<h5 class="fw-bold">결제 상세</h5>
 							<hr>
 							<div>
-								<div>2023.02.02.10:17</div>
-								<div>인천광역시 미추홀구 학익동</div>
+								<div id="orderDate"></div>
+								<div id="address"></div>
 							</div>
 						</div>
-						<div>
-							<div class="p-4 d-flex flex-column gap-3">
-								<div>
-									<h5 class="fw-bold">결제내역</h5>
-									<hr>
-								</div>
-								<div>감자햄버거 40,000원 x 2</div>
-								<div>감자햄버거 40,000원 x 3</div>
-								<div>감자햄버거 40,000원 x 4</div>
-								<div>감자햄버거 40,000원 x 1</div>
+						<div id="paymentInfo" class="p-4 d-flex flex-column gap-3">
+							<div>
+								<h5 class="fw-bold">결제내역</h5>
 								<hr>
-								<div class="align-items-end mt-3">
-									<div>
-										결제수단<br>
-										<h4>카드</h4>
-										</span>
-										<h3 class="col text-end">총 80,000원</h3>
-									</div>
-								</div>
-								<div class="btn btn-outline-danger col-2">환불</div>
 							</div>
-
 						</div>
 					</div>
 
 				</div>
 			</div>
 			<!-- 3. 결제내역 -->
-
 			<!-- 4. 매출분석 -->
 			<div class="mainContent" id="menu6" style="display: none;">
 				<div class="border p-3 " style="height: 7%;">
@@ -347,15 +315,13 @@ if('${store}'!=''){
 					style="flex-direction: column;">
 					<div class="salesPeriodButtonZone">
 						<button type="button" class="btn btn-outline-primary"
-							style="font-weight: bold;">&nbsp 영업중 &nbsp</button>
+							style="font-weight: bold;" id="today">&nbsp 오늘 &nbsp</button>
 						<button type="button" class="btn btn-outline-primary"
-							style="font-weight: bold;">&nbsp &nbsp 1주 &nbsp &nbsp</button>
+							style="font-weight: bold;" id="oneWeek">&nbsp &nbsp 1주 &nbsp &nbsp</button>
 						<button type="button" class="btn btn-outline-primary"
-							style="font-weight: bold;">&nbsp 1개월 &nbsp</button>
+							style="font-weight: bold;"id="oneMonth">&nbsp 1개월 &nbsp</button>
 						<button type="button" class="btn btn-outline-primary"
-							style="font-weight: bold;">&nbsp 3개월 &nbsp</button>
-						<button type="button" class="btn btn-outline-primary"
-							style="font-weight: bold;">기간선택</button>
+							style="font-weight: bold;" id="threeMonth">&nbsp 3개월 &nbsp</button>
 					</div>
 				</div>
 				<div class="mainContentMidlle" style="max-width: 100%; height: 20%;">
@@ -369,22 +335,8 @@ if('${store}'!=''){
 						<div class="textBox">
 							주문건단가<br> <span style="font-size: 30px;">33,633원</span>
 						</div>
-
-					</div>
-					<div class="salesTextZone">
-						<div class="textBox" style="">
-							총 환불<br> <span style="font-size: 30px;">201,800원</span>
-						</div>
-						<div class="textBox" style="">
-							환불건수<br> <span style="font-size: 30px;">6건</span>
-						</div>
-						<div class="textBox">
-							환불건단가<br> <span style="font-size: 30px;">13,450원</span>
-						</div>
-
 					</div>
 				</div>
-
 				<div class="mainContentFooter m-3">
 					<div class="footerChoiceTab" style="position: relative;">
 						<ul class="nav nav-tabs" role="tablist">
@@ -397,7 +349,6 @@ if('${store}'!=''){
 							<li class="nav-item" role="presentation"><a class="nav-link"
 								data-bs-toggle="tab" href="#locate" aria-selected="false"
 								role="tab" tabindex="-1">지역별</a></li>
-
 						</ul>
 						<!-- 채팅창 내부에 차트가 위치할 div -->
 						<div id="chart-container">
@@ -434,7 +385,6 @@ if('${store}'!=''){
 									<span style="font-size: 20px;">415,000원</span>
 								</div>
 								<!-- <p> 결제수단별 </p> -->
-
 							</div>
 							<div class="tab-pane fade active show" id="profile"
 								role="tabpanel">
@@ -451,7 +401,6 @@ if('${store}'!=''){
 										<hr style="border: 1px color= silver;">
 										1<br> <br> 2<br> <br> 3<br> <br>
 										4<br> <br> 5
-
 									</div>
 									<div class="textBox1">
 										<h4>건수</h4>
@@ -483,7 +432,6 @@ if('${store}'!=''){
 										<hr style="border: 1px color= silver;">
 										1<br> <br> 2<br> <br> 3<br> <br>
 										4<br> <br> 5
-
 									</div>
 									<div class="textBox1">
 										<h4>건수</h4>
@@ -509,14 +457,11 @@ if('${store}'!=''){
 		</div>
 		<!-- 헤더랑 옆 클릭바 고정을 고정. -->
 		<!--  메세지 모달 -->
-
 	</div>
 
-</body>
 
 
-
-<script>
+	<script>
 	if (${store} != '') {
 		jsonString = '${store}';
 	}
@@ -1226,6 +1171,7 @@ if('${store}'!=''){
 		serverCallByFetch(formData,'/Api/ChangePayment','post','selSalesInfo',header);
 		 }
 	}
+	salesData = new FormData();
 	function selSalesInfo(jsonData){
 		const salesListZone= document.querySelector('#salesList');
 		formData = new FormData();
@@ -1240,10 +1186,15 @@ if('${store}'!=''){
 			  
 			// div 요소에 onclick 이벤트를 추가합니다.
 			  divElement.onclick = function() {
+				  salesData.delete('storeCode'); // FormData 객체 초기화
+				  salesData.delete('orderList[0].salesDate');
+				  salesData.delete('orderList[0].salespaymentType');
 			    // 클릭 시 실행될 함수를 작성합니다.
-			    	formData.append("storeCode",storeNum);
-			    	formData.append('orderList[0].salesDate',data.salesDate);
-				  serverCallByFetch(formData,'/Api/selSalesDetail','post','selSalesDetail',header);
+			    	salesData.append("storeCode",storeNum);
+			    	salesData.append('orderList[0].salesDate',data.salesDate);
+			    	salesData.append('orderList[0].salespaymentType',data.salespaymentType)
+			    	console.log(data.salesDate)
+				  serverCallByFetch(salesData,'/Api/selSalesDetail','post','selSalesDetail',header);
 			  };
 
 			  // span 요소를 생성합니다.
@@ -1272,13 +1223,55 @@ if('${store}'!=''){
 			  salesListZone.appendChild(divElement);
 			});
 	}
-	function selSalesDetail(jsonData){
-		
-	}
+	
+	let jsonDataTest;
+	function selSalesDetail(jsonData) {
+		jsonDataTest=jsonData;
+		  const orderDate = jsonDataTest.orderList[0].salesDate;
+		  const address = jsonDataTest.locationList[0].locationAddr+jsonDataTest.locationList[0].locationDetail;
+		  const paymentList = jsonDataTest.orderList[0].orderMenuList;
+		  
+		  const orderDateElement = document.getElementById('orderDate');
+		  const addressElement = document.getElementById('address');
+		const paymentInfoElement = document.getElementById('paymentInfo');
+			  const paymentMethod = jsonDataTest.orderList[0].salespaymentType;
+		paymentInfoElement.innerText = '';
+			  let paymentListHtml = '';
+			  let totalPrice = 0;
+				// 주문 날짜와 주소 정보를 출력합니다.
+			  orderDateElement.innerHTML = orderDate;
+			  addressElement.innerHTML = address;
 
+			  for (let i = 0; i < paymentList.length; i++) {
+			    const item = paymentList[i];
+			    paymentListHtml += `\${paymentList[i].menuName} \${paymentList[i].menuPrice} x \${paymentList[i].quantity}<br>`;
+			    totalPrice += item.menuPrice * item.quantity;
+			  }
+
+			  const paymentInfo = `
+			    <hr>
+			    <div class="align-items-end mt-3">
+			      <div>
+			        결제수단<br>
+			        <h4>\${paymentMethod}</h4>
+			        <h3 class="col text-end">총 \${totalPrice}원</h3>
+			      </div>
+			    </div>
+			  `;
+
+			  paymentInfoElement.innerHTML = `
+			    <div>
+			      <h5 class="fw-bold">결제내역</h5>
+			      <hr>
+			      \${paymentListHtml}
+			    </div>
+			  `;
+
+			  paymentInfoElement.insertAdjacentHTML('beforeend', paymentInfo);
+	}
 </script>
 
-<style>
+	<style>
 body {
 	margin: 0px;
 	margin-bottom: 0px;
@@ -1357,5 +1350,4 @@ body {
 	transition: background-color 0.3s ease;
 }
 </style>
-
 </html>

@@ -34,10 +34,7 @@ public class MainController {
 		return "landing";
 	}
 
-	@GetMapping("/View/MoveHome") // 홈페이지 이동
-	public String moveHome() {
-		return "homePage";
-	}
+	
 
 	@PostMapping("/View/logOut")
 	public String logOut(ModelAndView mav, @ModelAttribute StoreBean store,

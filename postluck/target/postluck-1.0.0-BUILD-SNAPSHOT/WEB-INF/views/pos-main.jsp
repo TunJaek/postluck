@@ -134,10 +134,10 @@
 				</div>
 				<div class="row text-center fs-5 pointer" style="height: 10%;">
 					<div class="h-100 col-4 bg-light row justify-content-center"
-						id="cancelOrder">주문취소</div>
+						id="cancelOrder" onclick="cancelOrder(this)">주문취소</div>
 					<div
 						class="h-100 justify-content-center col bg-success bg-opacity-10 row pointer"
-						id="completeOrder">결제</div>
+						id="completeOrder" onclick="completeOrder(this)">결제</div>
 				</div>
 			</div>
 		</div>
@@ -282,14 +282,16 @@ if(btn.innerText == '주문'){
 				jsonData.forEach(order => {
 					createOrderDiv(order);
 				})
+				alertEmpty();
+				console.log(jsonData)
+			}
+			function alertEmpty(){
 				if(!document.getElementById("orderListZone").children.length>0){
 					isEmpty = true;
 					document.getElementById("orderListZone").style.textAlign="center";
 					document.getElementById("orderListZone").innerHTML ="<h5><div class=\"m11\"><i class=\"bi bi-exclamation-circle \" style=\"font-size:2rem\"></i></div><br>주문 내역이 없습니다.</div>"
 				}
-				console.log(jsonData)
 			}
-			
 			function createToast(orderDate) {
 				const toastZone = document.getElementById("toastZone");
 				const toastDiv = document.createElement('div');
@@ -337,6 +339,7 @@ if(btn.innerText == '주문'){
 				serverCallByFetch(formData,"/Api/getOrderInfo","post","changeOffCanvas",header);
 			}
 			let orderNumForOffCanvas;
+			
 			function changeOffCanvas(jsonData){
 				console.log(jsonData)
 				let orderNo = orderNumForOffCanvas;
@@ -365,36 +368,43 @@ if(btn.innerText == '주문'){
 				}else{
 					document.getElementById("inlineRadio2").checked ="true"
 				}
-				document.getElementById("cancelOrder").setAttribute("data-order-date", jsonData.orderDate);
-				document.getElementById("completeOrder").setAttribute("data-order-date", jsonData.orderDate);
+				console.log(jsonData.orderDate)
+				document.getElementById("cancelOrder").setAttribute("data-orderDate",jsonData.orderDate);
+				document.getElementById("completeOrder").setAttribute("data-orderDate",jsonData.orderDate);
 				
-			    document.getElementById("cancelOrder").addEventListener("click", () => {
-			        const formData = new FormData();
-			        formData.append("storeCode", storeCode);
-			        formData.append("orderDate", jsonData.orderDate);
-			        serverCallByFetch(formData, "/Api/CancelOrder", "post", "afterCancelOrder", header);
-			    });
-			    document.getElementById("completeOrder").addEventListener("click", () => {
-			        const formData = new FormData();
-			        formData.append("storeCode", storeCode);
-			        formData.append("orderDate", jsonData.orderDate);
-			        serverCallByFetch(formData, "/Api/CompleteOrder", "post", "afterCompleteOrder", header);
-			    });
+
 			}
 			
-			
+			function cancelOrder(div){
+				 const formData = new FormData();
+				    formData.append("storeCode", storeCode);
+				    formData.append("orderDate",div.getAttribute("data-orderDate"));
+				    serverCallByFetch(formData, "/Api/CancelOrder", "post", "afterCancelOrder", header);
+
+			}
+			function completeOrder(div){
+				 const formData = new FormData();
+				    formData.append("storeCode", storeCode);
+				    formData.append("orderDate", div.getAttribute("data-orderDate"));
+				    serverCallByFetch(formData, "/Api/CompleteOrder", "post", "afterCompleteOrder", header);
+			}
 			
 			function afterCancelOrder(jsonData){
 				console.log("afcancel")
+				console.log("div"+jsonData.orderDate)
 				document.getElementById("div"+jsonData.orderDate).remove();
-				showModal("plain::주문이 취소되었습니다.:getOrderListOnLoad:")
+				alertEmpty();
+				showModal("plain::주문이 취소되었습니다.::")
 			}
 			function afterCompleteOrder(jsonData){
 				console.log("afcomplete")
+				console.log("div"+jsonData.orderDate)
 				document.getElementById("div"+jsonData.orderDate).remove();
-				showModal("plain::결제 처리되었습니다.:getOrderListOnLoad:")
+				alertEmpty();
+				showModal("plain::결제 처리되었습니다.::")
 			}
 			
+
 		</script>
 </body>
 

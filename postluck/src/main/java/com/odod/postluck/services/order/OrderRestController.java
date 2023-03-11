@@ -46,11 +46,11 @@ public class OrderRestController {
 		return (OrderInfoBean)model.getAttribute("cancelOrder");
 	}
 	@PostMapping("/Api/CompleteOrder")
-	public OrderInfoBean completeOrder(Model model,@ModelAttribute OrderInfoBean orderInfo) {
-		model.addAttribute("completeOrder",orderInfo);
+	public StoreBean completeOrder(Model model,@ModelAttribute StoreBean salesInfo) {
+		model.addAttribute("completeOrder",salesInfo);
 		this.orderService.backController("OR05",model);
-		System.out.println("completeOrder" + orderInfo);
-		return (OrderInfoBean)model.getAttribute("completeOrder");
+		System.out.println("completeOrder" + salesInfo);
+		return (StoreBean)model.getAttribute("completeOrder");
 	}
 
 }

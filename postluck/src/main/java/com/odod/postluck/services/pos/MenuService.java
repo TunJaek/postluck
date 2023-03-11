@@ -1,7 +1,11 @@
 package com.odod.postluck.services.pos;
 
 import java.io.File;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -140,6 +144,7 @@ public class MenuService extends TransactionAssistant {
 //			filePath += store.getStoreCode() + menuCode + ".jpg";
 			store.getMenuList().get(0).setMenuImageCode(store.getStoreCode() + menuCode);
 			// 생성할 파일 이름 : 폴더이름(1998033001) + 메뉴코드(M00) + ".jpg"
+
 			store.getMenuList().get(0).setMenuImageLocation(folderPath + fileName);
 			if (this.convertToBoolean(this.sqlSession.insert("insMenuImgCode", store))) {
 				System.out.println("ImgCode : " + store.getMenuList().get(0).getMenuImageCode());
@@ -204,7 +209,7 @@ public class MenuService extends TransactionAssistant {
 				} else {
 					System.out.println("MenuUpadate실패");
 				}
-				if (!file.isEmpty()&&file!=null) {
+				if (!file.isEmpty() && file != null) {
 					file.transferTo(new File(filePath));
 					System.out.println("파일 저장 완료. path: " + filePath);
 				} else {
@@ -225,36 +230,86 @@ public class MenuService extends TransactionAssistant {
 
 	private void deleteMenu(Model model) {
 		StoreBean store = (StoreBean) model.getAttribute("store");
-		MultipartFile file = (MultipartFile) model.getAttribute("file");
-		System.out.println("deleteMenu로 들어옴.");
-//		String message = null;
-//		ArrayList<MenuBean> menuList = null;
-//		MenuBean menu = null;
-		String folderPath = "C:\\Users\\user\\git\\postluck\\postluck\\src\\main\\webapp\\resources\\image\\"
-				+ store.getStoreCode() + "\\";
-		String filePath = folderPath;
 		String message = "warn:오류:오류가 발생했습니다. 잠시후 다시 시도해주세요.:sideMenu:2";
+		String storeCode = store.getStoreCode();
+		String menuCode = this.sqlSession.selectOne("selMaxMenuCode", store);
+		List<MenuBean> menuList = store.getMenuList();
+		if (menuList == null || menuList.isEmpty()) {
+			store.setMessage(message);
+			return;
+		}
+		if (menuCode == null || menuCode.isEmpty()) {
+			store.setMessage(message);
+			return;
+		}
 
 		try {
-			this.tranManager = getTransaction(false);
-			this.tranManager.tranStart();
-			System.out.println("MenuCode : " + store.getMenuList().get(0).getMenuCode());
-			// 선택한 메뉴코드의 값이 비어있지않다면
-			if (store.getMenuList().get(0).getMenuCode() != null) {
-				if (this.convertToBoolean(this.sqlSession.delete("delMenu", store))) {
-					this.tranManager.commit();
-					System.out.println("삭제완료");
+			tranManager.tranStart();
+			String imgLocate = sqlSession.selectOne("selImgLocation", store);
+			if (imgLocate != null && !imgLocate.isEmpty()) {
+				Path path = Paths.get(imgLocate);
+				String extension = Files.probeContentType(path);
+				if (extension != null && extension.startsWith("image/")) {
+					File imageFile = new File(imgLocate);
+					if (imageFile.delete()) {
+						System.out.println("이미지 파일이 삭제되었습니다: " + imgLocate);
+
+						if (this.convertToBoolean(sqlSession.delete("delMenu", store))) {
+							if (this.convertToBoolean(sqlSession.delete("delMenuImgDB", store))) {
+
+								store.setMessage("plain::메뉴 삭제가 완료되었습니다!(사진포함):showModal:");
+								this.tranManager.commit();
+							} else {
+								store.setMessage("plain:: DB STOREIMAGE TALBE을 확인해주세요!:showModal:");
+							}
+						} else {
+
+						}
+					} else {
+						System.out.println("이미지 파일 삭제에 실패하였습니다: " + imgLocate);
+					}
+
 				}
 			}
-
 		} catch (Exception e) {
 			e.printStackTrace();
-			this.tranManager.rollback();
+			tranManager.rollback();
+			store.setMessage(message);
 		} finally {
-			store.setMessage("plain::메뉴 삭제가 완료되었습니다!:showModal:");
-			this.tranManager.tranEnd();
+			tranManager.tranEnd();
 		}
 	}
+//	private void deleteMenu(Model model) {
+//		StoreBean store = (StoreBean) model.getAttribute("store");
+//		MultipartFile file = (MultipartFile) model.getAttribute("file");
+//		System.out.println("deleteMenu로 들어옴.");
+////		String message = null;
+////		ArrayList<MenuBean> menuList = null;
+////		MenuBean menu = null;
+//		String folderPath = "C:\\Users\\user\\git\\postluck\\postluck\\src\\main\\webapp\\resources\\image\\"
+//				+ store.getStoreCode() + "\\";
+//		String filePath = folderPath;
+//		String message = "warn:오류:오류가 발생했습니다. 잠시후 다시 시도해주세요.:sideMenu:2";
+//
+//		try {
+//			this.tranManager = getTransaction(false);
+//			this.tranManager.tranStart();
+//			System.out.println("MenuCode : " + store.getMenuList().get(0).getMenuCode());
+//			// 선택한 메뉴코드의 값이 비어있지않다면
+//			if(store.getMenuList().get(0).getMenuCode() != null) {
+//				if(this.convertToBoolean(this.sqlSession.delete("delMenu",store))) {
+//					this.tranManager.commit();
+//				}
+//			}
+//
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//			this.tranManager.rollback();
+//		} finally {
+//			store.setMessage("plain::메뉴 삭제가 완료되었습니다!:showModal:");
+//			this.tranManager.tranEnd();
+//		}
+//	}
 
 }
 //	private void dupCheckMenu(Model model) {
