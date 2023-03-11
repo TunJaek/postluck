@@ -131,7 +131,6 @@ public class OrderService extends TransactionAssistant {
 			model.addAttribute("orderList", orderBeanArr);
 		} catch (Exception e) {
 			this.tranManager.rollback();
-
 			e.printStackTrace();
 		} finally {
 			this.tranManager.tranEnd();

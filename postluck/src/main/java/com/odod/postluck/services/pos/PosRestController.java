@@ -109,6 +109,7 @@ public class PosRestController {
 	@PostMapping("/Api/ChangePayment")
 	public StoreBean changePayment(Model model, @ModelAttribute StoreBean store) {
 		model.addAttribute("store", store);
+		System.out.println("changePayment Store is "+ store);
 		this.salesService.backController("SA02", model);
 		return (StoreBean)model.getAttribute("store");
 	}

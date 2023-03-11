@@ -372,6 +372,7 @@ if(btn.innerText == '주문'){
 				document.getElementById("cancelOrder").setAttribute("data-orderDate",jsonData.orderDate);
 				document.getElementById("completeOrder").setAttribute("data-orderDate",jsonData.orderDate);
 				
+
 			}
 			
 			function cancelOrder(div){
@@ -379,6 +380,7 @@ if(btn.innerText == '주문'){
 				    formData.append("storeCode", storeCode);
 				    formData.append("orderDate",div.getAttribute("data-orderDate"));
 				    serverCallByFetch(formData, "/Api/CancelOrder", "post", "afterCancelOrder", header);
+
 			}
 			function completeOrder(div){
 				 const formData = new FormData();
@@ -402,6 +404,7 @@ if(btn.innerText == '주문'){
 				showModal("plain::결제 처리되었습니다.::")
 			}
 			
+
 		</script>
 </body>
 

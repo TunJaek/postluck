@@ -155,7 +155,7 @@ function isMem(){
 					});
 			}
 			function moveHome(){
-				serverCallByRequest("Home/moveHome", 'post','');
+				serverCallByRequest("Home/moveHome", 'get','');
 			}
 	</script>
 
