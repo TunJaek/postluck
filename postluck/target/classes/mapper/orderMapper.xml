@@ -40,5 +40,6 @@
 	<update id="updOrderStateToComplete" parameterType ="com.odod.postluck.beans.OrderInfoBean">
 	update Orders set os_Statement = '완료' where os_stcode =#{storeCode} and os_date = TO_DATE(#{orderDate},'YYYYMMDDHH24MISS')
 	</update>
+
 	
 </mapper>

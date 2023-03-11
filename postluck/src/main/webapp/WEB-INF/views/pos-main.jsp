@@ -386,7 +386,7 @@ if(btn.innerText == '주문'){
 			document.getElementById(jsonData.orderDate).remove();
 			formData = new FormData();
 			formData.append("storeCode",storeCode);
-			serverCallByFetch(formData, "/Api/GetOrderList","post","getOrderList",header);
+			serverCallByFetch(jsonData, "/Api/GetOrderList","post","getOrderList",header);
 			}
 		</script>
 </body>

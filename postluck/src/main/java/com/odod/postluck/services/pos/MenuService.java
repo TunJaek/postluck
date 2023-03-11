@@ -143,7 +143,6 @@ public class MenuService extends TransactionAssistant {
 //			filePath += store.getStoreCode() + menuCode + ".jpg";
 			store.getMenuList().get(0).setMenuImageCode(store.getStoreCode() + menuCode);
 			// 생성할 파일 이름 : 폴더이름(1998033001) + 메뉴코드(M00) + ".jpg"
-
 			store.getMenuList().get(0).setMenuImageLocation(folderPath + fileName);
 			if (this.convertToBoolean(this.sqlSession.insert("insMenuImgCode", store))) {
 				System.out.println("ImgCode : " + store.getMenuList().get(0).getMenuImageCode());
