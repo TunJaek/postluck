@@ -7,7 +7,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.odod.postluck.beans.LocationBean;
 import com.odod.postluck.beans.OrderBean;
+import com.odod.postluck.beans.OrderDetailBean;
 import com.odod.postluck.beans.StoreBean;
 import com.odod.postluck.utils.SimpleTransactionManager;
 import com.odod.postluck.utils.TransactionAssistant;
@@ -55,6 +57,7 @@ public class SalesService extends TransactionAssistant {
 			List<OrderBean> orderList = this.sqlSession.selectList("selPayment", store);
 			if (orderList != null) {
 				store.setOrderList((ArrayList<OrderBean>) orderList);
+				System.out.println("스토어정보"+store);
 			}
 			this.tranManager.commit();
 		} catch (Exception e) {
@@ -81,18 +84,14 @@ public class SalesService extends TransactionAssistant {
 		StoreBean store = (StoreBean)model.getAttribute("salesStore");
 		try {
 			this.tranManager.tranStart();
-			List<OrderBean> orderList = this.sqlSession.selectList("selPaymentList", store);
-			System.out.println("오더리스트"+orderList);
-//			store.setOrderList((ArrayList<OrderBean>)orderList);
-	//		System.out.println("스토어에넣기"+store);
-			List<StoreBean>storeList=this.sqlSession.selectList("selSalesList", store);
-			System.out.println("스토어리스트만들기"+storeList);
-			storeList.get(0).setOrderList((ArrayList<OrderBean>)orderList);
-			System.out.println("스토어리스트"+storeList);
-			store=storeList.get(0);
-			System.out.println("스토어"+store);
+			List<OrderDetailBean> orderDetailList= this.sqlSession.selectList("selPaymentList", store);
+			store.getOrderList().get(0).setOrderMenuList((ArrayList<OrderDetailBean>)orderDetailList);   
+			List<LocationBean> selLocationList = this.sqlSession.selectList("selSalesLocation", store);
+			store.setLocationList((ArrayList<LocationBean>)selLocationList);
+			System.out.println(store);
 		} catch (Exception e) {
 			e.printStackTrace();
+			this.tranManager.rollback();
 		}finally {
 			this.tranManager.tranEnd();
 		}
@@ -106,6 +105,7 @@ public class SalesService extends TransactionAssistant {
 
 	private void getTypeSalesList(Model model) {
 		StoreBean store = (StoreBean) model.getAttribute("store");
+		System.out.println("getTypeSalesList Store is "+store);
 		try {
 			this.tranManager.tranStart();
 			List<OrderBean> orderList = this.sqlSession.selectList("selTypeSalesList", store);
