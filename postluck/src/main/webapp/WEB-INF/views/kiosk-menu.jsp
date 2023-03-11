@@ -229,11 +229,21 @@ jsonString = '${store}'
 			cardContent += menu.menuPrice;       
 			cardContent += "원</div>  </div>  </div>";
 		card.innerHTML = cardContent;
+		card.children[0].addEventListener('click', function() {
+			  animateDiv(card.children[0]);
+			});
+		
 		menuListZone.appendChild(card);
 		}
 		});
 	}
-	
+	function animateDiv(element) {
+		  element.style.transition = 'transform 0.3s';
+		  element.style.transform = 'scale(1.1)';
+		  setTimeout(function() {
+		    element.style.transform = 'scale(1)';
+		  }, 200);
+		}
 	function getCurrentDateTime() {
 		  const now = new Date();
 		  const year = now.getFullYear();

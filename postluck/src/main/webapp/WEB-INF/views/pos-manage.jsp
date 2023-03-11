@@ -984,12 +984,6 @@ if('${store}'!=''){
 		locationListModal.hide()
 		showModal(jsonData.message+"sideMenu:1")	
 	}
-	//페이지 reload
-	function reload(Idx){
-		movePage('PosManage');
-		sideMenu(Idx);
-	}
-	
 	//메뉴 입력 Zone 생성 
 	function showMenuInput(menuCode){
 	    const menuInputZone = document.getElementById("menuInputZone");
@@ -1221,14 +1215,13 @@ if('${store}'!=''){
 	
 // 	function modifyMenu(menuCode){
 // 		  // 입력값들을 추가
-// 		c
 		  
 // 	    serverCallByFetch(formData,"/Api/ModifyMenu","post","afterDeleteMenu",header);
 // 	}
 
 	
 	 function afterDeleteMenu(jsonData){
-	    showModal(jsonData.message+"reload:2");
+	    showModal(jsonData.message+"sideMenu:2");
 	}
 	// 차트 생성
 	var ctx = document.getElementById('chart').getContext('2d');

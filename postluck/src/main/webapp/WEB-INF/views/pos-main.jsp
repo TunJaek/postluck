@@ -229,12 +229,7 @@
 				createOrderDiv(jsonData);
 			}
 			let isEmpty;
-			if(!document.getElementById("orderListZone").children.length>0){
-				isEmpty = true;
-				document.getElementById("orderListZone").style.textAlign="center";
-				document.getElementById("orderListZone").innerHTML ="<h5><div class=\"m11\"><i class=\"bi bi-exclamation-circle \" style=\"font-size:2rem\"></i></div><br>주문 내역이 없습니다.</div>"
-				
-			}
+			
 			function createOrderDiv(jsonData){
 				const orderListZone = document.getElementById("orderListZone");
 				if(isEmpty==true){
@@ -284,6 +279,12 @@ if(btn.innerText == '주문'){
 }
 			}
 			function getOrderList(jsonData){
+				if(!document.getElementById("orderListZone").children.length>0){
+					isEmpty = true;
+					document.getElementById("orderListZone").style.textAlign="center";
+					document.getElementById("orderListZone").innerHTML ="<h5><div class=\"m11\"><i class=\"bi bi-exclamation-circle \" style=\"font-size:2rem\"></i></div><br>주문 내역이 없습니다.</div>"
+					
+				}
 				const orderList = jsonData.orderList;
 				jsonData.forEach(order => {
 					createOrderDiv(order);
@@ -383,10 +384,9 @@ if(btn.innerText == '주문'){
 			function acceptOrder() {
 			}
 			function removeOrderDiv(jsonData) {
+			console.log("removeOrderDiv"+jsonData);
 			document.getElementById(jsonData.orderDate).remove();
-			formData = new FormData();
-			formData.append("storeCode",storeCode);
-			serverCallByFetch(formData, "/Api/GetOrderList","post","getOrderList",header);
+			getOrderListOnLoad();
 			}
 		</script>
 </body>
