@@ -146,6 +146,7 @@ public class MenuService extends TransactionAssistant {
 //			filePath += store.getStoreCode() + menuCode + ".jpg";
 			store.getMenuList().get(0).setMenuImageCode(store.getStoreCode() + menuCode);
 			// 생성할 파일 이름 : 폴더이름(1998033001) + 메뉴코드(M00) + ".jpg"
+
 			store.getMenuList().get(0).setMenuImageLocation(folderPath + fileName);
 			if (this.convertToBoolean(this.sqlSession.insert("insMenuImgCode", store))) {
 				System.out.println("ImgCode : " + store.getMenuList().get(0).getMenuImageCode());
@@ -262,8 +263,17 @@ public class MenuService extends TransactionAssistant {
 					} else {
 						System.out.println("이미지 파일 삭제에 실패하였습니다: " + imgLocate);
 					}
+					this.tranManager = getTransaction(false);
+					this.tranManager.tranStart();
+					System.out.println("MenuCode : " + store.getMenuList().get(0).getMenuCode());
+					// 선택한 메뉴코드의 값이 비어있지않다면
+					if (store.getMenuList().get(0).getMenuCode() != null) {
+						if (this.convertToBoolean(this.sqlSession.delete("delMenu", store))) {
+							this.tranManager.commit();
+						}
+						tranManager.commit();
+					}
 				}
-				tranManager.commit();
 			}
 
 		} catch (Exception e) {

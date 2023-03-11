@@ -150,10 +150,10 @@ public class MainService extends TransactionAssistant {
 			if (this.convertToBoolean(this.sqlSession.insert("insSalesLog", store))) {
 				if (store.getSalesLogList().get(0).getSalesState() == 'O') {
 					this.pu.setAttribute("isOpen", "true");
-					store.setMessage("plain::영업이 시작되었습니다.:");
+					store.setMessage("plain::영업이 시작되었습니다.::");
 				} else if (store.getSalesLogList().get(0).getSalesState() == 'C') {
 					this.pu.setAttribute("isOpen", "false");
-					store.setMessage("plain::영업이 종료되었습니다.:");
+					store.setMessage("plain::영업이 종료되었습니다.::");
 				} else {
 					store.setMessage("error:서버 오류:통신이 불안정합니다. 잠시후 다시 시도해주세요.::");
 					// warn::삭제시 복구가 불가능합니다. 삭제하시겠습니까?: <, 버튼이 두개

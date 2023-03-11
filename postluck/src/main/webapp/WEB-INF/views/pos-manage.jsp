@@ -20,24 +20,17 @@
 	src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 <script type="text/javascript"
 	src="//dapi.kakao.com/v2/maps/sdk.js?appkey=0203ee3bafbf6d3fe50695090bc89516&libraries=services"></script>
-<script
-	src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.1/index.global.min.js'></script>
+
 <script
 	src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
 	integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
 	crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
+
 if('${store}'!=''){
 	jsonString = '${store}'
 }
-document.addEventListener('DOMContentLoaded', function() {
-	let calendarEl = document.getElementById('calendar');
-	let calendar = new FullCalendar.Calendar(calendarEl, {
-		initialView : 'dayGridMonth'
-	});
-	calendar.render();
-});
 </script>
 <script
 	src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.1/index.global.min.js'></script>
@@ -49,7 +42,6 @@ document.addEventListener('DOMContentLoaded', function() {
 <!-- 헤더랑 옆 클릭바 고정을 고정. -->
 
 <body class="vsc-initialized">
-
 	<!-- 위치 리스트 Modal -->
 	<div class="modal fade show" id="locationListModal"
 		style="display: none; z-index: 1060;">
@@ -154,20 +146,10 @@ document.addEventListener('DOMContentLoaded', function() {
 				<div class="menu  p-3 sideMenu" onclick="sideMenu(6)">매출분석</div>
 			</div>
 			<!-- sideMenu(3) : 메뉴추가 / sideMenu(4) : 메뉴수정 -->
-			<!-- 0. 일정 -->
-			<div class="mainContent" id="menu0" style="display: block;">
-				<div class="border-bottom p-3 h-7">
-					<h5>일정</h5>
-				</div>
-				<div class="mt-5 d-flex" id='calendar-container'
-					style="justify-content: center;">
-					<div id='calendar' style="width: 50%;"></div>
-				</div>
-			</div>
-			<!-- 0. 일정 -->
+		
 
 			<!-- 1. 매장관리 -->
-			<div class="mainContent" id="menu1" style="display: none;">
+			<div class="mainContent" id="menu1" style="display: block;">
 				<div class="border-bottom p-3 h-7">
 					<h5>매장 관리</h5>
 				</div>
@@ -554,13 +536,13 @@ document.addEventListener('DOMContentLoaded', function() {
 		document.getElementById("isOpenText").innerText = "영업전"
 	}
 
-	let selectedIdx = 0;
+	let selectedIdx = 1;
 	
 	
 	function setStoreInfo(JsonData){
 		jsonData = JsonData;
 	}
-	
+	sideMenu(1);
 	//메뉴 탭을 누를때 
 	function sideMenu(newIdx) {
 		 const formData = new FormData;
