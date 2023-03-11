@@ -203,8 +203,6 @@
 			sock.onclose = function(event) {
 				if (event.wasClean) {
 					showModal('error:연결 오류:Kiosk와 통신이 불안정합니다. Kiosk 서비스를 실행해주세요.::')
-				} else {
-					showModal('error:연결 오류:서버와의 연결이 비정상적으로 종료되었습니다.::')
 				}
 			};
 			sock.onerror = function(error) {
@@ -258,8 +256,8 @@
 			orderDiv.appendChild(menuListZone)
 			
 				menuList.forEach(menuItem => {
-					let menuContent = "<div class=\"row mb-3 border-bottom\" style=\"height:10%\"><h4 class=\"col-5\">"+
-					menuItem.menuName+"</h4><h4 class=\"col-1\">x</h4><h4 class=\"col-5\">"+
+					let menuContent = "<div class=\"row mb-3 border-bottom\" style=\"height:10%\"><h4 class=\"col-9\">"+
+					menuItem.menuName+"</h4><h4 class=\"col-1\">x</h4><h4 class=\"col-2\">"+
 					menuItem.quantity+"</h4></div>"
 					menuListZone.innerHTML+=menuContent;
 				})
@@ -353,10 +351,10 @@ if(btn.innerText == '주문'){
 					menuItem.style="height: 10%; align-items: center;";
 					menuItem.classList.add("row" ,"border-bottom", "text-center");
 					
-					menuItem.innerHTML = `<div class="col-4">\${menu.menuName}</div>
+					menuItem.innerHTML = `<div class="col">\${menu.menuName}</div>
 						<div class="col-1">X</div>
 						<div class="col-1">\${menu.quantity}</div>
-						<div class="col text-end">\${menu.quantity * menu.menuPrice}</div>
+						<div class="col-3 text-end">\${menu.quantity * menu.menuPrice}</div>
 						<div class="col-1">원</div>`
 						menuListZone.appendChild(menuItem);
 						total += menu.quantity * menu.menuPrice
@@ -371,23 +369,22 @@ if(btn.innerText == '주문'){
 				formData.append("storeCode",storeCode);
 				formData.append("orderDate",jsonData.orderDate);
 				document.getElementById("cancelOrder").addEventListener("click",function(event){
-					serverCallByFetch(formData,"/Api/CancelOrder","post","removeOrderDiv",header)
+					serverCallByFetch(formData,"/Api/CancelOrder","post","afterCancelOrder",header)
 				})
 				document.getElementById("completeOrder").addEventListener("click",function(event){
-					serverCallByFetch(formData,"/Api/CompleteOrder","post","removeOrderDiv",header)
+					serverCallByFetch(formData,"/Api/CompleteOrder","post","afterCompleteOrder",header)
 				})
 			}
-			function addOrderDiv() {
+			
+			function afterCancelOrder(jsonData){
+				document.getElementById(jsonData.orderDate).remove();
+				showModal("plain::주문이 취소되었습니다.:getOrderListOnLoad:")
 			}
-			function showOrderDetail() {
+			function afterCompleteOrder(jsonData){
+				document.getElementById(jsonData.orderDate).remove();
+				showModal("plain::결제 처리되었습니다.:getOrderListOnLoad:")
 			}
-			function acceptOrder() {
-			}
-			function removeOrderDiv(jsonData) {
-			console.log("removeOrderDiv"+jsonData);
-			document.getElementById(jsonData.orderDate).remove();
-			getOrderListOnLoad();
-			}
+			
 		</script>
 </body>
 

@@ -109,7 +109,9 @@ public class MainService extends TransactionAssistant {
 		} else {
 			System.out.println("this is not mav or model");
 		}
-		message = store.getMessage();
+		if(store.getMessage()!=null) {
+			message = store.getMessage();
+		}
 		List<MenuBean> menuList;
 		List<LocationBean> locationList;
 

@@ -40,9 +40,6 @@
 		VALUES(#{snsID}, SYSDATE,
 		#{accessLogList[0].accessType},#{accessLogList[0].accessIP})
 	</insert>
-	<delete  id="delMenu" parameterType="com.odod.postluck.beans.StoreBean">
-	delete from storeMenu where SM_STCODE = #{storeCode} And SM_code =#{menuList[0].menuCode}
-	</delete>
 
 
 
