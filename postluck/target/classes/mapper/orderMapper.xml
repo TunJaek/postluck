@@ -34,5 +34,12 @@
 	<select id="selOrderList" parameterType="string"  resultType="com.odod.postluck.beans.OrderBean">
 	select  TO_CHAR(os_date,'YYYYMMDDHH24MISS') as orderDate, OS_TYPE as orderPaymentType, OS_STATEMENT as orderState from Orders where os_stCode = #{storeCode} and os_statement ='주문'
 	</select>
+	<update id="updOrderStateToCancel" parameterType ="com.odod.postluck.beans.OrderInfoBean">
+	update Orders set os_Statement = '취소' where os_stcode =#{storeCode} and os_date = TO_DATE(#{orderDate},'YYYYMMDDHH24MISS')
+	</update>
+	<update id="updOrderStateToComplete" parameterType ="com.odod.postluck.beans.OrderInfoBean">
+	update Orders set os_Statement = '완료' where os_stcode =#{storeCode} and os_date = TO_DATE(#{orderDate},'YYYYMMDDHH24MISS')
+	</update>
+
 	
 </mapper>

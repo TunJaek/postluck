@@ -38,4 +38,17 @@ public class OrderRestController {
 		this.orderService.backController("OR03", model);
 		return (ArrayList<OrderBean>)model.getAttribute("orderList");
 	}
+	@PostMapping("/Api/CancelOrder")
+	public OrderInfoBean cancelOrder(Model model,@ModelAttribute OrderInfoBean orderInfo) {
+		model.addAttribute("cancelOrder",orderInfo);
+		this.orderService.backController("OR04",model);
+		return (OrderInfoBean)model.getAttribute("cancelOrder");
+	}
+	@PostMapping("/Api/CompleteOrder")
+	public OrderInfoBean completeOrder(Model model,@ModelAttribute OrderInfoBean orderInfo) {
+		model.addAttribute("completeOrder",orderInfo);
+		this.orderService.backController("OR05",model);
+		return (OrderInfoBean)model.getAttribute("completeOrder");
+	}
+
 }

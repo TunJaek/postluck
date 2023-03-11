@@ -102,8 +102,9 @@
 		<div class="offcanvas offcanvas-end" data-bs-scroll="true"
 			data-bs-backdrop="false" tabindex="-1" id="offcanvasScrolling"
 			aria-labelledby="offcanvasScrollingLabel">
-			<div class="offcanvas-header border-bottom">
+			<div class="offcanvas-header border-bottom align-baseline">
 				<h2 class="offcanvas-title" id="offcanvasWithBothOptionsLabel"></h2>
+				<h6 id="orderDateInOffCanvas" class="col-4"></h6>
 				<button type="button" class="btn-close" data-bs-dismiss="offcanvas"
 					aria-label="Close"></button>
 			</div>
@@ -131,12 +132,12 @@
 						</div>
 					</div>
 				</div>
-				<div class="row text-center fs-5" style="height: 10%;">
+				<div class="row text-center fs-5 pointer" style="height: 10%;">
 					<div class="h-100 col-4 bg-light row justify-content-center"
 						id="cancelOrder">주문취소</div>
 					<div
-						class="h-100 justify-content-center col bg-success bg-opacity-10 row"
-						id="salesOrder">결제</div>
+						class="h-100 justify-content-center col bg-success bg-opacity-10 row pointer"
+						id="completeOrder">결제</div>
 				</div>
 			</div>
 		</div>
@@ -202,8 +203,6 @@
 			sock.onclose = function(event) {
 				if (event.wasClean) {
 					showModal('error:연결 오류:Kiosk와 통신이 불안정합니다. Kiosk 서비스를 실행해주세요.::')
-				} else {
-					showModal('error:연결 오류:서버와의 연결이 비정상적으로 종료되었습니다.::')
 				}
 			};
 			sock.onerror = function(error) {
@@ -228,12 +227,7 @@
 				createOrderDiv(jsonData);
 			}
 			let isEmpty;
-			if(!document.getElementById("orderListZone").children.length>0){
-				isEmpty = true;
-				document.getElementById("orderListZone").style.textAlign="center";
-				document.getElementById("orderListZone").innerHTML ="<h5><div class=\"m11\"><i class=\"bi bi-exclamation-circle \" style=\"font-size:2rem\"></i></div><br>주문 내역이 없습니다.</div>"
-				
-			}
+			
 			function createOrderDiv(jsonData){
 				const orderListZone = document.getElementById("orderListZone");
 				if(isEmpty==true){
@@ -249,7 +243,7 @@
 				orderDiv.setAttribute('data-bs-toggle', 'offcanvas');
 				orderDiv.setAttribute('data-bs-target', '#offcanvasScrolling');
 				orderDiv.setAttribute('aria-controls', 'offcanvasScrolling');
-				orderDiv.setAttribute('data-bs-orderDate',jsonData.orderDate);
+				orderDiv.setAttribute('id',jsonData.orderDate);
 				orderDiv.setAttribute('onclick',"getOrderDetail(\'"+jsonData.orderDate+"',\'"+orderNum+"\')")
 				
 			const orderContent = "<div class=\"row\" style=\"align-items: baseline; height: 10%\">"+
@@ -262,21 +256,33 @@
 			orderDiv.appendChild(menuListZone)
 			
 				menuList.forEach(menuItem => {
-					let menuContent = "<div class=\"row mb-3 border-bottom\" style=\"height:10%\"><h4 class=\"col-5\">"+
-					menuItem.menuName+"</h4><h4 class=\"col-1\">x</h4><h4 class=\"col-5\">"+
+					let menuContent = "<div class=\"row mb-3 border-bottom\" style=\"height:10%\"><h4 class=\"col-9\">"+
+					menuItem.menuName+"</h4><h4 class=\"col-1\">x</h4><h4 class=\"col-2\">"+
 					menuItem.quantity+"</h4></div>"
 					menuListZone.innerHTML+=menuContent;
 				})
-				orderDiv.innerHTML += "<div class=\"row\">"+
-					"<button class=\"btn btn-outline-primary w-100\" type=\"button\""+
-						"data-bs-toggle=\"offcanvas\" data-bs-target=\"#offcanvasScrolling\""+
-					"aria-controls=\"offcanvasScrolling\">주문</button></div>";
+				orderDiv.innerHTML += "<div class=\"row\"><button class= \"btn btn-outline-primary w-100\" type=\"button\" onclick =\"changeState(this)\">주문</button></div>";
 				orderListZone.appendChild(orderDiv);
 				isEmpty = false;
 			}
 			// 상태가 주문인 
-			
+			function changeState(btn){
+				
+if(btn.innerText == '주문'){
+	btn.classList.replace('btn-outline-primary', 'btn-primary');
+	btn.innerText ='접수'
+}				else{
+	btn.classList.replace('btn-primary','btn-outline-primary' );
+	btn.innerText ='주문'
+}
+			}
 			function getOrderList(jsonData){
+				if(!document.getElementById("orderListZone").children.length>0){
+					isEmpty = true;
+					document.getElementById("orderListZone").style.textAlign="center";
+					document.getElementById("orderListZone").innerHTML ="<h5><div class=\"m11\"><i class=\"bi bi-exclamation-circle \" style=\"font-size:2rem\"></i></div><br>주문 내역이 없습니다.</div>"
+					
+				}
 				const orderList = jsonData.orderList;
 				jsonData.forEach(order => {
 					createOrderDiv(order);
@@ -319,8 +325,11 @@
 				toast.show();
 			}
 			
-			function getOrderDetail(orderDate,orderNum) {
-				orderNumForOffCanvas=orderNum;
+			function getOrderDetail(orderDate,orderNo) {
+				if(orderNo === undefined){
+					orderNo = orderNum; 
+				}
+				orderNumForOffCanvas=orderNo;
 				formData = new FormData;
 				formData.append("storeCode",storeCode);
 				formData.append("orderDate",orderDate);
@@ -332,6 +341,7 @@
 				console.log(jsonData)
 				let orderNo = orderNumForOffCanvas;
 				document.getElementById("offcanvasWithBothOptionsLabel").innerText = "#"+orderNo
+				document.getElementById("orderDateInOffCanvas").innerText = jsonData.orderDate;
 				const menuListZone = document.getElementsByClassName("offcanvas-body")[0].children[0];
 				const menuList = jsonData.orderMenuList;
 				menuListZone.innerHTML =""
@@ -341,10 +351,10 @@
 					menuItem.style="height: 10%; align-items: center;";
 					menuItem.classList.add("row" ,"border-bottom", "text-center");
 					
-					menuItem.innerHTML = `<div class="col-4">\${menu.menuName}</div>
+					menuItem.innerHTML = `<div class="col">\${menu.menuName}</div>
 						<div class="col-1">X</div>
 						<div class="col-1">\${menu.quantity}</div>
-						<div class="col text-end">\${menu.quantity * menu.menuPrice}</div>
+						<div class="col-3 text-end">\${menu.quantity * menu.menuPrice}</div>
 						<div class="col-1">원</div>`
 						menuListZone.appendChild(menuItem);
 						total += menu.quantity * menu.menuPrice
@@ -355,23 +365,26 @@
 				}else{
 					document.getElementById("inlineRadio2").checked ="true"
 				}
-				document.getElementById("cancelOrder").setAttribute("onclick",cancelOrder(jsonData.orderDate))
-				document.getElementById("salesOrder").setAttribute("onclick",completeOrder(jsonData.orderDate))
+				formData = new FormData;
+				formData.append("storeCode",storeCode);
+				formData.append("orderDate",jsonData.orderDate);
+				document.getElementById("cancelOrder").addEventListener("click",function(event){
+					serverCallByFetch(formData,"/Api/CancelOrder","post","afterCancelOrder",header)
+				})
+				document.getElementById("completeOrder").addEventListener("click",function(event){
+					serverCallByFetch(formData,"/Api/CompleteOrder","post","afterCompleteOrder",header)
+				})
 			}
-			function addOrderDiv() {
+			
+			function afterCancelOrder(jsonData){
+				document.getElementById(jsonData.orderDate).remove();
+				showModal("plain::주문이 취소되었습니다.:getOrderListOnLoad:")
 			}
-			function showOrderDetail() {
+			function afterCompleteOrder(jsonData){
+				document.getElementById(jsonData.orderDate).remove();
+				showModal("plain::결제 처리되었습니다.:getOrderListOnLoad:")
 			}
-			function acceptOrder() {
-			}
-			function changeStateBtn() {
-			}
-			function cancelOrder(orderDate) {
-			}
-			function removeOrderDiv() {
-			}
-			function completeOrder(orderDate) {
-			}
+			
 		</script>
 </body>
 

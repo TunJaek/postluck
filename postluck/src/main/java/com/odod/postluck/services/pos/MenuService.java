@@ -41,9 +41,6 @@ public class MenuService extends TransactionAssistant {
 		case "ME03":
 			this.regMenu(model);
 			break;
-//		case "ME04":
-//			this.getMenuInfo(model);
-//			break;
 		case "ME05":
 			this.modifyMenuInfo(model);
 			break;
@@ -77,6 +74,7 @@ public class MenuService extends TransactionAssistant {
 				storeMenu.setMessage("사업자번호가 조회되지않았습니다.");
 			}
 		} catch (Exception e) {
+			this.tranManager.commit();
 		} finally {
 			this.tranManager.tranEnd();
 		}
@@ -164,24 +162,29 @@ public class MenuService extends TransactionAssistant {
 				} else {
 					System.out.println("파일이 없습니다.");
 				}
-				this.tranManager.commit();
 			}
 			// if (this.convertToBoolean(this.sqlSession.insert("insMenuCode", store))) {
 			// 메뉴코드 우선추가 ('1998033036', M00, '00000','00000')
 			this.tranManager.commit();
+			store.setMessage("plain::메뉴 등록이 완료되었습니다!:showModal:");
+			model.addAttribute("store", this.main.getStoreInfoAsStoreBean(model));
 		} catch (Exception e) {
 			System.out.println("메뉴 reg 실패");
 			e.printStackTrace();
 			this.tranManager.rollback();
 		} finally {
-			store.setMessage("plain::메뉴 등록이 완료되었습니다!:showModal:");
+
+			this.tranManager.tranEnd();
 		}
 
 	}
 
 	private void modifyMenuInfo(Model model) {
 		StoreBean store = (StoreBean) model.getAttribute("store");
-		MultipartFile file = (MultipartFile) model.getAttribute("file");
+		MultipartFile file = null;
+		if ((MultipartFile) model.getAttribute("file") != null) {
+			file = (MultipartFile) model.getAttribute("file");
+		}
 		System.out.println("modiFyMenuInfo로 들어옴.");
 //		String message = null;
 //		ArrayList<MenuBean> menuList = null;
@@ -205,7 +208,7 @@ public class MenuService extends TransactionAssistant {
 				} else {
 					System.out.println("MenuUpadate실패");
 				}
-				if (!file.isEmpty()) {
+				if (!file.isEmpty() && file != null) {
 					file.transferTo(new File(filePath));
 					System.out.println("파일 저장 완료. path: " + filePath);
 				} else {
@@ -267,7 +270,6 @@ public class MenuService extends TransactionAssistant {
 
 				}
 			}
-
 		} catch (Exception e) {
 			e.printStackTrace();
 			tranManager.rollback();
@@ -307,26 +309,6 @@ public class MenuService extends TransactionAssistant {
 //			this.tranManager.tranEnd();
 //		}
 //	}
-
-	private void getMenuInfo(Model model) {
-		/*
-		 * 메뉴리스트에서 해당 메뉴를 클릭시 해당 메뉴에대한 정보가 나옴.
-		 */
-		StoreBean storeMenu = (StoreBean) model.getAttribute("store");
-		String message = "메뉴를 불러오는 과정에서 오류가 발생했습니다 다시 시도해주세요.";
-
-		this.tranManager = getTransaction(false);
-
-		try {
-			this.tranManager.tranStart();
-			// 선택한 메뉴의 메뉴코드가 존재한다면
-			if (storeMenu.getMenuList().get(0).getMenuCode() != "") {
-				storeMenu.setMenuList(this.sqlSession.selectOne("selMenuInfo", storeMenu));
-			}
-		} catch (Exception e) {
-			storeMenu.setMessage(message);
-		}
-	}
 
 }
 //	private void dupCheckMenu(Model model) {

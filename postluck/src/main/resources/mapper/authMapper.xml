@@ -40,7 +40,6 @@
 		VALUES(#{snsID}, SYSDATE,
 		#{accessLogList[0].accessType},#{accessLogList[0].accessIP})
 	</insert>
-	
 
 
 

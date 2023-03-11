@@ -52,11 +52,15 @@ public class KioskService extends TransactionAssistant {
 	private void moveKiosk(ModelAndView mav) {
 		StoreBean store = (StoreBean) mav.getModel().get("store");
 		store.setStoreCode(this.jwt.getTokenInfoFromJWT(mav.getModel().get("jwt").toString()).getStoreCode());
+		this.tranManager.tranStart();
 		try {
 			mav.addObject("store", new ObjectMapper().writeValueAsString(this.main.getStoreInfoAsStoreBean(mav)));
 		} catch (JsonProcessingException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			this.tranManager.rollback();
+		}finally {
+			this.tranManager.tranEnd();
 		}
 		mav.setViewName("kiosk-menu");
 	}
