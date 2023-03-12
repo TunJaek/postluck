@@ -156,6 +156,7 @@ function isMem(){
 			}
 			function moveHome(){
 				serverCallByRequest("Home", 'get','');
+
 			}
 	</script>
 
