@@ -18,6 +18,7 @@ public class StoreBean {
 	private String ceoEmail;
 	private String ceoName;
 	private String isOpen;
+	private String storeLocationCode;
 	private ArrayList<LocationBean> locationList;
 	private ArrayList<MenuBean> menuList;
 	private ArrayList<AccessLogBean> accessLogList;

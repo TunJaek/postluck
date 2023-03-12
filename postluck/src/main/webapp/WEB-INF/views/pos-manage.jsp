@@ -146,7 +146,7 @@ if('${store}'!=''){
 				<div class="menu  p-3 sideMenu" onclick="sideMenu(6)">매출분석</div>
 			</div>
 			<!-- sideMenu(3) : 메뉴추가 / sideMenu(4) : 메뉴수정 -->
-		
+
 
 			<!-- 1. 매장관리 -->
 			<div class="mainContent" id="menu1" style="display: block;">
@@ -204,11 +204,6 @@ if('${store}'!=''){
 						</div>
 					</div>
 					<div class="row" style="align-items: center;">
-						<div class="col-2">영업시간</div>
-						<input type="text" class="form-control w-25"
-							placeholder="영업시간을 입력해주세요.">
-					</div>
-					<div class="row" style="align-items: center;">
 						<div class="col-2">매장 한 줄소개</div>
 						<input type="text" class="form-control w-25" id="storeInfo"
 							placeholder="매장 한 줄 소개를  입력해주세요." maxlength="30">
@@ -223,7 +218,7 @@ if('${store}'!=''){
 					<div class="row" style="align-items: center;">
 						<div class="col-2">매장 사진 등록</div>
 						<div class="form-group col-6 p-0">
-							<input class="form-control" type="file" id="formFile">
+							<input class="form-control" type="file" id="storePicture">
 						</div>
 					</div>
 					<div class="d-flex gap-4 mt-5 " style="justify-content: center;">
@@ -317,11 +312,13 @@ if('${store}'!=''){
 						<button type="button" class="btn btn-outline-primary"
 							style="font-weight: bold;" id="today">&nbsp 오늘 &nbsp</button>
 						<button type="button" class="btn btn-outline-primary"
-							style="font-weight: bold;" id="oneWeek">&nbsp &nbsp 1주 &nbsp &nbsp</button>
+							style="font-weight: bold;" id="oneWeek">&nbsp &nbsp 1주
+							&nbsp &nbsp</button>
 						<button type="button" class="btn btn-outline-primary"
-							style="font-weight: bold;"id="oneMonth">&nbsp 1개월 &nbsp</button>
+							style="font-weight: bold;" id="oneMonth">&nbsp 1개월 &nbsp</button>
 						<button type="button" class="btn btn-outline-primary"
-							style="font-weight: bold;" id="threeMonth">&nbsp 3개월 &nbsp</button>
+							style="font-weight: bold;" id="threeMonth">&nbsp 3개월
+							&nbsp</button>
 					</div>
 				</div>
 				<div class="mainContentMidlle" style="max-width: 100%; height: 20%;">
@@ -723,8 +720,7 @@ if('${store}'!=''){
 		}else{
 			salesToggle.setAttribute("checked", "false");
 			document.getElementById("isOpenText").innerText = "영업전";
-			showModal(jonData.message);
-			
+			showModal(jsonData.message);
 		}
 	}
 	//모달창 숨기는 func
@@ -740,6 +736,8 @@ if('${store}'!=''){
 		const storeInfo = document.getElementById('storeInfo');
 		const storeInfoDetail = document.getElementById('storeInfoDetail');
 		const storeCategory = document.getElementById('storeCategory');
+		const storeLocation = document.getElementById("storeLocation").options[selectedIdx].value;
+		const storeImage = doucment.getElementById("storePicture");
 
 		if (storeName.value != '' && lengthCheck(storeName)) {
 			formData.append('storeName', storeName.value);
@@ -751,6 +749,8 @@ if('${store}'!=''){
 					formData.append('storeInfo', storeInfo.value);
 					formData.append('storeInfoDetail', storeInfoDetail.value);
 					formData.append('storeCode', storeNum);
+					formData.append('storeLocationCode',storeLocation)
+					formData.append('file',storeImage.files[0]);
 					serverCallByFetch(formData, '/Api/ModifyStoreInfo', 'post',
 							'afterModifyStoreInfo', header);
 				} else {
@@ -1224,17 +1224,16 @@ if('${store}'!=''){
 			});
 	}
 	
-	let jsonDataTest;
 	function selSalesDetail(jsonData) {
-		jsonDataTest=jsonData;
-		  const orderDate = jsonDataTest.orderList[0].salesDate;
-		  const address = jsonDataTest.locationList[0].locationAddr+jsonDataTest.locationList[0].locationDetail;
-		  const paymentList = jsonDataTest.orderList[0].orderMenuList;
+		console.log(jsonData);
+		  const orderDate = jsonData.orderList[0].salesDate;
+		  const address = jsonData.locationList[0].locationAddr+jsonData.locationList[0].locationDetail;
+		  const paymentList = jsonData.orderList[0].orderMenuList;
 		  
 		  const orderDateElement = document.getElementById('orderDate');
 		  const addressElement = document.getElementById('address');
 		const paymentInfoElement = document.getElementById('paymentInfo');
-			  const paymentMethod = jsonDataTest.orderList[0].salespaymentType;
+			  const paymentMethod = jsonData.orderList[0].salespaymentType;
 		paymentInfoElement.innerText = '';
 			  let paymentListHtml = '';
 			  let totalPrice = 0;

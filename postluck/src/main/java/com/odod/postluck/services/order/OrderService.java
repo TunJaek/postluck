@@ -99,8 +99,7 @@ public class OrderService extends TransactionAssistant {
 
 					orderInfo = new OrderInfoBean();
 					orderInfo.setOrderDate(order.getOrderList().get(0).getOrderDate());
-					orderInfo.setOrderNum(String.format("%3s", this.sqlSession.selectOne("selOrderNum", order) + "")
-							.replace(' ', '0'));
+					orderInfo.setOrderNum(this.sqlSession.selectOne("selOrderNum", order).toString());
 					model.addAttribute("orderInfo", orderInfo);
 					this.tranManager.commit();
 				}
@@ -124,7 +123,7 @@ public class OrderService extends TransactionAssistant {
 			List<OrderBean> orderList = this.sqlSession.selectList("selOrderList", storeCode);
 			orderBeanArr = (ArrayList<OrderBean>) orderList;
 			for (OrderBean order : orderBeanArr) {
-				orderInfo.setOrderDate(order.getOrderDate().replaceAll("[^0-9]", ""));
+				orderInfo.setOrderDate(order.getOrderDate());
 				List<OrderDetailBean> orderDetailBeanList = this.sqlSession.selectList("selOrderDetail", orderInfo);
 				ArrayList<OrderDetailBean> orderDetailBeanArr = (ArrayList<OrderDetailBean>) orderDetailBeanList;
 				order.setOrderMenuList(orderDetailBeanArr);

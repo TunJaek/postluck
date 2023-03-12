@@ -33,7 +33,9 @@ public class PosRestController {
 	}
 
 	@PostMapping("/Api/ModifyStoreInfo")
-	public StoreBean modifyStoreInfo(Model model, @ModelAttribute StoreBean store) {
+	public StoreBean modifyStoreInfo(Model model, @ModelAttribute StoreBean store,
+			@RequestParam("file") MultipartFile file) {
+		model.addAttribute("file", file);
 		model.addAttribute("store", store);
 		this.storeService.backController("ST02", model);
 		System.out.println("modifyStoreInfo" + model.getAttribute("store"));
@@ -105,25 +107,28 @@ public class PosRestController {
 		this.menuService.backController("ME06", model);
 		return (StoreBean) model.getAttribute("store");
 	}
-	
+
 	@PostMapping("/Api/ChangePayment")
 	public StoreBean changePayment(Model model, @ModelAttribute StoreBean store) {
 		model.addAttribute("store", store);
-		System.out.println("changePayment Store is "+ store);
+		System.out.println("changePayment Store is " + store);
 		this.salesService.backController("SA02", model);
-		return (StoreBean)model.getAttribute("store");
+		return (StoreBean) model.getAttribute("store");
 	}
+
 	@PostMapping("/Api/SelPayment")
 	public StoreBean selPayment(Model model, @ModelAttribute StoreBean store) {
-		model.addAttribute("store",store);
+		model.addAttribute("store", store);
 		this.salesService.backController("SA01", model);
-		return (StoreBean)model.getAttribute("store");
+		return (StoreBean) model.getAttribute("store");
 	}
+
 	@PostMapping("/Api/selSalesDetail")
 	public StoreBean selSalesDetail(Model model, @ModelAttribute StoreBean store) {
 		model.addAttribute("salesStore", store);
 		this.salesService.backController("SA03", model);
-		return (StoreBean)model.getAttribute("salesStore");
+		System.out.println((StoreBean) model.getAttribute("salesStore"));
+		return (StoreBean) model.getAttribute("salesStore");
 	}
 
 }
