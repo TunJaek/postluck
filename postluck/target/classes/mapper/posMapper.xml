@@ -44,7 +44,22 @@
 
 	</select>
 
-
+	<select id="selSalesList"
+		parameterType="com.odod.postluck.beans.StoreBean"
+		resultType="com.odod.postluck.beans.StoreBean">
+		SELECT SA_ODOSTIME AS orderList[0].salesDate,
+		SA_PAYMENTTYPE AS orderList[0].orderPaymentType,
+		SA_PRICE AS
+		orderList[0].amount,
+		LO_ADDR AS locationList[0].locationAddr,
+		LO_DETAIL
+		AS locationList[0].locationDetail
+		FROM POSDBA.SALES SA
+		INNER JOIN
+		POSDBA.LOCATION ON SA_LOCODE = LO_CODE AND SA_STCODE = LO_STCODE
+		WHERE
+		SA_STCODE = #{storeBean} AND SA_DATE= #{orderList[0].salesDate};
+	</select>
 	<select id="selTypeSalesList"
 		parameterType="com.odod.postluck.beans.StoreBean"
 		resultType="com.odod.postluck.beans.OrderBean">
@@ -74,6 +89,21 @@
 		WHERE
 		SA_STCODE = #{storeCode} AND SA_DATE
 		= to_date(#{orderList[0].salesDate},'YYYY-MM-DD HH24:MI:SS')
+	</select>
+
+
+	<select id="selSalesLocation"
+		parameterType="com.odod.postluck.beans.StoreBean"
+		resultType="com.odod.postluck.beans.LocationBean">
+		SELECT
+		LO_ADDR AS locationAddr,
+		LO_DETAIL AS locationDetail
+		FROM POSDBA.SALES SA
+		INNER JOIN POSDBA.LOCATION ON SA_LOCODE = LO_CODE
+		AND SA_STCODE = LO_STCODE
+		WHERE SA_STCODE = #{storeCode} AND
+		TO_CHAR(SA_DATE, 'YYYY-MM-DD
+		HH24:MI:SS') = #{orderList[0].salesDate}
 	</select>
 
 
