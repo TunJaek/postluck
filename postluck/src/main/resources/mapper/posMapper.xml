@@ -56,7 +56,7 @@
 		#{storeCode}
 
 	</select>
-	
+
 	<select id="selPaymentList"
 		parameterType="com.odod.postluck.beans.StoreBean"
 		resultType="com.odod.postluck.beans.OrderBean">
@@ -89,36 +89,53 @@
 		WHERE
 		SA_STCODE = #{storeBean} AND SA_DATE= #{orderList[0].salesDate};
 	</select>
-=======
-<select id="selTypeSalesList" parameterType="com.odod.postluck.beans.StoreBean" resultType="com.odod.postluck.beans.OrderBean">
- SELECT SA_PAYMENTTYPE AS salespaymentType, SA_PRICE AS amount
-FROM POSDBA.SALES
-WHERE SA_PAYMENTTYPE = #{orderList[0].salespaymentType} AND SA_STCODE = #{storeCode}
-</select>
+	<select id="selTypeSalesList"
+		parameterType="com.odod.postluck.beans.StoreBean"
+		resultType="com.odod.postluck.beans.OrderBean">
+		SELECT SA_PAYMENTTYPE AS salespaymentType, SA_PRICE AS
+		amount
+		FROM POSDBA.SALES
+		WHERE SA_PAYMENTTYPE =
+		#{orderList[0].salespaymentType} AND SA_STCODE =
+		#{storeCode}
+	</select>
 
- <select id="selPaymentList" parameterType="com.odod.postluck.beans.StoreBean" resultType="com.odod.postluck.beans.OrderDetailBean">
-SELECT
-SM_NAME AS menuName,
-SM_PRICE AS menuPrice,
-OD_COUNT AS  quantity
-FROM POSDBA.SALES SA
-  INNER JOIN POSDBA.ORDERSDETAIL ON SA_ODOSTIME = OD_OSDATE AND SA_STCODE = OD_OSSTCODE
-  INNER JOIN POSDBA.STOREMENU ON OD_SMCODE = SM_CODE AND SA_STCODE = SM_STCODE
-WHERE SA_STCODE = #{storeCode} AND TO_CHAR(SA_DATE, 'YYYY-MM-DD HH24:MI:SS') = #{orderList[0].salesDate}
-</select> 
+	<select id="selPaymentList"
+		parameterType="com.odod.postluck.beans.StoreBean"
+		resultType="com.odod.postluck.beans.OrderDetailBean">
+		SELECT
+		SM_NAME AS menuName,
+		SM_PRICE AS menuPrice,
+		OD_COUNT AS
+		quantity
+		FROM POSDBA.SALES SA
+		INNER JOIN POSDBA.ORDERSDETAIL ON
+		SA_ODOSTIME = OD_OSDATE AND SA_STCODE =
+		OD_OSSTCODE
+		INNER JOIN
+		POSDBA.STOREMENU ON OD_SMCODE = SM_CODE AND SA_STCODE =
+		SM_STCODE
+		WHERE
+		SA_STCODE = #{storeCode} AND TO_CHAR(SA_DATE, 'YYYY-MM-DD
+		HH24:MI:SS')
+		= #{orderList[0].salesDate}
+	</select>
 
 
-<select id ="selSalesLocation" parameterType="com.odod.postluck.beans.StoreBean" resultType="com.odod.postluck.beans.LocationBean">
-SELECT 
-LO_ADDR AS locationAddr,
-LO_DETAIL AS locationDetail
-FROM POSDBA.SALES SA
-INNER JOIN POSDBA.LOCATION ON SA_LOCODE = LO_CODE AND SA_STCODE = LO_STCODE
-WHERE SA_STCODE = #{storeCode} AND TO_CHAR(SA_DATE, 'YYYY-MM-DD HH24:MI:SS') = #{orderList[0].salesDate}
-</select>
->>>>>>> branch 'main' of https://github.com/dPfal/postluck
-
-
+	<select id="selSalesLocation"
+		parameterType="com.odod.postluck.beans.StoreBean"
+		resultType="com.odod.postluck.beans.LocationBean">
+		SELECT
+		LO_ADDR AS locationAddr,
+		LO_DETAIL AS locationDetail
+		FROM POSDBA.SALES SA
+		INNER JOIN POSDBA.LOCATION ON SA_LOCODE = LO_CODE
+		AND SA_STCODE = LO_STCODE
+		WHERE SA_STCODE = #{storeCode} AND
+		TO_CHAR(SA_DATE, 'YYYY-MM-DD
+		HH24:MI:SS') = #{orderList[0].salesDate}
+	</select>
+	>>>>>>> branch 'main' of https://github.com/dPfal/postluck
 	<select id="isMenuName"
 		parameterType="com.odod.postluck.beans.StoreBean">
 		SELECT COUNT(*)
