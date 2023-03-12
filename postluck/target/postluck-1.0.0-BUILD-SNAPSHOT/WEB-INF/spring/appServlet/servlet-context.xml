@@ -33,11 +33,10 @@
 			<exclude-mapping path="/Index"/>
 			<exclude-mapping path="/index-callBack"/>
 			<exclude-mapping path="/"/>
-			<exclude-mapping path="/my-websocket"/>
-			<exclude-mapping path="/View/MoveKiosk"/>
+			<exclude-mapping path="/**/my-websocket"/>
+			<exclude-mapping path="/**/postluck/*"/>
 			<exclude-mapping path="/resources/**"/>
-			
-			
+			<exclude-mapping path="/Home/**"/>
 			<beans:bean id="Interceptor" class="com.odod.postluck.utils.JwtIntercepter"/>	
   	</interceptor>
   </interceptors>
@@ -53,7 +52,6 @@
 	<context:component-scan base-package="com.odod.postluck" />
  <!-- Web socket -->
 <!-- <beans:bean id="MyWebSocketHandler" class="com.odod.postluck.utils.MyWebSocketHandler" />
-
 <websocket:handlers>
  <websocket:mapping handler="MyWebSocketHandler" path="/my-websocket"/> 
 </websocket:handlers>  -->

@@ -2,16 +2,19 @@
 	pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="ko">
-
 <head>
-<meta http-equiv="page-enter" content="blendTrans(duration=0.3)">
 <meta http-equiv="page-exit" content="blendTrans(duration=0.3)">
 <meta charset="UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>POS - POS.TLUCK</title>
 <link rel="icon" href="/resources/image/fabicon.png">
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css" />
+<link rel="stylesheet"
+	href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css" />
+<script
+	src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+	integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+	crossorigin="anonymous"></script>
 <link rel="stylesheet" href="/resources/css/mainBootstrap.css">
 <link rel="stylesheet" href="/resources/css/main.css">
 <script src="/resources/js/common.js"></script>
@@ -32,10 +35,7 @@
 
 .row {
 	-bs-gutter-x: 0px;
-	height: 30%;
 }
-
-
 
 .header {
 	position: relative;
@@ -65,7 +65,7 @@
 	float: left;
 	position: absolute;
 	background-color: #ecf0f1;
-	width: 80vw;
+	width: 100vw;
 	height: 100%;
 }
 
@@ -90,127 +90,322 @@
 </style>
 </head>
 
-<body class="vsc-initialized" onload="pageInit('${param.message}');showClock()">
-	
-		<div class="main">
-			<div class="header">
 
-				<span class="px-3" style="cursor: pointer"> <!-- onclick="location.href='pos-calendar.html'"--> <svg xmlns="http://www.w3.org/2000/svg" onclick="movePage('PosManage')" width="30" height="30" fill="currentColor" class="bi bi-gear-wide-connected" viewBox="0 0 16 16">
-                        <path
-							d="M7.068.727c.243-.97 1.62-.97 1.864 0l.071.286a.96.96 0 0 0 1.622.434l.205-.211c.695-.719 1.888-.03 1.613.931l-.08.284a.96.96 0 0 0 1.187 1.187l.283-.081c.96-.275 1.65.918.931 1.613l-.211.205a.96.96 0 0 0 .434 1.622l.286.071c.97.243.97 1.62 0 1.864l-.286.071a.96.96 0 0 0-.434 1.622l.211.205c.719.695.03 1.888-.931 1.613l-.284-.08a.96.96 0 0 0-1.187 1.187l.081.283c.275.96-.918 1.65-1.613.931l-.205-.211a.96.96 0 0 0-1.622.434l-.071.286c-.243.97-1.62.97-1.864 0l-.071-.286a.96.96 0 0 0-1.622-.434l-.205.211c-.695.719-1.888.03-1.613-.931l.08-.284a.96.96 0 0 0-1.186-1.187l-.284.081c-.96.275-1.65-.918-.931-1.613l.211-.205a.96.96 0 0 0-.434-1.622l-.286-.071c-.97-.243-.97-1.62 0-1.864l.286-.071a.96.96 0 0 0 .434-1.622l-.211-.205c-.719-.695-.03-1.888.931-1.613l.284.08a.96.96 0 0 0 1.187-1.186l-.081-.284c-.275-.96.918-1.65 1.613-.931l.205.211a.96.96 0 0 0 1.622-.434l.071-.286zM12.973 8.5H8.25l-2.834 3.779A4.998 4.998 0 0 0 12.973 8.5zm0-1a4.998 4.998 0 0 0-7.557-3.779l2.834 3.78h4.723zM5.048 3.967c-.03.021-.058.043-.087.065l.087-.065zm-.431.355A4.984 4.984 0 0 0 3.002 8c0 1.455.622 2.765 1.615 3.678L7.375 8 4.617 4.322zm.344 7.646.087.065-.087-.065z"
-						/>
-
-                    </svg>
-				</span> <img src="/resources/image/mainLogo-dark.png">
+<body class="vsc-initialized">
+	<div aria-live="polite" aria-atomic="true" class="position-absolute"
+		style="width: 100%; height: 100%;">
+		<!-- Position it: -->
+		<!-- - `.toast-container` for spacing between toasts -->
+		<!-- - `top-0` & `end-0` to position the toasts in the upper right corner -->
+		<!-- - `.p-3` to prevent the toasts from sticking to the edge of the container  -->
+		<div class="toast-container bottom-0 start-0 " id="toastZone"></div>
+		<div class="offcanvas offcanvas-end" data-bs-scroll="true"
+			data-bs-backdrop="false" tabindex="-1" id="offcanvasScrolling"
+			aria-labelledby="offcanvasScrollingLabel">
+			<div class="offcanvas-header border-bottom align-baseline">
+				<h2 class="offcanvas-title" id="offcanvasWithBothOptionsLabel"></h2>
+				<h6 id="orderDateInOffCanvas" class="col-4"></h6>
+				<button type="button" class="btn-close" data-bs-dismiss="offcanvas"
+					aria-label="Close"></button>
 			</div>
-
-			<div class="contents">
-				<span class="mainContent border" style="display: grid; grid-template-columns: 1fr 1fr 1fr; grid-template-rows: 1fr 1fr 1fr; gap: 5%;"> <!-- 					<div class="toast" role="alert" aria-live="assertive" aria-atomic="true" style="display: block; position: absolute; left: 70%; top: 3%; z-index: 1;"> --> <!-- 						<div class="toast-header"> --> <!-- 							<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-gear-wide-connected" viewBox="0 0 16 16"> --> <!--                                 <path --> <!-- 									d="M7.068.727c.243-.97 1.62-.97 1.864 0l.071.286a.96.96 0 0 0 1.622.434l.205-.211c.695-.719 1.888-.03 1.613.931l-.08.284a.96.96 0 0 0 1.187 1.187l.283-.081c.96-.275 1.65.918.931 1.613l-.211.205a.96.96 0 0 0 .434 1.622l.286.071c.97.243.97 1.62 0 1.864l-.286.071a.96.96 0 0 0-.434 1.622l.211.205c.719.695.03 1.888-.931 1.613l-.284-.08a.96.96 0 0 0-1.187 1.187l.081.283c.275.96-.918 1.65-1.613.931l-.205-.211a.96.96 0 0 0-1.622.434l-.071.286c-.243.97-1.62.97-1.864 0l-.071-.286a.96.96 0 0 0-1.622-.434l-.205.211c-.695.719-1.888.03-1.613-.931l.08-.284a.96.96 0 0 0-1.186-1.187l-.284.081c-.96.275-1.65-.918-.931-1.613l.211-.205a.96.96 0 0 0-.434-1.622l-.286-.071c-.97-.243-.97-1.62 0-1.864l.286-.071a.96.96 0 0 0 .434-1.622l-.211-.205c-.719-.695-.03-1.888.931-1.613l.284.08a.96.96 0 0 0 1.187-1.186l-.081-.284c-.275-.96.918-1.65 1.613-.931l.205.211a.96.96 0 0 0 1.622-.434l.071-.286zM12.973 8.5H8.25l-2.834 3.779A4.998 4.998 0 0 0 12.973 8.5zm0-1a4.998 4.998 0 0 0-7.557-3.779l2.834 3.78h4.723zM5.048 3.967c-.03.021-.058.043-.087.065l.087-.065zm-.431.355A4.984 4.984 0 0 0 3.002 8c0 1.455.622 2.765 1.615 3.678L7.375 8 4.617 4.322zm.344 7.646.087.065-.087-.065z" -->
-					<!-- 								/> --> <!--                             </svg> --> <!-- 							<strong class="me-auto">&nbsp POS<span style="color: #1ED760;">.</span>T<span style="color: #1ED760;">LUCK</span></strong> <small class="text-muted">5분전</small> --> <!-- 							<button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button> --> <!-- 						</div> --> <!-- 						<div class="toast-body">새로운 주문이 들어왔습니다.</div> --> <!-- 					</div> --> <!-- 					<div class="card" style="width: 18rem; position: absolute; top: 20%; left: 50%; z-index: 1;"> --> <!-- 						<img src="..." class="card-img-top" alt="..."> --> <!-- 						<div class="card-body"> --> <!-- 							<span style="position: absolute; top: 0.5%; left: 70%;"> --> <!-- 								<div style="text-align: center;"> --> <!-- 									<span id="apm" style="color: gray; font-size: 15px;">ampm</span> <span id="clock" style="color: gray; font-size: 15px;">clock</span> --> <!-- 								</div> --> <!-- 							</span> --> <!-- 							<h5 class="card-title" style="">#주문번호</h5> -->
-					<!-- 							<p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p> --> <!-- 							<a href="#" class="btn btn-primary">Go somewhere</a> --> <!-- 						</div> --> <!-- 					</div> --> <!-- 					<div class="toast" role="alert" aria-live="assertive" aria-atomic="true" style="display: block; position: absolute; left: 70%; top: 3%; z-index: 1;"> --> <!-- 						<div class="toast-header"> --> <!-- 							<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-gear-wide-connected" viewBox="0 0 16 16"> --> <!--                                 <path --> <!-- 									d="M7.068.727c.243-.97 1.62-.97 1.864 0l.071.286a.96.96 0 0 0 1.622.434l.205-.211c.695-.719 1.888-.03 1.613.931l-.08.284a.96.96 0 0 0 1.187 1.187l.283-.081c.96-.275 1.65.918.931 1.613l-.211.205a.96.96 0 0 0 .434 1.622l.286.071c.97.243.97 1.62 0 1.864l-.286.071a.96.96 0 0 0-.434 1.622l.211.205c.719.695.03 1.888-.931 1.613l-.284-.08a.96.96 0 0 0-1.187 1.187l.081.283c.275.96-.918 1.65-1.613.931l-.205-.211a.96.96 0 0 0-1.622.434l-.071.286c-.243.97-1.62.97-1.864 0l-.071-.286a.96.96 0 0 0-1.622-.434l-.205.211c-.695.719-1.888.03-1.613-.931l.08-.284a.96.96 0 0 0-1.186-1.187l-.284.081c-.96.275-1.65-.918-.931-1.613l.211-.205a.96.96 0 0 0-.434-1.622l-.286-.071c-.97-.243-.97-1.62 0-1.864l.286-.071a.96.96 0 0 0 .434-1.622l-.211-.205c-.719-.695-.03-1.888.931-1.613l.284.08a.96.96 0 0 0 1.187-1.186l-.081-.284c-.275-.96.918-1.65 1.613-.931l.205.211a.96.96 0 0 0 1.622-.434l.071-.286zM12.973 8.5H8.25l-2.834 3.779A4.998 4.998 0 0 0 12.973 8.5zm0-1a4.998 4.998 0 0 0-7.557-3.779l2.834 3.78h4.723zM5.048 3.967c-.03.021-.058.043-.087.065l.087-.065zm-.431.355A4.984 4.984 0 0 0 3.002 8c0 1.455.622 2.765 1.615 3.678L7.375 8 4.617 4.322zm.344 7.646.087.065-.087-.065z" -->
-					<!-- 								/> --> <!--                             </svg> --> <!-- 							<strong class="me-auto">&nbsp POS<span style="color: #1ED760;">.</span>T<span style="color: #1ED760;">LUCK</span></strong> <small class="text-muted">5분전</small> --> <!-- 							<button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button> --> <!-- 						</div> --> <!-- 						<div class="toast-body">새로운 주문이 들어왔습니다.</div> --> <!-- 					</div> --> <!-- 					<div class="card" style="width: 18rem; position: absolute; top: 20%; left: 50%; z-index: 1;"> --> <!-- 						<img src="..." class="card-img-top" alt="..."> --> <!-- 						<div class="card-body"> --> <!-- 							<span style="position: absolute; top: 0.5%; left: 70%;"> --> <!-- 								<div style="text-align: center;"> --> <!-- 									<span id="apm" style="color: gray; font-size: 15px;">ampm</span> <span id="clock" style="color: gray; font-size: 15px;">clock</span> --> <!-- 								</div> --> <!-- 							</span> --> <!-- 							<h5 class="card-title" style="">#주문번호</h5> -->
-					<!-- 							<p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p> --> <!-- 							<a href="#" class="btn btn-primary">Go somewhere</a> --> <!-- 						</div> --> <!-- 					</div> -->
-
-
-
-				</span> <span class="subContent border position-relative">
-
-					<div class="border align-middle p-4 position-relative" style="display: flex; align-items: center; justify-content: space-between; height: 7%;">
-						<span class="fw-bold fs-4">#21</span> 2023.02.01.11:23
-					</div>
-
-					<div class="position-relative w-100" style="height: 72%; overflow: auto;">
-						<div class="border p-3 d-flex " style="height: 10%; justify-content: space-around; justify-content: space-between;">
-							<span>햄버거</span><span class="text-primary">x 23</span><span>8,000원</span>
+			<div class="offcanvas-body">
+				<div class="row"
+					style="height: 70%; overflow-y: auto; align-content: flex-start;">
+				</div>
+				<div class="row border-top text-center fs-3" style="height: 10%;">
+					<div class="col-4 fs-5">총 결제금액</div>
+					<div class="col-6 text-end" id="priceTotal"></div>
+					<div class="col-1">원</div>
+				</div>
+				<div class="row border-top text-center fs-3" style="height: 10%;">
+					<div class="col-4 fs-5">결제수단</div>
+					<div class="col-7 text-end fs-5">
+						<div class="form-check form-check-inline">
+							<input class="form-check-input" type="radio"
+								name="inlineRadioOptions" id="inlineRadio1" value="option1">
+							<label class="form-check-label" for="inlineRadio1">현금</label>
 						</div>
-						<div class="border p-3 d-flex " style="height: 10%; justify-content: space-around; justify-content: space-between;">
-							<span>햄버거</span><span class="text-primary">x 23</span><span>8,000원</span>
-						</div>
-						<div class="border p-3 d-flex " style="height: 10%; justify-content: space-around; justify-content: space-between;">
-							<span>햄버거</span><span class="text-primary">x 23</span><span>8,000원</span>
-						</div>
-						<div class="border p-3 d-flex " style="height: 10%; justify-content: space-around; justify-content: space-between;">
-							<span>햄버거</span><span class="text-primary">x 23</span><span>8,000원</span>
-						</div>
-
-
-					</div>
-					<div class="position-absolute bottom-0 " style="width: 100%; height: 21%; display: flex; flex-direction: column;">
-						<div class="border p-3 d-flex justify-content-between align-items-center " style="height: 35%;">
-							<span>총 결제 금액</span>
-							<h3>80,000원</h3>
-						</div>
-						<div class="border p-3 d-flex justify-content-between align-items-center ">
-							<span>결제방식</span> <select class="form-select w-50" aria-label="Default select example">
-								<option selected="">카드</option>
-								<option value="1">현금</option>
-							</select>
-						</div>
-						<div class="border d-flex justify-content-center align-items-center" style="height: 35%;">
-							<div class=" col-4" style="text-align: center;">주문취소</div>
-							<div class=" col-8" style="height: 100%; text-align: center;
-	/* background: green; */ background-color: rgba(30, 215, 96, 0.1); display: flex; align-items: center; justify-content: center;">결제</div>
-
+						<div class="form-check form-check-inline">
+							<input class="form-check-input" type="radio"
+								name="inlineRadioOptions" id="inlineRadio2" value="option2">
+							<label class="form-check-label" for="inlineRadio2">카드</label>
 						</div>
 					</div>
-				</span>
-			</div>
-			<div class="modal fade" id="messageModal" style="background-color: rgba(0, 0, 0, 0.2)">
-				<div class="modal-dialog modal-dialog-centered" role="document">
-					<div class="modal-content">
-						<div class="modal-header">
-							<h5 class="modal-title col-10">메세지 제목이 없습니다.</h5>
-							<button type="button" id="modalClose" class="btn-close col-1" data-bs-dismiss="modal" aria-label="Close"></button>
-						</div>
-						<div class="modal-body text-center">
-							<div class="my-2 mx-5" id="svgZone"></div>
-							<div id="alertContent">메세지 내용이 없습니다.</div>
-						</div>
-						<div class="modal-footer text-center">
-							<button type="button" id="btnCancel" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
-							<button type="button" id="btnOk" class="btn">확인</button>
-						</div>
-					</div>
+				</div>
+				<div class="row text-center fs-5 pointer" style="height: 10%;">
+					<div class="h-100 col-4 bg-light row justify-content-center"
+						id="cancelOrder" onclick="cancelOrder(this)">주문취소</div>
+					<div
+						class="h-100 justify-content-center col bg-success bg-opacity-10 row pointer"
+						id="completeOrder" onclick="completeOrder(this)">결제</div>
 				</div>
 			</div>
 		</div>
 
-
-	<script>
-// 	if('${AccessInfo.menuList}' == ''){
-// 		showModal('error::등록된 메뉴가 없습니다. 메뉴 등록 페이지로 이동합니다.:movePosManage');
-// 	}
-        var Target = document.getElementById("clock");
-        var Target_apm = document.getElementById("apm");
-        function clock() {
-            var time = new Date();
-            var hours = time.getHours();
-            var minutes = time.getMinutes();
-            var seconds = time.getSeconds();
-            var AmPm = "AM";
-            if (hours > 12) {
-                var AmPm = "PM";
-                hours %= 12;
-            }
-
-            Target.innerText =
-                '${hours < 10 ? '0${hours}' : hours}:${minutes < 10 ? '0${minutes}' : minutes}:${seconds < 10 ? '0${seconds}' : seconds}';
-            Target_apm.innerText = '${AmPm}';
+		<div class="main">
+			<div class="header">
+				<span class="px-3 " style="cursor: pointer"
+					onclick="movePage('Back')"><svg
+						xmlns="http://www.w3.org/2000/svg" width="30" height="30"
+						fill="currentColor" class="bi bi-arrow-left" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd"
+							d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z"></path>
+                </svg></span> <span><img
+					src="/resources/image/mainLogo-dark.png"></span>
+			</div>
 
 
-        }
-        clock();
-        setInterval(clock, 1000); // 1초마다 실행
-        function moveMenuReg(){
-        	
-       }
-        function movePosManage() {
-			serverCallByRequest('/View/MovePosManage', 'post',getJWT());
-		}
-    </script>
+			<div class="contents">
+				<div class="mainContent border row " id="orderListZone"
+					style="display: flex; flex-direction: row; flex-wrap: nowrap; overflow-x: auto">
 
 
+				</div>
+			</div>
 
+		</div>
+
+
+		<script>
+		
+			// 	if('' == ''){
+			// 		showModal('error::등록된 메뉴가 없습니다. 메뉴 등록 페이지로 이동합니다.:movePosManage');
+			// 	}
+			jsonString = '${store}'
+				getOrderListOnLoad();
+			let sock;
+			let storeCode;
+			let orderNum = '000';
+			if (JSON.parse(jsonString).storeCode) {
+				storeCode = JSON.parse(jsonString).storeCode;
+				sock = new WebSocket("ws://192.168.0.5:80/postluck/"
+						+ storeCode);
+				// WebSocket 처리 코드
+			} else {
+
+				showModal("error:세션 오류:세션이 만료되었습니다. 다시 로그인해주세요.:moveIndex:")
+			}
+			function getOrderListOnLoad(){
+				formData = new FormData()
+				formData.append("storeCode",JSON.parse(jsonString).storeCode)
+			serverCallByFetch(formData,"/Api/GetOrderList","post","getOrderList",header);
+				
+			}
+			sock.onopen = function(event) {
+				showModal("plain:연결 성공!:서버와 연결되었습니다!::")
+				// 			sock.send(storeCode);
+			};
+			sock.onmessage = function(e) {
+				// 			showModal("plain:알림:새로운 주문이 들어왔습니다." + e.data + "::");
+				// 			storeCode=6913651651&orderDate=20230309225656&orderNum=049
+				newOrder(e.data);
+			};
+			sock.onclose = function(event) {
+				if (event.wasClean) {
+					showModal('error:연결 오류:Kiosk와 통신이 불안정합니다. Kiosk 서비스를 실행해주세요.::')
+				}
+			};
+			sock.onerror = function(error) {
+				alert([ error ]);
+			};
+			
+			
+			function newOrder(orderMessage) {
+				let storeNum = orderMessage.split("&")[0].split("=")[1];
+				let orderDate = orderMessage.split("&")[1].split("=")[1];
+				orderNum = orderMessage.split("&")[2].split("=")[1];
+				const formData = new FormData;
+				formData.append("storeCode", storeNum);
+				formData.append("orderNum", orderNum);
+				formData.append("orderDate", orderDate)
+				serverCallByFetch(formData, '/Api/getOrderInfo', 'post',
+						'alertOrder', header);
+			}
+			function alertOrder(jsonData) {
+				console.log(jsonData)
+				createToast(jsonData.orderDate);
+				createOrderDiv(jsonData);
+			}
+			let isEmpty;
+			
+			function createOrderDiv(jsonData){
+				const orderListZone = document.getElementById("orderListZone");
+				if(isEmpty==true){
+					orderListZone.innerHTML = "";
+				}
+				const menuList = jsonData.orderMenuList;
+				const orderDiv = document.createElement('div');
+				orderDiv.classList.add('col-3', 'p-5', 'mx-3', 'h-100', 'rounded');
+				orderDiv.style.display = 'flex';
+				orderDiv.style.overflowY = 'auto';
+				orderDiv.style.background = 'white';
+				orderDiv.style.flexDirection = 'column';
+				orderDiv.setAttribute('data-bs-toggle', 'offcanvas');
+				orderDiv.setAttribute('data-bs-target', '#offcanvasScrolling');
+				orderDiv.setAttribute('aria-controls', 'offcanvasScrolling');
+				orderDiv.setAttribute('id',"div"+jsonData.orderDate);
+				orderDiv.setAttribute('onclick',"getOrderDetail(\'"+jsonData.orderDate+"',\'"+orderNum+"\')")
+				
+			const orderContent = "<div class=\"row\" style=\"align-items: baseline; height: 10%\">"+
+						"<h1 class=\"col\">#"+orderNum+"</h1><h6 class=\"col\">"+
+						jsonData.orderDate+"</h6></div><hr>";
+						
+				orderDiv.innerHTML=orderContent;
+			const menuListZone = document.createElement("div");
+			menuListZone.setAttribute("style","overflow-y: auto; height: 100%;");
+			orderDiv.appendChild(menuListZone)
+			
+				menuList.forEach(menuItem => {
+					let menuContent = "<div class=\"row mb-3 border-bottom\" style=\"height:10%\"><h4 class=\"col-9\">"+
+					menuItem.menuName+"</h4><h4 class=\"col-1\">x</h4><h4 class=\"col-2\">"+
+					menuItem.quantity+"</h4></div>"
+					menuListZone.innerHTML+=menuContent;
+				})
+				orderDiv.innerHTML += "<div class=\"row\"><button class= \"btn btn-outline-primary w-100\" type=\"button\" onclick =\"changeState(this)\">주문</button></div>";
+				orderListZone.appendChild(orderDiv);
+				isEmpty = false;
+			}
+			// 상태가 주문인 
+			function changeState(btn){
+				
+if(btn.innerText == '주문'){
+	btn.classList.replace('btn-outline-primary', 'btn-primary');
+	btn.innerText ='접수'
+}				else{
+	btn.classList.replace('btn-primary','btn-outline-primary' );
+	btn.innerText ='주문'
+}
+			}
+			function getOrderList(jsonData){
+				document.getElementById("orderListZone").innerHTML = '';
+				const orderList = jsonData.orderList;
+				jsonData.forEach(order => {
+					createOrderDiv(order);
+				})
+				alertEmpty();
+				console.log(jsonData)
+			}
+			function alertEmpty(){
+				if(!document.getElementById("orderListZone").children.length>0){
+					isEmpty = true;
+					document.getElementById("orderListZone").style.textAlign="center";
+					document.getElementById("orderListZone").innerHTML ="<h5><div class=\"m11\"><i class=\"bi bi-exclamation-circle \" style=\"font-size:2rem\"></i></div><br>주문 내역이 없습니다.</div>"
+				}
+			}
+			function createToast(orderDate) {
+				const toastZone = document.getElementById("toastZone");
+				const toastDiv = document.createElement('div');
+				toastDiv.className = 'toast m-2';
+				toastDiv.setAttribute('data-bs-autohide', 'false');
+				toastDiv.setAttribute('role', 'alert');
+				toastDiv.setAttribute('aria-live', 'assertive');
+				toastDiv.setAttribute('aria-atomic', 'true');
+				toastDiv.setAttribute("id", orderDate);
+				let toastHTML = "<div class=\"toast-header\">"
+						+ "<img src=\"/resources/image/fabicon.png\" class=\"rounded me-2\">"
+						+ "<strong class=\"me-auto\">"
+						+ JSON.parse(jsonString).storeName
+						+ "</strong> <small " +
+			        "class=\"text-muted\">"
+						+ orderDate
+						+ "</small>"
+						+ "<button type=\"button\" class=\"btn-close\" data-bs-dismiss=\"toast\"" +
+			            "aria-label=\"Close\"></button>"
+						+ "</div>"
+						+ "<div class=\"toast-body\"><strong>주문 번호 : #"+orderNum+"</strong><br>새로운 주문이 들어왔습니다!</div>"
+						+ "<div>"
+						+ "<button type=\"button\" class=\"btn btn-primary btn-sm m-2\""
+						+ " data-bs-dismiss=\"toast\""
+						+ "aria-label=\"Close\"data-bs-toggle=\"offcanvas\" data-bs-target=\"#offcanvasScrolling\""
+						+ "aria-controls=\"offcanvasScrolling\" onclick=\"getOrderDetail(\'"
+						+ orderDate + "\')\">" + "주문내역 확인" + "</button>"
+						+ "</div>";
+				toastDiv.innerHTML = toastHTML;
+				toastZone.appendChild(toastDiv);
+				const toast = new bootstrap.Toast(document
+						.getElementById(orderDate));
+				toast.show();
+			}
+			
+			function getOrderDetail(orderDate,orderNo) {
+				if(orderNo === undefined){
+					orderNo = orderNum; 
+				}
+				orderNumForOffCanvas=orderNo;
+				formData = new FormData;
+				formData.append("storeCode",storeCode);
+				formData.append("orderDate",orderDate);
+				console.log(orderDate)
+				serverCallByFetch(formData,"/Api/getOrderInfo","post","changeOffCanvas",header);
+			}
+			let orderNumForOffCanvas;
+			
+			function changeOffCanvas(jsonData){
+				console.log(jsonData)
+				let orderNo = orderNumForOffCanvas;
+				document.getElementById("offcanvasWithBothOptionsLabel").innerText = "#"+orderNo
+				document.getElementById("orderDateInOffCanvas").innerText = jsonData.orderDate;
+				const menuListZone = document.getElementsByClassName("offcanvas-body")[0].children[0];
+				const menuList = jsonData.orderMenuList;
+				menuListZone.innerHTML =""
+				let total =0;
+				menuList.forEach(menu=>{
+					const menuItem = document.createElement("div");
+					menuItem.style="height: 10%; align-items: center;";
+					menuItem.classList.add("row" ,"border-bottom", "text-center");
+					
+					menuItem.innerHTML = `<div class="col">\${menu.menuName}</div>
+						<div class="col-1">X</div>
+						<div class="col-1">\${menu.quantity}</div>
+						<div class="col-3 text-end">\${menu.quantity * menu.menuPrice}</div>
+						<div class="col-1">원</div>`
+						menuListZone.appendChild(menuItem);
+						total += menu.quantity * menu.menuPrice
+				})
+				document.getElementById("priceTotal").innerText = total;
+				if(jsonData.orderPaymentType=='현금'){
+					document.getElementById("inlineRadio1").checked ="true"
+				}else{
+					document.getElementById("inlineRadio2").checked ="true"
+				}
+				console.log(jsonData.orderDate)
+				document.getElementById("cancelOrder").setAttribute("data-orderDate",jsonData.orderDate);
+				document.getElementById("completeOrder").setAttribute("data-orderDate",jsonData.orderDate);
+				
+
+			}
+			
+			function cancelOrder(div){
+				 const formData = new FormData();
+				    formData.append("storeCode", storeCode);
+				    formData.append("orderDate",div.getAttribute("data-orderDate"));
+				    serverCallByFetch(formData, "/Api/CancelOrder", "post", "afterCancelOrder", header);
+
+			}
+			function completeOrder(div){
+				 const formData = new FormData();
+				    formData.append("storeCode", storeCode);
+				    formData.append("orderDate", div.getAttribute("data-orderDate"));
+				    serverCallByFetch(formData, "/Api/CompleteOrder", "post", "afterCompleteOrder", header);
+			}
+			
+			function afterCancelOrder(jsonData){
+				console.log("afcancel")
+				console.log("div"+jsonData.orderDate)
+				document.getElementById("div"+jsonData.orderDate).remove();
+				alertEmpty();
+				showModal("plain::주문이 취소되었습니다.::")
+			}
+			function afterCompleteOrder(jsonData){
+				console.log("afcomplete")
+				console.log("div"+jsonData.orderDate)
+				document.getElementById("div"+jsonData.orderDate).remove();
+				alertEmpty();
+				showModal("plain::결제 처리되었습니다.::")
+			}
+			
+
+		</script>
 </body>
 
 </html>

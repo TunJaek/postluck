@@ -1,267 +1,271 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
-    <html lang="ko">
-<!DOCTYPE html>
-<html>
-
+	pageEncoding="UTF-8"%>
+<html lang="ko" style="overflow-x: hidden;">
 <head>
-    <meta charset="UTF-8">
-    <title>HOME - POS.TLUCK</title>
-      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css" />
-     <link rel="icon" href="/resources/image/fabicon.png">
-    <link rel="stylesheet" href="/resources/css/main.css">
-    <link rel="stylesheet" href="/resources/css/mainBootstrap.css">
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR&amp;display=swap" rel="stylesheet">
+<meta charset="UTF-8">
+<title>HOME - POS.TLUCK</title>
+<link rel="stylesheet"
+	href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
+<link rel="icon" href="/resources/image/fabicon.png">
+<link rel="stylesheet" href="/resources/css/main.css">
+<link rel="stylesheet" href="/resources/css/mainBootstrap.css">
+<link
+	href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR&amp;display=swap"
+	rel="stylesheet">
 
 </head>
 
 <body>
+	<div class="Content"
+		style="background: #e9ecef; overflow-x: hidden; width: 100vw;">
+		<div class="header text-center"
+			style="z-index: 2000; position: sticky; top: 0; width: 100%; background: white; height: 5%;">
+			<div class="row" style="height: 100%;">
+				<div class="text-center w-50 " style="width: 100%;">
+					<img class="logo" src="/resources/image/indexTextLogo.png"
+						style="height: 100%;">
+				</div>
+			</div>
+		</div>
+		<div class="mainContent pt-3 pb-5"
+			style="display: flex; box-sizing: border-box; flex-direction: column; /* max-width: 95%; */ align-items: center; overflow-y: auto; width: 100%;">
+			<div class="searchContainer w-50  mb-3 rounded"
+				style="background-color: white;">
+				<h5 class="pt-4 ps-4">우리 동네 푸드트럭 찾기</h5>
+				<div class="row p-3">
+					<div class="col-4 m-2">
+						<select class="form-select" aria-label="Default select example">
+							<option selected="">광역시도</option>
+							<option value="1">One</option>
+							<option value="2">Two</option>
+							<option value="3">Three</option>
+						</select>
+					</div>
+					<div class="col-4 m-2">
+						<select class="form-select" aria-label="Default select example">
+							<option selected="">시/군/구</option>
+							<option value="1">One</option>
+							<option value="2">Two</option>
+							<option value="3">Three</option>
+						</select>
+					</div>
+					<div class="col-2 m-3 ps-4">
+						<div class="form-check">
+							<input class="form-check-input" type="radio"
+								name="flexRadioDefault" id="flexRadioDefault1"> <label
+								class="form-check-label" for="flexRadioDefault1">영업중</label>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="searchResult w-50 rounded p-5"
+				style="background-color: white;">
+				<h5 class="">검색 결과</h5>
 
-    <div class="header" style="position: fixed; top: 0%;left: 0%; right: 0%;">
-        <div
-            style="width:70%;height: 100%;margin-left: 15%;display: flex;justify-content: space-between;flex-direction: row;">
-            <div style="height: 100%;width: auto;"><img class="logo col" src="/resources/image/indexTextLogo.png"
-                    style="height: 100%;float: left;"></div>
-            <span class="form-group" style="float: right; width: 50%; margin-top: 1%;">
-                <input type="text" class="form-control" placeholder="지역, 메뉴를 검색하세요." id="inputSearch">
-            </span>
-            <span class="businessLogin">사업자로그인</span>
-        </div>
-    </div>
-    <div class="content">
-        <div class="content1">
-            <div class="font">
-                <div>당신을 위한 </div>
-                <div>
-                    <p id="location" style="margin: 0; display: inline-block; font-size: 2em">서울</p> 추천 푸드트럭
-                </div>
-            </div>
-        </div>
-        <div class="menu border p-3" id="tagText" style="width: 68.8%; height: 8%; border-top-left-radius: 30px;  border-top-right-radius: 30px ; background-color: white; margin-left: 15.6%;
-               position: relative; top: 51%; margin-top: 1.5%;">
-            <h3> # 현재 영업중인 트럭</h1>
-        </div>
-        <!-- 트럭리스트 캐러밸 -->
-        <div class="container text-center" style="width:80%; background-color: white; border-color: #f5f5f5;">
-            <div id="carouselExampleInterval" class="carousel slide" data-bs-ride="carousel">
-                <div class="carousel-inner">
-                    <div class="carousel-item active" data-bs-interval="10000">
-                        <div class="row w-100" style="overflow: hidden; flex-wrap: nowrap; gap: 2%;">
-                            <div class="card" style="width: 18rem; ">
-                                <img src="/resources/image/FoodTruck/foodtruck.png" class="card-img-top" alt="...">
-                                <div class="card-body">
-                                    <h5 class="card-title fw-bold">핫도그라운드</h5>
-                                    <p class="card-text ">"핫도그지만 뜨겁지는 않습니다!!"</p>
-                                    <a href="#" class="btn btn-primary">Go somewhere</a>
-                                </div>
-                            </div>
-                            <div class="card" style="width: 18rem;">
-                                <img src="/resources/image/FoodTruck/foodtruck.png" class="card-img-top" alt="...">
-                                <div class="card-body">
-                                    <h5 class="card-title fw-bold">핫도그라운드</h5>
-                                    <p class="card-text">"핫도그지만 뜨겁지는 않습니다!!"</p>
-                                    <a href="#" class="btn btn-primary">Go somewhere</a>
-                                </div>
-                            </div>
-                            <div class="card" style="width: 18rem;">
-                                <img src="/resources/image/FoodTruck/foodtruck.png" class="card-img-top" alt="...">
-                                <div class="card-body">
-                                    <h5 class="card-title fw-bold">핫도그라운드</h5>
-                                    <p class="card-text">"핫도그지만 뜨겁지는 않습니다!!"</p>
-                                    <a href="#" class="btn btn-primary">Go somewhere</a>
-                                </div>
-                            </div>
-                            <div class="card" style="width: 18rem;">
-                                <img src="/resources/image/FoodTruck/foodtruck.png" class="card-img-top" alt="...">
-                                <div class="card-body">
-                                    <h5 class="card-title fw-bold">핫도그라운드</h5>
-                                    <p class="card-text">"핫도그지만 뜨겁지는 않습니다!!"</p>
-                                    <a href="#" class="btn btn-primary">Go somewhere</a>
-                                </div>
-                            </div>
-                            <div class="card" style="width: 18rem;">
-                                <img src="/resources/image/FoodTruck/foodtruck.png" class="card-img-top" alt="...">
-                                <div class="card-body">
-                                    <h5 class="card-title fw-bold">핫도그라운드</h5>
-                                    <p class="card-text">"핫도그지만 뜨겁지는 않습니다!!"</p>
-                                    <a href="#" class="btn btn-primary">Go somewhere</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="carousel-item" data-bs-interval="2000">
-                        <div class="row w-100" style="overflow: hidden; flex-wrap: nowrap; gap: 2%;">
-                            <div class="card" style="width: 18rem; ">
-                                <img src="/resources/image/FoodTruck/foodtruck.png" class="card-img-top" alt="...">
-                                <div class="card-body">
-                                    <h5 class="card-title fw-bold">핫도그라운드</h5>
-                                    <p class="card-text ">"핫도그지만 뜨겁지는 않습니다!!"</p>
-                                    <a href="#" class="btn btn-primary">Go somewhere</a>
-                                </div>
-                            </div>
-                            <div class="card" style="width: 18rem;">
-                                <img src="/resources/image/FoodTruck/foodtruck.png" class="card-img-top" alt="...">
-                                <div class="card-body">
-                                    <h5 class="card-title fw-bold">핫도그라운드</h5>
-                                    <p class="card-text">"핫도그지만 뜨겁지는 않습니다!!"</p>
-                                    <a href="#" class="btn btn-primary">Go somewhere</a>
-                                </div>
-                            </div>
-                            <div class="card" style="width: 18rem;">
-                                <img src="/resources/image/FoodTruck/foodtruck.png" class="card-img-top" alt="...">
-                                <div class="card-body">
-                                    <h5 class="card-title fw-bold">핫도그라운드</h5>
-                                    <p class="card-text">"핫도그지만 뜨겁지는 않습니다!!"</p>
-                                    <a href="#" class="btn btn-primary">Go somewhere</a>
-                                </div>
-                            </div>
-                            <div class="card" style="width: 18rem;">
-                                <img src="/resources/image/FoodTruck/foodtruck.png" class="card-img-top" alt="...">
-                                <div class="card-body">
-                                    <h5 class="card-title fw-bold">핫도그라운드</h5>
-                                    <p class="card-text">"핫도그지만 뜨겁지는 않습니다!!"</p>
-                                    <a href="#" class="btn btn-primary">Go somewhere</a>
-                                </div>
-                            </div>
-                            <div class="card" style="width: 18rem;">
-                                <img src="/resources/image/FoodTruck/foodtruck.png" class="card-img-top" alt="...">
-                                <div class="card-body">
-                                    <h5 class="card-title fw-bold">핫도그라운드</h5>
-                                    <p class="card-text">"핫도그지만 뜨겁지는 않습니다!!"</p>
-                                    <a href="#" class="btn btn-primary">Go somewhere</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleInterval"
-                    data-bs-slide="prev">
-                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                    <span class="visually-hidden">Previous</span>
-                </button>
-                <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleInterval"
-                    data-bs-slide="next">
-                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                    <span class="visually-hidden">Next</span>
-                </button>
-            </div>
-            <div class=""></div>
-        </div>
+				<div class="card pointer my-4">
+					<div class="row g-0">
+						<div class="col-md-4">
+							<img src="/resources/image/1234123412/1234123412M00.jpg"
+								class="img-fluid rounded-start ratio ratio-4x3" alt="...">
+						</div>
+						<div class="col-md-8">
+							<div class="ps-4 d-flex" style="flex-direction: column;">
+								<div class="row fs-4 mb-3">
+									<div class="col-9">핫도그라운드</div>
+									<div class="col fs-5">
+										<i class="bi bi-circle-fill text-danger me-3"
+											style="font-size: small;"></i>영업전
+									</div>
+								</div>
+								<h6 class="col mb-3">핫도그</h6>
+								<h6 class="mb-3">"무슨무슨 핫도그와 무슨무슨 소스의 만남!"</h6>
 
-        <div class="menu border p-3" id="tagText" style="width: 68.8%; height: 8%; border-top-left-radius: 30px;  border-top-right-radius: 30px ; background-color: white; margin-left: 15.6%;
-               position: relative; top: 51%; margin-top: 1.5%;">
-            <h3> # 현재 영업중인 트럭</h1>
-        </div>
-        <div class="container text-center" style="width:80%; background-color: white; border-color: #f5f5f5;">
-            <div id="carouselExampleInterval1" class="carousel slide" data-bs-ride="carousel">
-                <div class="carousel-inner">
-                    <div class="carousel-item active" data-bs-interval="10000">
-                        <div class="row w-100" style="overflow: hidden; flex-wrap: nowrap; gap: 2%;">
-                            <div class="card" style="width: 18rem; ">
-                                <img src="/resources/image/FoodTruck/foodtruck.png" class="card-img-top" alt="...">
-                                <div class="card-body">
-                                    <h5 class="card-title fw-bold">핫도그라운드</h5>
-                                    <p class="card-text ">"핫도그지만 뜨겁지는 않습니다!!"</p>
-                                    <a href="#" class="btn btn-primary">Go somewhere</a>
-                                </div>
-                            </div>
-                            <div class="card" style="width: 18rem;">
-                                <img src="/resources/image/FoodTruck/foodtruck.png" class="card-img-top" alt="...">
-                                <div class="card-body">
-                                    <h5 class="card-title fw-bold">핫도그라운드</h5>
-                                    <p class="card-text">"핫도그지만 뜨겁지는 않습니다!!"</p>
-                                    <a href="#" class="btn btn-primary">Go somewhere</a>
-                                </div>
-                            </div>
-                            <div class="card" style="width: 18rem;">
-                                <img src="/resources/image/FoodTruck/foodtruck.png" class="card-img-top" alt="...">
-                                <div class="card-body">
-                                    <h5 class="card-title fw-bold">핫도그라운드</h5>
-                                    <p class="card-text">"핫도그지만 뜨겁지는 않습니다!!"</p>
-                                    <a href="#" class="btn btn-primary">Go somewhere</a>
-                                </div>
-                            </div>
-                            <div class="card" style="width: 18rem;">
-                                <img src="/resources/image/FoodTruck/foodtruck.png" class="card-img-top" alt="...">
-                                <div class="card-body">
-                                    <h5 class="card-title fw-bold">핫도그라운드</h5>
-                                    <p class="card-text">"핫도그지만 뜨겁지는 않습니다!!"</p>
-                                    <a href="#" class="btn btn-primary">Go somewhere</a>
-                                </div>
-                            </div>
-                            <div class="card" style="width: 18rem;">
-                                <img src="/resources/image/FoodTruck/foodtruck.png" class="card-img-top" alt="...">
-                                <div class="card-body">
-                                    <h5 class="card-title fw-bold">핫도그라운드</h5>
-                                    <p class="card-text">"핫도그지만 뜨겁지는 않습니다!!"</p>
-                                    <a href="#" class="btn btn-primary">Go somewhere</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="carousel-item" data-bs-interval="2000">
-                        <div class="row w-100" style="overflow: hidden; flex-wrap: nowrap; gap: 2%;">
-                            <div class="card" style="width: 18rem; ">
-                                <img src="/resources/image/FoodTruck/foodtruck.png" class="card-img-top" alt="...">
-                                <div class="card-body">
-                                    <h5 class="card-title fw-bold">핫도그라운드</h5>
-                                    <p class="card-text ">"핫도그지만 뜨겁지는 않습니다!!"</p>
-                                    <a href="#" class="btn btn-primary">Go somewhere</a>
-                                </div>
-                            </div>
-                            <div class="card" style="width: 18rem;">
-                                <img src="/resources/image/FoodTruck/foodtruck.png" class="card-img-top" alt="...">
-                                <div class="card-body">
-                                    <h5 class="card-title fw-bold">핫도그라운드</h5>
-                                    <p class="card-text">"핫도그지만 뜨겁지는 않습니다!!"</p>
-                                    <a href="#" class="btn btn-primary">Go somewhere</a>
-                                </div>
-                            </div>
-                            <div class="card" style="width: 18rem;">
-                                <img src="/resources/image/FoodTruck/foodtruck.png" class="card-img-top" alt="...">
-                                <div class="card-body">
-                                    <h5 class="card-title fw-bold">핫도그라운드</h5>
-                                    <p class="card-text">"핫도그지만 뜨겁지는 않습니다!!"</p>
-                                    <a href="#" class="btn btn-primary">Go somewhere</a>
-                                </div>
-                            </div>
-                            <div class="card" style="width: 18rem;">
-                                <img src="/resources/image/FoodTruck/foodtruck.png" class="card-img-top" alt="...">
-                                <div class="card-body">
-                                    <h5 class="card-title fw-bold">핫도그라운드</h5>
-                                    <p class="card-text">"핫도그지만 뜨겁지는 않습니다!!"</p>
-                                    <a href="#" class="btn btn-primary">Go somewhere</a>
-                                </div>
-                            </div>
-                            <div class="card" style="width: 18rem;">
-                                <img src="/resources/image/FoodTruck/foodtruck.png" class="card-img-top" alt="...">
-                                <div class="card-body">
-                                    <h5 class="card-title fw-bold">핫도그라운드</h5>
-                                    <p class="card-text">"핫도그지만 뜨겁지는 않습니다!!"</p>
-                                    <a href="#" class="btn btn-primary">Go somewhere</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleInterval1"
-                    data-bs-slide="prev">
-                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                    <span class="visually-hidden">Previous</span>
-                </button>
-                <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleInterval1"
-                    data-bs-slide="next">
-                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                    <span class="visually-hidden">Next</span>
-                </button>
-            </div>
-            <div class=""></div>
-        </div>
-        <div class="footer">footer
-        </div>
+								<p>
+									<i class="bi bi-telephone text-muted me-1"></i><small
+										class="text-muted">010-2345-2325</small>
+								</p>
+								<p>
+									<i class="bi bi-geo-alt text-muted col-1"></i><small
+										class="text-muted">인천시 연수구 학익동</small>
+								</p>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="card pointer my-4">
+					<div class="row g-0">
+						<div class="col-md-4">
+							<img src="/resources/image/1234123412/1234123412M00.jpg"
+								class="img-fluid rounded-start ratio ratio-4x3" alt="...">
+						</div>
+						<div class="col-md-8">
+							<div class="ps-4 d-flex" style="flex-direction: column;">
+								<div class="row fs-4 mb-3">
+									<div class="col-9">핫도그라운드</div>
+									<div class="col fs-5">
+										<i class="bi bi-circle-fill me-3"
+											style="color: #00FF00; font-size: small;"></i>영업중
+									</div>
+								</div>
+								<h6 class="col mb-3">핫도그</h6>
+								<h6 class="mb-3">"무슨무슨 핫도그와 무슨무슨 소스의 만남!"</h6>
+
+								<p>
+									<i class="bi bi-telephone text-muted me-1"></i><small
+										class="text-muted">010-2345-2325</small>
+								</p>
+								<p>
+									<i class="bi bi-geo-alt text-muted col-1"></i><small
+										class="text-muted">인천시 연수구 학익동</small>
+								</p>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="card pointer my-4">
+					<div class="row g-0">
+						<div class="col-md-4">
+							<img src="/resources/image/1234123412/1234123412M00.jpg"
+								class="img-fluid rounded-start ratio ratio-4x3" alt="...">
+						</div>
+						<div class="col-md-8">
+							<div class="ps-4 d-flex" style="flex-direction: column;">
+								<div class="row fs-4 mb-3">
+									<div class="col-9">핫도그라운드</div>
+									<div class="col fs-5">
+										<i class="bi bi-circle-fill me-3"
+											style="color: #00FF00; font-size: small;"></i>영업중
+									</div>
+								</div>
+								<h6 class="col mb-3">핫도그</h6>
+								<h6 class="mb-3">"무슨무슨 핫도그와 무슨무슨 소스의 만남!"</h6>
+
+								<p>
+									<i class="bi bi-telephone text-muted me-1"></i><small
+										class="text-muted">010-2345-2325</small>
+								</p>
+								<p>
+									<i class="bi bi-geo-alt text-muted col-1"></i><small
+										class="text-muted">인천시 연수구 학익동</small>
+								</p>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="card pointer my-4">
+					<div class="row g-0">
+						<div class="col-md-4">
+							<img src="/resources/image/1234123412/1234123412M00.jpg"
+								class="img-fluid rounded-start ratio ratio-4x3" alt="...">
+						</div>
+						<div class="col-md-8">
+							<div class="ps-4 d-flex" style="flex-direction: column;">
+								<div class="row fs-4 mb-3">
+									<div class="col-9">핫도그라운드</div>
+									<div class="col fs-5">
+										<i class="bi bi-circle-fill me-3"
+											style="color: #00FF00; font-size: small;"></i>영업중
+									</div>
+								</div>
+								<h6 class="col mb-3">핫도그</h6>
+								<h6 class="mb-3">"무슨무슨 핫도그와 무슨무슨 소스의 만남!"</h6>
+
+								<p>
+									<i class="bi bi-telephone text-muted me-1"></i><small
+										class="text-muted">010-2345-2325</small>
+								</p>
+								<p>
+									<i class="bi bi-geo-alt text-muted col-1"></i><small
+										class="text-muted">인천시 연수구 학익동</small>
+								</p>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="card pointer my-4">
+					<div class="row g-0">
+						<div class="col-md-4">
+							<img src="/resources/image/1234123412/1234123412M00.jpg"
+								class="img-fluid rounded-start ratio ratio-4x3" alt="...">
+						</div>
+						<div class="col-md-8">
+							<div class="ps-4 d-flex" style="flex-direction: column;">
+								<div class="row fs-4 mb-3">
+									<div class="col-9">핫도그라운드</div>
+									<div class="col fs-5">
+										<i class="bi bi-circle-fill me-3"
+											style="color: #00FF00; font-size: small;"></i>영업중
+									</div>
+								</div>
+								<h6 class="col mb-3">핫도그</h6>
+								<h6 class="mb-3">"무슨무슨 핫도그와 무슨무슨 소스의 만남!"</h6>
+
+								<p>
+									<i class="bi bi-telephone text-muted me-1"></i><small
+										class="text-muted">010-2345-2325</small>
+								</p>
+								<p>
+									<i class="bi bi-geo-alt text-muted col-1"></i><small
+										class="text-muted">인천시 연수구 학익동</small>
+								</p>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="card pointer my-4">
+					<div class="row g-0">
+						<div class="col-md-4">
+							<img src="/resources/image/1234123412/1234123412M00.jpg"
+								class="img-fluid rounded-start ratio ratio-4x3" alt="...">
+						</div>
+						<div class="col-md-8">
+							<div class="ps-4 d-flex" style="flex-direction: column;">
+								<div class="row fs-4 mb-3">
+									<div class="col-9">핫도그라운드</div>
+									<div class="col fs-5">
+										<i class="bi bi-circle-fill me-3"
+											style="color: #00FF00; font-size: small;"></i>영업중
+									</div>
+								</div>
+								<h6 class="col mb-3">핫도그</h6>
+								<h6 class="mb-3">"무슨무슨 핫도그와 무슨무슨 소스의 만남!"</h6>
+
+								<p>
+									<i class="bi bi-telephone text-muted me-1"></i><small
+										class="text-muted">010-2345-2325</small>
+								</p>
+								<p>
+									<i class="bi bi-geo-alt text-muted col-1"></i><small
+										class="text-muted">인천시 연수구 학익동</small>
+								</p>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="text-center py-5" style="background: #e9ecef;">
+		<p>Team : ODOD Project : Postluck</p>
+		<p>Members: 김민규, 정영준, 이예림, 홍준택</p>
+		<p>© 2023 Postluck. All rights reserved.</p>
+
+
+	</div>
+
+	<script
+		src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.min.js"
+		integrity="sha384-cuYeSxntonz0PPNlHhBs68uyIAVpIIOZZ5JqeqvYYIcEL727kskC66kF92t6Xl2V"
+		crossorigin="anonymous"></script>
+
+
+	<script
+		src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.min.js"
+		integrity="sha384-cuYeSxntonz0PPNlHhBs68uyIAVpIIOZZ5JqeqvYYIcEL727kskC66kF92t6Xl2V"
+		crossorigin="anonymous"></script>
+
+
 </body>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.min.js"
-    integrity="sha384-cuYeSxntonz0PPNlHhBs68uyIAVpIIOZZ5JqeqvYYIcEL727kskC66kF92t6Xl2V"
-    crossorigin="anonymous"></script>
-
 </html>

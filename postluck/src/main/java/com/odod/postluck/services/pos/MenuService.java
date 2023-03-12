@@ -193,6 +193,7 @@ public class MenuService extends TransactionAssistant {
 				+ store.getStoreCode() + "\\";
 		String filePath = folderPath;
 		/* Transaction Start */
+		this.tranManager.tranStart();
 		try {
 			System.out.println("트랜안에 들어옴");
 			String menuCode = this.sqlSession.selectOne("selMaxMenuCode", store);
