@@ -34,8 +34,10 @@ public class PosRestController {
 
 	@PostMapping("/Api/ModifyStoreInfo")
 	public StoreBean modifyStoreInfo(Model model, @ModelAttribute StoreBean store,
-			@RequestParam("file") MultipartFile file) {
-		model.addAttribute("file", file);
+			@RequestParam(name = "file", required = false) MultipartFile file) {
+		if (file != null) {
+			model.addAttribute("file", file);
+		}
 		model.addAttribute("store", store);
 		this.storeService.backController("ST02", model);
 		System.out.println("modifyStoreInfo" + model.getAttribute("store"));
@@ -77,7 +79,7 @@ public class PosRestController {
 	}
 
 	@PostMapping("/Api/RegMenu")
-	public StoreBean regMenu(Model model, @ModelAttribute StoreBean store, @RequestParam("file") MultipartFile file)
+	public StoreBean regMenu(Model model, @ModelAttribute StoreBean store,@RequestParam(name = "file", required = false) MultipartFile file)
 			throws IOException {
 		model.addAttribute("file", file);
 		model.addAttribute("store", store);
@@ -88,7 +90,7 @@ public class PosRestController {
 	}
 
 	@PostMapping("/Api/ModifyMenu")
-	public StoreBean modifyMenu(Model model, @ModelAttribute StoreBean store, @RequestParam("file") MultipartFile file)
+	public StoreBean modifyMenu(Model model, @ModelAttribute StoreBean store,@RequestParam(name = "file", required = false) MultipartFile file)
 			throws IOException {
 		model.addAttribute("file", file);
 		model.addAttribute("model", model);

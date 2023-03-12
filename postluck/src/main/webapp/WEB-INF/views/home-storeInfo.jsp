@@ -32,22 +32,25 @@
 			<div class="searchContainer w-50 p-5 mb-3 rounded"
 				style="background-color: white;">
 				<div class="mx-5">
-					<h5 class="">푸드트럭 상세 정보</h5>
+					<h5>푸드트럭 상세 정보</h5>
 					<hr>
 					<div class="row p-3 ">
 						<div class="col-6 m-2">
-							<img src="/resources/image/1234123412/1234123412M06.jpg"
-								class="ratio ratio-4x3 rounded">
+							<img
+								src="/resources/image/${store.storeCode}/${store.storeCode}S00.jpg"
+								class="ratio ratio-4x3 rounded"
+								onerror="this.onerror=null; this.src='/resources/image/alt.jpg';">
 						</div>
 						<div class="col m-2 p-4">
 							<span
-								class="p-1 px-2 border border-danger text-danger rounded-pill small">영업전</span>
-							<div class="fs-3">수제 햄버거머리</div>
-							<div class="fs-6 mb-5">햄버거를 사면 거머리를 드립니다~</div>
+								class="p-1 px-2 border ${store.isOpen =='O'? 'border-success text-success' : 'border-danger text-danger'} rounded-pill small">${store.isOpen == 'O'? '영업중' : '영업전'}</span>
+							<div class="fs-3">${store.storeName}</div>
+							<div class="fs-6 mb-5">${store.storeInfo}</div>
 							<hr>
-							<div class="mt-5">카테고리 : 햄버거</div>
-							<div>최근위치 : 인천시 연수구 송도과학로 27번길</div>
-							<div>전화번호 : 010 - 2313 - 2351</div>
+							<div class="mt-3">카테고리 : ${store.storeCategory}</div>
+							<div>최근위치 : ${store.locationList[0].locationAddr == null?'최근 위치 정보가 없습니다.':store.locationList[0].locationAddr}
+								${store.locationList[0].locationDetail == null?'':store.locationList[0].locationDetail}</div>
+							<div>전화번호 : ${store.storePhone == null?'전화번호 정보가 없습니다' : store.storePhone}</div>
 						</div>
 					</div>
 				</div>
@@ -56,55 +59,14 @@
 					<h5 class="">푸드트럭 상세 소개</h5>
 					<p class="mt-3">
 					<hr>
-					어쩌구저쩌구어쩌구저쩌구어쩌구저쩌구어쩌구저쩌구어쩌구저쩌구어쩌구저쩌구어쩌구저쩌구어쩌구저쩌구어쩌구저쩌구어쩌구저쩌구어쩌구저쩌구어쩌구저쩌구어쩌구저쩌구어쩌구저쩌구어쩌구저쩌구어쩌구저쩌구어쩌구저쩌구어쩌구저쩌구어쩌구저쩌구어쩌구저쩌구어쩌구저쩌구어쩌구저쩌구어쩌구저쩌구어쩌구저쩌구어쩌구저쩌구어쩌구저쩌구어쩌구저쩌구어쩌구저쩌구어쩌구저쩌구어쩌구저쩌구어쩌구저쩌구어쩌구저쩌구어쩌구저쩌구어쩌구저쩌구어쩌구저쩌구어쩌구저쩌구어쩌구저쩌구어쩌구저쩌구어쩌구저쩌구어쩌구저쩌구어쩌구저쩌구어쩌구저쩌구어쩌구저쩌구어쩌구저쩌구어쩌구저쩌구어쩌구저쩌구어쩌구저쩌구어쩌구저쩌구어쩌구저쩌구어쩌구저쩌구어쩌구저쩌구어쩌구저쩌구어쩌구저쩌구어쩌구저쩌구어쩌구저쩌구어쩌구저쩌구어쩌구저쩌구어쩌구저쩌구어쩌구저쩌구어쩌구저쩌구
-					</p>
+					${store.storeInfoDetail == null? '푸드트럭 상세 소개가 없습니다.':store.storeInfoDetail}
 				</div>
 				<div class="my-5 mx-5">
 					<h5 class="">푸드트럭 메뉴</h5>
 					<hr>
 
-					<div class="row row-cols-4" style="justify-content: center;">
-						<div class="card col m-3" style="">
-							<img src="/resources/image/hotdog2.jpg"
-								class="card-img-top ratio ratio-4x3" alt="...">
-							<div class="text-center p-3">
-								<h4>치즈버거</h4>
-								<div>8000원</div>
-							</div>
-						</div>
-						<div class="card col m-3" style="">
-							<img src="/resources/image/hotdog2.jpg"
-								class="card-img-top ratio ratio-4x3" alt="...">
-							<div class="text-center p-3">
-								<h4>치즈버거</h4>
-								<div>8000원</div>
-							</div>
-						</div>
-						<div class="card col m-3" style="">
-							<img src="/resources/image/hotdog2.jpg"
-								class="card-img-top ratio ratio-4x3" alt="...">
-							<div class="text-center p-3">
-								<h4>치즈버거</h4>
-								<div>8000원</div>
-							</div>
-						</div>
-						<div class="card col m-3" style="">
-							<img src="/resources/image/hotdog2.jpg"
-								class="card-img-top ratio ratio-4x3" alt="...">
-							<div class="text-center p-3">
-								<h4>치즈버거</h4>
-								<div>8000원</div>
-							</div>
-						</div>
-						<div class="card col m-3" style="">
-							<img src="/resources/image/hotdog2.jpg"
-								class="card-img-top ratio ratio-4x3" alt="...">
-							<div class="text-center p-3">
-								<h4>치즈버거</h4>
-								<div>8000원</div>
-							</div>
-						</div>
-					</div>
+					<div class="row row-cols-4" style="justify-content: center;"
+						id="menuListZone"></div>
 				</div>
 			</div>
 
@@ -132,7 +94,32 @@
 
 
 
-	<style>
+
+</body>
+<script>
+const menuList = JSON.parse('${menuList}');
+
+
+let menuListZone = document.getElementById("menuListZone");
+menuListZone.innerHTML = '';
+if(menuList.length>0){
+	menuList.forEach((menu) => {
+	    menuListZone.innerHTML += `
+	        <div class="card col m-3" >
+	            <img src="/resources/image/${store.storeCode}/${store.storeCode}\${menu.menuCode}.jpg"
+	                class="card-img-top ratio ratio-4x3"
+	                onerror="this.onerror=null; this.src='/resources/image/alt.jpg';">
+	            <div class="text-center p-3" style="height: 100%;word-break:keep-all;display: flex;align-content: space-around;flex-direction: column;justify-content: space-around;">
+	                <h4>\${menu.menuName}</h4>
+	                <div>\${menu.menuPrice}원</div>
+	            </div>
+	        </div>`;
+	});
+}
+
+	
+</script>
+<style>
 .footer {
 	background-color: #f9f9f9;
 	padding: 40px 0;
@@ -159,7 +146,15 @@
 .contact-info p {
 	margin-bottom: 10px;
 }
+
+.card {
+	height: 300px
+}
+
+.card img {
+min-height:150px;
+	max-height: 150px;
+	height:150px;
+}
 </style>
-</body>
 </html>
-f
