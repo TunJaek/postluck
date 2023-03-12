@@ -367,8 +367,21 @@ function kakaoLogout() {
 }
 
 function showModal(messageString) {
+	if (typeof messageString === 'object') {
+		try {
+			if (messageString.message != null) {
+				console.log(messageString.message)
+				messageString = messageString.message;
+			}
+		} catch (e) {
 
-	const messageModalString = `
+		}
+
+	} else {
+		console.log("this is not JsonString");
+	}
+	if (messageString != null && messageString.includes(":")) {
+		const messageModalString = `
     <div class="modal-dialog modal-dialog-centered" role="document" >
       <div class="modal-content">
         <div class="modal-header">
@@ -386,28 +399,16 @@ function showModal(messageString) {
       </div>
     </div>
 `;
-	let messageModalDiv = document.createElement("div");
-	messageModalDiv.setAttribute("class", "modal fade");
-	messageModalDiv.setAttribute("id", "messageModal");
-	messageModalDiv.setAttribute("data-bs-backdrop", "static");
-	document.body.insertBefore(messageModalDiv, document.body.firstChild);
+		let messageModalDiv = document.createElement("div");
+		messageModalDiv.setAttribute("class", "modal fade");
+		messageModalDiv.setAttribute("id", "messageModal");
+		messageModalDiv.setAttribute("data-bs-backdrop", "static");
+		document.body.insertBefore(messageModalDiv, document.body.firstChild);
 
-	messageModalDiv.innerHTML = messageModalString;
-	if (typeof messageString === 'object') {
-		try {
-			if (messageString.message != null) {
-				console.log(messageString.message)
-				messageString = messageString.message;
-			}
-		} catch (e) {
+		messageModalDiv.innerHTML = messageModalString;
 
-		}
+		const messageModal = new bootstrap.Modal(document.querySelector('#messageModal'));
 
-	} else {
-		console.log("this is not JsonString");
-	}
-	const messageModal = new bootstrap.Modal(document.querySelector('#messageModal'));
-	if (messageString != null) {
 		console.log(messageString);
 		let message = messageString.split(':');
 		console.log(message);

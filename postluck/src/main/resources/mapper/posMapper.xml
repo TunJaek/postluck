@@ -2,9 +2,37 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.odod.postluck.mapper.PosMapperInter">
+
+	<update id="updStoreStatus"
+		parameterType="com.odod.postluck.beans.StoreBean">
+		update store set st_isopen=#{salesLogList[0].salesState}
+		, st_locode =
+		#{locationList[0].locationCode} where st_code
+		=#{storeCode}
+	</update>
+	<select id="selImgLocation"
+		parameterType="com.odod.postluck.beans.StoreBean" resultType="String">
+		SELECT
+		SI.SI_LOCATION AS IMAGE_LOCATE
+		FROM STOREIMAGE SI INNER JOIN STOREMENU
+		SM ON SI.SI_CODE = SM.SM_SICODE
+		WHERE (SUBSTR(SI.SI_CODE,1,10) =
+		SM.SM_STCODE AND SM.SM_STCODE =
+		#{storeCode})
+		AND
+		((SUBSTR(SI.SI_CODE,11,13)) = SM.SM_CODE AND SM.SM_CODE =
+		#{menuList[0].menuCode})
+	</select>
+	<insert id="insStoreImageCode"
+		parameterType="com.odod.postluck.beans.StoreBean">
+		insert into storeimage(si_code,si_location)
+		values(#{storeCode}||'S00',#{storeImageLocation})
+	</insert>
+
 	<update id="updStoreInfo"
 		parameterType="com.odod.postluck.beans.StoreBean">
-		UPDATE STORE SET ST_STNAME =#{storeName},
+		UPDATE STORE SET ST_STNAME
+		=#{storeName},st_locode=#{storeLocationCode},
 		<if test="storeInfo != null">ST_INFO=#{storeInfo}</if>
 		,
 		<if test="storeInfoDetail != null">
@@ -21,7 +49,7 @@
 		INSERT INTO SALESLOG(SL_STCODE, SL_LOCODE, SL_STATE,
 		SL_DATE)
 		VALUES(#{storeCode}, #{locationList[0].locationCode},
-		#{salesLogList[0].salesState},SYSDATE
+		#{salesLogList[0].salesState},SYSDATE)
 	</insert>
 
 	<insert id="insMenu"
@@ -46,29 +74,19 @@
 
 	<select id="selSalesList"
 		parameterType="com.odod.postluck.beans.StoreBean"
-		resultType="com.odod.postluck.beans.StoreBean">
-		SELECT SA_ODOSTIME AS orderList[0].salesDate,
-		SA_PAYMENTTYPE AS orderList[0].orderPaymentType,
-		SA_PRICE AS
-		orderList[0].amount,
-		LO_ADDR AS locationList[0].locationAddr,
-		LO_DETAIL
-		AS locationList[0].locationDetail
-		FROM POSDBA.SALES SA
-		INNER JOIN
-		POSDBA.LOCATION ON SA_LOCODE = LO_CODE AND SA_STCODE = LO_STCODE
-		WHERE
-		SA_STCODE = #{storeBean} AND SA_DATE= #{orderList[0].salesDate};
+		resultType="com.odod.postluck.beans.StoreBean"> SELECT SA_ODOSTIME AS orderList[0].salesDate,
+		SA_PAYMENTTYPE AS orderList[0].orderPaymentType, SA_PRICE AS
+		orderList[0].amount, LO_ADDR AS locationList[0].locationAddr,
+		LO_DETAIL AS locationList[0].locationDetail FROM POSDBA.SALES SA INNER
+		JOIN POSDBA.LOCATION ON SA_LOCODE = LO_CODE AND SA_STCODE = LO_STCODE
+		WHERE SA_STCODE = #{storeBean} AND SA_DATE= #{orderList[0].salesDate}
 	</select>
 	<select id="selTypeSalesList"
 		parameterType="com.odod.postluck.beans.StoreBean"
-		resultType="com.odod.postluck.beans.OrderBean">
-		SELECT SA_PAYMENTTYPE AS salespaymentType, SA_PRICE AS
-		amount
-		FROM POSDBA.SALES
-		WHERE SA_PAYMENTTYPE =
-		#{orderList[0].salespaymentType} AND SA_STCODE =
-		#{storeCode}
+		resultType="com.odod.postluck.beans.OrderBean"> SELECT SA_PAYMENTTYPE AS salespaymentType, SA_PRICE AS
+		amount FROM POSDBA.SALES WHERE SA_PAYMENTTYPE =
+		#{orderList[0].salespaymentType} AND SA_STCODE = #{storeCode}
+
 	</select>
 
 	<select id="selPaymentList"
@@ -88,9 +106,10 @@
 		SM_STCODE
 		WHERE
 		SA_STCODE = #{storeCode} AND SA_DATE
-		= to_date(#{orderList[0].salesDate},'YYYY-MM-DD HH24:MI:SS')
-	</select>
+		=
+		to_date(#{orderList[0].salesDate},'YYYY-MM-DD HH24:MI:SS')
 
+	</select>
 
 	<select id="selSalesLocation"
 		parameterType="com.odod.postluck.beans.StoreBean"
@@ -101,21 +120,8 @@
 		FROM POSDBA.SALES SA
 		INNER JOIN POSDBA.LOCATION ON SA_LOCODE = LO_CODE
 		AND SA_STCODE = LO_STCODE
-		WHERE SA_STCODE = #{storeCode} AND
-		TO_CHAR(SA_DATE, 'YYYY-MM-DD
-		HH24:MI:SS') = #{orderList[0].salesDate}
-	</select>
-
-
-	<select id="selSalesLocation"
-		parameterType="com.odod.postluck.beans.StoreBean"
-		resultType="com.odod.postluck.beans.LocationBean">
-		SELECT
-		LO_ADDR AS locationAddr,
-		LO_DETAIL AS locationDetail
-		FROM POSDBA.SALES SA
-		INNER JOIN POSDBA.LOCATION ON SA_LOCODE = LO_CODE AND SA_STCODE = LO_STCODE
-		WHERE SA_STCODE = #{storeCode} AND SA_DATE = to_date(#{orderList[0].salesDate},'YYYY-MM-DD HH24:MI:SS')
+		WHERE SA_STCODE = #{storeCode} AND SA_DATE =
+		to_date(#{orderList[0].salesDate},'YYYY-MM-DD HH24:MI:SS')
 	</select>
 
 
@@ -124,7 +130,7 @@
 		SELECT COUNT(*)
 		FROM STOREMENU
 		WHERE SM_STCODE =
-		#{storeCode} AND SM_NAME = #{menuList[0].menuName};
+		#{storeCode} AND SM_NAME = #{menuList[0].menuName}
 	</select>
 	<select id="selMaxMenuCode"
 		parameterType="com.odod.postluck.beans.StoreBean" resultType="String">
@@ -166,7 +172,14 @@
 		#{menuList[0].menuImageLocation})
 	</insert>
 
+	<delete id="delMenuImgDB"
+		parameterType="com.odod.postluck.beans.StoreBean">
 
+		DELETE FROM STOREIMAGE
+		WHERE SI_CODE =
+		#{storeCode}||#{menuList[0].menuCode}
+
+	</delete>
 	<insert id="insLocation"
 		parameterType="com.odod.postluck.beans.StoreBean">
 		INSERT INTO POSDBA.LOCATION
@@ -234,7 +247,7 @@
 		SM_STCODE
 		WHERE
 		TO_CHAR(#{orderList[0].salesDate}, 'YYYYMMDD') = TO_CHAR(SYSDATE,
-		'YYYYMMDD');
+		'YYYYMMDD')
 	</select>
 
 </mapper>

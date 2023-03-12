@@ -27,7 +27,7 @@
 <body class="vsc-initialized">
 	<div class="main">
 		<div id="left">
-			<div id="foodTruckNews" onclick="serverCallByRequest('Home', 'get','');">
+			<div id="foodTruckNews" onclick="serverCallByRequest('/Home', 'get','');">
 				푸드트럭 소식 보러가기 <img class="position-absolute start-0 bottom-0"
 					onclick="moveHome()" src="/resources/image/arrow.png"
 					style="width: 120%;">

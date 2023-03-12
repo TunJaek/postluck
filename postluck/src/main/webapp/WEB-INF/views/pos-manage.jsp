@@ -470,11 +470,11 @@ if('${store}'!=''){
 	const storeNum = JSON.parse(jsonString).storeCode;
 	
 	let salesToggle = document.getElementById("salesToggle");
-	if ('${isOpen}' == 'false') {
-		salesToggle.setAttribute("checked", "false");
+	if (JSON.parse(jsonString).isOpen == 'O') {
+		salesToggle.checked = true;
 		document.getElementById("isOpenText").innerText = "영업중"
 	} else {
-		salesToggle.setAttribute("checked", "true");
+		salesToggle.checked = false;
 		document.getElementById("isOpenText").innerText = "영업전"
 	}
 
@@ -507,15 +507,27 @@ if('${store}'!=''){
 			document.getElementById("storeInfo").value = jsonData.storeInfo;
 			document.getElementById("storeCategory").value = jsonData.storeCategory;
 			document.getElementById("storeInfoDetail").value = jsonData.storeInfoDetail;
-			let locationList = jsonData.locationList;
-			if(locationList.length>0){
-			document.getElementById("map").style.display ="block";
-	
 			const storeLocation = document.getElementById("storeLocation");
+			let locationList = jsonData.locationList;
+			
+			if(locationList.length>0){
+				for (let i = 0; i < storeLocation.options.length; i++) {
+					  const option = storeLocation.options[i];
+					  if (option.value === jsonData.storeLocationCode) {
+					    // 해당 option 선택하기
+					    option.selected = true;
+					    break;
+					  }
+					}
+				for(let i=0;i<jsonData.locationList.length;i++){
+					if(jsonData.locationList[i].locationCode == jsonData.storeLocationCode){
+						const location = jsonData.locationList[i];
+					}
+				}
+			document.getElementById("map").style.display ="block";
 			const optionEmpty = document.createElement("option");
 			let container = document.getElementById('map');
 			const selectTag = document.getElementById("storeLocation");
-			const location = locationList[0]; //바꿔야함!!!!!!!!!!!!!!!!!!
 			const locationName = location.locationName;
 			let locationDetail =location.locationDetail;
 			optionEmpty.innerText = "위치";
@@ -523,6 +535,7 @@ if('${store}'!=''){
 			while (storeLocation.firstChild) {
 				storeLocation.removeChild(storeLocation.firstChild);
 			}
+			
 			for (let i = 0; i < jsonData.locationList.length; i++) {
 				const option = document.createElement("option");
 				option.setAttribute("value",
@@ -569,7 +582,6 @@ if('${store}'!=''){
 		}else if(newIdx == 2){ //메뉴관리 선택시
 			jsonData = JSON.parse(jsonString);
 			console.log("newIdx == 2")
-			
 			const menuList = jsonData.menuList;
 			if(menuList!=null&&menuList.length>0){
 			const menuListDiv = document.getElementById("menuList");
@@ -641,7 +653,7 @@ if('${store}'!=''){
 	const category = document.getElementById('storeCategory')
 	const categoryOptions = category.options
 	for (let i = 0; i < categoryOptions.length; i++) {
-		if (categoryOptions[i].value == '${storeCategory}') {
+		if (categoryOptions[i].value == jsonData.storeCategory) {
 			categoryOptions[i].selected = "true";
 		}
 	}
@@ -700,20 +712,20 @@ if('${store}'!=''){
 		console.log(salesToggle.checked)
 		if (salesToggle.checked) {
 			console.log("false")
-			showModal("plain::영업을 시작합니다.:")
 			formData.append('salesLogList[0].salesState', 'O');
+			showModal("plain::영업을 시작합니다.::");
 		} else {
 			console.log("true")
-			showModal("plain::영업을 종료합니다.:")
 			formData.append('salesLogList[0].salesState', 'C');
+			showModal("plain::영업을 종료합니다.::");
 		}
-		formData.append('locationList[0].locationCode', 'L01');
+		formData.append('locationList[0].locationCode',document.getElementById("storeLocation").options[selectedIdx].value);
 		formData.append('storeCode', storeNum);
 		serverCallByFetch(formData, '/Api/UpdSalesLog', 'post', 'afterUpdSalesLog', header);
 	}
 	//영업기록 callback
 	function afterUpdSalesLog(jsonData){
-		if ('${isOpen}' == 'true'){
+		if (jsonData.message == 'true'){
 			salesToggle.setAttribute("checked", "true");
 			document.getElementById("isOpenText").innerText = "영업중";
 			showModal(jsonData.message);
@@ -737,7 +749,7 @@ if('${store}'!=''){
 		const storeInfoDetail = document.getElementById('storeInfoDetail');
 		const storeCategory = document.getElementById('storeCategory');
 		const storeLocation = document.getElementById("storeLocation").options[selectedIdx].value;
-		const storeImage = doucment.getElementById("storePicture");
+		const storeImage = document.getElementById("storePicture");
 
 		if (storeName.value != '' && lengthCheck(storeName)) {
 			formData.append('storeName', storeName.value);
@@ -750,7 +762,9 @@ if('${store}'!=''){
 					formData.append('storeInfoDetail', storeInfoDetail.value);
 					formData.append('storeCode', storeNum);
 					formData.append('storeLocationCode',storeLocation)
+					if(storeImage.files[0]!=null){
 					formData.append('file',storeImage.files[0]);
+					}
 					serverCallByFetch(formData, '/Api/ModifyStoreInfo', 'post',
 							'afterModifyStoreInfo', header);
 				} else {
@@ -867,11 +881,12 @@ if('${store}'!=''){
 	function afterRegLocation(jsonData) {
 		locationListModal.hide()
 		regLocationModal.hide()
+		document.getElementsByClassName("modal-backdrop fade show")[0].remove();
 		document.getElementById("regLocationModal").display ="none"
 		document.getElementById("locationAddr").value = '';
 		document.getElementById("locationName").value = '';
 		document.getElementById("locationDetail").value = '';
-		showModal(jsonData.message+"reload:1");
+		showModal(jsonData.message+"sideMenu:1");
 	}
 	//위치 리스트 모달 보여주기 
 	function showLocationList() {
@@ -1083,7 +1098,6 @@ if('${store}'!=''){
 	    formData = new FormData();
 	    formData.append("storeCode",storeNum);
 	    formData.append("menuList[0].menuCode",menuCode);
-	    formData.append("file", menuImage.files[0]);
 	    serverCallByFetch(formData,"/Api/DeleteMenu","post","afterDeleteMenu",header);
 	}
 	
@@ -1130,8 +1144,8 @@ if('${store}'!=''){
 	
 	 function afterDeleteMenu(jsonData){
 		 console.log("afterDeleteMenu"+jsonData);
-		jsonString = JSON.stringify(jsonData)
-	    showModal(jsonData.message+"sideMenu:2");
+	    showModal(jsonData.message);
+	    sideMenu(2)
 	}
 	// 차트 생성
 	var ctx = document.getElementById('chart').getContext('2d');

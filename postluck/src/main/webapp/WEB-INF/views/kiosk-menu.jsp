@@ -38,7 +38,7 @@
 					</div>
 					<div class="my-3">
 						<i class="bi bi-check-circle fs-1"
-							style="color: var(- -bs-primary)"></i>
+							style="color: #1ED760"></i>
 					</div>
 					<h5>주문이 완료되었습니다!</h5>
 					<h5 class="mb-5">결제는 음식 수령과 함께 해주세요.</h5>
