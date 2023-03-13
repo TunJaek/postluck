@@ -18,10 +18,11 @@ public class HomeController {
 	}
 
 	@GetMapping("/Home/StoreInfo") // 홈페이지 이동
-	public ModelAndView moveStoreInfoPage(ModelAndView mav,@RequestParam String storeCode) {
+	public ModelAndView moveStoreInfoPage(ModelAndView mav, @RequestParam String storeCode) {
 		mav.addObject("storeCode", storeCode);
 		System.out.println(storeCode);
-		this.homeService.backController("HO02",mav);
+		this.homeService.backController("HO02", mav);
 		return mav;
+
 	}
 }
