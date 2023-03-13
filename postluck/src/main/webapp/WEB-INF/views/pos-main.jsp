@@ -178,7 +178,11 @@
 			let orderNum = '000';
 			if (JSON.parse(jsonString).storeCode) {
 				storeCode = JSON.parse(jsonString).storeCode;
+<<<<<<< HEAD
+				sock = new WebSocket("ws://localhost:80/postluck/"
+=======
 				sock = new WebSocket("ws://192.168.0.82:80/postluck/"
+>>>>>>> branch 'main' of https://github.com/dPfal/postluck
 						+ storeCode);
 				// WebSocket 처리 코드
 			} else {

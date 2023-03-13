@@ -46,7 +46,6 @@
 			<i class="bi bi-arrow-left fs-3 mx-3" id="backspace"
 				style="color: white; display: none;" onclick="kioskPage()"></i> <img
 				src="/resources/image/mainLogo-dark.png" class="mx-3">
->>>>>>> branch 'main' of https://github.com/dPfal/postluck.git
 
 		</div>
 		<div id="menuPage" class="w-100" style="display: block; position: absolute; height: 95%;">

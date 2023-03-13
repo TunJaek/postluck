@@ -49,4 +49,20 @@
 		isMain, SM_ISKIOSK as isKiosk, SM_ISSOLD as isSoldOut from storemenu
 		where sm_stcode = #{storeCode} order by sm_ismain desc
 	</select>
+	<select id="getSearchStoreList"
+	parameterType="com.odod.postluck.beans.HomeSearchBean"
+	resultType="com.odod.postluck.beans.StoreBean">
+SELECT ST_CODE AS storeCode,
+       st_stname AS storeName,
+       st_info AS storeInfo,
+       st_infoDetail AS storeInfoDetail,
+       st_phone AS storePhone,
+       ca_name AS storeCategory,
+       st_locode AS storeLocationCode,
+       st_isopen AS isOpen
+FROM store
+INNER JOIN categories ON st_category = ca_code
+INNER JOIN location ON st_code = lo_stcode and st_locode = lo_code
+WHERE lo_addr LIKE  #{locate}||'%'
+		</select>
 </mapper>

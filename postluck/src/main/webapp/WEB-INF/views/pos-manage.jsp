@@ -275,7 +275,7 @@ if('${store}'!=''){
 								</select>
 							</div>
 						</div>
-						<div class="overflow-auto" id="salesList">
+						<div class="overflow-auto" id="salesList" style="height: 90%">
 							<!-- 결제내역 들어감 '카드'or현금 -->
 						</div>
 					</div>
@@ -309,41 +309,50 @@ if('${store}'!=''){
 				<div class="inputZone p-5 d-flex gap-3"
 					style="flex-direction: column;">
 					<div class="salesPeriodButtonZone">
-						<button type="button" class="btn btn-outline-primary"
-							style="font-weight: bold;" id="today">&nbsp 오늘 &nbsp</button>
-						<button type="button" class="btn btn-outline-primary"
-							style="font-weight: bold;" id="oneWeek">&nbsp &nbsp 1주
-							&nbsp &nbsp</button>
-						<button type="button" class="btn btn-outline-primary"
-							style="font-weight: bold;" id="oneMonth">&nbsp 1개월 &nbsp</button>
-						<button type="button" class="btn btn-outline-primary"
-							style="font-weight: bold;" id="threeMonth">&nbsp 3개월
-							&nbsp</button>
+						<div class="btn-group" role="group"
+							aria-label="Basic radio toggle button group" style="width: 50%">
+							<input type="radio" class="btn-check" name="btnradio"
+								id="btnradio1" autocomplete="off" checked> <label
+								class="btn btn-outline-primary" for="btnradio1"
+								onClick="selSalesperiod('today')">오늘</label> <input type="radio"
+								class="btn-check" name="btnradio" id="btnradio2"
+								autocomplete="off"> <label
+								class="btn btn-outline-primary" for="btnradio2"
+								onClick="selSalesperiod('oneWeek')">1주일</label> <input
+								type="radio" class="btn-check" name="btnradio" id="btnradio3"
+								autocomplete="off"> <label
+								class="btn btn-outline-primary" for="btnradio3"
+								onClick="selSalesperiod('oneMonth')">1개월</label> <input
+								type="radio" class="btn-check" name="btnradio" id="btnradio4"
+								autocomplete="off"> <label
+								class="btn btn-outline-primary" for="btnradio4"
+								onClick="selSalesperiod('threeMonth')">3개월</label>
+						</div>
+
 					</div>
 				</div>
-				<div class="mainContentMidlle" style="max-width: 100%; height: 20%;">
+				<div class="mainContentMidlle">
 					<div class="salesTextZone">
 						<div class="textBox">
-							실매출<br> <span style="font-size: 30px;">201,800원</span>
+							실매출<br> <span id="totalSales" style="font-size: 30px;"></span>
 						</div>
 						<div class="textBox">
-							결제건수<br> <span style="font-size: 30px;">6건</span>
-						</div>
-						<div class="textBox">
-							주문건단가<br> <span style="font-size: 30px;">33,633원</span>
+							결제건수<br> <span id="paymentCount" style="font-size: 30px;"></span>
 						</div>
 					</div>
 				</div>
-				<div class="mainContentFooter m-3">
+				<div class="mainContentFooter p-5">
 					<div class="footerChoiceTab" style="position: relative;">
-						<ul class="nav nav-tabs" role="tablist">
-							<li class="nav-item" role="presentation"><a class="nav-link"
+						<ul class="mb-5 nav nav-tabs" role="tablist">
+							<li class="nav-item" role="presentation"
+								onclick="paymentTypeList()"><a class="nav-link  active"
 								data-bs-toggle="tab" href="#home" aria-selected="false"
 								role="tab" tabindex="-1">결제수단별</a></li>
-							<li class="nav-item" role="presentation"><a
-								class="nav-link active" data-bs-toggle="tab" href="#profile"
+							<li class="nav-item" role="presentation" onclick="menuTypeList()"><a
+								class="nav-link" data-bs-toggle="tab" href="#profile"
 								aria-selected="true" role="tab">메뉴별</a></li>
-							<li class="nav-item" role="presentation"><a class="nav-link"
+							<li class="nav-item" role="presentation"
+								onclick="selLocateList()"><a class="nav-link"
 								data-bs-toggle="tab" href="#locate" aria-selected="false"
 								role="tab" tabindex="-1">지역별</a></li>
 						</ul>
@@ -355,94 +364,24 @@ if('${store}'!=''){
 							style="width: 100%; text-align: center;">
 							<div class="tab-pane fade" id="home" role="tabpanel">
 								<div class="paymentTab"
-									style="width: 80%; display: flex; flex-direction: row; font-size: 20px;">
-									<br> <br>
-									<div class="textBox1">
-										<h4>결제수단</h4>
-										<hr style="border: 1px color= silver;">
-										카드<br> <br> 현금
-										<hr style="border: 1px color= silver;">
-									</div>
-									<div class="textBox1">
-										<h4>건수</h4>
-										<hr style="border: 1px color= silver;">
-										6건<br> <br> 18건
-										<hr style="border: 1px color= silver;">
-									</div>
-									<div class="textBox1">
-										<h4>결제금액</h4>
-										<hr style="border: 1px color= silver; width: 100%;">
-										197,000원<br> <br> 218,000원
-										<hr style="border: 1px color= silver; width: 100%;">
-									</div>
-								</div>
-								<div class="actualSales"
-									style="display: flex; position: relative; left: 51.3%;">
-									<h4 style="">실매출 &nbsp&nbsp&nbsp</h4>
-									<span style="font-size: 20px;">415,000원</span>
-								</div>
-								<!-- <p> 결제수단별 </p> -->
+									style="width: 80%; display: flex; flex-direction: row; font-size: 20px;"
+									id="selpaymentList"></div>
 							</div>
+
+
+							<!-- <p> 결제수단별 </p> -->
 							<div class="tab-pane fade active show" id="profile"
 								role="tabpanel">
 								<div class="menuTab"
 									style="width: 80%; display: flex; flex-direction: row; font-size: 20px;">
-									<div class="textBox1">
-										<h4>순위</h4>
-										<hr style="border: 1px color= silver;">
-										1<br> <br> 2<br> <br> 3<br> <br>
-										4<br> <br> 5
-									</div>
-									<div class="textBox1">
-										<h4>메뉴명</h4>
-										<hr style="border: 1px color= silver;">
-										1<br> <br> 2<br> <br> 3<br> <br>
-										4<br> <br> 5
-									</div>
-									<div class="textBox1">
-										<h4>건수</h4>
-										<hr style="border: 1px color= silver;">
-										1<br> <br> 2<br> <br> 3<br> <br>
-										4<br> <br> 5
-									</div>
-									<div class="textBox1"
-										style="text-align: right; position: relative; left: -10%;">
-										<h4>결제금액</h4>
-										<hr style="border: 1px color= silver; width: 135%;">
-										1,197,000원<br> <br> 197,000원<br> <br>
-										197,000원<br> <br> 97,000원<br> <br> 7,000원
-									</div>
+
 								</div>
 							</div>
 							<div class="tab-pane fade active show" id="locate"
 								role="tabpanel">
 								<div class="menuTab"
 									style="width: 80%; display: flex; flex-direction: row; font-size: 20px;">
-									<div class="textBox1">
-										<h4>지역</h4>
-										<hr style="border: 1px color= silver;">
-										서울<br> <br> 경기<br> <br> 인천<br> <br>
-										강릉<br> <br> 5
-									</div>
-									<div class="textBox1">
-										<h4>메뉴명</h4>
-										<hr style="border: 1px color= silver;">
-										1<br> <br> 2<br> <br> 3<br> <br>
-										4<br> <br> 5
-									</div>
-									<div class="textBox1">
-										<h4>건수</h4>
-										<hr style="border: 1px color= silver;">
-										1<br> <br> 2<br> <br> 3<br> <br>
-										4<br> <br> 5
-									</div>
-									<div class="textBox1"
-										style="text-align: right; position: relative; left: -10%;">
-										<h4>결제금액</h4>
-										<hr style="border: 1px color= silver; width: 135%;">
-										1,197,000원<br> <br> 197,000원<br> <br>
-										197,000원<br> <br> 97,000원<br> <br> 7,000원
-									</div>
+
 								</div>
 							</div>
 						</div>
@@ -455,9 +394,6 @@ if('${store}'!=''){
 		<!-- 헤더랑 옆 클릭바 고정을 고정. -->
 		<!--  메세지 모달 -->
 	</div>
-
-
-
 	<script>
 	if (${store} != '') {
 		jsonString = '${store}';
@@ -644,9 +580,10 @@ if('${store}'!=''){
 		    showMenuInput('');
 		}else if(newIdx == 5){
 			serverCallByFetch(formData,'/Api/SelPayment','post','selSalesInfo',header);
+			
+		}else if(newIdx == 6){
+			selSalesperiod('today');
 		}
-		
-
 	}
 	
 	//매장 분류 
@@ -1149,31 +1086,57 @@ if('${store}'!=''){
 	    sideMenu(2)
 	}
 	// 차트 생성
+	
 	var ctx = document.getElementById('chart').getContext('2d');
-	var myChart = new Chart(ctx, {
-	  type: 'doughnut',
-	  data: {
-	    labels: ['Red', 'Blue', 'Yellow'],
-	    datasets: [{
-	      label: '# of Votes',
-	      data: [66.7, 11.1, 22.2],
-	      backgroundColor: [
-	        'rgb(255, 99, 132)',
-	        'rgb(54, 162, 235)',
-	        'rgb(255, 205, 86)'
-	      ],
-	      borderWidth: 0
-	    }]
-	  },
-	  options: {
-	    maintainAspectRatio: false
+	let data = {
+			  labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+			  datasets: [{
+			    label: '# of Votes',
+			    data: [12, 19, 3],
+			    backgroundColor: [
+			      'rgba(255, 99, 132, 1)',
+			      'rgba(54, 162, 235, 1)',
+			      'rgba(255, 206, 86, 1)',
+			      'rgba(75, 192, 192, 1)',
+			      'rgba(153, 102, 255,1)',
+			      'rgba(255, 159, 64, 1)'
+			    ],
+			    borderColor: [
+			      'rgba(255, 99, 132, 1)',
+			      'rgba(54, 162, 235, 1)',
+			      'rgba(255, 206, 86, 1)',
+			      'rgba(75, 192, 192, 1)',
+			      'rgba(153, 102, 255, 1)',
+			      'rgba(255, 159, 64, 1)'
+			    ],
+			    borderWidth: 1
+			  }]
+			};
+	// 차트 옵션
+	const options = {
+	  scales: {
+	    y: {
+	      beginAtZero: true
+	    }
 	  }
-	});
+	};
 
+	// 차트 객체 생성
+	const myChart = new Chart(ctx, {
+	  type: 'doughnut',
+	  data: data,
+	  options: options
+	});
+	
+	function updateChart(data) {
+		myChart.data.datasets[0].data = data;
+		myChart.update();
+		}
+	
 	// 차트 컨테이너 크기 설정
 	var chartContainer = document.getElementById('chart-container');
-	chartContainer.style.width = '50vw';
-	chartContainer.style.height = '30vh';
+	chartContainer.style.width = '40vw';
+	chartContainer.style.height = '20vh';
 	
 	//매출분석
 	function changePayment(){
@@ -1283,6 +1246,148 @@ if('${store}'!=''){
 
 			  paymentInfoElement.insertAdjacentHTML('beforeend', paymentInfo);
 	}
+	let per;
+	function selSalesperiod(period){
+		per=period;
+		formData = new FormData();
+		formData.append('storeCode',storeNum);
+		formData.append('salesAnalysisList[0].period',period);
+		 serverCallByFetch(formData,'/Api/selSalesInfo','post','selSalesPeriod',header);
+	
+	}
+	let gsonData;
+	function selSalesPeriod(jsonData){
+		gsonData=jsonData;
+		// HTML DOM 요소들
+		const realSalesElement = document.querySelector("#totalSales");
+		const paymentCountElement = document.querySelector("#paymentCount");
+		
+		if (gsonData.salesAnalysisList[0]==null){
+			realSalesElement.innerText= '0원'
+				paymentCountElement.innerText= '0건'
+		}else{
+			const totalPrice = gsonData.salesAnalysisList[0].totalPrice;
+			const countSales = gsonData.salesAnalysisList[0].countSales;
+			// 요소들의 내용을 jsondata로 업데이트
+			realSalesElement.textContent =`\${totalPrice}원`;
+			paymentCountElement.textContent = `\${countSales}건`;
+		}
+	}
+		function paymentTypeList(){
+			formData = new FormData();
+			formData.append("storeCode",storeNum);
+			formData.append('SalesAnalysisList[0].period',per);
+		 serverCallByFetch(formData,'/Api/selpaymentTypeList','post','selPaymentTypeList',header);
+		}
+		let jjjj;
+		function selPaymentTypeList(j){
+			jjjj= j;
+			const paymentData =j.salesAnalysisList;
+			let paymentTotal;
+			
+			const selpaymentListZone= document.querySelector('#selpaymentList');
+			selpaymentListZone.innerHTML='';
+			  const paymentInfo =`
+				<br> <br>
+				<div class="textBox1">
+					<h4>결제수단</h4>
+					<hr style="border: 1px color= silver;">
+					카드<br> <br> 현금
+					<hr style="border: 1px color= silver;">
+				</div>
+				<div class="textBox1">
+					<h4>건수</h4>
+					<hr style="border: 1px color= silver;">
+					\${paymentData[0].countSales}건<br> <br> \${paymentData[1].countSales}건
+					<hr style="border: 1px color= silver;">
+				</div>
+				<div class="textBox1">
+					<h4>결제금액</h4>
+					<hr style="border: 1px color= silver; width: 100%;">
+					\${paymentData[0].totalPrice}원<br> <br> \${paymentData.length>1?paymentData[1].totalPrice:0}원
+					<hr style="border: 1px color= silver; width: 100%;">
+				</div>`;
+				
+				const actualSales=`
+			<div class="actualSales text-start row">
+				<h4 class="col-7 px-5">실매출</h4>
+				<h4 class="col">\${paymentData[0].totalPrice+paymentData[1].totalPrice}원</h4> `;
+				
+				  selpaymentListZone.innerHTML+=paymentInfo;
+				  selpaymentListZone.parentElement.innerHTML+=actualSales;
+				  
+		
+		}
+	
+	function selLocateList(){
+		formData = new FormData();
+		formData.append("storeCode", storeNum);
+		formData.append('SalesAnalysisList[0].period',per);
+		 serverCallByFetch(formData,'/Api/selLocateList','post','selLocateInfo',header);
+	}
+
+	function selLocateInfo(json) {
+		  const salesAnalysisList = json.salesAnalysisList;
+		  const locateZone= document.querySelector('#locate');
+		  locateZone.innerHTML='';
+		  let locationList='';
+		  for (let i = 0; i < salesAnalysisList.length; i++) {
+			    const item = salesAnalysisList[i];
+			    locationList += `\${salesAnalysisList[i].locationName}
+			    \${salesAnalysisList[i].locationAddr} \${salesAnalysisList[i].locationDetail} 
+			    \${salesAnalysisList[i].countSales}건 \${salesAnalysisList[i].totalPrice}원<br><br>`;
+			  }
+		  locateZone.innerHTML+=locationList
+		}
+	function menuTypeList(){
+		formData = new FormData();
+		formData.append('storeCode',storeNum);
+		formData.append('SalesAnalysisList[0].period',per);
+		 serverCallByFetch(formData,'/Api/menuTypeList','post','menuTypeInfo',header);
+	}
+	
+	
+	function menuTypeInfo(json){
+		const data = json.salesAnalysisList;
+
+	    const container = document.getElementById('profile');
+	    const menuTab = container.querySelector('.menuTab');
+		menuTab.innerHTML = '';
+	    // 메뉴명, 건수, 결제금액에 대한 데이터 배열
+	    const menuNames = data.map(item => item.menuName);
+	    const counts = data.map(item => item.countSales);
+	    const prices = data.map(item => item.totalPrice);
+
+	    // menuTab 내부의 HTML을 변경
+	    for (let i = 0; i < menuNames.length; i++) {
+	        const textBox = document.createElement('div');
+	        textBox.classList.add('textBox1');
+	        
+	        const menuNameTitle = document.createElement('h4');
+	        menuNameTitle.textContent = '메뉴명';
+	        const menuName = document.createElement('span');
+	        menuName.textContent = menuNames[i];
+	        textBox.appendChild(menuNameTitle);
+	        textBox.appendChild(menuName);
+
+	        const countTitle = document.createElement('h4');
+	        countTitle.textContent = '건수';
+	        const count = document.createElement('span');
+	        count.textContent = counts[i];
+	        textBox.appendChild(countTitle);
+	        textBox.appendChild(count);
+
+	        const priceTitle = document.createElement('h4');
+	        priceTitle.textContent = '결제금액';
+	        const price = document.createElement('span');
+	        price.textContent = prices[i];
+	        textBox.appendChild(priceTitle);
+	        textBox.appendChild(price);
+
+	        menuTab.appendChild(textBox);
+	    }
+	}
+
 </script>
 
 	<style>
@@ -1321,13 +1426,6 @@ body {
 	width: 80%;
 	position: relative;
 	background-color: white;
-}
-
-.salesPeriodButtonZone {
-	width: 40%;
-	display: flex;
-	flex-direction: row;
-	justify-content: space-evenly;
 }
 
 .salesTextZone {

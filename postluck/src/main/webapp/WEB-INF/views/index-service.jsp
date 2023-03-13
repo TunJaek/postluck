@@ -9,6 +9,7 @@
 <title>MAIN - POS.TLUCK</title>
 <link rel="stylesheet" href="../../resources/css/mainBootstrap.css">
 <script src="/resources/js/common.js"></script>
+<script src="https://developers.kakao.com/sdk/js/kakao.min.js"></script>
 <link
 	href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR&amp;display=swap"
 	rel="stylesheet">
@@ -287,8 +288,15 @@
 	}
 
 	function logout() {
+		Kakao.Auth.logout()
+		  .then(function(response) {
 		serverCallByRequest('/View/logOut', 'post', getJWT());
 		sessionStorage.removeItem("JWT");
+		    console.log(Kakao.Auth.getAccessToken()); // null
+		  })
+		  .catch(function(error) {
+		    console.log('Not logged in.');
+		  });
 	}
 </script>
 <style>

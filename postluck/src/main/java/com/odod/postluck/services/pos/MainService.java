@@ -117,7 +117,6 @@ public class MainService extends TransactionAssistant {
 
 		try {
 			if (store.getStoreCode() != null) {
-				this.tranManager.setTransactionConf(true);
 				this.tranManager.tranStart();
 				store = (StoreBean) this.sqlSession.selectList("selStoreInfo", store).get(0);
 				menuList = this.sqlSession.selectList("selMenuList", store);

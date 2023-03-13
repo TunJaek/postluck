@@ -132,5 +132,29 @@ public class PosRestController {
 		System.out.println((StoreBean) model.getAttribute("salesStore"));
 		return (StoreBean) model.getAttribute("salesStore");
 	}
-
+	@PostMapping("/Api/selSalesInfo")
+	public StoreBean selSalesInfo(Model model, @ModelAttribute StoreBean store) {
+		model.addAttribute("salesInfo", store);
+		this.salesService.backController("SA04", model);
+		return (StoreBean)model.getAttribute("salesInfo");
+	}
+	@PostMapping("/Api/selpaymentTypeList")
+	public StoreBean selpaymentTypeList(Model model, @ModelAttribute StoreBean store) {
+		model.addAttribute("selpaymentTypeList", store);
+		this.salesService.backController("SA07", model);
+		return (StoreBean)model.getAttribute("selpaymentTypeList");
+	}
+	@PostMapping("/Api/selLocateList")
+	public StoreBean selLocateList(Model model, @ModelAttribute StoreBean store) {
+		model.addAttribute("selLocateList", store);
+		this.salesService.backController("SA06", model);
+		return (StoreBean)model.getAttribute("selLocateList");
+	}
+	@PostMapping("/Api/menuTypeList")
+	public StoreBean menuTypeList(Model model, @ModelAttribute StoreBean store) {
+		model.addAttribute("menuTypeList", store);
+		this.salesService.backController("SA08", model);
+		return (StoreBean)model.getAttribute("menuTypeList");
+	}
+	
 }

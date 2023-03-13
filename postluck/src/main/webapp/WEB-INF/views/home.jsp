@@ -35,7 +35,8 @@
 				<h5 class="pt-4 ps-4">우리 동네 푸드트럭 찾기</h5>
 				<div class="row p-3">
 					<div class="col-4 m-2">
-						<select class="form-select" name ="city" onchange="change(this.selectedIndex);"
+						<select class="form-select" name="city"
+							onchange="change(this.selectedIndex);"
 							aria-label="Default select example">
 							<option value='전체'>전체</option>
 							<option value='서울'>서울특별시</option>
@@ -71,19 +72,16 @@
 						</div>
 					</div>
 					<div class="col-1">
-						<button class="btn btn-primary">검색</button>
+						<button class="btn btn-primary" onclick="searchStoreDetail()">검색</button>
 					</div>
 				</div>
 			</div>
 			<div class="searchResult w-50 rounded p-5"
 				style="background-color: white;">
 				<h5 id="storeListZone">푸드트럭 목록</h5>
-
-
 			</div>
 		</div>
 	</div>
-
 	<div class="text-center py-5" style="background: #e9ecef;">
 		<p>Team : ODOD Project : Postluck</p>
 		<p>Members: 김민규, 정영준, 이예림, 홍준택</p>
@@ -101,7 +99,7 @@
 </body>
 <script>
 let storeList ='${storeList}';
-const storeJson = JSON.parse(storeList);
+let storeJson = JSON.parse(storeList);
 let cnt = new Array();
 cnt[0] = new Array('전체');
 cnt[1] = new Array('전체','강남구','강동구','강북구','강서구','관악구','광진구','구로구','금천구','노원구','도봉구','동대문구','동작구','마포구','서대문구','서초구','성동구','성북구','송파구','양천구','영등포구','용산구','은평구','종로구','중구','중랑구');
@@ -182,6 +180,30 @@ function storeInfo(storeCode){
 	serverCallByRequest("/Home/StoreInfo","get",storeInfo);
 }
 
+function searchStoreDetail(){
+	let city = document.getElementsByName("city")[0].value;
+	let country =document.getElementsByName("country")[0].value;
+	if(city =='전체'&& document.getElementsByName("country")[0].innerText =="전체"){
+		storeJson = JSON.parse(storeList);
+		makeStoreList();
+	}else{
+	formData = new FormData();
+	formData.append("country",country);
+	formData.append("city",city);
+	serverCallByFetchAjax(formData,"/Home/searchStore", "post",'afterSearchStore');
+	}
+}
+function afterSearchStore(jsonData){
+	if (jsonData.length>0){
+	storeJson = jsonData;
+		makeStoreList();
+	}else{
+		storeJson = jsonData;
+		showModal("error::검색결과가 없습니다.:makeStoreList:")
+	}
+	
+	
+}
 </script>
 <style>
 .card .card img {
