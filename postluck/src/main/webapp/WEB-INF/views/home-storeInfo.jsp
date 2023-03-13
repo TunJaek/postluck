@@ -1,194 +1,160 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<!DOCTYPE html>
-    <html lang="ko">
-
-
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
+<html lang="ko" style="overflow-x: hidden;">
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>POS.TLUCK</title>
-      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css" />
-     <link rel="icon" href="/resources/image/fabicon.png">
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR&amp;display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="/resources/css/mainBootstrap.css">
+<meta charset="UTF-8">
+<title>HOME - POS.TLUCK</title>
+<link rel="stylesheet"
+	href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
+<link rel="icon" href="/resources/image/fabicon.png">
+<link rel="stylesheet" href="/resources/css/main.css">
+<link rel="stylesheet" href="/resources/css/mainBootstrap.css">
+<link
+	href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR&amp;display=swap"
+	rel="stylesheet">
+
 </head>
 
 <body>
-    <div class="header">
-        <div
-            style="width:70%;height: 100%;margin-left: 15%;display: flex;justify-content: space-between;flex-direction: row;">
-            <div style="height: 100%;width: auto;"><img class="logo col" src="/resources/image/indexTextLogo.png"
-                    style="height: 100%;float: left; cursor: pointer;"></div>
-            <span class="form-group" style="float: right; width: 50%; margin-top: 1%;">
-                <input type="text" class="form-control" placeholder="지역, 메뉴를 검색하세요." id="inputSearch">
-            </span>
-            <span class="businessLogin">사업자로그인</span>
-        </div>
-    </div>
-    <div id="contetns" style="padding: 2%; overflow-y: scroll; border-radius: 30px;">
-        <!-- 가게상세정보 -->
-        <div class="storeInfoDetail" style="width: 100%; height: 50%; /*background-color: aqua;*/ margin-bottom: 3%;">
-            <div class="storeInfoDetailHeader">
-                <h4 style="margin-bottom: 1%;"># 가게상세정보</h4>
-                <hr style="border:1px color= silver;">
-            </div>
-            <div class="storeInfoMiddle" style="width: 40%; height: 80%; background-color: aquamarine;
-                         margin-left: 10%; float: left;
-                         background-image: url(/resources/image/gamBas.jpg);
-                         background-size: cover; border-radius: 20px;">
-            </div>
-            <div class="storeInfoDetailFooter" style="width: 30%; height: 50%; /*background-color: bisque;*/
-                        float: right; margin-top: 3%; margin-right: 13%;">
-                <h4># 핫도그라운드</h4><br>
-                <h6>카테고리 : 핫도그</h6><br>
-                <h6>위치: 대한민국</h6><br>
-                <h6>전화번호 : 010-1234-5678</h6><br>
-                <h6>영업 일정보기 &nbsp;<svg style="cursor: pointer;" xmlns="http://www.w3.org/2000/svg" width="20"
-                        height="20" fill="currentColor" class="bi bi-zoom-in" viewBox="0 0 16 16">
-                        <path fill-rule="evenodd"
-                            d="M6.5 12a5.5 5.5 0 1 0 0-11 5.5 5.5 0 0 0 0 11zM13 6.5a6.5 6.5 0 1 1-13 0 6.5 6.5 0 0 1 13 0z" />
-                        <path
-                            d="M10.344 11.742c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1 6.538 6.538 0 0 1-1.398 1.4z" />
-                        <path fill-rule="evenodd"
-                            d="M6.5 3a.5.5 0 0 1 .5.5V6h2.5a.5.5 0 0 1 0 1H7v2.5a.5.5 0 0 1-1 0V7H3.5a.5.5 0 0 1 0-1H6V3.5a.5.5 0 0 1 .5-.5z" />
-                    </svg></h6><br>
-            </div>
-        </div>
-        <!-- 가게상세정보 -->
+	<div class="Content"
+		style="background: #e9ecef; overflow-x: hidden; width: 100vw;">
+		<div class="header text-center"
+			style="z-index: 2000; position: sticky; top: 0; width: 100%; background: white; height: 5%;">
+			<div class="row" style="height: 100%;">
+				<div class="text-center w-50 " style="width: 100%;">
+					<img class="logo" src="/resources/image/indexTextLogo.png"
+						style="height: 100%;">
+				</div>
+			</div>
+		</div>
+		<div class="mainContent pt-3 pb-5"
+			style="display: flex; box-sizing: border-box; flex-direction: column; /* max-width: 95%; */ align-items: center; overflow-y: auto; width: 100%;">
+			<div class="searchContainer w-50 p-5 mb-3 rounded"
+				style="background-color: white;">
+				<div class="mx-5">
+					<h5>푸드트럭 상세 정보</h5>
+					<hr>
+					<div class="row p-3 ">
+						<div class="col-6 m-2">
+							<img
+								src="/resources/image/${store.storeCode}/${store.storeCode}S00.jpg"
+								class="ratio ratio-4x3 rounded"
+								onerror="this.onerror=null; this.src='/resources/image/alt.jpg';">
+						</div>
+						<div class="col m-2 p-4">
+							<span
+								class="p-1 px-2 border ${store.isOpen =='O'? 'border-success text-success' : 'border-danger text-danger'} rounded-pill small">${store.isOpen == 'O'? '영업중' : '영업전'}</span>
+							<div class="fs-3">${store.storeName}</div>
+							<div class="fs-6 mb-5">${store.storeInfo}</div>
+							<hr>
+							<div class="mt-3">카테고리 : ${store.storeCategory}</div>
+							<div>최근위치 : ${store.locationList[0].locationAddr == null?'최근 위치 정보가 없습니다.':store.locationList[0].locationAddr}
+								${store.locationList[0].locationDetail == null?'':store.locationList[0].locationDetail}</div>
+							<div>전화번호 : ${store.storePhone == null?'전화번호 정보가 없습니다' : store.storePhone}</div>
+						</div>
+					</div>
+				</div>
 
-        <!-- 가게소개 -->
-        <div class="storeIntroduction" style="width: 100%; height: 25%; /*background-color: aqua;*/
-                    margin-bottom: 3%;">
-            <div class="introductionHeader">
-                <h4 style=""># 가게소개</h4>
-                <hr style=" margin-bottom: 2%; border:1px color= silver;">
-            </div>
-            <div class="introductionMiddle" style="text-align: center;">
-                <h6 style="line-height: 100%;">
-                    <p style="line-height: 150%;"> 핫도그라운드  핫도그라운드  핫도그라운드  핫도그라운드  핫도그라운드  핫도그라운드  핫도그라운드  핫도그라운드  핫도그라운드  핫도그라운드  핫도그라운드  핫도그라운드  핫도그라운드  핫도그라운드  핫도그라운드  핫도그라운드  핫도그라운드  핫도그라운드  핫도그라운드  핫도그라운드  핫도그라운드  핫도그라운드  핫도그라운드  핫도그라운드  핫도그라운드  핫도그라운드  핫도그라운드  핫도그라운드  핫도그라운드  핫도그라운드  핫도그라운드  핫도그라운드  핫도그라운드  핫도그라운드 </p>
-                </h6>
-            </div>
-        </div>
-        <!-- 가게소개 -->
+				<div class="my-5 mx-5">
+					<h5 class="">푸드트럭 상세 소개</h5>
+					<p class="mt-3">
+					<hr>
+					${store.storeInfoDetail == null? '푸드트럭 상세 소개가 없습니다.':store.storeInfoDetail}
+				</div>
+				<div class="my-5 mx-5">
+					<h5 class="">푸드트럭 메뉴</h5>
+					<hr>
 
-        <!-- 대표메뉴 -->
-        <div class="storeSignature" style="width: 100%; height: 50%; ">
-            <div class="signatureHeader" style="margin-bottom: 1%;">
-                <h4 style="margin-bottom: 2%;"># 대표메뉴</h4>
-                <hr style=" margin-bottom: 2%; border:1px color= silver;">
-            </div>
-            <div class="signatureMiddle" style="width: 100%; height: 70%; /*background-color: aqua;*/
-                    display: flex;
-                    justify-content: space-around;">
-                <div class="signaturePictures" style="width: 20%; height: 50%;  
-                     margin-top: 1%;    text-align: center;
-                    background-image: url(/resources/image/hotdog2.jpg);
-                    background-size: cover;">
-                    <span style="position: relative; top: 110%;">
-                        핫도그<br>
-                        1,500원</span>
-                </div>
-                <div class="signaturePictures" style="width: 20%; height: 50%; margin-top: 1%;
-                    text-align: center;
-                    background-image: url(/resources/image/hotdog2.jpg);
-                    background-size: cover;">
-                    <span style="position: relative; top: 110%;">
-                        핫도그<br>
-                        1,500원</span>
-                </div>
-                <div class="signaturePictures" style="width: 20%; height: 50%; margin-top: 1%;
-                    text-align: center;
-                    background-image: url(/resources/image/hotdog2.jpg);
-                    background-size: cover;">
-                    <span style="position: relative; top: 110%;">
-                        핫도그<br>
-                        1,500원</span>
-                </div>
-            </div>
+					<div class="row row-cols-4" style="justify-content: center;"
+						id="menuListZone"></div>
+				</div>
+			</div>
 
-        </div>
-        <!-- 대표메뉴 -->
+		</div>
+	</div>
 
-        <!-- 오시는길 -->
-        <div class="storeLocate" style="width: 100%; height: 50%; margin-top: -9%;">
-            <div class="storeLocateHeader">
-                <h4 style="margin-bottom: 2%;"># 오시는 길</h4>
-                <hr style=" margin-bottom: 2%; border:1px color= silver;">
-            </div>
-            <div class="storeInfoMiddle" style="width: 40%; height: 80%; background-color: aquamarine;
-                         margin-left: 5%; margin-right: 5%; float: left;
-                         background-image: url(/resources/image/map.png);
-                         background-size: cover; border-radius: 20px;">
-
-            </div>
-            <div class="storeLocateFooter" style="font-size: 20px;">
-                <span><svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor"
-                        class="bi bi-geo-alt" viewBox="0 0 16 16">
-                        <path
-                            d="M12.166 8.94c-.524 1.062-1.234 2.12-1.96 3.07A31.493 31.493 0 0 1 8 14.58a31.481 31.481 0 0 1-2.206-2.57c-.726-.95-1.436-2.008-1.96-3.07C3.304 7.867 3 6.862 3 6a5 5 0 0 1 10 0c0 .862-.305 1.867-.834 2.94zM8 16s6-5.686 6-10A6 6 0 0 0 2 6c0 4.314 6 10 6 10z" />
-                        <path d="M8 8a2 2 0 1 1 0-4 2 2 0 0 1 0 4zm0 1a3 3 0 1 0 0-6 3 3 0 0 0 0 6z" />
-                    </svg> 서울특별시 성북구 삼선교로 16길 116 </span>
-            </div>
-        </div>
-        <!-- 오시는길 -->
-    </div>
+	<div class="text-center py-5" style="background: #e9ecef;">
+		<p>Team : ODOD Project : Postluck</p>
+		<p>Members: 김민규, 정영준, 이예림, 홍준택</p>
+		<p>© 2023 Postluck. All rights reserved.</p>
 
 
-    <hr style="border:1px color= silver;" width="20%">
-    </div>
+	</div>
+
+	<script
+		src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.min.js"
+		integrity="sha384-cuYeSxntonz0PPNlHhBs68uyIAVpIIOZZ5JqeqvYYIcEL727kskC66kF92t6Xl2V"
+		crossorigin="anonymous"></script>
+
+
+	<script
+		src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.min.js"
+		integrity="sha384-cuYeSxntonz0PPNlHhBs68uyIAVpIIOZZ5JqeqvYYIcEL727kskC66kF92t6Xl2V"
+		crossorigin="anonymous"></script>
+
 
 
 
 </body>
+<script>
+const menuList = JSON.parse('${menuList}');
+
+
+let menuListZone = document.getElementById("menuListZone");
+menuListZone.innerHTML = '';
+if(menuList.length>0){
+	menuList.forEach((menu) => {
+	    menuListZone.innerHTML += `
+	        <div class="card col m-3" >
+	            <img src="/resources/image/${store.storeCode}/${store.storeCode}\${menu.menuCode}.jpg"
+	                class="card-img-top ratio ratio-4x3"
+	                onerror="this.onerror=null; this.src='/resources/image/alt.jpg';">
+	            <div class="text-center p-3" style="height: 100%;word-break:keep-all;display: flex;align-content: space-around;flex-direction: column;justify-content: space-around;">
+	                <h4>\${menu.menuName}</h4>
+	                <div>\${menu.menuPrice}원</div>
+	            </div>
+	        </div>`;
+	});
+}
+
+	
+</script>
 <style>
-    body {
-        width: 100vw;
-        height: 100vh;
-        margin: 0px;
-        margin-bottom: 0px;
-        background-color: #f5f5f5;
-        overflow-y: hidden;
-        font-family: 'Noto Sans KR', sans-serif;
+.footer {
+	background-color: #f9f9f9;
+	padding: 40px 0;
+}
 
-    }
+.social-icons {
+	margin-top: 20px;
+}
 
+.social-icons a {
+	display: inline-block;
+	margin: 0 10px;
+	color: #555;
+}
 
-    .header {
-        position: relative;
-        height: 7%;
-        background-color: #ffffff;
-        display: flex;
-        align-items: center;
-        margin-bottom: 1%;
-    }
+.social-icons a:hover {
+	color: #aaa;
+}
 
-    #inputSearch {
-    position: relative;
-    right: 15%;
-    font-weight: bold;
-  }
+.contact-info {
+	margin-top: 20px;
+}
 
-  .businessLogin {
-    font-weight: bold;
-    text-align: center;
-    margin: 1.5%;
-    position: relative;
-    right: 15%;
-  }
+.contact-info p {
+	margin-bottom: 10px;
+}
 
-    .businessLogin:hover {
-        color: #1ED760;
-        cursor: pointer;
-    }
+.card {
+	height: 300px
+}
 
-    #contetns {
-        width: 50%;
-        height: 93%;
-        margin-left: 25%;
-        margin-right: 25%;
-        background-color: #ffffff;
-    }
+.card img {
+min-height:150px;
+	max-height: 150px;
+	height:150px;
+}
 </style>
-
 </html>

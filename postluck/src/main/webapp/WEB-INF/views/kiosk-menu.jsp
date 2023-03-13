@@ -31,7 +31,7 @@
 					</div>
 					<div class="my-3">
 						<i class="bi bi-check-circle fs-1"
-							style="color: var(--bs-primary)"></i>
+							style="color: #1ED760"></i>
 					</div>
 					<h5>주문이 완료되었습니다!</h5>
 					<h5 class="mb-5">결제는 음식 수령과 함께 해주세요.</h5>
@@ -197,24 +197,43 @@ jsonString = '${store}'
 		if(menu.isKiosk=='Y'){
 			const card = document.createElement('div');
 			card.classList.add('col', 'p-5');
+			if(menu.isSoldOut=='N'){
 			cardContent += "<div class=\"card pointer\" data-menuCode=\"" + menu.menuCode + "\" onclick=\"addMenu('add', '" + menu.menuCode + "', " + menu.menuPrice + ")\">";
+			}
+			if(menu.isSoldOut=='Y'){
+				cardContent += "<div class=\"card\">";
+				cardContent+= `<div style=" width: 100%; position: absolute;  height: 100%;
+			     background: rgba(255,255,255,0.5);
+			    z-index: 2;  display: flex; justify-content: center; align-items: center;">
+			    <h4 style= " height: 20%; background: red;  color: white;
+			    width: 80%;
+			    display: flex;
+			    align-items: center;
+			    justify-content: center;" class="rounded-pill">SOLD OUT</h4></div>`
+			}else{
+				
+			}
+			
 			if(menu.isMain == 'Y'){
-				cardContent+="<div class=\"position-absolute m-3 badge bg-success rounded-pill fs-6 mx-3 col-3\">대표</div>"
+				cardContent+="<div class=\"position-absolute m-3 badge bg-success rounded-pill fs-6 mx-3 col-3\" style=\"z-index:1\">대표</div>"
 			}
 			if (menu.menuImageCode != ''){
 				cardContent+="<div class=\"ratio ratio-4x3\"><img src=\"/resources/image/"+storeCode+"/"+menu.menuImageCode+".jpg\" class=\"card-img-top cardTop\"></div>"
 			}else{
 				cardContent+="<div class=\"ratio ratio-4x3\"><img src=\"/resources/image/placeholder-image.jpg\" class=\"card-img-top cardTop\"></div>"
 			}
-			cardContent += "<div class=\"card-body\" ><div class=\"row p-1\"><div class=\"col fs-4\">";
+			cardContent += "<div class=\"card-body\" style=\" height: 150px; display: flex;  flex-direction: column;justify-content: space-around;\"><div class=\"row p-1\"><div class=\"col fs-4\" style=\"word-break: keep-all\">";
 			cardContent += menu.menuName;
 			cardContent += "</div> </div> <div class=\"fs-4\">";
 			cardContent += menu.menuPrice;       
 			cardContent += "원</div>  </div>  </div>";
 		card.innerHTML = cardContent;
-		card.children[0].addEventListener('click', function() {
-			  animateDiv(card.children[0]);
-			});
+		if(menu.isSoldOut != 'Y'){
+			card.children[0].addEventListener('click', function() {
+				  animateDiv(card.children[0]);
+				});
+		}
+		
 		
 		menuListZone.appendChild(card);
 		}
@@ -494,7 +513,6 @@ jsonString = '${store}'
 	display: flex;
 	align-items: center;
 }
-
 
 .menuCard {
 	position: relative;

@@ -166,7 +166,7 @@ public class MenuService extends TransactionAssistant {
 			// if (this.convertToBoolean(this.sqlSession.insert("insMenuCode", store))) {
 			// 메뉴코드 우선추가 ('1998033036', M00, '00000','00000')
 			this.tranManager.commit();
-			store.setMessage("plain::메뉴 등록이 완료되었습니다!:showModal:");
+			store.setMessage("plain::메뉴 등록이 완료되었습니다!:sideMenu:2");
 			model.addAttribute("store", this.main.getStoreInfoAsStoreBean(model));
 		} catch (Exception e) {
 			System.out.println("메뉴 reg 실패");
@@ -193,6 +193,7 @@ public class MenuService extends TransactionAssistant {
 				+ store.getStoreCode() + "\\";
 		String filePath = folderPath;
 		/* Transaction Start */
+		this.tranManager.tranStart();
 		try {
 			System.out.println("트랜안에 들어옴");
 			String menuCode = this.sqlSession.selectOne("selMaxMenuCode", store);
@@ -208,7 +209,7 @@ public class MenuService extends TransactionAssistant {
 				} else {
 					System.out.println("MenuUpadate실패");
 				}
-				if (!file.isEmpty() && file != null) {
+				if (file != null&&!file.isEmpty()) {
 					file.transferTo(new File(filePath));
 					System.out.println("파일 저장 완료. path: " + filePath);
 				} else {
@@ -222,26 +223,14 @@ public class MenuService extends TransactionAssistant {
 			e.printStackTrace();
 			this.tranManager.rollback();
 		} finally {
-			store.setMessage("plain::메뉴 수정이 완료되었습니다!:showModal:");
+			store.setMessage("plain::메뉴 수정이 완료되었습니다!:sideMenu:2");
 			this.tranManager.tranEnd();
 		}
 	}
 
 	private void deleteMenu(Model model) {
 		StoreBean store = (StoreBean) model.getAttribute("store");
-		String message = "warn:오류:오류가 발생했습니다. 잠시후 다시 시도해주세요.:sideMenu:2";
-		String storeCode = store.getStoreCode();
-		String menuCode = this.sqlSession.selectOne("selMaxMenuCode", store);
-		List<MenuBean> menuList = store.getMenuList();
-		if (menuList == null || menuList.isEmpty()) {
-			store.setMessage(message);
-			return;
-		}
-		if (menuCode == null || menuCode.isEmpty()) {
-			store.setMessage(message);
-			return;
-		}
-
+		String message = "error:오류:오류가 발생했습니다. 잠시후 다시 시도해주세요.:sideMenu:2";
 		try {
 			tranManager.tranStart();
 			String imgLocate = sqlSession.selectOne("selImgLocation", store);
@@ -250,26 +239,26 @@ public class MenuService extends TransactionAssistant {
 				String extension = Files.probeContentType(path);
 				if (extension != null && extension.startsWith("image/")) {
 					File imageFile = new File(imgLocate);
-					if (imageFile.delete()) {
-						System.out.println("이미지 파일이 삭제되었습니다: " + imgLocate);
-
-						if (this.convertToBoolean(sqlSession.delete("delMenu", store))) {
-							if (this.convertToBoolean(sqlSession.delete("delMenuImgDB", store))) {
-
-								store.setMessage("plain::메뉴 삭제가 완료되었습니다!(사진포함):showModal:");
-								this.tranManager.commit();
-							} else {
-								store.setMessage("plain:: DB STOREIMAGE TALBE을 확인해주세요!:showModal:");
-							}
+					if (this.convertToBoolean(this.sqlSession.delete("delMenu", store))) {
+						this.tranManager.commit();
+					} else {
+						System.out.println("메뉴삭제 실패");
+					}
+					if (this.convertToBoolean(this.sqlSession.delete("delMenuImgDB", store))) {
+						if (imageFile.delete()) {
+							store.setMessage("plain::메뉴 삭제가 완료되었습니다!:sideMenu:2");
+							System.out.println("이미지 파일이 삭제되었습니다: " + imgLocate);
 						} else {
-
+							store.setMessage("plain::메뉴 삭제가 완료되었습니다!:sideMenu:2");
+							System.out.println("이미지 파일 삭제에 실패하였습니다: " + imgLocate);
 						}
 					} else {
-						System.out.println("이미지 파일 삭제에 실패하였습니다: " + imgLocate);
+						store.setMessage("plain::메뉴 삭제가 완료되었습니다!:sideMenu:2");
 					}
 
 				}
 			}
+			model.addAttribute("store", this.main.getStoreInfoAsStoreBean(model));
 		} catch (Exception e) {
 			e.printStackTrace();
 			tranManager.rollback();

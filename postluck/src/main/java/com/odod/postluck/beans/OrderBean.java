@@ -11,7 +11,7 @@ public class OrderBean {
 	private String orderState; // 주문상태 처리/접수
 	private String salesDate;
 	private String salespaymentType;
-	
+	private String salesLocation;
 	private int amount; // 결제정보
 	
 	private ArrayList<OrderDetailBean> orderMenuList; // 주문메뉴리스트
