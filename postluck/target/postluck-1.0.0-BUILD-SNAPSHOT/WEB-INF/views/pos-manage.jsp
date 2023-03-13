@@ -1,4 +1,5 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -8,96 +9,168 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>SETTING - POS.TLUCK</title>
 <script src="/resources/js/common.js"></script>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css" />
+<link rel="stylesheet"
+	href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css" />
 <link rel="stylesheet" href="/resources/css/main.css">
 <link rel="stylesheet" href="/resources/css/mainBootstrap.css">
-<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR&amp;display=swap" rel="stylesheet">
-<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
-<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=0203ee3bafbf6d3fe50695090bc89516&libraries=services""></script>
+<link
+	href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR&amp;display=swap"
+	rel="stylesheet">
+<script
+	src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+<script type="text/javascript"
+	src="//dapi.kakao.com/v2/maps/sdk.js?appkey=0203ee3bafbf6d3fe50695090bc89516&libraries=services"></script>
+
+<script
+	src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+	integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+	crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
+
 if('${store}'!=''){
 	jsonString = '${store}'
 }
-document.addEventListener('DOMContentLoaded', function() {
-	let calendarEl = document.getElementById('calendar');
-	let calendar = new FullCalendar.Calendar(calendarEl, {
-		initialView : 'dayGridMonth'
-	});
-	calendar.render();
-});
 </script>
-<script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.1/index.global.min.js'></script>
-
+<script
+	src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.1/index.global.min.js'></script>
+<script
+	src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+	integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+	crossorigin="anonymous"></script>
 </head>
 <!-- 헤더랑 옆 클릭바 고정을 고정. -->
 
 <body class="vsc-initialized">
-	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+	<!-- 위치 리스트 Modal -->
+	<div class="modal fade show" id="locationListModal"
+		style="display: none; z-index: 1060;">
+		<div class="modal-dialog modal-dialog-centered"
+			style="max-width: 40%;">
+			<div class="modal-content ">
+				<div class="modal-header">
+					<h5 class="modal-title" id="modifyModalTitle">위치 편집</h5>
+					<button type="button" class="btn-close" data-bs-dismiss="modal"
+						aria-label="Close"></button>
+				</div>
+				<div class="modal-body" style="max-height: 60vh; overflow-y: auto"
+					id="locations"></div>
+			</div>
+		</div>
+	</div>
+	<!-- 위치 등록 Modal -->
+	<div class="modal fade " id="regLocationModal"
+		data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+		aria-modal="true" role="dialog"
+		style="display: none; - -bs-modal-width: 50%; z-index: 1070">
+		<div class="modal-dialog modal-dialog-centered "
+			style="max-width: 50%;">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="regModalTitle"></h5>
+					<button type="button" class="btn-close" data-bs-dismiss="modal"
+						aria-label="Close" id="regCancel"></button>
+				</div>
+				<div class="modal-body; px-5 my-4">
+					<div class="row p-2">
+						<div class="col-3 text-center">위치명</div>
+						<div class="col-9">
+							<input type="text" class="form-control" id="reglocationName">
+						</div>
+					</div>
+					<div class="row p-2">
+						<div class="col-3 text-center">주소</div>
+						<div class="col-7">
+							<input type="text" class="form-control " id="locationAddr"
+								placeholder="주소">
+						</div>
+						<div class="col-2">
+							<input type="button" class="btn btn-primary"
+								onclick="sample5_execDaumPostcode()" value="주소 검색"> <br>
+						</div>
+					</div>
+					<div class="row p-2">
+						<div class="col-3"></div>
+						<div class="col-9">
+							<input type="text" class="form-control" id="locationDetail"
+								placeholder="상세주소를 입력해주세요." maxlength="200">
+							<div id="map1"
+								style="height: 30vh; margin-top: 10px; display: none"></div>
+						</div>
+					</div>
+				</div>
+				<div class="modal-footer justify-content-center">
+					<button type="button" class="btn btn-primary"
+						id="locationServerCall"></button>
+				</div>
+			</div>
+		</div>
+	</div>
+
 	<div class="main">
 		<div class="header">
-			<span class="px-3 " style="cursor: pointer" onclick="movePage('Pos')"><svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-arrow-left" viewBox="0 0 16 16">
-                    <path fill-rule="evenodd" d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z" />
-                </svg></span> <span><img src="/resources/image/mainLogo-dark.png"></span>
-
+			<span class="px-3 " style="cursor: pointer"
+				onclick="movePage('Back')"><svg
+					xmlns="http://www.w3.org/2000/svg" width="30" height="30"
+					fill="currentColor" class="bi bi-arrow-left" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd"
+						d="M15 8a.5.5 0 0 0-.5-.5H2.707l3.147-3.146a.5.5 0 1 0-.708-.708l-4 4a.5.5 0 0 0 0 .708l4 4a.5.5 0 0 0 .708-.708L2.707 8.5H14.5A.5.5 0 0 0 15 8z" />
+                </svg></span> <span><img
+				src="/resources/image/mainLogo-dark.png"></span>
 			<!-- 시간표시 연월일시분초 -->
 			<span id="clock" style="position: absolute; right: 5%;"></span><br />
 		</div>
 		<div class="content">
 			<div class="sidebar border-end d-flex ">
-				<div class="border-bottom p-3 d-flex h-7" style="justify-content: space-between;">
+				<div class="border-bottom p-3 d-flex h-7"
+					style="justify-content: space-between;">
 					<div id="isOpenText">영업전</div>
 					<div class="form-check form-switch">
-						<input id="salesToggle" class="form-check-input" type="checkbox" onclick="updSalesLog()" style="cursor: pointer">
+						<input id="salesToggle" class="form-check-input" type="checkbox"
+							onclick="updSalesLog()" style="cursor: pointer">
 					</div>
 				</div>
 
 				<div class="dropdown menu border-bottom h-7">
-					<button class="btn dropdown-toggle h-100 w-100" id="storeNameDropDown" type="button" data-bs-toggle="dropdown" aria-expanded="false" style="color: black">${storeName}</button>
+					<button class="btn dropdown-toggle h-100 w-100"
+						id="storeNameDropDown" type="button" data-bs-toggle="dropdown"
+						aria-expanded="false" style="color: black">${storeName}</button>
 					<ul class="dropdown-menu">
 						<li><a class="dropdown-item">Main Page</a></li>
 						<li><a class="dropdown-item" href="#">로그아웃</a></li>
 					</ul>
 				</div>
-				<div class="menu  p-3" onclick="sideMenu(0)">일정</div>
-				<div class="menu  p-3" onclick="sideMenu(1)">매장관리</div>
-				<div class="menu  p-3" onclick="sideMenu(2)">메뉴관리</div>
-				<div class="menu  p-3" onclick="sideMenu(5)">결제내역</div>
-				<div class="menu  p-3" onclick="sideMenu(6)">매출분석</div>
+				<div class="menu  p-3 sideMenu" onclick="sideMenu(1)">매장관리</div>
+				<div class="menu  p-3 sideMenu" onclick="sideMenu(2)">메뉴관리</div>
+				<div class="menu  p-3 sideMenu" onclick="sideMenu(5)">결제내역</div>
+				<div class="menu  p-3 sideMenu" onclick="sideMenu(6)">매출분석</div>
 			</div>
 			<!-- sideMenu(3) : 메뉴추가 / sideMenu(4) : 메뉴수정 -->
-			<!-- 0. 일정 -->
-			<div class="mainContent" id="menu0" style="display: block;">
-				<div class="border-bottom p-3 h-7">
-					<h5>일정</h5>
-				</div>
-				<div class="mt-5 d-flex" id='calendar-container' style="justify-content: center;">
-					<div id='calendar' style="width: 50%;"></div>
-				</div>
-			</div>
-			<!-- 0. 일정 -->
+		
 
 			<!-- 1. 매장관리 -->
-			<div class="mainContent" id="menu1" style="display: none;">
+			<div class="mainContent" id="menu1" style="display: block;">
 				<div class="border-bottom p-3 h-7">
 					<h5>매장 관리</h5>
 				</div>
-				<div class="inputZone p-5 d-flex gap-3 " style="flex-direction: column;overflow-y:auto;height: 88%;"">
+				<div class="inputZone p-5 d-flex gap-3 "
+					style="flex-direction: column; overflow-y: auto; height: 88%;"">
 					<div class="row" style="align-items: center;">
 						<div class="col-2">사업자 명</div>
 						<input type="text" class="form-control w-25" disabled id="ceoName">
-
 						<div class="col-2 ms-4">사업자번호</div>
-						<input type="text" id="storeCodeDisabled" class="form-control w-25" disabled>
-
+						<input type="text" id="storeCodeDisabled"
+							class="form-control w-25" disabled>
 					</div>
 					<div class="row" style="align-items: center;">
 						<div class="col-2">매장명</div>
-						<input type="text" id="storeName" class="form-control w-25" placeholder="매장명을 입력해주세요." maxlength="50">
+						<input type="text" id="storeName" class="form-control w-25"
+							placeholder="매장명을 입력해주세요." maxlength="50">
 					</div>
 					<div class="row" style="align-items: center;">
 						<div class="col-2">전화번호</div>
-						<input type="text" id="storePhone" class="form-control w-25" placeholder="전화번호를 입력해주세요." maxlength="11">
-
+						<input type="text" id="storePhone" class="form-control w-25"
+							placeholder="전화번호를 입력해주세요." maxlength="11">
 					</div>
 					<div class="row" style="align-items: center;">
 						<div class="col-2">카테고리</div>
@@ -118,32 +191,33 @@ document.addEventListener('DOMContentLoaded', function() {
 						<div class="col-2">영업위치</div>
 						<div class="col-5 p-0 ">
 							<div class="row ms-0">
-								<select class="form-select col w-25" id="storeLocation" onchange="showLocationName()">
+								<select class="form-select col w-25" id="storeLocation"
+									onchange="showLocationName()">
 								</select>
-								<div class="btn btn-primary col-4 m-3" data-bs-toggle="modal" data-bs-target="#locationListModal" onclick="showLocationList()">편집</div>
+								<div class="btn btn-primary col-4 m-3" data-bs-toggle="modal"
+									data-bs-target="#locationListModal"
+									onclick="showLocationList()">편집</div>
 							</div>
-							<input type="text" class="form-control w-100 " id="locationName" disabled>
+							<input type="text" class="form-control w-100 " id="locationName"
+								disabled>
 							<div class="mt-3" id="map" style="height: 40vh; display: none"></div>
 						</div>
-
 					</div>
-
 					<div class="row" style="align-items: center;">
 						<div class="col-2">영업시간</div>
-						<input type="text" class="form-control w-25" placeholder="영업시간을 입력해주세요.">
+						<input type="text" class="form-control w-25"
+							placeholder="영업시간을 입력해주세요.">
 					</div>
-
 					<div class="row" style="align-items: center;">
 						<div class="col-2">매장 한 줄소개</div>
-
-						<input type="text" class="form-control w-25" id="storeInfo" placeholder="매장 한 줄 소개를  입력해주세요." maxlength="30">
-
+						<input type="text" class="form-control w-25" id="storeInfo"
+							placeholder="매장 한 줄 소개를  입력해주세요." maxlength="30">
 					</div>
 					<div class="row" style="align-items: center;">
 						<div class="col-2 mb-3">매장 상세정보</div>
 						<div class="form-group w-50 p-0">
-							<textarea class="form-control" id="storeInfoDetail" rows="3" maxlength="2000"></textarea>
-
+							<textarea class="form-control" id="storeInfoDetail" rows="3"
+								maxlength="2000"></textarea>
 						</div>
 					</div>
 					<div class="row" style="align-items: center;">
@@ -158,32 +232,30 @@ document.addEventListener('DOMContentLoaded', function() {
 				</div>
 			</div>
 			<!-- 1. 매장관리 -->
-
 			<!-- 2. 메뉴관리 -->
 			<div class="mainContent" id="menu2" style="display: none;">
 				<div class="border p-3 " style="height: 7%;">
 					<h5>메뉴관리</h5>
 				</div>
-
 				<div class="text-end ">
-					<button class="btn btn-outline-primary m-4" onClick="sideMenu(3)">+메뉴추가</button>
+					<button class="btn btn-outline-primary m-4 " onClick="sideMenu(3)">+메뉴추가</button>
 				</div>
-				<div class="menuList text-center" style="overflow-y:auto;overflow-y:auto;height:80%">
-					<div class="m-2 text-center" >
+				<div class="menuList text-center"
+					style="overflow-y: auto; overflow-y: auto; height: 80%">
+					<div class="m-2 text-center">
 						<table class="table table-hover text-center " id="menuList">
-
 						</table>
 					</div>
 				</div>
 			</div>
 			<!-- 2. 메뉴관리 -->
-
 			<!-- 2-1. 메뉴추가 -->
 			<div class="mainContent" id="menu3" style="display: none;">
 				<div class="border p-3 " style="height: 7%;">
 					<h5>메뉴등록</h5>
 				</div>
-				<div class="inputZone p-5 d-flex gap-3" style="flex-direction: column;" id="menuInputZone"></div>
+				<div class="inputZone p-5 d-flex gap-3"
+					style="flex-direction: column;" id="menuInputZone"></div>
 			</div>
 			<!-- 3. 결제내역 -->
 			<div class="mainContent" id="menu5" style="display: none;">
@@ -194,36 +266,22 @@ document.addEventListener('DOMContentLoaded', function() {
 				</div>
 				<div class="d-flex w-100 " style="height: 93%;">
 					<div class="paymentList border-end position-relative">
-						<div class="border row position-relative m-0 gap-4 " style="align-items: center;">
+						<div class="border row position-relative m-0 gap-4 "
+							style="align-items: center;">
 							<div class="form-group col-5 p-3">
 								<input type="date">
 							</div>
 							<div class="form-group col-6">
-								<select class="form-select">
-									<option>결제수단</option>
-									<option>카드</option>
-									<option>현금</option>
+								<select class="form-select" id="paymentCategory"
+									onchange="changePayment()">
+									<option value="결제수단">결제수단</option>
+									<option value="카드">카드</option>
+									<option value="현금">현금</option>
 								</select>
 							</div>
 						</div>
-
-						<div class="overflow-auto">
-							<div class="row border m-0 align-items-center text-center p-3">
-								<span class="badge rounded-pill bg-primary w-25">카드</span>
-								<div class="col-5">80,000원</div>
-								<div class="col-3">2023.02.02.11:23</div>
-							</div>
-							<div class="row border m-0 align-items-center text-center p-3 ">
-								<span class="badge rounded-pill bg-primary w-25">카드</span>
-								<div class="col-5">80,000원</div>
-								<div class="col-3">2023.02.02.11:23</div>
-							</div>
-
-							<div class="row border m-0 align-items-center text-center p-3">
-								<span class="badge rounded-pill bg-secondary w-25">현금</span>
-								<div class="col-5">80,000원</div>
-								<div class="col-3">2023.02.02.11:23</div>
-							</div>
+						<div class="overflow-auto" id="salesList">
+							<!-- 결제내역 들어감 '카드'or현금 -->
 						</div>
 					</div>
 					<div class="paymentDetail" style="width: 60%">
@@ -231,39 +289,21 @@ document.addEventListener('DOMContentLoaded', function() {
 							<h5 class="fw-bold">결제 상세</h5>
 							<hr>
 							<div>
-								<div>2023.02.02.10:17</div>
-								<div>인천광역시 미추홀구 학익동</div>
+								<div id="orderDate"></div>
+								<div id="address"></div>
 							</div>
 						</div>
-						<div>
-							<div class="p-4 d-flex flex-column gap-3">
-								<div>
-									<h5 class="fw-bold">결제내역</h5>
-									<hr>
-								</div>
-								<div>감자햄버거 40,000원 x 2</div>
-								<div>감자햄버거 40,000원 x 3</div>
-								<div>감자햄버거 40,000원 x 4</div>
-								<div>감자햄버거 40,000원 x 1</div>
+						<div id="paymentInfo" class="p-4 d-flex flex-column gap-3">
+							<div>
+								<h5 class="fw-bold">결제내역</h5>
 								<hr>
-								<div class="align-items-end mt-3">
-									<div>
-										결제수단<br>
-										<h4>카드</h4>
-										</span>
-										<h3 class="col text-end">총 80,000원</h3>
-									</div>
-								</div>
-								<div class="btn btn-outline-danger col-2">환불</div>
 							</div>
-
 						</div>
 					</div>
 
 				</div>
 			</div>
 			<!-- 3. 결제내역 -->
-
 			<!-- 4. 매출분석 -->
 			<div class="mainContent" id="menu6" style="display: none;">
 				<div class="border p-3 " style="height: 7%;">
@@ -271,13 +311,17 @@ document.addEventListener('DOMContentLoaded', function() {
 						매출분석
 						</h2>
 				</div>
-				<div class="inputZone p-5 d-flex gap-3" style="flex-direction: column;">
+				<div class="inputZone p-5 d-flex gap-3"
+					style="flex-direction: column;">
 					<div class="salesPeriodButtonZone">
-						<button type="button" class="btn btn-outline-primary" style="font-weight: bold;">&nbsp 영업중 &nbsp</button>
-						<button type="button" class="btn btn-outline-primary" style="font-weight: bold;">&nbsp &nbsp 1주 &nbsp &nbsp</button>
-						<button type="button" class="btn btn-outline-primary" style="font-weight: bold;">&nbsp 1개월 &nbsp</button>
-						<button type="button" class="btn btn-outline-primary" style="font-weight: bold;">&nbsp 3개월 &nbsp</button>
-						<button type="button" class="btn btn-outline-primary" style="font-weight: bold;">기간선택</button>
+						<button type="button" class="btn btn-outline-primary"
+							style="font-weight: bold;" id="today">&nbsp 오늘 &nbsp</button>
+						<button type="button" class="btn btn-outline-primary"
+							style="font-weight: bold;" id="oneWeek">&nbsp &nbsp 1주 &nbsp &nbsp</button>
+						<button type="button" class="btn btn-outline-primary"
+							style="font-weight: bold;"id="oneMonth">&nbsp 1개월 &nbsp</button>
+						<button type="button" class="btn btn-outline-primary"
+							style="font-weight: bold;" id="threeMonth">&nbsp 3개월 &nbsp</button>
 					</div>
 				</div>
 				<div class="mainContentMidlle" style="max-width: 100%; height: 20%;">
@@ -291,33 +335,30 @@ document.addEventListener('DOMContentLoaded', function() {
 						<div class="textBox">
 							주문건단가<br> <span style="font-size: 30px;">33,633원</span>
 						</div>
-
-					</div>
-					<div class="salesTextZone">
-						<div class="textBox" style="">
-							총 환불<br> <span style="font-size: 30px;">201,800원</span>
-						</div>
-						<div class="textBox" style="">
-							환불건수<br> <span style="font-size: 30px;">6건</span>
-						</div>
-						<div class="textBox">
-							환불건단가<br> <span style="font-size: 30px;">13,450원</span>
-						</div>
-
 					</div>
 				</div>
-
 				<div class="mainContentFooter m-3">
 					<div class="footerChoiceTab" style="position: relative;">
 						<ul class="nav nav-tabs" role="tablist">
-							<li class="nav-item" role="presentation"><a class="nav-link" data-bs-toggle="tab" href="#home" aria-selected="false" role="tab" tabindex="-1">결제수단별</a></li>
-							<li class="nav-item" role="presentation"><a class="nav-link active" data-bs-toggle="tab" href="#profile" aria-selected="true" role="tab">메뉴별</a></li>
-							<li class="nav-item" role="presentation"><a class="nav-link" data-bs-toggle="tab" href="#locate" aria-selected="false" role="tab" tabindex="-1">지역별</a></li>
-
+							<li class="nav-item" role="presentation"><a class="nav-link"
+								data-bs-toggle="tab" href="#home" aria-selected="false"
+								role="tab" tabindex="-1">결제수단별</a></li>
+							<li class="nav-item" role="presentation"><a
+								class="nav-link active" data-bs-toggle="tab" href="#profile"
+								aria-selected="true" role="tab">메뉴별</a></li>
+							<li class="nav-item" role="presentation"><a class="nav-link"
+								data-bs-toggle="tab" href="#locate" aria-selected="false"
+								role="tab" tabindex="-1">지역별</a></li>
 						</ul>
-						<div id="myTabContent" class="tab-content" style="width: 100%; text-align: center;">
+						<!-- 채팅창 내부에 차트가 위치할 div -->
+						<div id="chart-container">
+							<canvas id="chart"></canvas>
+						</div>
+						<div id="myTabContent" class="tab-content"
+							style="width: 100%; text-align: center;">
 							<div class="tab-pane fade" id="home" role="tabpanel">
-								<div class="paymentTab" style="width: 80%; display: flex; flex-direction: row; font-size: 20px;">
+								<div class="paymentTab"
+									style="width: 80%; display: flex; flex-direction: row; font-size: 20px;">
 									<br> <br>
 									<div class="textBox1">
 										<h4>결제수단</h4>
@@ -338,60 +379,72 @@ document.addEventListener('DOMContentLoaded', function() {
 										<hr style="border: 1px color= silver; width: 100%;">
 									</div>
 								</div>
-								<div class="actualSales" style="display: flex; position: relative; left: 51.3%;">
+								<div class="actualSales"
+									style="display: flex; position: relative; left: 51.3%;">
 									<h4 style="">실매출 &nbsp&nbsp&nbsp</h4>
 									<span style="font-size: 20px;">415,000원</span>
 								</div>
 								<!-- <p> 결제수단별 </p> -->
-
 							</div>
-							<div class="tab-pane fade active show" id="profile" role="tabpanel">
-								<div class="menuTab" style="width: 80%; display: flex; flex-direction: row; font-size: 20px;">
+							<div class="tab-pane fade active show" id="profile"
+								role="tabpanel">
+								<div class="menuTab"
+									style="width: 80%; display: flex; flex-direction: row; font-size: 20px;">
 									<div class="textBox1">
 										<h4>순위</h4>
 										<hr style="border: 1px color= silver;">
-										1<br> <br> 2<br> <br> 3<br> <br> 4<br> <br> 5
+										1<br> <br> 2<br> <br> 3<br> <br>
+										4<br> <br> 5
 									</div>
 									<div class="textBox1">
 										<h4>메뉴명</h4>
 										<hr style="border: 1px color= silver;">
-										1<br> <br> 2<br> <br> 3<br> <br> 4<br> <br> 5
-
+										1<br> <br> 2<br> <br> 3<br> <br>
+										4<br> <br> 5
 									</div>
 									<div class="textBox1">
 										<h4>건수</h4>
 										<hr style="border: 1px color= silver;">
-										1<br> <br> 2<br> <br> 3<br> <br> 4<br> <br> 5
+										1<br> <br> 2<br> <br> 3<br> <br>
+										4<br> <br> 5
 									</div>
-									<div class="textBox1" style="text-align: right; position: relative; left: -10%;">
+									<div class="textBox1"
+										style="text-align: right; position: relative; left: -10%;">
 										<h4>결제금액</h4>
 										<hr style="border: 1px color= silver; width: 135%;">
-										1,197,000원<br> <br> 197,000원<br> <br> 197,000원<br> <br> 97,000원<br> <br> 7,000원
+										1,197,000원<br> <br> 197,000원<br> <br>
+										197,000원<br> <br> 97,000원<br> <br> 7,000원
 									</div>
 								</div>
 							</div>
-							<div class="tab-pane fade active show" id="locate" role="tabpanel">
-								<div class="menuTab" style="width: 80%; display: flex; flex-direction: row; font-size: 20px;">
+							<div class="tab-pane fade active show" id="locate"
+								role="tabpanel">
+								<div class="menuTab"
+									style="width: 80%; display: flex; flex-direction: row; font-size: 20px;">
 									<div class="textBox1">
 										<h4>지역</h4>
 										<hr style="border: 1px color= silver;">
-										서울<br> <br> 경기<br> <br> 인천<br> <br> 강릉<br> <br> 5
+										서울<br> <br> 경기<br> <br> 인천<br> <br>
+										강릉<br> <br> 5
 									</div>
 									<div class="textBox1">
 										<h4>메뉴명</h4>
 										<hr style="border: 1px color= silver;">
-										1<br> <br> 2<br> <br> 3<br> <br> 4<br> <br> 5
-
+										1<br> <br> 2<br> <br> 3<br> <br>
+										4<br> <br> 5
 									</div>
 									<div class="textBox1">
 										<h4>건수</h4>
 										<hr style="border: 1px color= silver;">
-										1<br> <br> 2<br> <br> 3<br> <br> 4<br> <br> 5
+										1<br> <br> 2<br> <br> 3<br> <br>
+										4<br> <br> 5
 									</div>
-									<div class="textBox1" style="text-align: right; position: relative; left: -10%;">
+									<div class="textBox1"
+										style="text-align: right; position: relative; left: -10%;">
 										<h4>결제금액</h4>
 										<hr style="border: 1px color= silver; width: 135%;">
-										1,197,000원<br> <br> 197,000원<br> <br> 197,000원<br> <br> 97,000원<br> <br> 7,000원
+										1,197,000원<br> <br> 197,000원<br> <br>
+										197,000원<br> <br> 97,000원<br> <br> 7,000원
 									</div>
 								</div>
 							</div>
@@ -404,69 +457,11 @@ document.addEventListener('DOMContentLoaded', function() {
 		</div>
 		<!-- 헤더랑 옆 클릭바 고정을 고정. -->
 		<!--  메세지 모달 -->
-
-
-		
-		<!-- 위치 리스트 Modal -->
-		<div class="modal fade show" id="locationListModal" tabindex="-1" style="display: none; z-index: 1060;">
-			<div class="modal-dialog modal-dialog-centered" style="max-width: 40%;">
-				<div class="modal-content ">
-					<div class="modal-header">
-						<h5 class="modal-title" id="modifyModalTitle">위치 편집</h5>
-						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-					</div>
-					<div class="modal-body" style="max-height: 60vh; overflow-y: auto" id="locations"></div>
-				</div>
-			</div>
-		</div>
-		<!-- 위치 등록 Modal -->
-		<div class="modal fade show" id="regLocationModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-modal="true" role="dialog" style="display: none; - -bs-modal-width: 50%; z-index: 1070">
-			<div class="modal-dialog modal-dialog-centered " style="max-width: 50%;">
-				<div class="modal-content">
-					<div class="modal-header">
-						<h5 class="modal-title" id="regModalTitle"></h5>
-						<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="regCancel" onclick ="regLocationModal.hide()"></button>
-					</div>
-					<div class="modal-body; px-5 my-4">
-						<div class="row p-2">
-							<div class="col-3 text-center">위치명</div>
-							<div class="col-9">
-								<input type="text" class="form-control" id="reglocationName">
-							</div>
-						</div>
-						<div class="row p-2">
-							<div class="col-3 text-center">주소</div>
-							<div class="col-7">
-								<input type="text" class="form-control " id="locationAddr" placeholder="주소">
-							</div>
-							<div class="col-2">
-								<input type="button" class="btn btn-primary" onclick="sample5_execDaumPostcode()" value="주소 검색">
-								<br>
-							</div>
-						</div>
-						<div class="row p-2">
-							<div class="col-3"></div>
-							<div class="col-9">
-								<input type="text" class="form-control" id="locationDetail" placeholder="상세주소를 입력해주세요." maxlength="200">
-								<div id="map1" style="height: 30vh; margin-top: 10px; display: none"></div>
-							</div>
-						</div>
-					</div>
-					<div class="modal-footer justify-content-center">
-						<button type="button" class="btn btn-primary" id="locationServerCall"></button>
-					</div>
-				</div>
-			</div>
-		</div>
-		<div class="modal fade" id="messageModal" style="background-color: rgba(0, 0, 0, 0.2); z-index: 1080">
-		</div>
 	</div>
 
-</body>
 
 
-
-<script>
+	<script>
 	if (${store} != '') {
 		jsonString = '${store}';
 	}
@@ -486,13 +481,13 @@ document.addEventListener('DOMContentLoaded', function() {
 		document.getElementById("isOpenText").innerText = "영업전"
 	}
 
-	let selectedIdx = 0;
+	let selectedIdx = 1;
 	
 	
 	function setStoreInfo(JsonData){
 		jsonData = JsonData;
 	}
-	
+	sideMenu(1);
 	//메뉴 탭을 누를때 
 	function sideMenu(newIdx) {
 		 const formData = new FormData;
@@ -574,7 +569,8 @@ document.addEventListener('DOMContentLoaded', function() {
 							});
 			showLocationName()
 			}
-		}else if(newIdx ==2){ //메뉴관리 선택시
+		}else if(newIdx == 2){ //메뉴관리 선택시
+			jsonData = JSON.parse(jsonString);
 			console.log("newIdx == 2")
 			
 			const menuList = jsonData.menuList;
@@ -597,9 +593,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
 			  const td2 = document.createElement("td");
 			  if(item.isKiosk=='Y'){
-				  td2.textContent ='O';
+				  td2.textContent ='노출';
 			  }else{
-				  td2.textContent='X';
+				  td2.textContent='미노출';
 			  }
 			  tr.appendChild(td2);
 
@@ -623,7 +619,8 @@ document.addEventListener('DOMContentLoaded', function() {
 			 
 			});
 			menuListDiv.innerHTML = "";
-			menuListDiv.innerHTML+=`<thead>
+			menuListDiv.innerHTML+=
+				`<thead>
 				   <tr>
 				      <th scope="col"></th>
 				      <th scope="col">키오스크</th>
@@ -636,7 +633,10 @@ document.addEventListener('DOMContentLoaded', function() {
 			}
 		}else if(newIdx == 3){
 		    showMenuInput('');
+		}else if(newIdx == 5){
+			serverCallByFetch(formData,'/Api/SelPayment','post','selSalesInfo',header);
 		}
+		
 
 	}
 	
@@ -673,8 +673,7 @@ document.addEventListener('DOMContentLoaded', function() {
 		map.relayout();
 		let geocoder = new kakao.maps.services.Geocoder();
 		// 주소로 좌표를 검색합니다
-		geocoder
-				.addressSearch(
+		geocoder.addressSearch(
 						location.locationAddr,
 						function(result, status) {
 							// 정상적으로 검색이 완료됐으면 
@@ -705,7 +704,6 @@ document.addEventListener('DOMContentLoaded', function() {
 		if (salesToggle.checked) {
 			console.log("false")
 			showModal("plain::영업을 시작합니다.:")
-			salesToggle.setAttribute("checked", "true");
 			formData.append('salesLogList[0].salesState', 'O');
 		} else {
 			console.log("true")
@@ -714,7 +712,20 @@ document.addEventListener('DOMContentLoaded', function() {
 		}
 		formData.append('locationList[0].locationCode', 'L01');
 		formData.append('storeCode', storeNum);
-		serverCallByFetch(formData, '/Api/UpdSalesLog', 'post', '', header);
+		serverCallByFetch(formData, '/Api/UpdSalesLog', 'post', 'afterUpdSalesLog', header);
+	}
+	//영업기록 callback
+	function afterUpdSalesLog(jsonData){
+		if ('${isOpen}' == 'true'){
+			salesToggle.setAttribute("checked", "true");
+			document.getElementById("isOpenText").innerText = "영업중";
+			showModal(jsonData.message);
+		}else{
+			salesToggle.setAttribute("checked", "false");
+			document.getElementById("isOpenText").innerText = "영업전";
+			showModal(jonData.message);
+			
+		}
 	}
 	//모달창 숨기는 func
 	function regCancel() {
@@ -854,6 +865,7 @@ document.addEventListener('DOMContentLoaded', function() {
 	const regLocationModal = new bootstrap.Modal(document.getElementById('regLocationModal'))
 	//위치 등록 후 callback func
 	function afterRegLocation(jsonData) {
+		locationListModal.hide()
 		regLocationModal.hide()
 		document.getElementById("regLocationModal").display ="none"
 		document.getElementById("locationAddr").value = '';
@@ -910,19 +922,13 @@ document.addEventListener('DOMContentLoaded', function() {
 	}
 	
 	//지역 리스트 모달(부트스트랩 객체)
-	const locationListModal = new bootstrap.Modal(document.getElementById('locationListModal'))
+	const locationListModal = new bootstrap.Modal(document.getElementById('locationListModal'));
 	//지역 삭제 callback
 	function afterDelLocation(jsonData) {
 		deleteIdx ='';
 		locationListModal.hide()
 		showModal(jsonData.message+"sideMenu:1")	
 	}
-	//페이지 reload
-	function reload(Idx){
-		movePage('PosManage');
-		sideMenu(Idx);
-	}
-	
 	//메뉴 입력 Zone 생성 
 	function showMenuInput(menuCode){
 	    const menuInputZone = document.getElementById("menuInputZone");
@@ -1003,10 +1009,51 @@ document.addEventListener('DOMContentLoaded', function() {
 		  buttonRow.innerHTML = '<div class="btn btn-outline-danger col-1" onclick="deleteMenu(\'' + menuCode + '\')">삭제</div>' +
 	    '<div class="btn btn-primary col-1" onclick="modifyMenu(\'' + menuCode + '\')">저장</div>';
 	    }else{
-		 buttonRow.innerHTML = '<div class="btn btn-primary col-1" onclick="regMenu()">등록</div>';
+		 buttonRow.innerHTML = '<div class="btn btn-primary col-1" onclick="regMenu();">등록</div>';
 	    }
 	  
 	    menuInputZone.appendChild(buttonRow);
+	}
+	
+	function regMenu() {
+		  // 입력값들을 추가
+		const menuCode = document.getElementById("menuCode"); 
+	  	const menuName = document.getElementById("menuName").value;
+	  	const menuPrice = document.getElementById("menuPrice").value;
+	  	const menuImage = document.getElementById("menuImage");
+	  	//const menuImage = createFileBox("form-control");
+	 	const isMain = document.getElementById("isMain").checked;
+	 	const isKiosk = document.getElementById("isKiosk").checked;
+		const isSoldOut = document.getElementById("isSoldOut").checked;
+		  
+		  
+		  const formData = new FormData();
+		  formData.append("storeCode", storeNum);
+		  //formData.append("menuList[0].menuCode", menuCode); 
+		  formData.append("menuList[0].menuName", menuName);
+		  formData.append("menuList[0].menuPrice", menuPrice);
+		   formData.append("file", menuImage.files[0]);
+		  //formData.append("menuList[0].menuImageCode", menuImage);
+		  if(isKiosk) {
+				formData.append("menuList[0].isKiosk", "Y");
+			} else {
+				formData.append("menuList[0].isKiosk", "N");
+			}
+
+			if(isMain) {
+				formData.append("menuList[0].isMain", "Y");
+			} else{
+				formData.append("menuList[0].isMain", "N");
+			}
+			
+			if(isSoldOut) {
+				formData.append("menuList[0].isSoldOut", "Y");
+			} else{
+				formData.append("menuList[0].isSoldOut", "N");
+			}
+		  
+		  
+		  serverCallByFetch(formData,"/Api/RegMenu","post","afterDeleteMenu",header);
 	}
 	
 	//메뉴 수정 버튼 클릭시 나타나는 페이지
@@ -1036,21 +1083,195 @@ document.addEventListener('DOMContentLoaded', function() {
 	    formData = new FormData();
 	    formData.append("storeCode",storeNum);
 	    formData.append("menuList[0].menuCode",menuCode);
+	    formData.append("file", menuImage.files[0]);
 	    serverCallByFetch(formData,"/Api/DeleteMenu","post","afterDeleteMenu",header);
 	}
+	
 	function modifyMenu(menuCode){
+		const menuName = document.getElementById("menuName").value;
+		const menuPrice = document.getElementById("menuPrice").value;
+		const menuImage = document.getElementById("menuImage");
+	  	//const menuImage = createFileBox("form-control");
+	 	const isMain = document.getElementById("isMain").checked;
+	 	const isKiosk = document.getElementById("isKiosk").checked;
+		const isSoldOut = document.getElementById("isSoldOut").checked;
+		
 	    formData = new FormData();
 	    formData.append("storeCode",storeNum);
 	    formData.append("menuList[0].menuCode",menuCode);
+	    formData.append("menuList[0].menuName", menuName);
+	    formData.append("menuList[0].menuPrice", menuPrice);
+	    console.log(menuImage.files[0])
+	    if(menuImage.files[0]!=null){
+	    formData.append("file", menuImage.files[0]);
+	    }
+	    
+	    if(isKiosk) {
+			formData.append("menuList[0].isKiosk", "Y");
+		} else {
+			formData.append("menuList[0].isKiosk", "N");
+		}
+
+		if(isMain) {
+			formData.append("menuList[0].isMain", "Y");
+		} else{
+			formData.append("menuList[0].isMain", "N");
+		}
+		
+		if(isSoldOut) {
+			formData.append("menuList[0].isSoldOut", "Y");
+		} else{
+			formData.append("menuList[0].isSoldOut", "N");
+		}
+	    
 	    serverCallByFetch(formData,"/Api/ModifyMenu","post","afterDeleteMenu",header);
 	}
+
 	
-	function afterDeleteMenu(jsonData){
-	    showModal(jsonData.message+"reload:2");
+	 function afterDeleteMenu(jsonData){
+		 console.log("afterDeleteMenu"+jsonData);
+		jsonString = JSON.stringify(jsonData)
+	    showModal(jsonData.message+"sideMenu:2");
+	}
+	// 차트 생성
+	var ctx = document.getElementById('chart').getContext('2d');
+	var myChart = new Chart(ctx, {
+	  type: 'doughnut',
+	  data: {
+	    labels: ['Red', 'Blue', 'Yellow'],
+	    datasets: [{
+	      label: '# of Votes',
+	      data: [66.7, 11.1, 22.2],
+	      backgroundColor: [
+	        'rgb(255, 99, 132)',
+	        'rgb(54, 162, 235)',
+	        'rgb(255, 205, 86)'
+	      ],
+	      borderWidth: 0
+	    }]
+	  },
+	  options: {
+	    maintainAspectRatio: false
+	  }
+	});
+
+	// 차트 컨테이너 크기 설정
+	var chartContainer = document.getElementById('chart-container');
+	chartContainer.style.width = '50vw';
+	chartContainer.style.height = '30vh';
+	
+	//매출분석
+	function changePayment(){
+		let payment=document.getElementById("paymentCategory").value;
+		 formData = new FormData();
+		 if(payment == '결제수단') {sideMenu(5)}
+		 else{
+		formData.append('orderList[0].salespaymentType',payment);
+		formData.append("storeCode",storeNum);
+		serverCallByFetch(formData,'/Api/ChangePayment','post','selSalesInfo',header);
+		 }
+	}
+	salesData = new FormData();
+	function selSalesInfo(jsonData){
+		const salesListZone= document.querySelector('#salesList');
+		formData = new FormData();
+		salesListZone.innerHTML='';
+		let salesList= jsonData.orderList;
+		
+			// salesList 배열의 요소 수만큼 반복하며 HTML 요소를 동적으로 생성합니다.
+			salesList.forEach((data) => {
+			  // div 요소를 생성합니다.
+			  const divElement = document.createElement("div");
+			  divElement.classList.add("row", "border", "m-0", "align-items-center", "text-center", "p-3");
+			  
+			// div 요소에 onclick 이벤트를 추가합니다.
+			  divElement.onclick = function() {
+				  salesData.delete('storeCode'); // FormData 객체 초기화
+				  salesData.delete('orderList[0].salesDate');
+				  salesData.delete('orderList[0].salespaymentType');
+			    // 클릭 시 실행될 함수를 작성합니다.
+			    	salesData.append("storeCode",storeNum);
+			    	salesData.append('orderList[0].salesDate',data.salesDate);
+			    	salesData.append('orderList[0].salespaymentType',data.salespaymentType)
+			    	console.log(data.salesDate)
+				  serverCallByFetch(salesData,'/Api/selSalesDetail','post','selSalesDetail',header);
+			  };
+
+			  // span 요소를 생성합니다.
+			  const spanElement = document.createElement("span");
+			  if(data.salespaymentType=='카드'){
+			  spanElement.classList.add("badge", "rounded-pill", "bg-secondary", "w-25");
+			  }else{
+			  spanElement.classList.add("badge", "rounded-pill", "bg-primary", "w-25");}
+			  spanElement.textContent = data.salespaymentType;
+		
+
+			  // div 요소를 생성합니다.
+			  const col5Element = document.createElement("div");
+			  col5Element.classList.add("col-5");
+			  col5Element.textContent = data.amount+"원";
+
+			  // div 요소를 생성합니다.
+			  const col3Element = document.createElement("div");
+			  col3Element.classList.add("col-3");
+			  col3Element.textContent = data.salesDate;
+
+			  // 생성한 요소들을 부모 요소에 추가합니다.
+			  divElement.appendChild(spanElement);
+			  divElement.appendChild(col5Element);
+			  divElement.appendChild(col3Element);
+			  salesListZone.appendChild(divElement);
+			});
+	}
+	
+	let jsonDataTest;
+	function selSalesDetail(jsonData) {
+		jsonDataTest=jsonData;
+		  const orderDate = jsonDataTest.orderList[0].salesDate;
+		  const address = jsonDataTest.locationList[0].locationAddr+jsonDataTest.locationList[0].locationDetail;
+		  const paymentList = jsonDataTest.orderList[0].orderMenuList;
+		  
+		  const orderDateElement = document.getElementById('orderDate');
+		  const addressElement = document.getElementById('address');
+		const paymentInfoElement = document.getElementById('paymentInfo');
+			  const paymentMethod = jsonDataTest.orderList[0].salespaymentType;
+		paymentInfoElement.innerText = '';
+			  let paymentListHtml = '';
+			  let totalPrice = 0;
+				// 주문 날짜와 주소 정보를 출력합니다.
+			  orderDateElement.innerHTML = orderDate;
+			  addressElement.innerHTML = address;
+
+			  for (let i = 0; i < paymentList.length; i++) {
+			    const item = paymentList[i];
+			    paymentListHtml += `\${paymentList[i].menuName} \${paymentList[i].menuPrice} x \${paymentList[i].quantity}<br>`;
+			    totalPrice += item.menuPrice * item.quantity;
+			  }
+
+			  const paymentInfo = `
+			    <hr>
+			    <div class="align-items-end mt-3">
+			      <div>
+			        결제수단<br>
+			        <h4>\${paymentMethod}</h4>
+			        <h3 class="col text-end">총 \${totalPrice}원</h3>
+			      </div>
+			    </div>
+			  `;
+
+			  paymentInfoElement.innerHTML = `
+			    <div>
+			      <h5 class="fw-bold">결제내역</h5>
+			      <hr>
+			      \${paymentListHtml}
+			    </div>
+			  `;
+
+			  paymentInfoElement.insertAdjacentHTML('beforeend', paymentInfo);
 	}
 </script>
 
-<style>
+	<style>
 body {
 	margin: 0px;
 	margin-bottom: 0px;
@@ -1129,5 +1350,4 @@ body {
 	transition: background-color 0.3s ease;
 }
 </style>
-
 </html>

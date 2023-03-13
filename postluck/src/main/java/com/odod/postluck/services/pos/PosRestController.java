@@ -33,7 +33,11 @@ public class PosRestController {
 	}
 
 	@PostMapping("/Api/ModifyStoreInfo")
-	public StoreBean modifyStoreInfo(Model model, @ModelAttribute StoreBean store) {
+	public StoreBean modifyStoreInfo(Model model, @ModelAttribute StoreBean store,
+			@RequestParam(name = "file", required = false) MultipartFile file) {
+		if (file != null) {
+			model.addAttribute("file", file);
+		}
 		model.addAttribute("store", store);
 		this.storeService.backController("ST02", model);
 		System.out.println("modifyStoreInfo" + model.getAttribute("store"));
@@ -75,7 +79,7 @@ public class PosRestController {
 	}
 
 	@PostMapping("/Api/RegMenu")
-	public StoreBean regMenu(Model model, @ModelAttribute StoreBean store, @RequestParam("file") MultipartFile file)
+	public StoreBean regMenu(Model model, @ModelAttribute StoreBean store,@RequestParam(name = "file", required = false) MultipartFile file)
 			throws IOException {
 		model.addAttribute("file", file);
 		model.addAttribute("store", store);
@@ -86,10 +90,10 @@ public class PosRestController {
 	}
 
 	@PostMapping("/Api/ModifyMenu")
-	public StoreBean modifyMenu(Model model, @ModelAttribute StoreBean store, @RequestParam("file") MultipartFile file)
+	public StoreBean modifyMenu(Model model, @ModelAttribute StoreBean store,@RequestParam(name = "file", required = false) MultipartFile file)
 			throws IOException {
 		model.addAttribute("file", file);
-		model.addAttribute("model", model);
+		model.addAttribute("store", store);
 		System.out.println(model.addAttribute("store", store));
 		System.out.println("ModifyMenu PostMapping들어옴");
 		this.menuService.backController("ME05", model);
@@ -105,25 +109,28 @@ public class PosRestController {
 		this.menuService.backController("ME06", model);
 		return (StoreBean) model.getAttribute("store");
 	}
-	
+
 	@PostMapping("/Api/ChangePayment")
 	public StoreBean changePayment(Model model, @ModelAttribute StoreBean store) {
 		model.addAttribute("store", store);
-		System.out.println("changePayment Store is "+ store);
+		System.out.println("changePayment Store is " + store);
 		this.salesService.backController("SA02", model);
-		return (StoreBean)model.getAttribute("store");
+		return (StoreBean) model.getAttribute("store");
 	}
+
 	@PostMapping("/Api/SelPayment")
 	public StoreBean selPayment(Model model, @ModelAttribute StoreBean store) {
-		model.addAttribute("store",store);
+		model.addAttribute("store", store);
 		this.salesService.backController("SA01", model);
-		return (StoreBean)model.getAttribute("store");
+		return (StoreBean) model.getAttribute("store");
 	}
+
 	@PostMapping("/Api/selSalesDetail")
 	public StoreBean selSalesDetail(Model model, @ModelAttribute StoreBean store) {
 		model.addAttribute("salesStore", store);
 		this.salesService.backController("SA03", model);
-		return (StoreBean)model.getAttribute("salesStore");
+		System.out.println((StoreBean) model.getAttribute("salesStore"));
+		return (StoreBean) model.getAttribute("salesStore");
 	}
 
 }

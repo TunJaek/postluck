@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.odod.postluck.mapper.HomeMapperInter">
+	<select id="selStoreList"
+		resultType="com.odod.postluck.beans.StoreBean">
+		select ST_CODE as storeCode, st_stname as storeName,
+		st_info as storeInfo,
+		st_infoDetail as storeInfoDetail, st_phone as
+		storePhone, ca_name as
+		storeCategory, st_locode as storeLocationCode,
+		st_isopen as isOpen
+		from store
+		inner join categories on st_category =
+		ca_code
+	</select>
+	<select id="selStoreLocation"
+		parameterType="com.odod.postluck.beans.StoreBean"
+		resultType="com.odod.postluck.beans.LocationBean">
+		select lo_code as locationCode, lo_name as locationName,
+		lo_addr as
+		locationAddr, lo_detail as locationDetail from store inner
+		join
+		location on lo_stcode = st_code and st_locode = lo_code where
+		st_code =#{storeCode}
+	</select>
+	<select id="selStoreInfoForHome" parameterType="string"
+		resultType="com.odod.postluck.beans.StoreBean">
+		select ST_CODE as storeCode, ST_STNAME as storeName,
+		ST_INFO as storeInfo, ST_INFODETAIL as storeInfoDetail, ST_PHONE as
+		storePhone, ca_name as storeCategory,
+		ST_LOCODE as
+		storeLocationCode, ST_ISOPEN as isOpen from store inner join
+		categories on st_category = ca_code where st_code =#{storeCode}
+	</select>
+	<select id="selStoreLocationForHome"
+		parameterType="com.odod.postluck.beans.StoreBean"
+		resultType="com.odod.postluck.beans.LocationBean">
+		select LO_CODE as locationCode, LO_NAME as locationName, LO_DETAIL as
+		locationDetail, LO_ADDR as locationAddr
+		from location inner join store on st_code = lo_stcode where lo_stcode =
+		#{storeCode} and st_locode = lo_code
+	</select>
+	<select id="selStoreMenuForHome"
+		parameterType="com.odod.postluck.beans.StoreBean"
+		resultType="com.odod.postluck.beans.MenuBean">
+		select SM_STCODE as sm_stcode, SM_CODE as menuCode, SM_NAME as menuName,
+		SM_PRICE as menuPrice, SM_SICODE as menuImageCode, SM_ISMAIN as
+		isMain, SM_ISKIOSK as isKiosk, SM_ISSOLD as isSoldOut from storemenu
+		where sm_stcode = #{storeCode} order by sm_ismain desc
+	</select>
+</mapper>

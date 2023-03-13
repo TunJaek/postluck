@@ -133,8 +133,8 @@ public class Authentication extends TransactionAssistant {
 							.tokenIssuance(jwtBody, "JWTForPostluckFromODOD"));
 					st.setMessage("true"); // 사업자 정보가 있음.
 					model.addAttribute("store", st);
-
-					this.pu.setAttribute("AccessInfo",model.getAttribute("store"));
+					this.pu.setAttribute("AccessInfo",
+							model.getAttribute("store"));
 					this.tranManager.commit();
 				} else {
 					// 사업자코드가 존재하지 않을 때 토큰 발행
@@ -145,7 +145,7 @@ public class Authentication extends TransactionAssistant {
 					this.pu.transferJWTByResponse(this.jwt
 							.tokenIssuance(jwtBody, "JWTForPostluckFromODOD"));
 					store.setMessage("false");
-					System.out.println("issuanceJWT : "+ store);
+					System.out.println("issuanceJWT : " + store);
 					this.pu.setAttribute("AccessInfo", store);
 				}
 			} else {
@@ -209,9 +209,12 @@ public class Authentication extends TransactionAssistant {
 				mav.addObject("store",
 						new ObjectMapper().writeValueAsString(store));
 			} else {
-				store.setCeoName(this.jwt.getTokenInfoFromJWT(jwt).getCeoName());
-				store.setCeoEmail(this.jwt.getTokenInfoFromJWT(jwt).getCeoEmail());
-				store.setSnsType(this.jwt.getTokenInfoFromJWT(jwt).getSnsType());
+				store.setCeoName(
+						this.jwt.getTokenInfoFromJWT(jwt).getCeoName());
+				store.setCeoEmail(
+						this.jwt.getTokenInfoFromJWT(jwt).getCeoEmail());
+				store.setSnsType(
+						this.jwt.getTokenInfoFromJWT(jwt).getSnsType());
 				store.setMessage("false");
 				mav.addObject("store", new ObjectMapper()
 						.writeValueAsString(store)); /* storeBean -> json */
@@ -251,6 +254,7 @@ public class Authentication extends TransactionAssistant {
 			if (store != null) {
 				if (this.convertToBoolean(
 						this.sqlSession.insert("insStore", store))) {
+					this.tranManager.commit();
 					jwtBody = JWTBean.builder().storeCode(store.getStoreCode())
 							.snsID(store.getSnsID()).build();
 					this.pu.transferJWTByResponse(this.jwt
@@ -259,11 +263,12 @@ public class Authentication extends TransactionAssistant {
 					model.addAttribute("store",
 							main.getStoreInfoAsStoreBean(model));
 					this.pu.setAttribute("AccessInfo", store);
+
 				} else {
 					message = "error::매장 등록을 실패했습니다.메인페이지로 이동합니다.:moveIndex";
 				}
 			}
-			this.tranManager.commit();
+
 		} catch (Exception e) {
 			this.tranManager.rollback();
 			e.printStackTrace();
@@ -292,7 +297,7 @@ public class Authentication extends TransactionAssistant {
 		String messege = "Access Error:시스템 접속이 실패하였습니다.";
 		StoreBean storeCode = (StoreBean) model.getAttribute("storeCode");
 		if (storeCode.getStoreCode() != null) {
-			this.tranManager = this.getTransaction(false);
+			this.tranManager = this.getTransaction(true);
 			this.tranManager.tranStart();
 			System.out.println(storeCode);
 			if (this.convertToBoolean(

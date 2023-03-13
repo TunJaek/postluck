@@ -146,7 +146,7 @@ if('${store}'!=''){
 				<div class="menu  p-3 sideMenu" onclick="sideMenu(6)">매출분석</div>
 			</div>
 			<!-- sideMenu(3) : 메뉴추가 / sideMenu(4) : 메뉴수정 -->
-		
+
 
 			<!-- 1. 매장관리 -->
 			<div class="mainContent" id="menu1" style="display: block;">
@@ -204,11 +204,6 @@ if('${store}'!=''){
 						</div>
 					</div>
 					<div class="row" style="align-items: center;">
-						<div class="col-2">영업시간</div>
-						<input type="text" class="form-control w-25"
-							placeholder="영업시간을 입력해주세요.">
-					</div>
-					<div class="row" style="align-items: center;">
 						<div class="col-2">매장 한 줄소개</div>
 						<input type="text" class="form-control w-25" id="storeInfo"
 							placeholder="매장 한 줄 소개를  입력해주세요." maxlength="30">
@@ -223,7 +218,7 @@ if('${store}'!=''){
 					<div class="row" style="align-items: center;">
 						<div class="col-2">매장 사진 등록</div>
 						<div class="form-group col-6 p-0">
-							<input class="form-control" type="file" id="formFile">
+							<input class="form-control" type="file" id="storePicture">
 						</div>
 					</div>
 					<div class="d-flex gap-4 mt-5 " style="justify-content: center;">
@@ -317,11 +312,13 @@ if('${store}'!=''){
 						<button type="button" class="btn btn-outline-primary"
 							style="font-weight: bold;" id="today">&nbsp 오늘 &nbsp</button>
 						<button type="button" class="btn btn-outline-primary"
-							style="font-weight: bold;" id="oneWeek">&nbsp &nbsp 1주 &nbsp &nbsp</button>
+							style="font-weight: bold;" id="oneWeek">&nbsp &nbsp 1주
+							&nbsp &nbsp</button>
 						<button type="button" class="btn btn-outline-primary"
-							style="font-weight: bold;"id="oneMonth">&nbsp 1개월 &nbsp</button>
+							style="font-weight: bold;" id="oneMonth">&nbsp 1개월 &nbsp</button>
 						<button type="button" class="btn btn-outline-primary"
-							style="font-weight: bold;" id="threeMonth">&nbsp 3개월 &nbsp</button>
+							style="font-weight: bold;" id="threeMonth">&nbsp 3개월
+							&nbsp</button>
 					</div>
 				</div>
 				<div class="mainContentMidlle" style="max-width: 100%; height: 20%;">
@@ -473,11 +470,11 @@ if('${store}'!=''){
 	const storeNum = JSON.parse(jsonString).storeCode;
 	
 	let salesToggle = document.getElementById("salesToggle");
-	if ('${isOpen}' == 'false') {
-		salesToggle.setAttribute("checked", "false");
+	if (JSON.parse(jsonString).isOpen == 'O') {
+		salesToggle.checked = true;
 		document.getElementById("isOpenText").innerText = "영업중"
 	} else {
-		salesToggle.setAttribute("checked", "true");
+		salesToggle.checked = false;
 		document.getElementById("isOpenText").innerText = "영업전"
 	}
 
@@ -510,15 +507,27 @@ if('${store}'!=''){
 			document.getElementById("storeInfo").value = jsonData.storeInfo;
 			document.getElementById("storeCategory").value = jsonData.storeCategory;
 			document.getElementById("storeInfoDetail").value = jsonData.storeInfoDetail;
-			let locationList = jsonData.locationList;
-			if(locationList.length>0){
-			document.getElementById("map").style.display ="block";
-	
 			const storeLocation = document.getElementById("storeLocation");
+			let locationList = jsonData.locationList;
+			
+			if(locationList.length>0){
+				for (let i = 0; i < storeLocation.options.length; i++) {
+					  const option = storeLocation.options[i];
+					  if (option.value === jsonData.storeLocationCode) {
+					    // 해당 option 선택하기
+					    option.selected = true;
+					    break;
+					  }
+					}
+				for(let i=0;i<jsonData.locationList.length;i++){
+					if(jsonData.locationList[i].locationCode == jsonData.storeLocationCode){
+						const location = jsonData.locationList[i];
+					}
+				}
+			document.getElementById("map").style.display ="block";
 			const optionEmpty = document.createElement("option");
 			let container = document.getElementById('map');
 			const selectTag = document.getElementById("storeLocation");
-			const location = locationList[0]; //바꿔야함!!!!!!!!!!!!!!!!!!
 			const locationName = location.locationName;
 			let locationDetail =location.locationDetail;
 			optionEmpty.innerText = "위치";
@@ -526,6 +535,7 @@ if('${store}'!=''){
 			while (storeLocation.firstChild) {
 				storeLocation.removeChild(storeLocation.firstChild);
 			}
+			
 			for (let i = 0; i < jsonData.locationList.length; i++) {
 				const option = document.createElement("option");
 				option.setAttribute("value",
@@ -572,7 +582,6 @@ if('${store}'!=''){
 		}else if(newIdx == 2){ //메뉴관리 선택시
 			jsonData = JSON.parse(jsonString);
 			console.log("newIdx == 2")
-			
 			const menuList = jsonData.menuList;
 			if(menuList!=null&&menuList.length>0){
 			const menuListDiv = document.getElementById("menuList");
@@ -644,7 +653,7 @@ if('${store}'!=''){
 	const category = document.getElementById('storeCategory')
 	const categoryOptions = category.options
 	for (let i = 0; i < categoryOptions.length; i++) {
-		if (categoryOptions[i].value == '${storeCategory}') {
+		if (categoryOptions[i].value == jsonData.storeCategory) {
 			categoryOptions[i].selected = "true";
 		}
 	}
@@ -703,28 +712,26 @@ if('${store}'!=''){
 		console.log(salesToggle.checked)
 		if (salesToggle.checked) {
 			console.log("false")
-			showModal("plain::영업을 시작합니다.:")
 			formData.append('salesLogList[0].salesState', 'O');
 		} else {
 			console.log("true")
-			showModal("plain::영업을 종료합니다.:")
 			formData.append('salesLogList[0].salesState', 'C');
 		}
-		formData.append('locationList[0].locationCode', 'L01');
+		formData.append('locationList[0].locationCode',document.getElementById("storeLocation").options[selectedIdx].value);
 		formData.append('storeCode', storeNum);
 		serverCallByFetch(formData, '/Api/UpdSalesLog', 'post', 'afterUpdSalesLog', header);
 	}
 	//영업기록 callback
 	function afterUpdSalesLog(jsonData){
-		if ('${isOpen}' == 'true'){
+	    jsonString = JSON.stringify(jsonData)
+		if (jsonData.isOpen == 'O'){
 			salesToggle.setAttribute("checked", "true");
 			document.getElementById("isOpenText").innerText = "영업중";
-			showModal(jsonData.message);
+			showModal("plain::영업을 시작했습니다!.::");
 		}else{
 			salesToggle.setAttribute("checked", "false");
 			document.getElementById("isOpenText").innerText = "영업전";
-			showModal(jonData.message);
-			
+			showModal("plain::영업을 종료했습니다.::");
 		}
 	}
 	//모달창 숨기는 func
@@ -740,6 +747,8 @@ if('${store}'!=''){
 		const storeInfo = document.getElementById('storeInfo');
 		const storeInfoDetail = document.getElementById('storeInfoDetail');
 		const storeCategory = document.getElementById('storeCategory');
+		const storeLocation = document.getElementById("storeLocation").value;
+		const storeImage = document.getElementById("storePicture");
 
 		if (storeName.value != '' && lengthCheck(storeName)) {
 			formData.append('storeName', storeName.value);
@@ -751,6 +760,10 @@ if('${store}'!=''){
 					formData.append('storeInfo', storeInfo.value);
 					formData.append('storeInfoDetail', storeInfoDetail.value);
 					formData.append('storeCode', storeNum);
+					formData.append('storeLocationCode',storeLocation)
+					if(storeImage.files[0]!=null){
+					formData.append('file',storeImage.files[0]);
+					}
 					serverCallByFetch(formData, '/Api/ModifyStoreInfo', 'post',
 							'afterModifyStoreInfo', header);
 				} else {
@@ -769,6 +782,7 @@ if('${store}'!=''){
 	}
 	//매장 정보 수정 callback
 	function afterModifyStoreInfo(jsonData) {
+	    jsonString = JSON.stringify(jsonData)
 		console.log("afterModifyStoreInfo")
 		showModal(jsonData.message+"sideMenu:1");
 		document.getElementById("storeNameDropDown").innerText = jsonData.storeName;
@@ -865,13 +879,15 @@ if('${store}'!=''){
 	const regLocationModal = new bootstrap.Modal(document.getElementById('regLocationModal'))
 	//위치 등록 후 callback func
 	function afterRegLocation(jsonData) {
+	    jsonString = JSON.stringify(jsonData)
 		locationListModal.hide()
 		regLocationModal.hide()
+		document.getElementsByClassName("modal-backdrop fade show")[0].remove();
 		document.getElementById("regLocationModal").display ="none"
 		document.getElementById("locationAddr").value = '';
 		document.getElementById("locationName").value = '';
 		document.getElementById("locationDetail").value = '';
-		showModal(jsonData.message+"reload:1");
+		showModal(jsonData.message+"sideMenu:1");
 	}
 	//위치 리스트 모달 보여주기 
 	function showLocationList() {
@@ -925,8 +941,10 @@ if('${store}'!=''){
 	const locationListModal = new bootstrap.Modal(document.getElementById('locationListModal'));
 	//지역 삭제 callback
 	function afterDelLocation(jsonData) {
+	    jsonString = JSON.stringify(jsonData);
 		deleteIdx ='';
-		locationListModal.hide()
+		locationListModal.hide();
+		document.getElementsByClassName("modal-backdrop fade show")[0].remove();
 		showModal(jsonData.message+"sideMenu:1")	
 	}
 	//메뉴 입력 Zone 생성 
@@ -1083,7 +1101,6 @@ if('${store}'!=''){
 	    formData = new FormData();
 	    formData.append("storeCode",storeNum);
 	    formData.append("menuList[0].menuCode",menuCode);
-	    formData.append("file", menuImage.files[0]);
 	    serverCallByFetch(formData,"/Api/DeleteMenu","post","afterDeleteMenu",header);
 	}
 	
@@ -1129,9 +1146,10 @@ if('${store}'!=''){
 
 	
 	 function afterDeleteMenu(jsonData){
+		 jsonString = JSON.stringify(jsonData);
 		 console.log("afterDeleteMenu"+jsonData);
-		jsonString = JSON.stringify(jsonData)
-	    showModal(jsonData.message+"sideMenu:2");
+	    showModal(jsonData.message);
+	    sideMenu(2)
 	}
 	// 차트 생성
 	var ctx = document.getElementById('chart').getContext('2d');
@@ -1224,17 +1242,16 @@ if('${store}'!=''){
 			});
 	}
 	
-	let jsonDataTest;
 	function selSalesDetail(jsonData) {
-		jsonDataTest=jsonData;
-		  const orderDate = jsonDataTest.orderList[0].salesDate;
-		  const address = jsonDataTest.locationList[0].locationAddr+jsonDataTest.locationList[0].locationDetail;
-		  const paymentList = jsonDataTest.orderList[0].orderMenuList;
+		console.log(jsonData);
+		  const orderDate = jsonData.orderList[0].salesDate;
+		  const address = jsonData.locationList[0].locationAddr+jsonData.locationList[0].locationDetail;
+		  const paymentList = jsonData.orderList[0].orderMenuList;
 		  
 		  const orderDateElement = document.getElementById('orderDate');
 		  const addressElement = document.getElementById('address');
 		const paymentInfoElement = document.getElementById('paymentInfo');
-			  const paymentMethod = jsonDataTest.orderList[0].salespaymentType;
+			  const paymentMethod = jsonData.orderList[0].salespaymentType;
 		paymentInfoElement.innerText = '';
 			  let paymentListHtml = '';
 			  let totalPrice = 0;
