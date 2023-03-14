@@ -81,9 +81,12 @@
 		SA_STCODE = #{storeBean} AND SA_DATE= #{orderList[0].salesDate};
 	</select>
 
-	<select id="selTypeSalesList" parameterType="com.odod.postluck.beans.StoreBean" resultType="com.odod.postluck.beans.OrderBean">
+		<select id="selTypeSalesList"
+		parameterType="com.odod.postluck.beans.StoreBean"
+		resultType="com.odod.postluck.beans.OrderBean">
 		SELECT SA_PAYMENTTYPE AS salespaymentType, SA_PRICE AS
-		amount
+		amount,
+		SA_DATE AS salesDate
 		FROM POSDBA.SALES
 		WHERE SA_PAYMENTTYPE =
 		#{orderList[0].salespaymentType} AND SA_STCODE =#{storeCode}

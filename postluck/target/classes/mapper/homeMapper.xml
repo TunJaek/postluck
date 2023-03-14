@@ -12,7 +12,7 @@
 		st_isopen as isOpen
 		from store
 		inner join categories on st_category =
-		ca_code
+		ca_code order by st_joindate desc
 	</select>
 	<select id="selStoreLocation"
 		parameterType="com.odod.postluck.beans.StoreBean"
@@ -31,7 +31,7 @@
 		storePhone, ca_name as storeCategory,
 		ST_LOCODE as
 		storeLocationCode, ST_ISOPEN as isOpen from store inner join
-		categories on st_category = ca_code where st_code =#{storeCode}
+		categories on st_category = ca_code where st_code =#{storeCode} 
 	</select>
 	<select id="selStoreLocationForHome"
 		parameterType="com.odod.postluck.beans.StoreBean"
