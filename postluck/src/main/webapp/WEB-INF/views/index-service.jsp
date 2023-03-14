@@ -9,6 +9,7 @@
 <title>MAIN - POS.TLUCK</title>
 <link rel="stylesheet" href="../../resources/css/mainBootstrap.css">
 <script src="/resources/js/common.js"></script>
+<script src="https://developers.kakao.com/sdk/js/kakao.min.js"></script>
 <link
 	href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR&amp;display=swap"
 	rel="stylesheet">
@@ -157,12 +158,6 @@
 								placeholder="가게 상세 소개를 입력해주세요." maxlength="2000"></textarea>
 						</div>
 					</div>
-					<div class="row p-2">
-						<div class="col-3 p-2 text-center">가게 사진</div>
-						<div class="col-8">
-							<input class="form-control" type="file" id="formFile">
-						</div>
-					</div>
 				</div>
 				<div class="modal-footer justify-content-center">
 					<button type="button" class="btn btn-secondary"
@@ -287,7 +282,8 @@
 	}
 
 	function logout() {
-		serverCallByRequest('/View/logOut', 'post', getJWT());
+		formData = new FormData();
+		serverCallByRequest('/View/logOut', 'post','${store}');
 		sessionStorage.removeItem("JWT");
 	}
 </script>

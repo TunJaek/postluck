@@ -64,7 +64,7 @@ public class Authentication extends TransactionAssistant {
 	}
 
 	private void logOut(ModelAndView mav) {
-		StoreBean store;
+		StoreBean store =(StoreBean) mav.getModel().get("store");
 		// snsId를 가지고있음
 		String jwt = mav.getModel().get("jwt").toString();
 		try {
@@ -72,12 +72,16 @@ public class Authentication extends TransactionAssistant {
 			store.getAccessLogList().get(0).setAccessType('O');
 			this.tranManager = this.getTransaction(false);
 			this.tranManager.tranStart();
-			if (this.convertToBoolean(
-					this.sqlSession.insert("insAccessLog", store))) {
-				this.tranManager.commit();
+			if (this.convertToBoolean(this.sqlSession.insert("insAccessLog", store))) {
+				if (this.sqlSession.selectOne("selSalesLog", store).equals('O')) {
+					store.getSalesLogList().get(0).setSalesState('C');
+					if (this.convertToBoolean(this.sqlSession.insert("insSalesLog", store))) {
+						this.sqlSession.update("updStoreStatus", store);
+					}
+				}
 				this.pu.removeAttribute("AccessInfo");
-				store.setMessage("로그아웃 성공");
 				mav.setViewName("index");
+				this.tranManager.commit();
 			} else {
 				store.setMessage("로그아웃 실패");
 			}
@@ -87,6 +91,7 @@ public class Authentication extends TransactionAssistant {
 			this.tranManager.tranEnd();
 		}
 	}
+
 
 	/**
 	 * @method private void issuanceJWT(Model model)

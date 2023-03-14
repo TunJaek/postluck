@@ -37,13 +37,10 @@ public class MainController {
 	
 
 	@PostMapping("/View/logOut")
-	public String logOut(ModelAndView mav, @ModelAttribute StoreBean store,
+	public ModelAndView logOut(ModelAndView mav, @ModelAttribute StoreBean store,
 			@ModelAttribute("JWTForPostluck") String jwt) {
-		mav.addObject("jwt", jwt);
-		mav.addObject("store", store);
 		this.auth.backController("AU04", mav);
-
-		return "index";
+		return mav;
 	}
 
 	@GetMapping("/index-callBack")

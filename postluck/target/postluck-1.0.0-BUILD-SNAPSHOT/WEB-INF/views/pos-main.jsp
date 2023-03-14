@@ -178,7 +178,8 @@
 			let orderNum = '000';
 			if (JSON.parse(jsonString).storeCode) {
 				storeCode = JSON.parse(jsonString).storeCode;
-				sock = new WebSocket("ws://192.168.0.5:80/postluck/"
+
+				sock = new WebSocket("ws://192.168.0.82:80/postluck/"
 						+ storeCode);
 				// WebSocket 처리 코드
 			} else {
@@ -384,12 +385,22 @@ if(btn.innerText == '주문'){
 			}
 			function completeOrder(div){
 				 const formData = new FormData();
+				if(document.getElementsByName("inlineRadioOptions")[0].checked){
+					formData.append("orderList[0].salespaymentType","현금");
+				}else{
+					formData.append("orderList[0].salespaymentType","카드");
+					
+				}
+				formData.append("orderList[0].amount",document.getElementById("priceTotal").innerText);
+				
 				    formData.append("storeCode", storeCode);
-				    formData.append("orderDate", div.getAttribute("data-orderDate"));
+				    formData.append("orderList[0].orderDate", div.getAttribute("data-orderDate"));
+				    formData.append("locationList[0].locationCode",JSON.parse(jsonString).storeLocationCode)
 				    serverCallByFetch(formData, "/Api/CompleteOrder", "post", "afterCompleteOrder", header);
 			}
 			
 			function afterCancelOrder(jsonData){
+				console.log(jsonData)
 				console.log("afcancel")
 				console.log("div"+jsonData.orderDate)
 				document.getElementById("div"+jsonData.orderDate).remove();
@@ -398,8 +409,8 @@ if(btn.innerText == '주문'){
 			}
 			function afterCompleteOrder(jsonData){
 				console.log("afcomplete")
-				console.log("div"+jsonData.orderDate)
-				document.getElementById("div"+jsonData.orderDate).remove();
+				console.log("div"+jsonData.orderList[0].orderDate)
+				document.getElementById("div"+jsonData.orderList[0].orderDate).remove();
 				alertEmpty();
 				showModal("plain::결제 처리되었습니다.::")
 			}

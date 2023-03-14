@@ -35,7 +35,8 @@
 				<h5 class="pt-4 ps-4">우리 동네 푸드트럭 찾기</h5>
 				<div class="row p-3">
 					<div class="col-4 m-2">
-						<select class="form-select" name ="city" onchange="change(this.selectedIndex);"
+						<select class="form-select" name="city"
+							onchange="change(this.selectedIndex);"
 							aria-label="Default select example">
 							<option value='전체'>전체</option>
 							<option value='서울'>서울특별시</option>
@@ -67,23 +68,21 @@
 							<input class="form-check-input" type="checkbox"
 								name="flexRadioDefault" id="isOpenCheckBox"
 								onclick="makeStoreList()"> <label
-								class="form-check-label" for="flexRadioDefault1">영업중</label>
+								class="form-check-label" for="flexRadioDefault1">영업중
+								</label>
 						</div>
 					</div>
 					<div class="col-1">
-						<button class="btn btn-primary">검색</button>
+						<button class="btn btn-primary" onclick="searchStoreDetail()">검색</button>
 					</div>
 				</div>
 			</div>
 			<div class="searchResult w-50 rounded p-5"
 				style="background-color: white;">
 				<h5 id="storeListZone">푸드트럭 목록</h5>
-
-
 			</div>
 		</div>
 	</div>
-
 	<div class="text-center py-5" style="background: #e9ecef;">
 		<p>Team : ODOD Project : Postluck</p>
 		<p>Members: 김민규, 정영준, 이예림, 홍준택</p>
@@ -101,13 +100,13 @@
 </body>
 <script>
 let storeList ='${storeList}';
-const storeJson = JSON.parse(storeList);
+let storeJson = JSON.parse(storeList);
 let cnt = new Array();
 cnt[0] = new Array('전체');
 cnt[1] = new Array('전체','강남구','강동구','강북구','강서구','관악구','광진구','구로구','금천구','노원구','도봉구','동대문구','동작구','마포구','서대문구','서초구','성동구','성북구','송파구','양천구','영등포구','용산구','은평구','종로구','중구','중랑구');
 cnt[2] = new Array('전체','강서구','금정구','남구','동구','동래구','부산진구','북구','사상구','사하구','서구','수영구','연제구','영도구','중구','해운대구','기장군');
 cnt[3] = new Array('전체','남구','달서구','동구','북구','서구','수성구','중구','달성군');
-cnt[4] = new Array('전체','계양구','남구','남동구','동구','부평구','서구','연수구','중구','강화군','옹진군');
+cnt[4] = new Array('전체','계양구','미추홀구','남동구','동구','부평구','서구','연수구','중구','강화군','옹진군');
 cnt[5] = new Array('전체','광산구','남구','동구','북구','서구');
 cnt[6] = new Array('전체','대덕구','동구','서구','유성구','중구');
 cnt[7] = new Array('전체','남구','동구','북구','중구','울주군');
@@ -182,6 +181,30 @@ function storeInfo(storeCode){
 	serverCallByRequest("/Home/StoreInfo","get",storeInfo);
 }
 
+function searchStoreDetail(){
+	let city = document.getElementsByName("city")[0].value;
+	let country =document.getElementsByName("country")[0].value;
+	if(city =='전체'&& document.getElementsByName("country")[0].innerText =="전체"){
+		storeJson = JSON.parse(storeList);
+		makeStoreList();
+	}else{
+	formData = new FormData();
+	formData.append("country",country);
+	formData.append("city",city);
+	serverCallByFetchAjax(formData,"/Home/searchStore", "post",'afterSearchStore');
+	}
+}
+function afterSearchStore(jsonData){
+	if (jsonData.length>0){
+	storeJson = jsonData;
+		makeStoreList();
+	}else{
+		storeJson = jsonData;
+		showModal("error::검색결과가 없습니다.:makeStoreList:")
+	}
+	
+	
+}
 </script>
 <style>
 .card .card img {

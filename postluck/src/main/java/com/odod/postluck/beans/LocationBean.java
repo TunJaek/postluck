@@ -8,6 +8,8 @@ public class LocationBean {
 	private String locationName;	// 위치명 
 	private String locationDetail;
 	private String locationAddr;
+	private String locationCount;
+	private String locationAmount;
 	private double latitude;		// 위도
 	private double longitude;		// 경도
 }

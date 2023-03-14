@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.odod.postluck.beans.SalesAnalysisBean;
 import com.odod.postluck.beans.StoreBean;
 
 @RestController
@@ -33,7 +34,8 @@ public class PosRestController {
 	}
 
 	@PostMapping("/Api/ModifyStoreInfo")
-	public StoreBean modifyStoreInfo(Model model, @ModelAttribute StoreBean store,
+	public StoreBean modifyStoreInfo(Model model,
+			@ModelAttribute StoreBean store,
 			@RequestParam(name = "file", required = false) MultipartFile file) {
 		if (file != null) {
 			model.addAttribute("file", file);
@@ -46,7 +48,8 @@ public class PosRestController {
 	}
 
 	@PostMapping("/Api/GetStoreInfo")
-	public StoreBean getStoreInfo(Model model, @ModelAttribute StoreBean store) {
+	public StoreBean getStoreInfo(Model model,
+			@ModelAttribute StoreBean store) {
 		System.out.println(store);
 		model.addAttribute("store", store);
 		this.mainService.backController("PO03", model);
@@ -63,7 +66,8 @@ public class PosRestController {
 	}
 
 	@PostMapping("/Api/ModifyLocation")
-	public StoreBean modifyLocation(Model model, @ModelAttribute StoreBean store) {
+	public StoreBean modifyLocation(Model model,
+			@ModelAttribute StoreBean store) {
 		model.addAttribute("store", store);
 		System.out.println(model.addAttribute("store", store));
 		this.locService.backController("LO02", model);
@@ -71,7 +75,8 @@ public class PosRestController {
 	}
 
 	@PostMapping("/Api/DeleteLocation")
-	public StoreBean deleteLocation(Model model, @ModelAttribute StoreBean store) {
+	public StoreBean deleteLocation(Model model,
+			@ModelAttribute StoreBean store) {
 		model.addAttribute("store", store);
 		System.out.println(model.addAttribute("store", store));
 		this.locService.backController("LO03", model);
@@ -79,18 +84,20 @@ public class PosRestController {
 	}
 
 	@PostMapping("/Api/RegMenu")
-	public StoreBean regMenu(Model model, @ModelAttribute StoreBean store,@RequestParam(name = "file", required = false) MultipartFile file)
+	public StoreBean regMenu(Model model, @ModelAttribute StoreBean store,
+			@RequestParam(name = "file", required = false) MultipartFile file)
 			throws IOException {
 		model.addAttribute("file", file);
 		model.addAttribute("store", store);
-//		System.out.println(model.addAttribute("store", store));
+		// System.out.println(model.addAttribute("store", store));
 		System.out.println("RegMenu PostMapping들어옴");
 		this.menuService.backController("ME03", model);
 		return (StoreBean) model.getAttribute("store");
 	}
 
 	@PostMapping("/Api/ModifyMenu")
-	public StoreBean modifyMenu(Model model, @ModelAttribute StoreBean store,@RequestParam(name = "file", required = false) MultipartFile file)
+	public StoreBean modifyMenu(Model model, @ModelAttribute StoreBean store,
+			@RequestParam(name = "file", required = false) MultipartFile file)
 			throws IOException {
 		model.addAttribute("file", file);
 		model.addAttribute("store", store);
@@ -111,7 +118,8 @@ public class PosRestController {
 	}
 
 	@PostMapping("/Api/ChangePayment")
-	public StoreBean changePayment(Model model, @ModelAttribute StoreBean store) {
+	public StoreBean changePayment(Model model,
+			@ModelAttribute StoreBean store) {
 		model.addAttribute("store", store);
 		System.out.println("changePayment Store is " + store);
 		this.salesService.backController("SA02", model);
@@ -126,11 +134,20 @@ public class PosRestController {
 	}
 
 	@PostMapping("/Api/selSalesDetail")
-	public StoreBean selSalesDetail(Model model, @ModelAttribute StoreBean store) {
+	public StoreBean selSalesDetail(Model model,
+			@ModelAttribute StoreBean store) {
 		model.addAttribute("salesStore", store);
 		this.salesService.backController("SA03", model);
 		System.out.println((StoreBean) model.getAttribute("salesStore"));
 		return (StoreBean) model.getAttribute("salesStore");
+	}
+	@PostMapping("/Api/selSalesInfo")
+	public SalesAnalysisBean selSalesInfo(Model model,
+			@ModelAttribute SalesAnalysisBean analysis) {
+		model.addAttribute("analysis", analysis);
+		System.out.println("salesAnalysisInfo");
+		this.salesService.backController("SA04", model);
+		return (SalesAnalysisBean) model.getAttribute("analysis");
 	}
 
 }

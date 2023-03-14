@@ -26,4 +26,5 @@ public class StoreBean {
 	private ArrayList<OrderBean> orderList;
 	private ArrayList<SalesLogBean> salesLogList;
 	private String message;
+	private ArrayList<SalesAnalysisBean> salesAnalysisList;
 }

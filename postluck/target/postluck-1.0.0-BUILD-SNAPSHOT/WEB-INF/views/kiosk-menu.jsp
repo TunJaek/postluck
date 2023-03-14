@@ -1,5 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -9,15 +8,9 @@
 <title>KIOSK - POS.TLUCK</title>
 <link rel="icon" href="/resources/image/fabicon.png">
 <link rel="stylesheet" href="/resources/css/mainBootstrap.css">
-<script
-	src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
-	integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
-	crossorigin="anonymous"></script>
-<link rel="stylesheet"
-	href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css" />
-<link
-	href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR&amp;display=swap"
-	rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css" />
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR&amp;display=swap" rel="stylesheet">
 <script src="/resources/js/common.js"></script>
 <link rel="stylesheet" href="/resources/css/kiosk.css">
 </head>
@@ -38,7 +31,7 @@
 					</div>
 					<div class="my-3">
 						<i class="bi bi-check-circle fs-1"
-							style="color: var(--bs-primary)"></i>
+							style="color: #1ED760"></i>
 					</div>
 					<h5>주문이 완료되었습니다!</h5>
 					<h5 class="mb-5">결제는 음식 수령과 함께 해주세요.</h5>
@@ -55,13 +48,10 @@
 				src="/resources/image/mainLogo-dark.png" class="mx-3">
 
 		</div>
-		<div id="menuPage" class="w-100"
-			style="display: block; position: absolute; height: 95%;">
+		<div id="menuPage" class="w-100" style="display: block; position: absolute; height: 95%;">
 			<div class="row" style="height: 100%;">
 				<div class="mainContents border col-3">
-					<div
-						class="border menuListHeader fs-4 d-flex align-items-center justify-content-center"
-						style="height: 7%;">
+					<div class="border menuListHeader fs-4 d-flex align-items-center justify-content-center" style="height: 7%;">
 						<div id="storeName"></div>
 					</div>
 					<div class="text-center" style="overflow-y: auto; height: 93%;">
@@ -74,20 +64,13 @@
 					<div class="subContentsOrderList" style="height: 79%">
 						<!-- 메뉴 집어넣는 곳 -->
 					</div>
-					<div class="resultSum row fs-4 border-top"
-						style="height: 7%; display: flex; align-items: baseline; justify-content: center;">
-						<div
-							class="p-3 col-4 h-100 d-flex justify-content-center align-items-center">총</div>
-						<div id="total"
-							class="p-3 col h-100 fs-3 d-flex justify-content-center align-items-center">0원</div>
+					<div class="resultSum row fs-4 border-top" style="height: 7%; display: flex; align-items: baseline; justify-content: center;">
+						<div class="p-3 col-4 h-100 d-flex justify-content-center align-items-center">총</div>
+						<div id="total" class="p-3 col h-100 fs-3 d-flex justify-content-center align-items-center">0원</div>
 					</div>
 					<div class="subContentsBtnZone row">
-						<div id="subContensBtn"
-							class="cancleButton p-3 col h-100 d-flex justify-content-center align-items-center"
-							onclick="showModal('warn::주문을 취소하시겠습니까?:cancelOrder:')">주문취소</div>
-						<div
-							class="orderButton p-3 col h-100 d-flex justify-content-center align-items-center"
-							onclick="kioskPage(true)">주문하기</div>
+						<div id="subContensBtn" class="cancleButton p-3 col h-100 d-flex justify-content-center align-items-center" onclick="showModal('warn::주문을 취소하시겠습니까?:cancelOrder:')">주문취소</div>
+						<div class="orderButton p-3 col h-100 d-flex justify-content-center align-items-center" onclick="kioskPage(true)">주문하기</div>
 					</div>
 				</div>
 			</div>
@@ -103,6 +86,7 @@
 				</div>
 
 				<div class="orderZone border-bottom">
+
 					<div id="orderItem"></div>
 					<div id="orderResultZone" class="row text-center"
 						style="align-items: baseline;"></div>
@@ -120,8 +104,7 @@
 						<div class="paymentText text-start fs-3 col h-100">원</div>
 					</div>
 
-					<br> <span style="font-size: 30px;"> <br>주문 내역 확인
-						후 결제 방법을 선택 해주세요.<br> 결제는 음식 수령과 함께 해주세요.
+					<br> <span style="font-size: 30px;"> <br>주문 내역 확인 후 결제 방법을 선택 해주세요.<br> 결제는 음식 수령과 함께 해주세요.
 					</span>
 				</div>
 				<div class="paymentChoice row">
@@ -141,7 +124,6 @@
 			</div>
 		</div>
 	</div>
-
 </body>
 <script>
 let sock;
@@ -200,7 +182,7 @@ jsonString = '${store}'
 	
 	if (JSON.parse(jsonString).storeCode) {
 		storeCode = JSON.parse(jsonString).storeCode;
-		sock = new WebSocket("ws://192.168.0.5:80/postluck/" + storeCode);
+		sock = new WebSocket("ws://192.168.0.82:80/postluck/" + storeCode);
 		// WebSocket 처리 코드
 	} else {
 		showModal("error:세션 오류:세션이 만료되었습니다. 다시 로그인해주세요.:moveIndex:")
@@ -214,24 +196,43 @@ jsonString = '${store}'
 		if(menu.isKiosk=='Y'){
 			const card = document.createElement('div');
 			card.classList.add('col', 'p-5');
+			if(menu.isSoldOut=='N'){
 			cardContent += "<div class=\"card pointer\" data-menuCode=\"" + menu.menuCode + "\" onclick=\"addMenu('add', '" + menu.menuCode + "', " + menu.menuPrice + ")\">";
+			}
+			if(menu.isSoldOut=='Y'){
+				cardContent += "<div class=\"card\">";
+				cardContent+= `<div style=" width: 100%; position: absolute;  height: 100%;
+			     background: rgba(255,255,255,0.5);
+			    z-index: 2;  display: flex; justify-content: center; align-items: center;">
+			    <h4 style= " height: 20%; background: red;  color: white;
+			    width: 80%;
+			    display: flex;
+			    align-items: center;
+			    justify-content: center;" class="rounded-pill">SOLD OUT</h4></div>`
+			}else{
+				
+			}
+			
 			if(menu.isMain == 'Y'){
-				cardContent+="<div class=\"position-absolute m-3 badge bg-success rounded-pill fs-6 mx-3 col-3\">대표</div>"
+				cardContent+="<div class=\"position-absolute m-3 badge bg-success rounded-pill fs-6 mx-3 col-3\" style=\"z-index:1\">대표</div>"
 			}
 			if (menu.menuImageCode != ''){
 				cardContent+="<div class=\"ratio ratio-4x3\"><img src=\"/resources/image/"+storeCode+"/"+menu.menuImageCode+".jpg\" class=\"card-img-top cardTop\"></div>"
 			}else{
 				cardContent+="<div class=\"ratio ratio-4x3\"><img src=\"/resources/image/placeholder-image.jpg\" class=\"card-img-top cardTop\"></div>"
 			}
-			cardContent += "<div class=\"card-body\" ><div class=\"row p-1\"><div class=\"col fs-4\">";
+			cardContent += "<div class=\"card-body\" style=\" height: 150px; display: flex;  flex-direction: column;justify-content: space-around;\"><div class=\"row p-1\"><div class=\"col fs-4\" style=\"word-break: keep-all\">";
 			cardContent += menu.menuName;
 			cardContent += "</div> </div> <div class=\"fs-4\">";
 			cardContent += menu.menuPrice;       
 			cardContent += "원</div>  </div>  </div>";
 		card.innerHTML = cardContent;
-		card.children[0].addEventListener('click', function() {
-			  animateDiv(card.children[0]);
-			});
+		if(menu.isSoldOut != 'Y'){
+			card.children[0].addEventListener('click', function() {
+				  animateDiv(card.children[0]);
+				});
+		}
+		
 		
 		menuListZone.appendChild(card);
 		}
@@ -511,7 +512,6 @@ jsonString = '${store}'
 	display: flex;
 	align-items: center;
 }
-
 
 .menuCard {
 	position: relative;

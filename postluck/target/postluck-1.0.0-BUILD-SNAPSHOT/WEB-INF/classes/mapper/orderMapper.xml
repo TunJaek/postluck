@@ -2,44 +2,86 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.odod.postluck.mapper.OrderMapperInter">
-	<select id="selOrderNum"
-		parameterType="com.odod.postluck.beans.StoreBean" resultType="int">
-		select count(*) from orders where substr(os_date,0,8) = substr(CURRENT_DATE,0,8)  and os_stcode =#{storeCode}
-	</select>
-	<insert id="insOrder"
-		parameterType="com.odod.postluck.beans.StoreBean">
-		insert into
-		orders(os_stcode,os_date,os_type,os_statement)
-		values(#{storeCode},TO_DATE(#{orderList[0].orderDate},'YYYYMMDDHH24MISS'),#{orderList[0].orderPaymentType},#{orderList[0].orderState})
-	</insert>
-	<insert id="insOrderDetail"
-		parameterType="com.odod.postluck.beans.StoreBean">
-		INSERT ALL
-		<foreach collection="orderList" item="order">
-			<foreach collection="order.orderMenuList" item="menu">
-				INTO ordersdetail (od_osstcode, od_osdate, od_smcode, od_count)
-				VALUES (#{storeCode},TO_DATE(#{order.orderDate},
-				'YYYYMMDDHH24MISS'), #{menu.menuCode},
-				#{menu.quantity})
-			</foreach>
-		</foreach>
-		SELECT 1 FROM dual
-	</insert>
-	<select id="selOrderDetail" parameterType="com.odod.postluck.beans.OrderInfoBean" resultType="com.odod.postluck.beans.OrderDetailBean">
-	select SM_NAME as menuName, SM_PRICE as menuPrice, OD_SMCODE as menuCode ,OD_COUNT as quantity from ordersdetail inner join storemenu on od_smcode = sm_code and od_osstcode = sm_stcode where OD_OSDATE = TO_DATE(#{orderDate},'YYYYMMDDHH24MISS') and OD_OSSTCODE =#{storeCode}
-	</select>
-	<select id="selOrderInfo" parameterType ="com.odod.postluck.beans.OrderInfoBean" resultType="com.odod.postluck.beans.OrderBean">
-	select TO_CHAR(os_date,'YYYYMMDDHH24MISS') as orderDate, OS_TYPE as orderPaymentType, OS_STATEMENT as orderState from Orders where os_stCode = #{storeCode} and OS_DATE = TO_DATE(#{orderDate},'YYYYMMDDHH24MISS')
-	</select>
-	<select id="selOrderList" parameterType="string"  resultType="com.odod.postluck.beans.OrderBean">
-	select  TO_CHAR(os_date,'YYYYMMDDHH24MISS') as orderDate, OS_TYPE as orderPaymentType, OS_STATEMENT as orderState from Orders where os_stCode = #{storeCode} and os_statement ='주문'
-	</select>
-	<update id="updOrderStateToCancel" parameterType ="com.odod.postluck.beans.OrderInfoBean">
-	update Orders set os_Statement = '취소' where os_stcode =#{storeCode} and os_date = TO_DATE(#{orderDate},'YYYYMMDDHH24MISS')
-	</update>
-	<update id="updOrderStateToComplete" parameterType ="com.odod.postluck.beans.OrderInfoBean">
-	update Orders set os_Statement = '완료' where os_stcode =#{storeCode} and os_date = TO_DATE(#{orderDate},'YYYYMMDDHH24MISS')
-	</update>
+   <select id="selOrderNum"
+      parameterType="com.odod.postluck.beans.StoreBean" resultType="int">
+      select
+      count(*) from orders where substr(os_date,0,8) =
+      substr(CURRENT_DATE,0,8) and os_stcode =#{storeCode}
+   </select>
+   <insert id="insOrder"
+      parameterType="com.odod.postluck.beans.StoreBean">
+      insert into
+      orders(os_stcode,os_date,os_type,os_statement)
+      values(#{storeCode},TO_DATE(#{orderList[0].orderDate},'YYYY-MM-DD
+      HH24:MI:SS'),#{orderList[0].orderPaymentType},#{orderList[0].orderState})
+   </insert>
+   <insert id="insOrderDetail"
+      parameterType="com.odod.postluck.beans.StoreBean">
+      INSERT ALL
+      <foreach collection="orderList" item="order">
+         <foreach collection="order.orderMenuList" item="menu">
+            INTO
+            ordersdetail (od_osstcode, od_osdate, od_smcode, od_count)
+            VALUES
+            (#{storeCode},TO_DATE(#{order.orderDate},
+            'YYYY-MM-DD HH24:MI:SS'),
+            #{menu.menuCode},
+            #{menu.quantity})
+         </foreach>
+      </foreach>
+      SELECT 1 FROM dual
+   </insert>
+   <select id="selOrderDetail"
+      parameterType="com.odod.postluck.beans.OrderInfoBean"
+      resultType="com.odod.postluck.beans.OrderDetailBean">
+      select SM_NAME as menuName, SM_PRICE as menuPrice,
+      OD_SMCODE as menuCode
+      ,OD_COUNT as quantity from ordersdetail inner
+      join storemenu on
+      od_smcode = sm_code and od_osstcode = sm_stcode where
+      OD_OSDATE =
+      TO_DATE(#{orderDate},'YYYY-MM-DD HH24:MI:SS') and
+      OD_OSSTCODE =#{storeCode}
+   </select>
+   <select id="selOrderInfo"
+      parameterType="com.odod.postluck.beans.OrderInfoBean"
+      resultType="com.odod.postluck.beans.OrderBean">
+      select TO_CHAR(os_date,'YYYY-MM-DD HH24:MI:SS') as
+      orderDate, OS_TYPE as
+      orderPaymentType, OS_STATEMENT as orderState from
+      Orders where
+      os_stCode = #{storeCode} and OS_DATE =
+      TO_DATE(#{orderDate},'YYYY-MM-DD HH24:MI:SS')
+   </select>
+   <select id="selOrderList" parameterType="string"
+      resultType="com.odod.postluck.beans.OrderBean">
+      select TO_CHAR(os_date,'YYYY-MM-DD HH24:MI:SS') as
+      orderDate, OS_TYPE as
+      orderPaymentType, OS_STATEMENT as orderState from
+      Orders where
+      os_stCode = #{storeCode} and os_statement ='주문'
+   </select>
+   <update id="updOrderStateToCancel"
+      parameterType="com.odod.postluck.beans.OrderInfoBean">
+      update Orders set os_Statement = '취소' where os_stcode
+      =#{storeCode} and
+      os_date = TO_DATE(#{orderDate},'YYYY-MM-DD HH24:MI:SS')
+   </update>
+   <update id="updOrderStateToComplete"
+      parameterType="com.odod.postluck.beans.StoreBean">
+      update Orders set os_Statement = '완료' where os_stcode
+      =#{storeCode} and
+      os_date =
+      TO_DATE(#{orderList[0].orderDate},'YYYY-MM-DD HH24:MI:SS')
+   </update>
+   <insert id="insSales"
+      parameterType="com.odod.postluck.beans.StoreBean">
+      insert into sales(SA_STCODE, SA_DATE, SA_PAYMENTTYPE,
+      SA_ODOSTIME, SA_PRICE, SA_LOCODE)
+      values (#{storeCode},sysdate,
+      #{orderList[0].salespaymentType}, TO_DATE(#{orderList[0].orderDate},'YYYY-MM-DD HH24:MI:SS'),
+      #{orderList[0].amount}, #{locationList[0].locationCode})
+   </insert>
 
-	
+
 </mapper>

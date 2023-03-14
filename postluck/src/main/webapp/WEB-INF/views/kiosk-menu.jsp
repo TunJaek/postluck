@@ -182,7 +182,7 @@ jsonString = '${store}'
 	
 	if (JSON.parse(jsonString).storeCode) {
 		storeCode = JSON.parse(jsonString).storeCode;
-		sock = new WebSocket("ws://localhost:80/postluck/" + storeCode);
+		sock = new WebSocket("ws://192.168.0.82:80/postluck/" + storeCode);
 		// WebSocket 처리 코드
 	} else {
 		showModal("error:세션 오류:세션이 만료되었습니다. 다시 로그인해주세요.:moveIndex:")

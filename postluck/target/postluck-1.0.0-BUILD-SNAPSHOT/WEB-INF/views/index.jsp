@@ -56,7 +56,7 @@ function isMem(){
 		<div id="right"
 			style="display: flex; justify-content: center; align-items: center;">
 			<div class="loginArea"
-				style="display: flex; flex-direction: column; width: 60%; display: flex; flex-direction: column; height: 50%;">
+				style="display: flex; flex-direction: column; width: 60%; height: 50%;">
 				<img src="../../resources/image/indexTextLogo.png"
 					style="margin-bottom: 3%;">
 				<div class="loginLogo">
@@ -67,13 +67,13 @@ function isMem(){
 						<div class="row"
 							style="background-color: #03C75A; border-radius: 5px; align-items: center; cursor: pointer"
 							id="naverLogin" onclick="naverLogin()">
-							<img class="col-3" src="../../resources/image/naverLoginBtn.png">
+							<img class="col-2" src="../../resources/image/naverLoginBtn.png">
 							<div class="col-9" style="color: white">네이버로 로그인하기</div>
 						</div>
 						<div class="row"
 							style="background-color: #F9E000; border-radius: 5px; align-items: center; cursor: pointer"
 							id="kakaoLogin" onclick="kakaoLogin()">
-							<img class="col-3" src="..\..\resources\image\kakaoLoginBtn.png">
+							<img class="col-2" src="..\..\resources\image\kakaoLoginBtn.png">
 							<div class="col-9">카카오로 로그인하기</div>
 						</div>
 					</div>
@@ -95,7 +95,7 @@ function isMem(){
 			console.log("click");
 			btnNaverLogin.click();
 		}
-		var naver_id_login = new naver_id_login("Y_j7t1EE1fX_0Xi6Qr5y", "http://192.168.0.5/index-callBack");
+		var naver_id_login = new naver_id_login("Y_j7t1EE1fX_0Xi6Qr5y", "http://192.168.0.82/index-callBack");
 // 		var naver_id_login = new naver_id_login("9mtn5PALlynAVoBKSbrl", "http://localhost/index-callBack");
 		var state = naver_id_login.getUniqState();
 		naver_id_login.setButton("green", 3);
@@ -155,7 +155,8 @@ function isMem(){
 					});
 			}
 			function moveHome(){
-				serverCallByRequest("Home/moveHome", 'get','');
+				serverCallByRequest("/Home", 'get','');
+
 			}
 	</script>
 
