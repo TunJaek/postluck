@@ -270,7 +270,7 @@ if('${store}'!=''){
 						</div>
 					</div>
 					<div class="mainContentMidlle">
-						<div id="salesTextZone" class="row"></div>
+						<div id="salesTextZone" class="row px-5"></div>
 					</div>
 					<div class="p-5">
 						<div class="my-5">
@@ -1124,10 +1124,10 @@ if('${store}'!=''){
 	    }
 	    salesTextZone.innerHTML= `
 	    <div class="textBox col-3">
-		실매출<br> <div id="totalSales" style="font-size: 30px;">\${totalAmount}원</span>
+		<div>실매출</div> <div id="totalSales" style="font-size: 30px;">\${totalAmount}원</div>
 	</div>
 	<div class="textBox col-3">
-		결제건수<br> <div id="paymentCount" style="font-size: 30px;">\${totalCount}건</span>
+		<div>결제건수</div> <div id="paymentCount" style="font-size: 30px;">\${totalCount}건</div>
 	</div>`
 	    
 	    paymentSalesZone.innerHTML = '';
@@ -1178,8 +1178,7 @@ if('${store}'!=''){
 		    <div class="row p-3">
 			<h5 class="col-1">\${index}.</h5>
 			<h5 class="col">\${location.locationName}</h5>
-			<h5 class="col">\${location.locationAddr}</h5>
-			<h5 class="col">\${location.locationDetail}</h5>
+			<h5 class="col-8">\${location.locationAddr}\${location.locationDetail}</h5>
 			<h5 class="col">\${location.locationCount}건</h5>
 			<h5 class="col">\${location.locationAmount}원</h5>
 		</div>

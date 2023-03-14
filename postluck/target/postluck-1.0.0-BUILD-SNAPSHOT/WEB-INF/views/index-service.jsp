@@ -282,15 +282,9 @@
 	}
 
 	function logout() {
-		Kakao.Auth.logout()
-		  .then(function(response) {
-		serverCallByRequest('/View/logOut', 'post', getJWT());
+		formData = new FormData();
+		serverCallByRequest('/View/logOut', 'post','${store}');
 		sessionStorage.removeItem("JWT");
-		    console.log(Kakao.Auth.getAccessToken()); // null
-		  })
-		  .catch(function(error) {
-		    console.log('Not logged in.');
-		  });
 	}
 </script>
 <style>

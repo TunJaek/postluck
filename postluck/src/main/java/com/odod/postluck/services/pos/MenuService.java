@@ -215,6 +215,7 @@ public class MenuService extends TransactionAssistant {
 				} else {
 					System.out.println("파일이 없습니다.");
 				}
+
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -239,8 +240,7 @@ public class MenuService extends TransactionAssistant {
 					if (this.convertToBoolean(
 							this.sqlSession.delete("delMenu", store))) {
 						this.tranManager.commit();
-						store.setMessage(
-								"plain::메뉴 삭제가 완료되었습니다!:sideMenu:2");
+						store.setMessage("plain::메뉴 삭제가 완료되었습니다!:sideMenu:2");
 						model.addAttribute("store",
 								this.main.getStoreInfoAsStoreBean(model));
 					} else {

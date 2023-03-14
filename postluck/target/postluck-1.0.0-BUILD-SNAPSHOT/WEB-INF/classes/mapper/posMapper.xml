@@ -52,7 +52,7 @@
 		INSERT INTO STOREMENU(SM_STCODE, SM_CODE, SM_NAME,
 		SM_PRICE, SM_SICODE, SM_ISMAIN, SM_ISKIOSK, SM_ISSOLD)
 		VALUES(#{storeCode},#{menuList[0].menuCode},#{menuList[0].menuName},
-		#{menuList[0].menuPrice},#{menuList[0].menuImageCode},#{menuList[0].isMain},#{menuList[0].isKiosk},#{menuList[0].isSoldOut})
+		#{menuList[0].menuPrice},<if test="menuList[0].menuImageCode != null">#{menuList[0].menuImageCode}</if>,#{menuList[0].isMain},#{menuList[0].isKiosk},#{menuList[0].isSoldOut})
 	</insert>
 
 	<select id="selPayment" parameterType="com.odod.postluck.beans.StoreBean" resultType="com.odod.postluck.beans.OrderBean">
