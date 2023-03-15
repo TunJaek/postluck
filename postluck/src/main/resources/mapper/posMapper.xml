@@ -81,6 +81,7 @@
 		SA_STCODE = #{storeBean} AND SA_DATE= #{orderList[0].salesDate};
 	</select>
 
+
 		<select id="selTypeSalesList"
 		parameterType="com.odod.postluck.beans.StoreBean"
 		resultType="com.odod.postluck.beans.OrderBean">
