@@ -335,6 +335,7 @@ function afterIssuance(jsonData) {
 	if (jsonData != null) {
 		if (accessToken) {
 			accessToken.push(['snsID', jsonData.snsID]);
+			//JWT 유효성 검증과 사용자 정보 불러오는 serverCall(공통)
 			serverCallByRequest('View/AccessCtl', 'post', accessToken);
 		} else {
 			console.log('accessToken is null')
@@ -346,9 +347,11 @@ function afterIssuance(jsonData) {
 }
 
 function movePage(targetPage) {
+	//페이지 이동 serverCall
 	serverCallByRequest('/View/Move' + targetPage, 'post', getJWT());
 }
 function logout() {
+	// 로그아웃 serverCall
 	serverCallByRequest('/View/logOut', 'post', getJWT());
 }
 //카카오로그아웃  

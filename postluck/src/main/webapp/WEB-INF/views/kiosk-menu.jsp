@@ -261,6 +261,7 @@ jsonString = '${store}'
 			isFound= false;
 			sendOrderJs.orderList[0]['orderPaymentType'] = payment;
 			sendOrderJs.orderList[0]['orderDate'] = getCurrentDateTime();
+			//주문정보를 insert 하는 serverCall (이예림)
 			serverCallByFetchAjaxUsingJson(JSON.stringify(sendOrderJs), "/Api/makeOrder", "post", "afterMakeOrder", header);
 	}
 	const completeOrderModal = new bootstrap.Modal(document.getElementById("completeOrderModal"))

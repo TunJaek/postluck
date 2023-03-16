@@ -178,12 +178,9 @@
 			let orderNum = '000';
 			if (JSON.parse(jsonString).storeCode) {
 				storeCode = JSON.parse(jsonString).storeCode;
-
-				sock = new WebSocket("ws://192.168.0.82:80/postluck/"
-						+ storeCode);
+				sock = new WebSocket("ws://localhost:80/postluck/"+ storeCode);
 				// WebSocket 처리 코드
 			} else {
-
 				showModal("error:세션 오류:세션이 만료되었습니다. 다시 로그인해주세요.:moveIndex:")
 			}
 			function getOrderListOnLoad(){
@@ -192,15 +189,18 @@
 			serverCallByFetch(formData,"/Api/GetOrderList","post","getOrderList",header);
 				
 			}
+			// 			showModal("plain:알림:새로운 주문이 들어왔습니다." + e.data + "::");
+			// 			storeCode=6913651651&orderDate=20230309225656&orderNum=049
+			
 			sock.onopen = function(event) {
 				showModal("plain:연결 성공!:서버와 연결되었습니다!::")
 				// 			sock.send(storeCode);
 			};
+			
 			sock.onmessage = function(e) {
-				// 			showModal("plain:알림:새로운 주문이 들어왔습니다." + e.data + "::");
-				// 			storeCode=6913651651&orderDate=20230309225656&orderNum=049
 				newOrder(e.data);
 			};
+			
 			sock.onclose = function(event) {
 				if (event.wasClean) {
 					showModal('error:연결 오류:Kiosk와 통신이 불안정합니다. Kiosk 서비스를 실행해주세요.::')
@@ -228,6 +228,10 @@
 				createOrderDiv(jsonData);
 			}
 			let isEmpty;
+			const myAudio = new Audio(); // Aduio 객체 생성
+			myAudio.src = "/resources/postluckOrder.wav"; // 음원 파일 설정
+
+			
 			
 			function createOrderDiv(jsonData){
 				const orderListZone = document.getElementById("orderListZone");
@@ -236,7 +240,7 @@
 				}
 				const menuList = jsonData.orderMenuList;
 				const orderDiv = document.createElement('div');
-				orderDiv.classList.add('col-3', 'p-5', 'mx-3', 'h-100', 'rounded');
+				orderDiv.classList.add('col-3', 'p-5', 'mx-3', 'h-100', 'rounded','shadow');
 				orderDiv.style.display = 'flex';
 				orderDiv.style.overflowY = 'auto';
 				orderDiv.style.background = 'white';
@@ -265,6 +269,7 @@
 				orderDiv.innerHTML += "<div class=\"row\"><button class= \"btn btn-outline-primary w-100\" type=\"button\" onclick =\"changeState(this)\">주문</button></div>";
 				orderListZone.appendChild(orderDiv);
 				isEmpty = false;
+				 // 음원 재생
 			}
 			// 상태가 주문인 
 			function changeState(btn){
@@ -294,6 +299,7 @@ if(btn.innerText == '주문'){
 				}
 			}
 			function createToast(orderDate) {
+			    myAudio.play();
 				const toastZone = document.getElementById("toastZone");
 				const toastDiv = document.createElement('div');
 				toastDiv.className = 'toast m-2';

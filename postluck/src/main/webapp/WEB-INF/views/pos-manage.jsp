@@ -327,6 +327,7 @@ if('${store}'!=''){
 	function sideMenu(newIdx) {
 		 const formData = new FormData;
 		 formData.append("storeCode",storeNum);
+		 //매장 정보를 가져오는 serverCall(이예림)
 		 serverCallByFetch(formData, '/Api/GetStoreInfo', 'post','setStoreInfo', header);
 		document.getElementById("menu" + selectedIdx).style.display = "none";
 		document.getElementById("menu" + newIdx).style.display = "block";
@@ -483,6 +484,7 @@ if('${store}'!=''){
 		}else if(newIdx == 3){
 		    showMenuInput('');
 		}else if(newIdx == 5){
+		    //결제내역을 불러오는 serverCall (홍준택)
 			serverCallByFetch(formData,'/Api/SelPayment','post','selSalesInfo',header);
 			
 		}else if(newIdx == 6){
@@ -560,6 +562,7 @@ if('${store}'!=''){
 		}
 		formData.append('locationList[0].locationCode',document.getElementById("storeLocation").options[selectedIdx].value);
 		formData.append('storeCode', storeNum);
+		//영업상태를 변경하는 serverCall (홍준택)
 		serverCallByFetch(formData, '/Api/UpdSalesLog', 'post', 'afterUpdSalesLog', header);
 	}
 	//영업기록 callback
@@ -605,6 +608,7 @@ if('${store}'!=''){
 					if(storeImage.files[0]!=null){
 					formData.append('file',storeImage.files[0]);
 					}
+					//매장 정보를 수정하는 serverCall (이예림)
 					serverCallByFetch(formData, '/Api/ModifyStoreInfo', 'post',
 							'afterModifyStoreInfo', header);
 				} else {
@@ -702,9 +706,11 @@ if('${store}'!=''){
 										locationAddr);
 								if(document.getElementById("regModalTitle").innerText == '위치 수정'){
 									formData.append("locationList[0].locationCode",locationCode)
+									// 위치를 수정하는 serverCall (이예림)
 									serverCallByFetch(formData, "/Api/ModifyLocation","post", "afterRegLocation", header);
 								}
 								else{
+								    //위치를 등록하는 serverCall (이예림)
 									serverCallByFetch(formData, "/Api/RegLocation","post", "afterRegLocation", header);
 								}
 										
@@ -778,6 +784,7 @@ if('${store}'!=''){
 		formData = new FormData;
 		formData.append("storeCode", storeNum);
 		formData.append("locationList[0].locationCode",location.locationCode)
+		//위치를 삭제하는 serverCall (이예림)
 		serverCallByFetch(formData, "/Api/DeleteLocation","post", "afterDelLocation", header);
 	}
 
@@ -912,7 +919,7 @@ if('${store}'!=''){
 				formData.append("menuList[0].isSoldOut", "N");
 			}
 		  
-		  
+		  //메뉴를 등록하는 serverCall (정영준)
 		  serverCallByFetch(formData,"/Api/RegMenu","post","afterDeleteMenu",header);
 	}
 	
@@ -943,6 +950,7 @@ if('${store}'!=''){
 	    formData = new FormData();
 	    formData.append("storeCode",storeNum);
 	    formData.append("menuList[0].menuCode",menuCode);
+	    //메뉴를 삭제하는 serverCall (정영준)
 	    serverCallByFetch(formData,"/Api/DeleteMenu","post","afterDeleteMenu",header);
 	}
 	
@@ -982,7 +990,7 @@ if('${store}'!=''){
 		} else{
 			formData.append("menuList[0].isSoldOut", "N");
 		}
-	    
+	    // 메뉴를 수정 serverCall (정영준)
 	    serverCallByFetch(formData,"/Api/ModifyMenu","post","afterDeleteMenu",header);
 	}
 
@@ -1002,6 +1010,7 @@ if('${store}'!=''){
 		 else{
 		formData.append('orderList[0].salespaymentType',payment);
 		formData.append("storeCode",storeNum);
+		// 결제수단에 따른 결제내역을 불러오는 serverCall
 		serverCallByFetch(formData,'/Api/ChangePayment','post','selSalesInfo',header);
 		 }
 	}
@@ -1028,6 +1037,8 @@ if('${store}'!=''){
 			    	salesData.append('orderList[0].salesDate',data.salesDate);
 			    	salesData.append('orderList[0].salespaymentType',data.salespaymentType)
 			    	console.log(data.salesDate)
+			    
+			    // 상세 결제 내역을 불러오는 serverCall (홍준택) 
 				  serverCallByFetch(salesData,'/Api/selSalesDetail','post','selSalesDetail',header);
 			  };
 
@@ -1108,6 +1119,7 @@ if('${store}'!=''){
 		formData = new FormData();
 		formData.append('storeCode',storeNum);
 		formData.append('period',period);
+		//기간에 따른 매출 분석 정보를 가져오는 serverCall(홍준택)
 		serverCallByFetch(formData,'/Api/selSalesInfo','post','afterSelSalesInfo',header);
 	}
 	function afterSelSalesInfo(jsonData){
