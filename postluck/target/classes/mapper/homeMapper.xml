@@ -63,6 +63,6 @@ SELECT ST_CODE AS storeCode,
 FROM store
 INNER JOIN categories ON st_category = ca_code
 INNER JOIN location ON st_code = lo_stcode and st_locode = lo_code
-WHERE lo_addr LIKE  #{locate}||'%'
+WHERE lo_addr LIKE #{locate}||'%'
 		</select>
 </mapper>

@@ -95,8 +95,8 @@ function isMem(){
 			console.log("click");
 			btnNaverLogin.click();
 		}
-		var naver_id_login = new naver_id_login("Y_j7t1EE1fX_0Xi6Qr5y", "http://localhost/index-callBack");
-// 		var naver_id_login = new naver_id_login("9mtn5PALlynAVoBKSbrl", "http://localhost/index-callBack");
+// 		var naver_id_login = new naver_id_login("Y_j7t1EE1fX_0Xi6Qr5y", "http://localhost/index-callBack");
+		var naver_id_login = new naver_id_login("9mtn5PALlynAVoBKSbrl", "http://localhost/index-callBack");
 		var state = naver_id_login.getUniqState();
 		naver_id_login.setButton("green", 3);
 		naver_id_login.setDomain("YOUR_SERVICE_URL");
@@ -121,6 +121,7 @@ function isMem(){
 								formData.append('snsID', response.id);
 								formData.append('accessLogList[0].accessIP','106.243.194.229');
 								console.log(formData);
+								//사용자 인증 및 JWT 발급 serverCall (공통)
 								serverCallByFetchAjax(formData, 'IssuanceJWT', 'post', 'afterIssuance');
 							},
 							fail: function(error) {
@@ -155,8 +156,8 @@ function isMem(){
 					});
 			}
 			function moveHome(){
+			    //Homepage로 이동하는 serverCall
 				serverCallByRequest("/Home", 'get','');
-
 			}
 	</script>
 

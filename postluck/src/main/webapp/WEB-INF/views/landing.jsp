@@ -14,7 +14,9 @@
 <script>
 	function landing() {
 		if (getJWT() != '') {
-			const accessToken = getJWT();
+		    //[["JWTForPostluck", eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2Nzg5NDk0MDAsImV4cCI6MTY3OTAzNTgwMCwiVG9rZW5Cb2R5Ijp7InN0b3JlQ29kZSI6IjEzNTIzNDUxNDMiLCJzbnNJRCI6Im5OdmpoUURnRjcyWWNfbVFCdElOVDc2NERYNnhBQlp3eFByelNRWWc3N28iLCJzbnNUeXBlIjpudWxsLCJjZW9FbWFpbCI6bnVsbCwiY2VvTmFtZSI6bnVsbH19.7AGs3zYpv_b-BD2UBPG_DEekhXoKrlAlCy6g0bvJVw4]]
+			//null
+		    const accessToken = getJWT();
 			if (accessToken) {
 				serverCallByRequest('/View/AccessCtl', 'post', accessToken);
 			}
