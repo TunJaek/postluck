@@ -194,7 +194,7 @@ function searchStoreDetail(){
 	formData = new FormData();
 	formData.append("country",country);
 	formData.append("city",city);
-	//상점 검색 결과 list 호출 serverCall (이예림)
+	//상점 검색 결과 list 호출 serverCall (홍준택)
 	serverCallByFetchAjax(formData,"/Home/searchStore", "post",'afterSearchStore');
 	}
 }
