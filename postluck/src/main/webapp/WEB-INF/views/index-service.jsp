@@ -188,6 +188,7 @@
 		if (lengthCheck(storeCode)) {
 			formData = new FormData();
 			formData.append('storeCode', storeCode.value);
+			//사업자 번호 중복체크 serverCall (홍준택)
 			serverCallByFetch(formData, '/Api/DupCheckStCode', 'post',
 					'dupCheckResult', new Headers(getJWT()));
 		} else {
@@ -244,6 +245,7 @@
 						if (isChecked) {
 							console.log(storeName)
 							console.log('${AccessInfo.snsID}')
+							//상점 등록 serverCall (홍준택)
 							serverCallByFetch(formData, '/Api/RegStoreInfo',
 									'post', 'afterRegsiter', header);
 						} else {
@@ -283,7 +285,12 @@
 
 	function logout() {
 		formData = new FormData();
-		serverCallByRequest('/View/logOut', 'post','${store}');
+		storeJS = JSON.parse(jsonString)
+		let storeCode = storeJS.storeCode;
+		let isOpen = storeJS.isOpen;
+		let storeInfo = [["storeCode",storeCode],["isOpen",isOpen]]
+		//로그아웃 serverCall (홍준택)
+		serverCallByRequest('/View/logOut', 'post',storeInfo);
 		sessionStorage.removeItem("JWT");
 	}
 </script>

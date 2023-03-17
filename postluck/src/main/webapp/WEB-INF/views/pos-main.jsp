@@ -186,6 +186,7 @@
 			function getOrderListOnLoad(){
 				formData = new FormData()
 				formData.append("storeCode",JSON.parse(jsonString).storeCode)
+				//기존 주문 정보 (주문완료나 취소가 되지 않은 건)를 가져오는 serverCall (이예림)
 			serverCallByFetch(formData,"/Api/GetOrderList","post","getOrderList",header);
 				
 			}
@@ -219,6 +220,7 @@
 				formData.append("storeCode", storeNum);
 				formData.append("orderNum", orderNum);
 				formData.append("orderDate", orderDate)
+				//kiosk로 부터 주문메세지를 받으면 주문 상세내용을 가져오는 serverCall(이예림)
 				serverCallByFetch(formData, '/Api/getOrderInfo', 'post',
 						'alertOrder', header);
 			}
@@ -343,6 +345,7 @@ if(btn.innerText == '주문'){
 				formData.append("storeCode",storeCode);
 				formData.append("orderDate",orderDate);
 				console.log(orderDate)
+				//주문을 선택하면 해당 주문의 상세내용을 가져오는 serverCall(이예림)
 				serverCallByFetch(formData,"/Api/getOrderInfo","post","changeOffCanvas",header);
 			}
 			let orderNumForOffCanvas;
@@ -386,6 +389,7 @@ if(btn.innerText == '주문'){
 				 const formData = new FormData();
 				    formData.append("storeCode", storeCode);
 				    formData.append("orderDate",div.getAttribute("data-orderDate"));
+				    // 주문을 취소하는 servercall(이예림)
 				    serverCallByFetch(formData, "/Api/CancelOrder", "post", "afterCancelOrder", header);
 
 			}
@@ -402,6 +406,7 @@ if(btn.innerText == '주문'){
 				    formData.append("storeCode", storeCode);
 				    formData.append("orderList[0].orderDate", div.getAttribute("data-orderDate"));
 				    formData.append("locationList[0].locationCode",JSON.parse(jsonString).storeLocationCode)
+				    //주문을 완료하는 serverCall (이예림)
 				    serverCallByFetch(formData, "/Api/CompleteOrder", "post", "afterCompleteOrder", header);
 			}
 			

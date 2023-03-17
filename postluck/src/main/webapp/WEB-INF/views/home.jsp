@@ -99,6 +99,8 @@
 
 </body>
 <script>
+
+
 let storeList ='${storeList}';
 let storeJson = JSON.parse(storeList);
 let cnt = new Array();
@@ -155,7 +157,7 @@ storeListZone.innerHTML ='';
 			          <div class="row fs-4 mb-3">
 			            <div class="col-9">\${store.storeName}</div>
 			            <div class="col fs-5"><i class="bi bi-circle-fill me-3"
-			            style="color:\${isopen=='영업중'?'#00FF00':'red' } ;font-size: small;"></i>\${isopen}
+			            style="color:\${isopen=='영업중'?'#00FF00':'red'} ;font-size: small;"></i>\${isopen}
 			          </div>
 			        </div><h6 class="col mb-3">\${store.storeCategory}</h6>
 			          <h6 class="mb-3">\" \${store.storeInfo == null ? " 푸드트럭 한 줄 소개가 없습니다." : store.storeInfo} \"</h6>
@@ -178,6 +180,7 @@ storeListZone.innerHTML ='';
 }
 function storeInfo(storeCode){
 	let storeInfo = [["storeCode",storeCode]];
+	// 상점 상세페이지 이동 serverCall(이예림)
 	serverCallByRequest("/Home/StoreInfo","get",storeInfo);
 }
 
@@ -191,6 +194,7 @@ function searchStoreDetail(){
 	formData = new FormData();
 	formData.append("country",country);
 	formData.append("city",city);
+	//상점 검색 결과 list 호출 serverCall (이예림)
 	serverCallByFetchAjax(formData,"/Home/searchStore", "post",'afterSearchStore');
 	}
 }
