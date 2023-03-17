@@ -62,7 +62,6 @@ public class HomeService extends TransactionAssistant {
 					store.getLocationList().add(location);
 				}
 			model.addAttribute("storeList", storeListArr);
-			System.out.println("최종 스토어"+model);
 			} catch (Exception e) {
 				e.printStackTrace();
 			} finally {
