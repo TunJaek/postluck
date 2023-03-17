@@ -1010,7 +1010,7 @@ if('${store}'!=''){
 		 else{
 		formData.append('orderList[0].salespaymentType',payment);
 		formData.append("storeCode",storeNum);
-		// 결제수단에 따른 결제내역을 불러오는 serverCall
+		// 결제수단에 따른 결제내역을 불러오는 serverCall(홍준택)
 		serverCallByFetch(formData,'/Api/ChangePayment','post','selSalesInfo',header);
 		 }
 	}

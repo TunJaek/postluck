@@ -98,6 +98,7 @@ function serverCallByFetchAjax(formData, jobCode, methodType, callBackFunc) {
 }
 function moveIndex() {
 	sessionStorage.clear();
+	// Index 페이지 이동 serverCall (김민규)
 	serverCallByRequest("/Index", "get", "");
 }
 /* JWT 사용한 서버 요청 */

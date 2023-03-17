@@ -345,7 +345,7 @@ if(btn.innerText == '주문'){
 				formData.append("storeCode",storeCode);
 				formData.append("orderDate",orderDate);
 				console.log(orderDate)
-				//주문을 선택하면 해당 주문의 상세내용을 가져오는 serverCall(이예림)
+				//주문을 선택하면 해당 주문의 상세내용을 가져오는 serverCall(김민규)
 				serverCallByFetch(formData,"/Api/getOrderInfo","post","changeOffCanvas",header);
 			}
 			let orderNumForOffCanvas;
@@ -389,7 +389,7 @@ if(btn.innerText == '주문'){
 				 const formData = new FormData();
 				    formData.append("storeCode", storeCode);
 				    formData.append("orderDate",div.getAttribute("data-orderDate"));
-				    // 주문을 취소하는 servercall(이예림)
+				    // 주문을 취소하는 servercall(김민규)
 				    serverCallByFetch(formData, "/Api/CancelOrder", "post", "afterCancelOrder", header);
 
 			}
@@ -406,7 +406,7 @@ if(btn.innerText == '주문'){
 				    formData.append("storeCode", storeCode);
 				    formData.append("orderList[0].orderDate", div.getAttribute("data-orderDate"));
 				    formData.append("locationList[0].locationCode",JSON.parse(jsonString).storeLocationCode)
-				    //주문을 완료하는 serverCall (이예림)
+				    //주문을 완료하는 serverCall (김민규)
 				    serverCallByFetch(formData, "/Api/CompleteOrder", "post", "afterCompleteOrder", header);
 			}
 			

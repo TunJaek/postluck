@@ -180,7 +180,7 @@ storeListZone.innerHTML ='';
 }
 function storeInfo(storeCode){
 	let storeInfo = [["storeCode",storeCode]];
-	// 상점 상세페이지 이동 serverCall(이예림)
+	// 상점 상세페이지 이동 serverCall(김민규)
 	serverCallByRequest("/Home/StoreInfo","get",storeInfo);
 }
 
